@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
 )
 
 /*
@@ -25,9 +25,9 @@ LogN(1500000;4) = log[4](1500000) = 10.2582655350227
 */
 
 type BigIntMathLogarithms struct {
-	Base      BigIntNum
-	XNumber   BigIntNum
-	YExponent BigIntNum
+  Base      BigIntNum
+  XNumber   BigIntNum
+  YExponent BigIntNum
 }
 
 // BigIntNumLogBaseOfX - Computes the log[base](xNum). 'base' and 'xNum' are passed as
@@ -73,123 +73,123 @@ type BigIntMathLogarithms struct {
 // base:  4
 // xNum:  1500000
 func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
-	base, xNum BigIntNum, maxPrecision uint) (result BigIntNum, err error) {
+  base, xNum BigIntNum, maxPrecision uint) (result BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathLogarithms.BigIntNumLogBaseOfX",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.BigIntNumLogBaseOfX",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
-	factor := big.NewInt(4)
+  biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+  factor := big.NewInt(4)
 
-	cycles := big.NewInt(40)
-	if biMaxPrecision.Cmp(big.NewInt(10)) == 1 {
-		cycles = big.NewInt(0).Mul(biMaxPrecision, factor)
-	}
+  cycles := big.NewInt(40)
+  if biMaxPrecision.Cmp(big.NewInt(10)) == 1 {
+    cycles = big.NewInt(0).Mul(biMaxPrecision, factor)
+  }
 
-	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
+  maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
 
-	var baseBigInt, basePrecisionBigInt,
-		xNumBigInt, xNumPrecisionBigInt *big.Int
+  var baseBigInt, basePrecisionBigInt,
+    xNumBigInt, xNumPrecisionBigInt *big.Int
 
-	baseBigInt, err = base.GetIntegerValue()
+  baseBigInt, err = base.GetIntegerValue()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "baseBigInt, err = base.GetIntegerValue()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseBigInt, err = base.GetIntegerValue()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	basePrecisionBigInt, err = base.GetPrecisionBigInt()
+  basePrecisionBigInt, err = base.GetPrecisionBigInt()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "basePrecisionBigInt, err = base.GetPrecisionBigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "basePrecisionBigInt, err = base.GetPrecisionBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	xNumBigInt, err = xNum.GetIntegerValue()
+  xNumBigInt, err = xNum.GetIntegerValue()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "xNumBigInt, err = xNum.GetIntegerValue()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xNumBigInt, err = xNum.GetIntegerValue()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	xNumPrecisionBigInt, err = xNum.GetPrecisionBigInt()
+  xNumPrecisionBigInt, err = xNum.GetPrecisionBigInt()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "xNumPrecisionBigInt, err = xNum.GetPrecisionBigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xNumPrecisionBigInt, err = xNum.GetPrecisionBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	biResult, biResultPrecision, errX :=
-		BigIntMathLogarithms{}.LogBaseOfXByDivide(
-			baseBigInt,
-			basePrecisionBigInt,
-			xNumBigInt,
-			xNumPrecisionBigInt,
-			maxInternalPrecision,
-			biMaxPrecision,
-			cycles)
+  biResult, biResultPrecision, errX :=
+    BigIntMathLogarithms{}.LogBaseOfXByDivide(
+      baseBigInt,
+      basePrecisionBigInt,
+      xNumBigInt,
+      xNumPrecisionBigInt,
+      maxInternalPrecision,
+      biMaxPrecision,
+      cycles)
 
-	if errX != nil {
+  if errX != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "biResult, biResultPrecision, errX := \n" +
-					"  BigIntMathLogarithms{}.LogBaseOfXByDivide()",
-				ErrContext: "",
-				ErrMessage: errX.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "biResult, biResultPrecision, errX := \n" +
+          "  BigIntMathLogarithms{}.LogBaseOfXByDivide()",
+        ErrContext: "",
+        ErrMessage: errX.Error(),
+      }
+  }
 
-	result, errX =
-		new(BigIntNum).NewBigIntBigPrecision(
-			biResult,
-			biResultPrecision)
+  result, errX =
+    new(BigIntNum).NewBigIntBigPrecision(
+      biResult,
+      biResultPrecision)
 
-	if errX != nil {
+  if errX != nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			"result, errX = new(BigIntNum).NewBigIntBigPrecision(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
-	}
+    err = fmt.Errorf("%v\n"+
+      "Error returned by: \n"+
+      "result, errX = new(BigIntNum).NewBigIntBigPrecision(...)\n"+
+      "Error= %v\n",
+      ePrefix,
+      errX.Error())
+  }
 
-	return result, nil
+  return result, nil
 }
 
 //	log Value:  10.2582655350226651343378277604421
@@ -198,132 +198,167 @@ func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
 // base:  4
 // xNum:  1500000
 func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
-	base,
-	basePrecision,
-	xNum,
-	xNumPrecision,
-	maxPrecision *big.Int) (logResult,
-	logResultPrecision *big.Int,
-	err error) {
+  base *big.Int,
+  basePrecision *big.Int,
+  xNum *big.Int,
+  xNumPrecision *big.Int,
+  maxPrecision *big.Int) (logResult,
+  logResultPrecision *big.Int,
+  err error) {
 
-	logResult = big.NewInt(0)
-	logResultPrecision = big.NewInt(0)
-	err = nil
-	ePrefix := "BigIntMathLogarithms.BigIntLogBaseOfX() "
+  logResult = big.NewInt(0)
+  logResultPrecision = big.NewInt(0)
 
-	bigZero := big.NewInt(0)
+  var ePrefix *ePref.ErrPrefixDto
 
-	if base == nil {
-		base = big.NewInt(0)
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.BigIntLogBaseOfX",
+    "")
 
-	if base.Cmp(bigZero) != 1 {
+  if err != nil {
+    return logResult, logResultPrecision, err
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'base' is INVALID!\n"+
-			"base='%v'\n",
-			ePrefix,
-			base.Text(10))
+  bigZero := big.NewInt(0)
 
-		return logResult, logResultPrecision, err
-	}
+  if base == nil {
 
-	if basePrecision == nil {
-		basePrecision = big.NewInt(0)
-	}
+    return logResult, logResultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'base'",
+      }
+  }
 
-	if basePrecision.Cmp(bigZero) == -1 {
+  if basePrecision == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'basePrecision' is negative and INVALID!\n"+
-			"basePrecision='%v'\n",
-			ePrefix,
-			basePrecision.Text(10))
+    return logResult, logResultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'basePrecision'",
+      }
+  }
 
-		return logResult, logResultPrecision, err
+  if xNum == nil {
 
-	}
+    return logResult, logResultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNum'",
+      }
+  }
 
-	if xNum == nil {
-		xNum = big.NewInt(0)
-	}
+  if xNumPrecision == nil {
 
-	if xNum.Cmp(bigZero) == 0 {
+    return logResult, logResultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNumPrecision'",
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'xNum' is INVALID!\n"+
-			"xNum='%v'\n",
-			ePrefix,
-			xNum.Text(10))
+  if maxPrecision == nil {
 
-		return logResult, logResultPrecision, err
-	}
+    return logResult, logResultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'maxPrecision'",
+      }
+  }
 
-	if xNumPrecision == nil {
-		xNumPrecision = big.NewInt(0)
-	}
+  if base.Cmp(bigZero) != 1 {
 
-	if xNumPrecision.Cmp(bigZero) == -1 {
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'base' is INVALID!\n"+
+      "base='%v'\n",
+      ePrefix,
+      base.Text(10))
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'xNumPrecision' is LESS THAN ZERO!\n"+
-			"xNumPrecision='%v'\n",
-			ePrefix,
-			xNumPrecision.Text(10))
+    return logResult, logResultPrecision, err
+  }
 
-		return logResult, logResultPrecision, err
-	}
+  if basePrecision.Cmp(bigZero) == -1 {
 
-	if maxPrecision == nil {
-		maxPrecision = big.NewInt(0)
-	}
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'basePrecision' is negative and INVALID!\n"+
+      "basePrecision='%v'\n",
+      ePrefix,
+      basePrecision.Text(10))
 
-	if maxPrecision.Cmp(bigZero) == -1 {
+    return logResult, logResultPrecision, err
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'maxPrecision' is LESS THAN ZERO!\n"+
-			"maxPrecision='%v'\n",
-			ePrefix,
-			maxPrecision.Text(10))
+  }
 
-		return logResult, logResultPrecision, err
-	}
+  if xNum.Cmp(bigZero) == 0 {
 
-	factor := big.NewInt(4)
-	cycles := big.NewInt(40)
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'xNum' is INVALID!\n"+
+      "xNum='%v'\n",
+      ePrefix,
+      xNum.Text(10))
 
-	if maxPrecision.Cmp(big.NewInt(10)) == 1 {
-		cycles = big.NewInt(0).Mul(maxPrecision, factor)
-	}
+    return logResult, logResultPrecision, err
+  }
 
-	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
+  if xNumPrecision.Cmp(bigZero) == -1 {
 
-	var errX error
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'xNumPrecision' is LESS THAN ZERO!\n"+
+      "xNumPrecision='%v'\n",
+      ePrefix,
+      xNumPrecision.Text(10))
 
-	logResult, logResultPrecision, errX =
-		bLog.LogBaseOfXByDivide(
-			base,
-			basePrecision,
-			xNum,
-			xNumPrecision,
-			maxInternalPrecision,
-			maxPrecision,
-			cycles)
+    return logResult, logResultPrecision, err
+  }
 
-	if errX != nil {
+  if maxPrecision.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned from logResult, logResultPrecision, errX = bLog.LogBaseOfXByDivide(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'maxPrecision' is LESS THAN ZERO!\n"+
+      "maxPrecision='%v'\n",
+      ePrefix,
+      maxPrecision.Text(10))
 
-		return logResult, logResultPrecision, err
-	}
+    return logResult, logResultPrecision, err
+  }
 
-	err = nil
+  factor := big.NewInt(4)
 
-	return logResult, logResultPrecision, err
+  cycles := big.NewInt(40)
+
+  if maxPrecision.Cmp(big.NewInt(10)) == 1 {
+
+    cycles = big.NewInt(0).Mul(maxPrecision, factor)
+  }
+
+  maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
+
+  var errX error
+
+  logResult, logResultPrecision, errX =
+    bLog.LogBaseOfXByDivide(
+      base,
+      basePrecision,
+      xNum,
+      xNumPrecision,
+      maxInternalPrecision,
+      maxPrecision,
+      cycles)
+
+  if errX != nil {
+
+    err = fmt.Errorf("%v\n"+
+      "Error returned from logResult, logResultPrecision, errX = bLog.LogBaseOfXByDivide(...)\n"+
+      "Error= %v\n",
+      ePrefix,
+      errX.Error())
+
+    return logResult, logResultPrecision, err
+  }
+
+  return logResult, logResultPrecision, nil
 }
 
 // LogBaseOfXByDivide - Generates logs for specified
@@ -333,376 +368,376 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 // Calculate Any Logarithm manually -
 // https://www.youtube.com/watch?v=TUAFzuMVem0
 func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
-	base *big.Int,
-	basePrecision *big.Int,
-	xNum *big.Int,
-	xNumPrecision *big.Int,
-	maxInternalPrecision *big.Int,
-	maxPrecision *big.Int,
-	cycles *big.Int) (logResult,
-	logResultPrecision *big.Int,
-	err error) {
-
-	var ePrefix *ePref.ErrPrefixDto
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathLogarithms.LogBaseOfXByDivide",
-		"")
-
-	if err != nil {
-		return big.NewInt(0), big.NewInt(0), err
-	}
-
-	logResult = big.NewInt(0)
-	logResultPrecision = big.NewInt(0)
-	bigZero := big.NewInt(0)
-
-	if base == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'base'",
-			}
-	}
-
-	if basePrecision == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'basePrecision'",
-			}
-	}
-
-	if xNum == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'xNum'",
-			}
-	}
-
-	if xNumPrecision == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'xNumPrecision'",
-			}
-	}
-
-	if maxInternalPrecision == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'maxInternalPrecision'",
-			}
-	}
-
-	if maxPrecision == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'maxPrecision'",
-			}
-	}
-
-	if cycles == nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'cycles'",
-			}
-	}
-
-	if basePrecision.Cmp(bigZero) == -1 {
-
-		return big.NewInt(0), big.NewInt(0),
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("basePrecision='%v'", basePrecision.Text(10)),
-				ErrMessage: "Error: Input parameter 'basePrecision' is LESS THAN ZERO!",
-			}
-	}
-
-	if xNumPrecision.Cmp(bigZero) == -1 {
-
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'xNumPrecision' is LESS THAN ZERO!\n"+
-			"xNumPrecision='%v'\n",
-			ePrefix,
-			xNumPrecision.Text(10))
-
-		return logResult, logResultPrecision, err
-	}
-
-	if maxInternalPrecision.Cmp(bigZero) == -1 {
-
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'maxInternalPrecision' is LESS THAN ZERO!\n"+
-			"maxInternalPrecision='%v'\n",
-			ePrefix,
-			maxInternalPrecision.Text(10))
-
-		return logResult, logResultPrecision, err
-	}
-
-	if maxPrecision.Cmp(bigZero) == -1 {
-
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO!\n"+
-			"maxPrecision='%v'\n",
-			ePrefix,
-			maxPrecision.Text(10))
-
-		return logResult, logResultPrecision, err
-	}
-
-	if cycles.Cmp(big.NewInt(5)) == -1 {
-		cycles.Mul(maxPrecision, big.NewInt(5))
-	}
-
-	tXNum := big.NewInt(0).Set(xNum)
-	tXNumPrecision := big.NewInt(0).Set(xNumPrecision)
-	bigOne := big.NewInt(1)
-
-	iBase, iBasePrecision, err :=
-		new(BigIntMathDivide).BigIntFracQuotient(
-			bigOne,
-			big.NewInt(0),
-			base,
-			basePrecision,
-			maxInternalPrecision)
-
-	if err != nil {
-
-		return big.NewInt(0), big.NewInt(0),
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iBase, iBasePrecision, err := new(BigIntMathDivide).BigIntFracQuotient(...)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	ri := big.NewInt(0)
-	riPrecision := big.NewInt(0)
-
-	cmpNums, err :=
-		new(BigIntMath).BigIntPrecisionCmp(
-			tXNum,
-			tXNumPrecision,
-			base,
-			basePrecision)
-
-	if err != nil {
-
-		return tXNum, tXNumPrecision,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "cmpNums, err := new(BigIntMath).BigIntPrecisionCmp(...)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	for cmpNums == 1 {
-
-		tXNum, tXNumPrecision, err =
-			new(BigIntMathMultiply).BigIntMultiply(
-				tXNum,
-				tXNumPrecision,
-				iBase,
-				iBasePrecision)
-
-		if err != nil {
-
-			return tXNum, tXNumPrecision,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMathMultiply).BigIntMultiply(...)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		tXNum, tXNumPrecision, err =
-			new(BigIntMath).RoundToMaxPrecision(
-				tXNum,
-				tXNumPrecision,
-				maxInternalPrecision,
-				true)
-
-		if err != nil {
-
-			return tXNum, tXNumPrecision,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		ri.Add(ri, bigOne)
-
-		cmpNums, err =
-			new(BigIntMath).BigIntPrecisionCmp(
-				tXNum,
-				tXNumPrecision,
-				base,
-				basePrecision)
-	}
-
-	if err != nil {
-
-		return tXNum, tXNumPrecision,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "cmpNums, err = new(BigIntMath).BigIntPrecisionCmp(...)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	p := big.NewInt(1)
-	pPrecision := big.NewInt(0)
-	oneHalf := big.NewInt(5)
-	oneHalfPrecision := big.NewInt(1)
-	uint64Cycles := cycles.Uint64()
-
-	for i := uint64(0); i < uint64Cycles; i++ {
-
-		tXNum.Mul(tXNum, tXNum)
-		tXNumPrecision.Add(tXNumPrecision, tXNumPrecision)
-
-		tXNum, tXNumPrecision, err =
-			new(BigIntMath).RoundToMaxPrecision(
-				tXNum,
-				tXNumPrecision,
-				maxInternalPrecision,
-				true)
-
-		if err != nil {
-
-			return tXNum, tXNumPrecision,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		p.Mul(p, oneHalf)
-		pPrecision.Add(pPrecision, oneHalfPrecision)
-
-		p, pPrecision, err =
-			new(BigIntMath).RoundToMaxPrecision(
-				p,
-				pPrecision,
-				maxInternalPrecision,
-				true)
-
-		if err != nil {
-
-			return tXNum, tXNumPrecision,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "p, pPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		cmpNums, err =
-			new(BigIntMath).BigIntPrecisionCmp(
-				tXNum,
-				tXNumPrecision,
-				base,
-				basePrecision)
-
-		if err != nil {
-
-			return tXNum, tXNumPrecision,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "cmpNums, err = new(BigIntMath).BigIntPrecisionCmp(...)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		if cmpNums == 1 {
-
-			ri, riPrecision, err =
-				new(BigIntMathAdd).BigIntAdd(
-					ri,
-					riPrecision,
-					p,
-					pPrecision)
-
-			if err != nil {
-
-				return logResult, logResultPrecision,
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: "ri, riPrecision, err = new(BigIntMathAdd).BigIntAdd(...)",
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
-
-			tXNum.Mul(tXNum, iBase)
-			tXNumPrecision.Add(tXNumPrecision, iBasePrecision)
-
-			tXNum, tXNumPrecision, err =
-				new(BigIntMath).RoundToMaxPrecision(
-					tXNum,
-					tXNumPrecision,
-					maxInternalPrecision,
-					true)
-
-			if err != nil {
-
-				return logResult, logResultPrecision,
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: "tXNum, tXNumPrecision, err =new(BigIntMath).RoundToMaxPrecision(...)",
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
-		}
-	}
-
-	logResult, logResultPrecision, err =
-		new(BigIntMath).RoundToMaxPrecision(
-			ri,
-			riPrecision,
-			maxPrecision,
-			true)
-
-	if err != nil {
-
-		return logResult, logResultPrecision,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "logResult, logResultPrecision, err = new(BigIntMath).RoundToMaxPrecision(...)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return logResult, logResultPrecision, nil
+  base *big.Int,
+  basePrecision *big.Int,
+  xNum *big.Int,
+  xNumPrecision *big.Int,
+  maxInternalPrecision *big.Int,
+  maxPrecision *big.Int,
+  cycles *big.Int) (logResult,
+  logResultPrecision *big.Int,
+  err error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.LogBaseOfXByDivide",
+    "")
+
+  if err != nil {
+    return big.NewInt(0), big.NewInt(0), err
+  }
+
+  logResult = big.NewInt(0)
+  logResultPrecision = big.NewInt(0)
+  bigZero := big.NewInt(0)
+
+  if base == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'base'",
+      }
+  }
+
+  if basePrecision == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'basePrecision'",
+      }
+  }
+
+  if xNum == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNum'",
+      }
+  }
+
+  if xNumPrecision == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNumPrecision'",
+      }
+  }
+
+  if maxInternalPrecision == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'maxInternalPrecision'",
+      }
+  }
+
+  if maxPrecision == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'maxPrecision'",
+      }
+  }
+
+  if cycles == nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'cycles'",
+      }
+  }
+
+  if basePrecision.Cmp(bigZero) == -1 {
+
+    return big.NewInt(0), big.NewInt(0),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("basePrecision='%v'", basePrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'basePrecision' is LESS THAN ZERO!",
+      }
+  }
+
+  if xNumPrecision.Cmp(bigZero) == -1 {
+
+    err = fmt.Errorf("%v\n"+
+      "Error: Input parameter 'xNumPrecision' is LESS THAN ZERO!\n"+
+      "xNumPrecision='%v'\n",
+      ePrefix,
+      xNumPrecision.Text(10))
+
+    return logResult, logResultPrecision, err
+  }
+
+  if maxInternalPrecision.Cmp(bigZero) == -1 {
+
+    err = fmt.Errorf("%v\n"+
+      "Error: Input parameter 'maxInternalPrecision' is LESS THAN ZERO!\n"+
+      "maxInternalPrecision='%v'\n",
+      ePrefix,
+      maxInternalPrecision.Text(10))
+
+    return logResult, logResultPrecision, err
+  }
+
+  if maxPrecision.Cmp(bigZero) == -1 {
+
+    err = fmt.Errorf("%v\n"+
+      "Error: Input parameter 'maxPrecision' is LESS THAN ZERO!\n"+
+      "maxPrecision='%v'\n",
+      ePrefix,
+      maxPrecision.Text(10))
+
+    return logResult, logResultPrecision, err
+  }
+
+  if cycles.Cmp(big.NewInt(5)) == -1 {
+    cycles.Mul(maxPrecision, big.NewInt(5))
+  }
+
+  tXNum := big.NewInt(0).Set(xNum)
+  tXNumPrecision := big.NewInt(0).Set(xNumPrecision)
+  bigOne := big.NewInt(1)
+
+  iBase, iBasePrecision, err :=
+    new(BigIntMathDivide).BigIntFracQuotient(
+      bigOne,
+      big.NewInt(0),
+      base,
+      basePrecision,
+      maxInternalPrecision)
+
+  if err != nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iBase, iBasePrecision, err := new(BigIntMathDivide).BigIntFracQuotient(...)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  ri := big.NewInt(0)
+  riPrecision := big.NewInt(0)
+
+  cmpNums, err :=
+    new(BigIntMath).BigIntPrecisionCmp(
+      tXNum,
+      tXNumPrecision,
+      base,
+      basePrecision)
+
+  if err != nil {
+
+    return tXNum, tXNumPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "cmpNums, err := new(BigIntMath).BigIntPrecisionCmp(...)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  for cmpNums == 1 {
+
+    tXNum, tXNumPrecision, err =
+      new(BigIntMathMultiply).BigIntMultiply(
+        tXNum,
+        tXNumPrecision,
+        iBase,
+        iBasePrecision)
+
+    if err != nil {
+
+      return tXNum, tXNumPrecision,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMathMultiply).BigIntMultiply(...)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    tXNum, tXNumPrecision, err =
+      new(BigIntMath).RoundToMaxPrecision(
+        tXNum,
+        tXNumPrecision,
+        maxInternalPrecision,
+        true)
+
+    if err != nil {
+
+      return tXNum, tXNumPrecision,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    ri.Add(ri, bigOne)
+
+    cmpNums, err =
+      new(BigIntMath).BigIntPrecisionCmp(
+        tXNum,
+        tXNumPrecision,
+        base,
+        basePrecision)
+  }
+
+  if err != nil {
+
+    return tXNum, tXNumPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "cmpNums, err = new(BigIntMath).BigIntPrecisionCmp(...)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  p := big.NewInt(1)
+  pPrecision := big.NewInt(0)
+  oneHalf := big.NewInt(5)
+  oneHalfPrecision := big.NewInt(1)
+  uint64Cycles := cycles.Uint64()
+
+  for i := uint64(0); i < uint64Cycles; i++ {
+
+    tXNum.Mul(tXNum, tXNum)
+    tXNumPrecision.Add(tXNumPrecision, tXNumPrecision)
+
+    tXNum, tXNumPrecision, err =
+      new(BigIntMath).RoundToMaxPrecision(
+        tXNum,
+        tXNumPrecision,
+        maxInternalPrecision,
+        true)
+
+    if err != nil {
+
+      return tXNum, tXNumPrecision,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "tXNum, tXNumPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    p.Mul(p, oneHalf)
+    pPrecision.Add(pPrecision, oneHalfPrecision)
+
+    p, pPrecision, err =
+      new(BigIntMath).RoundToMaxPrecision(
+        p,
+        pPrecision,
+        maxInternalPrecision,
+        true)
+
+    if err != nil {
+
+      return tXNum, tXNumPrecision,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "p, pPrecision, errX = new(BigIntMath).RoundToMaxPrecision(...)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    cmpNums, err =
+      new(BigIntMath).BigIntPrecisionCmp(
+        tXNum,
+        tXNumPrecision,
+        base,
+        basePrecision)
+
+    if err != nil {
+
+      return tXNum, tXNumPrecision,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "cmpNums, err = new(BigIntMath).BigIntPrecisionCmp(...)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    if cmpNums == 1 {
+
+      ri, riPrecision, err =
+        new(BigIntMathAdd).BigIntAdd(
+          ri,
+          riPrecision,
+          p,
+          pPrecision)
+
+      if err != nil {
+
+        return logResult, logResultPrecision,
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "ri, riPrecision, err = new(BigIntMathAdd).BigIntAdd(...)",
+            ErrContext: "",
+            ErrMessage: err.Error(),
+          }
+      }
+
+      tXNum.Mul(tXNum, iBase)
+      tXNumPrecision.Add(tXNumPrecision, iBasePrecision)
+
+      tXNum, tXNumPrecision, err =
+        new(BigIntMath).RoundToMaxPrecision(
+          tXNum,
+          tXNumPrecision,
+          maxInternalPrecision,
+          true)
+
+      if err != nil {
+
+        return logResult, logResultPrecision,
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "tXNum, tXNumPrecision, err =new(BigIntMath).RoundToMaxPrecision(...)",
+            ErrContext: "",
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+  }
+
+  logResult, logResultPrecision, err =
+    new(BigIntMath).RoundToMaxPrecision(
+      ri,
+      riPrecision,
+      maxPrecision,
+      true)
+
+  if err != nil {
+
+    return logResult, logResultPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "logResult, logResultPrecision, err = new(BigIntMath).RoundToMaxPrecision(...)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return logResult, logResultPrecision, nil
 }
 
 /*
@@ -924,767 +959,1519 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 //	and returned as type 'error'. If the function successfully
 //	completes the calculation, this value will be set to 'nil'.
 func (bLog BigIntMathLogarithms) EPwrXFromMaclaurinSeries(
-	exponent BigIntNum, nCycles int64) (BigIntNum, error) {
+  exponent BigIntNum, nCycles int64) (BigIntNum, error) {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathLogarithms.EPwrXFromMaclaurinSeries",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.EPwrXFromMaclaurinSeries",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
-	// sum = 1 + x
+  if err != nil {
+    return BigIntNum{}, err
+  }
+  // sum = 1 + x
 
-	bigIntNumOne, err := new(BigIntNum).NewInt(1, 0)
+  bigIntNumOne, err := new(BigIntNum).NewInt(1, 0)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigIntNumOne, err := new(BigIntNum).NewInt(1, 0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigIntNumOne, err := new(BigIntNum).NewInt(1, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps, err := exponent.GetNumericSeparatorsDto()
+  numSeps, err := exponent.GetNumericSeparatorsDto()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numSeps, err := exponent.GetNumericSeparatorsDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := exponent.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	sum, err := new(BigIntMathAdd).AddBigIntNums(bigIntNumOne, exponent)
+  sum, err := new(BigIntMathAdd).AddBigIntNums(bigIntNumOne, exponent)
 
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by sum, err := BigIntMathAdd{}.AddBigIntNums()\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-	}
+  if err != nil {
+    return BigIntNum{},
+      fmt.Errorf("%v\n"+
+        "Error returned by sum, err := BigIntMathAdd{}.AddBigIntNums()\n"+
+        "Error= %v\n",
+        ePrefix,
+        err.Error())
+  }
 
-	nFactorial, err := new(BigIntNum).NewInt(1, 0)
+  nFactorial, err := new(BigIntNum).NewInt(1, 0)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "nFactorial, err := new(BigIntNum).NewInt(1, 0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nFactorial, err := new(BigIntNum).NewInt(1, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	x, err := exponent.CopyOut()
+  x, err := exponent.CopyOut()
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "x, err := exponent.CopyOut()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "x, err := exponent.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	for n := int64(2); n <= nCycles; n++ {
+  for n := int64(2); n <= nCycles; n++ {
 
-		bigIntNum64, err := new(BigIntNum).NewInt64(n, 0)
+    bigIntNum64, err := new(BigIntNum).NewInt64(n, 0)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "bigIntNum64, err := new(BigIntNum).NewInt64(n, 0)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bigIntNum64, err := new(BigIntNum).NewInt64(n, 0)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		nFactorial, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFactorial, bigIntNum64)
+    nFactorial, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFactorial, bigIntNum64)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "nFactorial, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFactorial, bigIntNum64)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "nFactorial, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFactorial, bigIntNum64)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		x, err = new(BigIntMathMultiply).MultiplyBigIntNums(x, exponent)
+    x, err = new(BigIntMathMultiply).MultiplyBigIntNums(x, exponent)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "x, err = new(BigIntMathMultiply).MultiplyBigIntNums(x, exponent)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "x, err = new(BigIntMathMultiply).MultiplyBigIntNums(x, exponent)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		nFactorialNumStr, err := nFactorial.GetNumStr()
+    nFactorialNumStr, err := nFactorial.GetNumStr()
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		factor, err := new(BigIntMathDivide).BigIntNumFracQuotient(x, nFactorial, numSeps, 1200)
+    factor, err := new(BigIntMathDivide).BigIntNumFracQuotient(x, nFactorial, numSeps, 1200)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "factor, err := new(BigIntMathDivide).BigIntNumFracQuotient(x, nFactorial, numSeps, 1200)",
-					ErrContext: fmt.Sprintf("nFactorial='%v'", nFactorialNumStr),
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "factor, err := new(BigIntMathDivide).BigIntNumFracQuotient(x, nFactorial, numSeps, 1200)",
+          ErrContext: fmt.Sprintf("nFactorial='%v'", nFactorialNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		sum, err = new(BigIntMathAdd).AddBigIntNums(sum, factor)
+    sum, err = new(BigIntMathAdd).AddBigIntNums(sum, factor)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "sum, err = new(BigIntMathAdd).AddBigIntNums(sum, factor)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "sum, err = new(BigIntMathAdd).AddBigIntNums(sum, factor)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		sumPrecisionUint, err := sum.GetPrecisionUint()
+    sumPrecisionUint, err := sum.GetPrecisionUint()
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "sumPrecisionUint, err := sum.GetPrecisionUint()",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "sumPrecisionUint, err := sum.GetPrecisionUint()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		if sumPrecisionUint > 500 {
+    if sumPrecisionUint > 500 {
 
-			err = sum.RoundToDecPlace(500)
+      err = sum.RoundToDecPlace(500)
 
-			if err != nil {
+      if err != nil {
 
-				return BigIntNum{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: "err = sum.RoundToDecPlace(500)",
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
-		}
-	}
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "err = sum.RoundToDecPlace(500)",
+            ErrContext: "",
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+  }
 
-	return sum, nil
+  return sum, nil
 }
 
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
-	exponent, a BigIntNum, nCycles int64) (BigIntNum, error) {
+  exponent BigIntNum, a BigIntNum, nCycles int64) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	e := eulersNumber1k.GetBigIntNum()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.EPwrXFromTaylorSeries",
+    "")
 
-	if e.IsZero() {
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: eulersNumber1k is ZERO!\n",
-				ePrefix)
-	}
+  err = exponent.IsValid(ePrefix.XCpy("Validating exponent").String())
 
-	aValue, err := a.GetUInt()
+  if err != nil {
 
-	if err != nil {
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = exponent.IsValid(ePrefix)",
+        ErrContext: "Error: Input parameter 'exponent' is invalid!\n" +
+          "'exponent' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by aValue, err := a.GetUInt()\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+  numSeps, err := exponent.GetNumericSeparatorsDto()
 
-	}
+  if err != nil {
 
-	internalMaxPrecision := uint(20000)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := exponent.GetNumericSeparatorsDto()",
+        ErrContext: "Error extracting numeric separators from 'exponent'.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	outputMaxPrecision := uint(1100)
+  numSeps.SetDefaultsIfEmpty()
 
-	ePwrBigInt, ePwrBigIntPrecision :=
-		BigIntMathPower{}.BigIntPwrIteration(
-			e.GetIntegerValue(),
-			e.GetPrecisionUint(),
-			aValue,
-			internalMaxPrecision,
-			outputMaxPrecision)
+  err = a.IsValid(ePrefix.XCpy("Validating 'a'").String())
 
-	eToPwr, err := new(BigIntNum).NewBigInt(ePwrBigInt, ePwrBigIntPrecision)
+  if err != nil {
 
-	if err != nil {
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = a.IsValid(ePrefix)",
+        ErrContext: "Error: Input parameter 'a' is invalid!\n" +
+          "'a' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "eToPwr, err := new(BigIntNum).NewBigInt(ePwrBigInt, ePwrBigIntPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  e := eulersNumber1k.GetBigIntNum()
 
-	// eToPwr, err := BigIntMathPower{}.BigIntNumPwr(e, a, 500)
+  eIsZero, err := e.IsZero()
 
-	//eToPwr := BigIntMathMultiply{}.MultiplyBigIntNums(e.CopyOut(), e.CopyOut())
+  if err != nil {
 
-	// sum = 0
-	sum := BigIntNum{}.NewInt(0, 0)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eIsZero, err := e.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	x := exponent.CopyOut()
+  if eIsZero {
 
-	xMinusA := BigIntMathSubtract{}.SubtractBigIntNums(x, a)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "eulersNumber1k == 0",
+        ErrMessage: "Error: eulersNumber1k is ZERO!",
+      }
+  }
 
-	xMinusANth := BigIntNum{}.NewInt(0, 0)
+  aValue, err := a.GetUInt()
 
-	nFact := BigIntNum{}.NewInt(0, 0)
+  if err != nil {
 
-	for n := int64(0); n <= nCycles; n++ {
+    return BigIntNum{},
+      fmt.Errorf("%v\n"+
+        "Error returned by aValue, err := a.GetUInt()\n"+
+        "Error= %v\n",
+        ePrefix,
+        err.Error())
 
-		if n == 0 {
+  }
 
-			xMinusANth = BigIntNum{}.NewInt(1, 0)
-			nFact = BigIntNum{}.NewInt(1, 0)
+  internalMaxPrecision := uint(20000)
 
-		} else if n == 1 {
+  outputMaxPrecision := uint(1100)
 
-			xMinusANth = xMinusA.CopyOut()
-			nFact = BigIntNum{}.NewInt64(n, 0)
+  eIntegerValue, err := e.GetIntegerValue()
 
-		} else {
+  if err != nil {
 
-			xMinusANth = BigIntMathMultiply{}.MultiplyBigIntNums(xMinusANth, xMinusA)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eIntegerValue, err := e.GetIntegerValue()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-			nFact = BigIntMathMultiply{}.MultiplyBigIntNums(nFact, BigIntNum{}.NewInt64(n, 0))
+  ePrecisionUint, err := e.GetPrecisionUint()
 
-		}
+  if err != nil {
 
-		factor1, err := BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "ePrecisionUint, err := e.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		if err != nil {
+  ePwrBigInt, ePwrBigIntPrecision, err :=
+    new(BigIntMathPower).BigIntPwrIteration(
+      eIntegerValue,
+      ePrecisionUint,
+      aValue,
+      internalMaxPrecision,
+      outputMaxPrecision)
 
-			return BigIntNum{}.NewZero(0),
-				fmt.Errorf("%v\n"+
-					"Error returned by factor1, err := BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500)\n"+
-					"eToPwr='%v'\nnFact='%v'\nError= %v\n",
-					ePrefix,
-					eToPwr.GetNumStr(),
-					nFact.GetNumStr(),
-					err.Error())
-		}
+  if err != nil {
 
-		factor2 := BigIntMathMultiply{}.MultiplyBigIntNums(factor1, xMinusANth)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "ePwrBigInt, ePwrBigIntPrecision, err :=\n" +
+          "  new(BigIntMathPower).BigIntPwrIteration(\n" +
+          "   eIntegerValue, ePrecisionUint, aValue, internalMaxPrecision, outputMaxPrecision)",
+        ErrContext: fmt.Sprintf("eIntegerValue= '%v'\n"+
+          "  ePrecisionUint= '%v'\n"+
+          "  aValue= '%v'\n"+
+          "  internalMaxPrecision= '%v'\n"+
+          "  outputMaxPrecision= '%v'\n",
+          eIntegerValue, ePrecisionUint, aValue, internalMaxPrecision, outputMaxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-		sum, err = BigIntMathAdd{}.AddBigIntNums(sum, factor2)
+  eToPwr, err := new(BigIntNum).NewBigInt(ePwrBigInt, ePwrBigIntPrecision)
 
-		if err != nil {
+  if err != nil {
 
-			return BigIntNum{}.NewZero(0),
-				fmt.Errorf("%v\n"+
-					"Error returned by sum, err = BigIntMathAdd{}.AddBigIntNums(sum, factor2)\n"+
-					"Error= %v\n",
-					ePrefix,
-					err.Error())
-		}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eToPwr, err := new(BigIntNum).NewBigInt(ePwrBigInt, ePwrBigIntPrecision)",
+        ErrContext: fmt.Sprintf("ePwrBigInt = '%v'\n"+
+          "ePwrBigIntPrecision = '%v'\n",
+          ePwrBigInt.Text(10), ePwrBigIntPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	}
+  // eToPwr, err := BigIntMathPower{}.BigIntNumPwr(e, a, 500)
 
-	sum.RoundToDecPlace(500)
+  //eToPwr := BigIntMathMultiply{}.MultiplyBigIntNums(e.CopyOut(), e.CopyOut())
 
-	return sum, nil
+  // sum = 0
+  sum, err := new(BigIntNum).NewInt(0, 0)
 
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "sum, err := new(BigIntNum).NewInt(0, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  x, err := exponent.CopyOut()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "x, err := exponent.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  xNumStr, err := x.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xNumStr, err := x.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  aNumStr, err := a.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "aNumStr, err := a.GetNumStr()\n",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  xMinusA, err := new(BigIntMathSubtract).SubtractBigIntNums(x, a)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xMinusA, err := new(BigIntMathSubtract).SubtractBigIntNums(x, a)",
+        ErrContext: fmt.Sprintf("x= '%v'\n"+
+          "a= '%v'",
+          xNumStr, aNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  xMinusANth, err := new(BigIntNum).NewInt(0, 0)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xMinusANth, err := new(BigIntNum).NewInt(0, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  nFact, err := new(BigIntNum).NewInt(0, 0)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nFact, err := new(BigIntNum).NewInt(0, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  for n := int64(0); n <= nCycles; n++ {
+
+    if n == 0 {
+
+      xMinusANth, err = new(BigIntNum).NewInt(1, 0)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "xMinusANth, err = new(BigIntNum).NewInt(1, 0)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == 0", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      nFact, err = new(BigIntNum).NewInt(1, 0)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "nFact, err = new(BigIntNum).NewInt(1, 0)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == 0", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    } else if n == 1 {
+
+      xMinusANth, err = xMinusA.CopyOut()
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "xMinusANth, err = xMinusA.CopyOut()",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == '%d'", n, n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      nFact, err = new(BigIntNum).NewInt64(n, 0)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "nFact, err = new(BigIntNum).NewInt64(n, 0)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == '%d'", n, n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    } else {
+
+      xMinusANth, err = new(BigIntMathMultiply).MultiplyBigIntNums(xMinusANth, xMinusA)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "xMinusANth, err = new(BigIntMathMultiply).\n" +
+              "  MultiplyBigIntNums(xMinusANth, xMinusA)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == '%d'", n, n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      bINumN, err := new(BigIntNum).NewInt64(n, 0)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "bINumN, err := new(BigIntNum).NewInt64(n, 0)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == '%d'", n, n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      nFact, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFact, bINumN)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "nFact, err = new(BigIntMathMultiply).MultiplyBigIntNums(nFact, bINumN)",
+            ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+              "n == '%d'", n, n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    }
+
+    eToPwrNumStr, err := eToPwr.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "eToPwrNumStr, err := eToPwr.GetNumStr()",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "n == '%d'", n, n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    nFactNumStr, err := nFact.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "n == '%d'", n, n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    factor1, err := new(BigIntMathDivide).BigIntNumFracQuotient(eToPwr, nFact, numSeps, 501)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor1, err := new(BigIntMathDivide).\n" +
+            "  BigIntNumFracQuotient(eToPwr, nFact, numSeps,501)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "eToPwr = '%v'\n"+
+            "nFact= '%v'\n"+
+            "maxPrecision= 501", n, eToPwrNumStr, nFactNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    factor2, err := new(BigIntMathMultiply).MultiplyBigIntNums(factor1, xMinusANth)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor2, err := new(BigIntMathMultiply).\n" +
+            "  MultiplyBigIntNums(factor1, xMinusANth)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'", n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    sum, err = new(BigIntMathAdd).AddBigIntNums(sum, factor2)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "sum, err = new(BigIntMathAdd).\n" +
+            "  AddBigIntNums(sum, factor2)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'", n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+  }
+
+  err = sum.RoundToDecPlace(500)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sum.RoundToDecPlace(500)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = sum.IsValid(ePrefix.XCpy("Validating final result 'sum'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sum.IsValid(ePrefix)",
+        ErrContext: "Error: Final result 'sum' is invalid!\n" +
+          "'sum' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return sum, nil
 }
 
 // EPwrXFromTaylorSeriesFixedDecimal
-// Returns 'exponentX'
+//
+//	Returns 'exponentX'
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesFixedDecimal(
-	exponentX BigIntFixedDecimal,
-	a, nCycles uint) (BigIntFixedDecimal, error) {
+  exponentX BigIntFixedDecimal,
+  a uint,
+  nCycles uint) (BigIntFixedDecimal, error) {
 
-	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	e := eulersNumber1k.GetFixedDecimal()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.EPwrXFromTaylorSeriesFixedDecimal",
+    "")
 
-	if e.IsZero() {
-		return BigIntFixedDecimal{},
-			fmt.Errorf("%v\n"+
-				"A call to the following method produced and invalid result:\n"+
-				"e := eulersNumber1k.GetFixedDecimal()\n"+
-				"'e' was returned as a ZERO value. Therefore,\n"+
-				"EulersNumber1050 Constant is ZERO!\n",
-				ePrefix)
-	}
+  if err != nil {
+    return BigIntFixedDecimal{}, err
+  }
 
-	internalMaxPrecision := uint(20000)
+  err = exponentX.IsValid(ePrefix.XCpy("Validating exponentX").String())
 
-	outputMaxPrecision := uint(1500)
+  if err != nil {
 
-	ePwrBigInt, ePwrBigIntPrecision :=
-		BigIntMathPower{}.BigIntPwrIteration(
-			e.GetIntegerValue(),
-			e.GetPrecisionUint(),
-			a,
-			internalMaxPrecision,
-			outputMaxPrecision)
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = exponentX.IsValid(ePrefix)",
+        ErrContext: "Error: Input parameter 'exponentX' is invalid!\n" +
+          "'exponentX' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	eToPwr := new(BigIntFixedDecimal).New(ePwrBigInt, ePwrBigIntPrecision)
+  numSeps, err := exponentX.GetNumericSeparatorsDto()
 
-	fixedDecA := new(BigIntFixedDecimal).New(big.NewInt(int64(a)), 0)
+  if err != nil {
 
-	// sum = 0
-	sum := new(BigIntFixedDecimal).NewZero(0)
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := exponentX.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	xNum := exponentX.CopyOut()
+  numSeps.SetDefaultsIfEmpty()
 
-	xMinusA := BigIntMathSubtract{}.FixedDecimalSubtract(xNum, fixedDecA)
+  e := eulersNumber1k.GetFixedDecimal()
 
-	xMinusANth := new(BigIntFixedDecimal).NewZero(0)
+  eIsZero, err := e.IsZero()
 
-	nFact := new(BigIntFixedDecimal).NewZero(0)
+  if err != nil {
 
-	for n := uint(0); n < nCycles; n++ {
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eIsZero, err := e.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		if n == 0 {
+  if eIsZero {
 
-			xMinusANth = new(BigIntFixedDecimal).NewInt(1, 0)
-			nFact = new(BigIntFixedDecimal).NewInt(1, 0)
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "A call to the following method produced and invalid result:\n" +
+          "e := eulersNumber1k.GetFixedDecimal()\n" +
+          "'e' was returned as a ZERO value. Therefore,\n" +
+          "EulersNumber1050 Constant is ZERO!",
+      }
+  }
 
-		} else if n == 1 {
+  internalMaxPrecision := uint(20000)
 
-			xMinusANth = xMinusA.CopyOut()
-			nFact = new(BigIntFixedDecimal).NewUInt(n, 0)
+  outputMaxPrecision := uint(1500)
 
-		} else {
+  eIntegerValue, err := e.GetIntegerValue()
 
-			xMinusANth = BigIntMathMultiply{}.FixedDecimalMultiply(xMinusANth, xMinusA)
+  if err != nil {
 
-			nFact =
-				BigIntMathMultiply{}.FixedDecimalMultiply(
-					nFact,
-					new(BigIntFixedDecimal).New(big.NewInt(int64(n)), 0))
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eIntegerValue, err := e.GetIntegerValue()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		}
+  ePrecisionUint, err := e.GetPrecisionUint()
 
-		factor1, err := BigIntMathDivide{}.FixedDecimalFracQuotient(eToPwr, nFact, 500)
+  if err != nil {
 
-		if err != nil {
-			return new(BigIntFixedDecimal).NewZero(0),
-				fmt.Errorf("%v\n"+
-					"Error returned by factor1, err := BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500)\n"+
-					"\neToPwr='%v'\nnFact='%v'\nError= %v\n",
-					ePrefix,
-					eToPwr.GetNumStr(),
-					nFact.GetNumStr(),
-					err.Error())
-		}
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "ePrecisionUint, err := e.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		factor2 := BigIntMathMultiply{}.FixedDecimalMultiply(factor1, xMinusANth)
+  ePwrBigInt, ePwrBigIntPrecision, err :=
+    new(BigIntMathPower).BigIntPwrIteration(
+      eIntegerValue,
+      ePrecisionUint,
+      a,
+      internalMaxPrecision,
+      outputMaxPrecision)
 
-		sum, err = BigIntMathAdd{}.FixedDecimalAdd(sum, factor2)
+  if err != nil {
 
-		if err != nil {
-			err = fmt.Errorf("%v\n"+
-				"Error returned by sum, err = BigIntMathAdd{}.FixedDecimalAdd(...)\n"+
-				"Error='%v'\n",
-				ePrefix,
-				err.Error())
-		}
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "ePwrBigInt, ePwrBigIntPrecision, err :=\n" +
+          "  new(BigIntMathPower).BigIntPwrIteration(\n" +
+          "   eIntegerValue, ePrecisionUint, a, internalMaxPrecision, outputMaxPrecision)",
+        ErrContext: fmt.Sprintf("eIntegerValue= '%v'\n"+
+          "  ePrecisionUint= '%v'\n"+
+          "  a= '%v'\n"+
+          "  internalMaxPrecision= '%v'\n"+
+          "  outputMaxPrecision= '%v'\n",
+          eIntegerValue, ePrecisionUint, a, internalMaxPrecision, outputMaxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	}
+  eToPwr, err := new(BigIntFixedDecimal).New(ePwrBigInt, ePwrBigIntPrecision)
 
-	err := sum.RoundToDecPlace(500)
+  if err != nil {
 
-	if err != nil {
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "eToPwr, err := new(BigIntFixedDecimal).New(ePwrBigInt, ePwrBigIntPrecision)",
+        ErrContext: fmt.Sprintf("ePwrBigInt= '%v'\n"+
+          "ePwrBigIntPrecision= '%v'", ePwrBigInt, ePwrBigIntPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return sum,
-			fmt.Errorf("%v\n"+
-				"Error returned by err := sum.RoundToDecPlace(500)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-	}
+  fixedDecA, err := new(BigIntFixedDecimal).New(big.NewInt(int64(a)), 0)
 
-	return sum, err
+  if err != nil {
+
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fixedDecA, err := new(BigIntFixedDecimal).\n" +
+          "New(big.NewInt(int64(a)), 0)",
+        ErrContext: fmt.Sprintf("a= '%v'\n", a),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  // sum = 0
+  sum := new(BigIntFixedDecimal).NewZero(0)
+
+  xNum, err := exponentX.CopyOut()
+
+  if err != nil {
+
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xNum, err := exponentX.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  xMinusA, err := new(BigIntMathSubtract).FixedDecimalSubtract(xNum, fixedDecA)
+
+  if err != nil {
+
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "xMinusA, err := new(BigIntMathSubtract).\n" +
+          "FixedDecimalSubtract(xNum, fixedDecA)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  xMinusANth := new(BigIntFixedDecimal).NewZero(0)
+
+  nFact := new(BigIntFixedDecimal).NewZero(0)
+
+  for n := uint(0); n < nCycles; n++ {
+
+    if n == 0 {
+
+      xMinusANth = new(BigIntFixedDecimal).NewInt(1, 0)
+
+      nFact = new(BigIntFixedDecimal).NewInt(1, 0)
+
+    } else if n == 1 {
+
+      xMinusANth, err = xMinusA.CopyOut()
+
+      if err != nil {
+
+        return BigIntFixedDecimal{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "xMinusANth, err = xMinusA.CopyOut()",
+            ErrContext: fmt.Sprintf("n= '%v'", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      nFact = new(BigIntFixedDecimal).NewUInt(n, 0)
+
+    } else {
+
+      xMinusANth, err = new(BigIntMathMultiply).FixedDecimalMultiply(xMinusANth, xMinusA)
+
+      if err != nil {
+
+        return BigIntFixedDecimal{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "xMinusANth, err = new(BigIntMathMultiply).FixedDecimalMultiply(xMinusANth, xMinusA)",
+            ErrContext: fmt.Sprintf("n= '%v'", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      bIFixdec, err := new(BigIntFixedDecimal).New(big.NewInt(int64(n)), 0, numSeps)
+
+      if err != nil {
+
+        return BigIntFixedDecimal{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "bIFixdec, err := new(BigIntFixedDecimal).\n" +
+              "  New(big.NewInt(int64(n)), 0, numSeps)",
+            ErrContext: fmt.Sprintf("n= '%v'", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+      nFact, err = new(BigIntMathMultiply).FixedDecimalMultiply(
+        nFact, bIFixdec)
+
+      if err != nil {
+
+        return BigIntFixedDecimal{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "nFact, err = new(BigIntMathMultiply).\n" +
+              "FixedDecimalMultiply(nFact, bIFixdec)",
+            ErrContext: fmt.Sprintf("n= '%v'", n),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    }
+
+    eToPwrNumStr, err := eToPwr.GetNumStr()
+
+    if err != nil {
+
+      return BigIntFixedDecimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "eToPwrNumStr, err := eToPwr.GetNumStr()",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "n == '%d'", n, n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    nFactNumStr, err := nFact.GetNumStr()
+
+    if err != nil {
+
+      return BigIntFixedDecimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "n == '%d'", n, n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    factor1, err := new(BigIntMathDivide).FixedDecimalFracQuotient(eToPwr, nFact, numSeps, 501)
+
+    if err != nil {
+
+      return BigIntFixedDecimal{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor1, err := new(BigIntMathDivide).\n" +
+            "FixedDecimalFracQuotient(eToPwr, nFact, numSeps,501)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'\n"+
+            "eToPwr = '%v'\n"+
+            "nFact= '%v'\n"+
+            "maxPrecision= 501", n, eToPwrNumStr, nFactNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    factor2, err := new(BigIntMathMultiply).FixedDecimalMultiply(factor1, xMinusANth)
+
+    if err != nil {
+
+      return BigIntFixedDecimal{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor2, err := new(BigIntMathMultiply).\n" +
+            "  FixedDecimalMultiply(factor1, xMinusANth)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'", n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    sum, err = new(BigIntMathAdd).FixedDecimalAdd(sum, factor2)
+
+    if err != nil {
+
+      return BigIntFixedDecimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "sum, err = new(BigIntMathAdd).FixedDecimalAdd(sum, factor2)",
+          ErrContext: fmt.Sprintf("Cycle No= '%d'", n),
+          ErrMessage: err.Error(),
+        }
+    }
+
+  }
+
+  err = sum.RoundToDecPlace(500)
+
+  if err != nil {
+
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sum.RoundToDecPlace(500)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = sum.IsValid(ePrefix.XCpy("Validating final result 'sum'").String())
+
+  if err != nil {
+
+    return BigIntFixedDecimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sum.IsValid(ePrefix)",
+        ErrContext: "Error: Final result 'sum' is invalid!\n" +
+          "'sum' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return sum, err
 }
 
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
-	exponentX,
-	exponentXPrecision,
-	a,
-	nCycles,
-	internalMaxPrecision,
-	maxPrecision *big.Int) (xNum, xNumPrecision *big.Int, err error) {
+  exponentX *big.Int,
+  exponentXPrecision *big.Int,
+  a *big.Int,
+  nCycles *big.Int,
+  internalMaxPrecision *big.Int,
+  maxPrecision *big.Int) (xNum *big.Int, xNumPrecision *big.Int, err error) {
 
-	xNum = big.NewInt(0)
-	xNumPrecision = big.NewInt(0)
-	err = nil
+  xNum = big.NewInt(0)
+  xNumPrecision = big.NewInt(0)
 
-	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries()"
+  var ePrefix *ePref.ErrPrefixDto
 
-	e, ePrecision := eulersNumber1k.GetBigIntPrecision()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathLogarithms.EPwrXFromTaylorSeriesBigInt",
+    "")
 
-	bigZero := big.NewInt(0)
+  if err != nil {
+    return xNum, xNumPrecision, err
+  }
 
-	if e.Cmp(bigZero) == 0 {
+  if exponentX == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: 'e' returned from eulersNumber1k.GetBigIntPrecision()\n"+
-			"has ZERO value. Therefore, EulersNumber1050 Constant is ZERO!\n",
-			ePrefix)
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'exponentX'",
+      }
+  }
 
-		return xNum, xNumPrecision, err
-	}
+  if exponentXPrecision == nil {
 
-	eToPwr, eToPwrPrecision, errX :=
-		BigIntMathPower{}.BigIntegerPwrIteration(
-			e,
-			ePrecision,
-			a,
-			internalMaxPrecision,
-			maxPrecision)
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'exponentXPrecision'",
+      }
+  }
 
-	if errX != nil {
+  if a == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" eToPwr, eToPwrPrecision, errX :=BigIntMathPower{}.BigIntegerPwrIteration()\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'a'",
+      }
+  }
 
-		return xNum, xNumPrecision, err
-	}
+  if nCycles == nil {
 
-	xNum = big.NewInt(0)
-	xNumPrecision = big.NewInt(0)
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'nCycles'",
+      }
+  }
 
-	xMinusA, xMinusAPrecision, errX :=
-		BigIntMathSubtract{}.BigIntSubtract(exponentX, exponentXPrecision, a, big.NewInt(0))
+  if internalMaxPrecision == nil {
 
-	if errX != nil {
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'internalMaxPrecision'",
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			"  xMinusA, xMinusAPrecision, errX := BigIntMathSubtract{}.BigIntSubtract(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  if maxPrecision == nil {
 
-		return xNum, xNumPrecision, err
-	}
+    return xNum, xNumPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'maxPrecision'",
+      }
+  }
 
-	xMinusANth := big.NewInt(0)
-	xMinusANthPrecision := big.NewInt(0)
+  e, ePrecision := eulersNumber1k.GetBigIntPrecision()
 
-	nFact := big.NewInt(0)
-	nFactPrecision := big.NewInt(0)
-	bigOne := big.NewInt(1)
-	factor1 := big.NewInt(0)
-	factor1Precision := big.NewInt(0)
-	factor2 := big.NewInt(0)
-	factor2Precision := big.NewInt(0)
+  bigZero := big.NewInt(0)
 
-	for n := big.NewInt(0); n.Cmp(nCycles) == -1; n.Add(n, bigOne) {
+  if e.Cmp(bigZero) == 0 {
 
-		if n.Cmp(bigZero) == 0 {
-			xMinusANth = big.NewInt(1)
-			xMinusANthPrecision = big.NewInt(0)
+    return xNum, xNumPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'e' returned from eulersNumber1k.GetBigIntPrecision()\n" +
+          "has ZERO value. Therefore, EulersNumber1050 Constant is ZERO!",
+      }
+  }
 
-		} else if n.Cmp(bigOne) == 0 {
+  eToPwr, eToPwrPrecision, err := new(BigIntMathPower).BigIntegerPwrIteration(
+    e,
+    ePrecision,
+    a,
+    internalMaxPrecision,
+    maxPrecision)
 
-			xMinusANth = big.NewInt(0).Set(xMinusA)
-			xMinusANth = big.NewInt(0).Set(xMinusAPrecision)
+  if err != nil {
 
-		} else {
+    return xNum, xNumPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "eToPwr, eToPwrPrecision, err := new(BigIntMathPower).\n" +
+          "  BigIntegerPwrIteration(e, ePrecision, a, internalMaxPrecision, maxPrecision)",
+        ErrContext: fmt.Sprintf("e= '%v'\n"+
+          "ePrecision= '%v'\n"+
+          "a= '%v'\n"+
+          "internalMaxPrecision= '%v'\n"+
+          "maxPrecision= '%v'\n",
+          e.Text(10), ePrecision, a.Text(10), internalMaxPrecision, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-			xMinusANth, xMinusANthPrecision, errX =
-				BigIntMathMultiply{}.BigIntMultiply(
-					xMinusANth,
-					xMinusANthPrecision,
-					xMinusA,
-					xMinusAPrecision)
+  xNum = big.NewInt(0)
 
-			if errX != nil {
+  xNumPrecision = big.NewInt(0)
 
-				xNum = big.NewInt(0)
-				xNumPrecision = big.NewInt(0)
+  xMinusA, xMinusAPrecision, err := new(BigIntMathSubtract).
+    BigIntSubtract(exponentX, exponentXPrecision, a, big.NewInt(0))
 
-				err = fmt.Errorf("%v\n"+
-					"Error returned by: \n"+
-					"xMinusANth, xMinusANthPrecision, errX = BigIntMathMultiply{}.BigIntMultiply(...)\n"+
-					"ID-1\n"+
-					"Error= %v\n",
-					ePrefix,
-					errX.Error())
+  if err != nil {
 
-				return xNum, xNumPrecision, err
-			}
+    return xNum, xNumPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "xMinusA, xMinusAPrecision, err := new(BigIntMathSubtract).\n" +
+          "  BigIntSubtract(exponentX, exponentXPrecision, a, big.NewInt(0))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-			nFact, nFactPrecision, errX =
-				BigIntMathMultiply{}.BigIntMultiply(
-					nFact,
-					nFactPrecision,
-					n,
-					big.NewInt(0))
+  xMinusANth := big.NewInt(0)
 
-			if errX != nil {
+  xMinusANthPrecision := big.NewInt(0)
 
-				err = fmt.Errorf("%v\n"+
-					"Error returned by: \n"+
-					"nFact, nFactPrecision, errX = BigIntMathMultiply{}.BigIntMultiply(...)\n"+
-					"ID-2\n"+
-					"Error= %v\n",
-					ePrefix,
-					errX.Error())
+  nFact := big.NewInt(0)
 
-				return xNum, xNumPrecision, err
-			}
+  nFactPrecision := big.NewInt(0)
 
-		}
+  bigOne := big.NewInt(1)
 
-		factor1, factor1Precision, errX =
-			BigIntMathDivide{}.BigIntFracQuotient(
-				eToPwr,
-				eToPwrPrecision,
-				nFact,
-				nFactPrecision,
-				internalMaxPrecision)
+  factor1 := big.NewInt(0)
 
-		if errX != nil {
-			xNum = big.NewInt(0)
-			xNumPrecision = big.NewInt(0)
+  factor1Precision := big.NewInt(0)
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" factor1, factor1Precision, errX = BigIntMathDivide{}.BigIntFracQuotient(...)\n"+
-				"Error= %v\n", errX.Error())
+  factor2 := big.NewInt(0)
 
-			return xNum, xNumPrecision, err
-		}
+  factor2Precision := big.NewInt(0)
 
-		factor2, factor2Precision, errX =
-			BigIntMathMultiply{}.BigIntMultiply(
-				factor1,
-				factor1Precision,
-				xMinusANth,
-				xMinusANthPrecision)
+  for n := big.NewInt(0); n.Cmp(nCycles) == -1; n.Add(n, bigOne) {
 
-		if errX != nil {
-			xNum = big.NewInt(0)
-			xNumPrecision = big.NewInt(0)
-			err = fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" factor2, factor2Precision, errX = BigIntMathMultiply{}.BigIntMultiply(...)\n"+
-				"Error%v\n",
-				ePrefix,
-				errX.Error())
+    if n.Cmp(bigZero) == 0 {
 
-			return xNum, xNumPrecision, err
-		}
+      xMinusANth = big.NewInt(1)
 
-		xNum, xNumPrecision, errX = BigIntMathAdd{}.BigIntAdd(xNum, xNumPrecision, factor2, factor2Precision)
+      xMinusANthPrecision = big.NewInt(0)
 
-		if errX != nil {
+    } else if n.Cmp(bigOne) == 0 {
 
-			xNum = big.NewInt(0)
-			xNumPrecision = big.NewInt(0)
+      xMinusANth = big.NewInt(0).Set(xMinusA)
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by \n"+
-				" xNum, xNumPrecision, errX = BigIntMathAdd{}.BigIntAdd(...)\n"+
-				"Error= %v\n",
-				ePrefix,
-				errX.Error())
+      xMinusANth = big.NewInt(0).Set(xMinusAPrecision)
 
-			return xNum, xNumPrecision, err
-		}
+    } else {
 
-	}
+      xMinusANth, xMinusANthPrecision, err =
+        new(BigIntMathMultiply).BigIntMultiply(
+          xMinusANth,
+          xMinusANthPrecision,
+          xMinusA,
+          xMinusAPrecision)
 
-	xNum, xNumPrecision, errX = BigIntMath{}.RoundToMaxPrecision(xNum, xNumPrecision, maxPrecision, true)
+      if err != nil {
 
-	if errX != nil {
-		xNum = big.NewInt(0)
-		xNumPrecision = big.NewInt(0)
+        return big.NewInt(0), big.NewInt(0),
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "xMinusANth, xMinusANthPrecision, err =\n" +
+              "  new(BigIntMathMultiply).BigIntMultiply(\n" +
+              "   xMinusANth, xMinusANthPrecision, xMinusA, xMinusAPrecision)",
+            ErrContext: "ID-2\n",
+            ErrMessage: err.Error(),
+          }
+      }
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			" xNum, xNumPrecision, errX = BigIntMath{}.RoundToMaxPrecision(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+      nFact, nFactPrecision, err =
+        new(BigIntMathMultiply).BigIntMultiply(
+          nFact,
+          nFactPrecision,
+          n,
+          big.NewInt(0))
 
-		return xNum, xNumPrecision, err
-	}
+      if err != nil {
 
-	err = nil
-	return xNum, xNumPrecision, err
+        return big.NewInt(0), big.NewInt(0),
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "nFact, nFactPrecision, err =\n" +
+              "  new(BigIntMathMultiply).BigIntMultiply(\n" +
+              "   nFact, nFactPrecision, nFact, nFactPrecision, nFactPrecision)",
+            ErrContext: "ID-3",
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+
+    factor1, factor1Precision, err =
+      new(BigIntMathDivide).BigIntFracQuotient(
+        eToPwr,
+        eToPwrPrecision,
+        nFact,
+        nFactPrecision,
+        internalMaxPrecision)
+
+    if err != nil {
+
+      return big.NewInt(0), big.NewInt(0),
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor1, factor1Precision, err =\n" +
+            "  new(BigIntMathDivide).BigIntFracQuotient(\n" +
+            "   eToPwr, eToPwrPrecision, nFact, nFactPrecision, internalMaxPrecision)",
+          ErrContext: "ID-4",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    factor2, factor2Precision, err =
+      new(BigIntMathMultiply).BigIntMultiply(
+        factor1,
+        factor1Precision,
+        xMinusANth,
+        xMinusANthPrecision)
+
+    if err != nil {
+
+      return big.NewInt(0), big.NewInt(0),
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "factor2, factor2Precision, err =\n" +
+            "  new(BigIntMathMultiply).BigIntMultiply(\n" +
+            "   factor1, factor1Precision, xMinusANth, xMinusANthPrecision)",
+          ErrContext: "ID-5",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    xNum, xNumPrecision, err = new(BigIntMathAdd).BigIntAdd(
+      xNum, xNumPrecision, factor2, factor2Precision)
+
+    if err != nil {
+
+      return big.NewInt(0), big.NewInt(0),
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "xNum, xNumPrecision, err = \n" +
+            "  new(BigIntMathAdd).BigIntAdd(\n" +
+            "   xNum, xNumPrecision, factor2, factor2Precision)",
+          ErrContext: "ID-6",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  xNum, xNumPrecision, err =
+    new(BigIntMath).RoundToMaxPrecision(
+      xNum, xNumPrecision, maxPrecision, true)
+
+  if err != nil {
+
+    return big.NewInt(0), big.NewInt(0),
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "xNum, xNumPrecision, err = \n" +
+          "  new(BigIntMath).RoundToMaxPrecision(\n" +
+          "   xNum, xNumPrecision, maxPrecision, true)",
+        ErrContext: "ID-7",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return xNum, xNumPrecision, err
 }
 
 func (bLog BigIntMathLogarithms) BigIntNumNatLogOfX(
-	xNum BigIntNum,
-	maxPrecision uint) (lnOfX BigIntNum, err error) {
+  xNum BigIntNum,
+  maxPrecision uint) (lnOfX BigIntNum, err error) {
 
-	ePrefix := "BigIntMathLogarithms.BigIntNumNatLogOfX() "
-	lnOfX = BigIntNum{}.NewZero(0)
-	err = nil
+  var ePrefix *ePref.ErrPrefixDto
 
-	errX := xNum.IsValid(ePrefix)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.CopyIn",
+    "")
 
-	if errX != nil {
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"'xNum' is INVALID!\n"+
-			"Error returned from errX := xNum.IsValid(ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  err = xNum.IsValid(ePrefix.XCpy("Validating 'xNum'").String())
 
-		return lnOfX, err
-	}
+  if err != nil {
 
-	if xNum.IsZero() {
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = xNum.IsValid(ePrefix)",
+        ErrContext: "Error: Input parameter 'xNum' is invalid!\n" +
+          "'xNum' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'xNum' is ZERO!\n",
-			ePrefix)
+  lnOfX, err = new(BigIntNum).NewZero(0)
 
-		return lnOfX, err
-	}
+  if err != nil {
 
-	biXNum := xNum.GetIntegerValue()
-	biXNumPrecision := xNum.GetPrecisionBigInt()
-	maxFinalPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "lnOfX, err = new(BigIntNum).NewZero(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	/*
-			Assume maxPrecision = 50
-		  m = 90
-			agMeanMaxOutputPrecision 		= 190
-			agMeanMaxInternalPrecision 	= 950
-		  s4DivPrecisionMaxInternalPrecision = 2950
-			piDivideMaxPrecision = 6950
+  xNumIsZero, err := xNum.IsZero()
 
-	*/
+  if err != nil {
 
-	m, _, err :=
-		BigIntMath{}.RoundToMaxPrecision(
-			big.NewInt(0).Mul(maxFinalPrecision, big.NewInt(18)),
-			big.NewInt(1),
-			big.NewInt(0),
-			true)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "xNumIsZero, err := xNum.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if err != nil {
+  if xNumIsZero {
 
-		return lnOfX,
-			fmt.Errorf("%v\n"+
-				"Error returned by m, _, err := BigIntMath{}.RoundToMaxPrecision(...)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'xNum' is zero!\n",
+      }
+  }
 
-	}
+  biXNumIntValue, err := xNum.GetIntegerValue()
 
-	agMeanMaxOutputPrecision :=
-		big.NewInt(0).Add(maxFinalPrecision, big.NewInt(100))
+  if err != nil {
 
-	agMeanMaxInternalPrecision :=
-		big.NewInt(0).Mul(agMeanMaxOutputPrecision, big.NewInt(5))
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "biXNumIntValue, err := xNum.GetIntegerValue()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	s4DivPrecisionMaxInternalPrecision :=
-		big.NewInt(0).Add(agMeanMaxInternalPrecision, big.NewInt(2000))
+  biXNumPrecision, err := xNum.GetPrecisionBigInt()
 
-	piDivideMaxPrecision :=
-		big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(4000))
+  if err != nil {
 
-	biResult, biResultPrecision, errX :=
-		BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(
-			biXNum,
-			biXNumPrecision,
-			m,
-			s4DivPrecisionMaxInternalPrecision,
-			agMeanMaxInternalPrecision,
-			agMeanMaxOutputPrecision,
-			piDivideMaxPrecision,
-			maxFinalPrecision)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "biXNumPrecision, err := xNum.GetPrecisionBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if errX != nil {
+  maxFinalPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			" biResult, biResultPrecision, errX := BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  /*
+  		Assume maxPrecision = 50
+  	  m = 90
+  		agMeanMaxOutputPrecision 		= 190
+  		agMeanMaxInternalPrecision 	= 950
+  	  s4DivPrecisionMaxInternalPrecision = 2950
+  		piDivideMaxPrecision = 6950
 
-		return lnOfX, err
-	}
+  */
 
-	lnOfX, errX = BigIntNum{}.NewBigIntBigPrecision(biResult, biResultPrecision)
+  m, _, err := new(BigIntMath).RoundToMaxPrecision(
+    big.NewInt(0).Mul(maxFinalPrecision, big.NewInt(18)),
+    big.NewInt(1),
+    big.NewInt(0),
+    true)
 
-	if errX != nil {
+  if err != nil {
 
-		lnOfX = BigIntNum{}.NewZero(0)
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "m, _, err := new(BigIntMath).RoundToMaxPrecision(\n" +
+          "  big.NewInt(0).Mul(maxFinalPrecision, big.NewInt(18)),\n" +
+          "  big.NewInt(1), big.NewInt(0), true)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			" lnOfX, errX = BigIntNum{}.NewBigIntBigPrecision(biResult, biResultPrecision)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  agMeanMaxOutputPrecision :=
+    big.NewInt(0).Add(maxFinalPrecision, big.NewInt(100))
 
-		return lnOfX, err
-	}
+  agMeanMaxInternalPrecision :=
+    big.NewInt(0).Mul(agMeanMaxOutputPrecision, big.NewInt(5))
 
-	err = nil
+  s4DivPrecisionMaxInternalPrecision :=
+    big.NewInt(0).Add(agMeanMaxInternalPrecision, big.NewInt(2000))
 
-	return lnOfX, err
+  piDivideMaxPrecision :=
+    big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(4000))
+
+  biResult, biResultPrecision, err :=
+    BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(
+      biXNumIntValue,
+      biXNumPrecision,
+      m,
+      s4DivPrecisionMaxInternalPrecision,
+      agMeanMaxInternalPrecision,
+      agMeanMaxOutputPrecision,
+      piDivideMaxPrecision,
+      maxFinalPrecision)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "biResult, biResultPrecision, err :=\n" +
+          "  BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(\n" +
+          "  biXNumIntValue, biXNumPrecision, m, s4DivPrecisionMaxInternalPrecision,\n" +
+          "  agMeanMaxInternalPrecision, agMeanMaxOutputPrecision, piDivideMaxPrecision,\n" +
+          "  maxFinalPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  lnOfX, err = new(BigIntNum).NewBigIntBigPrecision(biResult, biResultPrecision)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "lnOfX, err = new(BigIntNum).NewBigIntBigPrecision(\n" +
+          "  biResult, biResultPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return lnOfX, nil
 }
 
 // SaskiKanadaNatLogOfX
@@ -1693,233 +2480,292 @@ func (bLog BigIntMathLogarithms) BigIntNumNatLogOfX(
 // "Practically fast multiple-precision evaluation of log(x)".
 // Journal of Information Processing. 5 (4): 247–250. Retrieved 2011-03-30.
 func (bLog BigIntMathLogarithms) SaskiKanadaNatLogOfX(
-	xNum,
-	xNumPrecision,
-	m,
-	s4DivPrecisionMaxInternalPrecision,
-	agMeanMaxInternalPrecision,
-	agMeanMaxOutputPrecision,
-	piDivideMaxPrecision,
-	maxFinalResultPrecision *big.Int) (lnOfX, lnOfXPrecision *big.Int, err error) {
+  xNum *big.Int,
+  xNumPrecision *big.Int,
+  m *big.Int,
+  s4DivPrecisionMaxInternalPrecision *big.Int,
+  agMeanMaxInternalPrecision *big.Int,
+  agMeanMaxOutputPrecision *big.Int,
+  piDivideMaxPrecision *big.Int,
+  maxFinalResultPrecision *big.Int) (lnOfX *big.Int, lnOfXPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMathLogarithms.SaskiKanadaNatLogOfX()"
+  lnOfX = big.NewInt(0)
+  lnOfXPrecision = big.NewInt(0)
 
-	lnOfX = big.NewInt(0)
-	lnOfXPrecision = big.NewInt(0)
-	err = nil
+  var ePrefix *ePref.ErrPrefixDto
 
-	bigZero := big.NewInt(0)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.CopyIn",
+    "")
 
-	if xNumPrecision == nil {
+  if err != nil {
+    return big.NewInt(0), big.NewInt(0), err
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'xNumPrecision' is nil and INVALID!\n",
-			ePrefix)
+  if xNum == nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNum'",
+      }
+  }
 
-	if xNum == nil {
+  if xNumPrecision == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'xNum' is nil and INVALID!\n",
-			ePrefix)
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'xNumPrecision'",
+      }
+  }
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  if m == nil {
 
-	if m == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'m'",
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'm' is nil and INVALID!\n",
-			ePrefix)
+  if s4DivPrecisionMaxInternalPrecision == nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'s4DivPrecisionMaxInternalPrecision'",
+      }
+  }
 
-	if piDivideMaxPrecision == nil {
+  if agMeanMaxInternalPrecision == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'piDivideMaxPrecision' is nil and INVALID!\n",
-			ePrefix)
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'agMeanMaxInternalPrecision'",
+      }
+  }
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  if agMeanMaxOutputPrecision == nil {
 
-	if maxFinalResultPrecision == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'agMeanMaxOutputPrecision'",
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'maxFinalResultPrecision' is nil and INVALID!\n",
-			ePrefix)
+  if piDivideMaxPrecision == nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'piDivideMaxPrecision'",
+      }
+  }
 
-	if m.Cmp(bigZero) == -1 {
+  if maxFinalResultPrecision == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'm' is negative and INVALID!\n"+
-			"m='%v'\n",
-			ePrefix,
-			m.Text(10))
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'maxFinalResultPrecision'",
+      }
+  }
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  bigZero := big.NewInt(0)
 
-	if xNumPrecision.Cmp(bigZero) == -1 {
+  if m.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'xNumPrecision' is negative and INVALID!\n"+
-			"xNumPrecision='%v'\n",
-			ePrefix,
-			xNumPrecision.Text(10))
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("m= '%v'", m.Text(10)),
+        ErrMessage: "Error: Input parameter 'm' is INVALID!\n" +
+          "'m' has a negative value.",
+      }
+  }
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  if xNumPrecision.Cmp(bigZero) == -1 {
 
-	if piDivideMaxPrecision.Cmp(bigZero) == -1 {
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("xNumPrecision= '%v'", xNumPrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'xNumPrecision' is INVALID!\n" +
+          "'xNumPrecision' has a negative value.",
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'piDivideMaxPrecision' is negative and INVALID!\n"+
-			"piDivideMaxPrecision='%v'\n",
-			ePrefix,
-			piDivideMaxPrecision.Text(10))
+  if piDivideMaxPrecision.Cmp(bigZero) == -1 {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("piDivideMaxPrecision= '%v'", piDivideMaxPrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'piDivideMaxPrecision' is INVALID!\n" +
+          "'piDivideMaxPrecision' has a negative value.",
+      }
+  }
 
-	if maxFinalResultPrecision.Cmp(bigZero) == -1 {
+  if maxFinalResultPrecision.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input parameter 'maxFinalResultPrecision' is negative and INVALID!\n"+
-			"maxFinalResultPrecision='%v'\n",
-			ePrefix,
-			maxFinalResultPrecision.Text(10))
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("maxFinalResultPrecision= '%v'", maxFinalResultPrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'maxFinalResultPrecision' is INVALID!\n" +
+          "'maxFinalResultPrecision' has a negative value.",
+      }
+  }
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  sFactor2Tom := big.NewInt(0).Exp(big.NewInt(2), m, nil)
 
-	sFactor2Tom := big.NewInt(0).Exp(big.NewInt(2), m, nil)
+  s := big.NewInt(0).Mul(xNum, sFactor2Tom)
 
-	s := big.NewInt(0).Mul(xNum, sFactor2Tom)
-	sPrecision := big.NewInt(0).Set(xNumPrecision)
+  sPrecision := big.NewInt(0).Set(xNumPrecision)
 
-	s, sPrecision, errX :=
-		BigIntMath{}.RoundToMaxPrecision(
-			s,
-			sPrecision,
-			big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)),
-			true)
+  s, sPrecision, err = new(BigIntMath).RoundToMaxPrecision(
+    s,
+    sPrecision,
+    big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)),
+    true)
 
-	fourDivS, fourDivSPrecision, errX :=
-		BigIntMathDivide{}.BigIntFracQuotient(big.NewInt(4), big.NewInt(0), s, sPrecision, s4DivPrecisionMaxInternalPrecision)
+  if err != nil {
 
-	if errX != nil {
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "s, sPrecision, err = new(BigIntMath).\n" +
+          "RoundToMaxPrecision(s, sPrecision,\n" +
+          "  big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)),\n" +
+          "  true)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" fourDivS, fourDivSPrecision, errX :=BigIntMathDivide{}.BigIntFracQuotient(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  fourDivS, fourDivSPrecision, err :=
+    new(BigIntMathDivide).BigIntFracQuotient(
+      big.NewInt(4), big.NewInt(0), s, sPrecision, s4DivPrecisionMaxInternalPrecision)
 
-		return lnOfX, lnOfXPrecision, err
-	}
+  if err != nil {
 
-	// Uses maxInternal Precision
-	agMean, agMeanPrecision, _, _, _, errX :=
-		BigIntMath{}.ArithmeticGeometricMean(
-			big.NewInt(1),
-			big.NewInt(0),
-			fourDivS,
-			fourDivSPrecision,
-			agMeanMaxInternalPrecision,
-			agMeanMaxOutputPrecision)
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fourDivS, fourDivSPrecision, err :=\n" +
+          "new(BigIntMathDivide).BigIntFracQuotient(\n" +
+          "  big.NewInt(4), big.NewInt(0), s, sPrecision,\n" +
+          "  s4DivPrecisionMaxInternalPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if errX != nil {
+  // Uses maxInternal Precision
+  agMean, agMeanPrecision, _, _, _, err :=
+    new(BigIntMath).ArithmeticGeometricMean(
+      big.NewInt(1),
+      big.NewInt(0),
+      fourDivS,
+      fourDivSPrecision,
+      agMeanMaxInternalPrecision,
+      agMeanMaxOutputPrecision)
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			" agMean, agMeanPrecision, _, _, _, errX :=BigIntMath{}.ArithmeticGeometricMean(...)\n"+
-			"%v", errX.Error())
+  if err != nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "agMean, agMeanPrecision, _, _, _, err :=\n" +
+          " new(BigIntMath).ArithmeticGeometricMean(\n" +
+          "  big.NewInt(1), big.NewInt(0), fourDivS, fourDivSPrecision,\n" +
+          "  agMeanMaxInternalPrecision, agMeanMaxOutputPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	denomFactorM := big.NewInt(0).Mul(big.NewInt(2), agMean)
-	denomFactorMPrecision := big.NewInt(0).Set(agMeanPrecision)
+  denomFactorM := big.NewInt(0).Mul(big.NewInt(2), agMean)
 
-	// Uses MaxInternal Precision
-	factor1, factor1Precision, errX :=
-		BigIntMathDivide{}.BigIntFracQuotient(
-			piNumber20k.GetInteger(),
-			piNumber20k.GetPrecisionBigInt(),
-			denomFactorM,
-			denomFactorMPrecision,
-			piDivideMaxPrecision)
+  denomFactorMPrecision := big.NewInt(0).Set(agMeanPrecision)
 
-	if errX != nil {
+  // Uses MaxInternal Precision
+  factor1, factor1Precision, err :=
+    new(BigIntMathDivide).BigIntFracQuotient(
+      piNumber20k.GetInteger(),
+      piNumber20k.GetPrecisionBigInt(),
+      denomFactorM,
+      denomFactorMPrecision,
+      piDivideMaxPrecision)
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			" factor1, factor1Precision, errX := BigIntMathDivide{}.BigIntFracQuotient(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  if err != nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "factor1, factor1Precision, err :=\n" +
+          " new(BigIntMathDivide).BigIntFracQuotient(\n" +
+          "   piNumber20k.GetInteger(), piNumber20k.GetPrecisionBigInt(),\n" +
+          "   denomFactorM, denomFactorMPrecision, piDivideMaxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	factor2 := big.NewInt(0).Mul(m, natLogTwo20k.GetInteger())
-	factor2Precision := big.NewInt(0).Set(natLogTwo20k.GetPrecisionBigInt())
+  factor2 := big.NewInt(0).Mul(m, natLogTwo20k.GetInteger())
 
-	lnOfX, lnOfXPrecision, errX =
-		BigIntMathSubtract{}.BigIntSubtract(
-			factor1,
-			factor1Precision,
-			factor2,
-			factor2Precision)
+  factor2Precision := big.NewInt(0).Set(natLogTwo20k.GetPrecisionBigInt())
 
-	if errX != nil {
-		lnOfX = big.NewInt(0)
-		lnOfXPrecision = big.NewInt(0)
+  lnOfX, lnOfXPrecision, err =
+    new(BigIntMathSubtract).BigIntSubtract(
+      factor1,
+      factor1Precision,
+      factor2,
+      factor2Precision)
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" lnOfX, lnOfXPrecision, errX = BigIntMathSubtract{}.BigIntSubtract(...)\n"+
-			"Error= %v\n",
-			ePrefix,
-			errX.Error())
+  if err != nil {
 
-		return lnOfX, lnOfXPrecision, err
-	}
+    return lnOfX, lnOfXPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "lnOfX, lnOfXPrecision, err = \n" +
+          " new(BigIntMathSubtract).BigIntSubtract(\n" +
+          "  factor1, factor1Precision, factor2, factor2Precision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if lnOfXPrecision.Cmp(maxFinalResultPrecision) == 1 {
+  if lnOfXPrecision.Cmp(maxFinalResultPrecision) == 1 {
 
-		lnOfX, lnOfXPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(
-				lnOfX,
-				lnOfXPrecision,
-				maxFinalResultPrecision,
-				true)
+    lnOfX, lnOfXPrecision, err =
+      new(BigIntMath).RoundToMaxPrecision(
+        lnOfX,
+        lnOfXPrecision,
+        maxFinalResultPrecision,
+        true)
 
-		if errX != nil {
+    if err != nil {
 
-			lnOfX = big.NewInt(0)
-			lnOfXPrecision = big.NewInt(0)
+      return lnOfX, lnOfXPrecision,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "lnOfX, lnOfXPrecision, err =\n" +
+            "lnOfX, lnOfXPrecision, maxFinalResultPrecision, true)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" lnOfX, lnOfXPrecision, errX = BigIntMath{}.RoundToMaxPrecision(...)\n"+
-				"Error= %v\n",
-				ePrefix,
-				errX.Error())
-
-			return lnOfX, lnOfXPrecision, err
-		}
-	}
-
-	err = nil
-
-	return lnOfX, lnOfXPrecision, err
+  return lnOfX, lnOfXPrecision, nil
 }
