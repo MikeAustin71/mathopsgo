@@ -830,7 +830,7 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 
   idx := 0
 
-  for true {
+  for {
 
     idx++
 
@@ -1086,7 +1086,7 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
     }
   } // for 'true' loop
 
-  return nil
+  //return nil
 }
 
 // DivideDividendByDivisor
@@ -1207,47 +1207,183 @@ func (sMathOp *StrMathOp) DivideDividendByDivisor() error {
 
   sMathOp.N2 = sMathOp.N3
 
-  sMathOp.SubtractN1N2()
+  err = sMathOp.SubtractN1N2()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.SubtractN1N2()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   sMathOp.Modulo = sMathOp.IFinal
 
   return nil
 }
 
-func (sMathOp *StrMathOp) DivideBySubtraction() {
+// DivideBySubtraction
+//
+//		Performs a division operation by dividing sMathOp.Dividend by
+//	 sMathOp.Divisor.
+//
+//	 This method differs other StrMathOp division methods in that
+//	 this division operation is performed by series of substraction
+//	 operations.
+//
+//		Before calling this method, StrMathOp.Dividend and
+//		StrMathOp.Divisor must be properly initialized and configured with
+//		the desired values.
+func (sMathOp *StrMathOp) DivideBySubtraction() error {
 
-  sMathOp.Modulo = sMathOp.Dividend.CopyOut()
-  sMathOp.Quotient.SetIntAryToZero(0)
-  compare := 1
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  for compare >= 0 {
-    sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
-    sMathOp.Quotient.IncrementIntegerOne()
-    compare = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
-  }
-
-  return
-}
-
-func (sMathOp *StrMathOp) SubtractDivArys() {
-
-}
-
-// SubtractN1N2 - Subtracts N2 IntAry from
-// N1 IntAry. The result is returned in the IFinal
-// IntAry.
-func (sMathOp *StrMathOp) SubtractN1N2() error {
-
-  sMathOp.IFinal = sMathOp.N1.CopyOut()
-
-  err := sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "StrMathOp.DivideBySubtraction",
+    "")
 
   if err != nil {
-    return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by "+
-      "sMathOp.IFinal.SubtractFromThis(&sMathOp.N2). Error='%v'",
-      err.Error())
+    return err
+  }
+
+  sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = sMathOp.Quotient.SetIntAryToZero(0)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.Quotient.SetIntAryToZero(0)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  //compare := 1
+  compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
+      ErrContext: "Error on initial comparison of Dividend and Divisor",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  idx := 0
+
+  for compare >= 0 {
+
+    idx++
+
+    err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    err = sMathOp.Quotient.IncrementIntegerOne()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.Quotient.IncrementIntegerOne()",
+        ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
+        ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
+        ErrMessage: err.Error(),
+      }
+    }
   }
 
   return nil
+}
 
+//func (sMathOp *StrMathOp) SubtractDivArys() {
+//
+//}
+
+// SubtractN1N2
+//
+//  Subtracts StrMathOp.N2 (IntAry) from StrMathOp.N1 (IntAry).
+//
+//  The result is returned in the StrMathOp.IFinal IntAry.
+//
+//	Before calling this method, StrMathOp.N1 and StrMathOp.N2 must be
+//	properly initialized and configured with the desired values.
+func (sMathOp *StrMathOp) SubtractN1N2() error {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "StrMathOp.SubtractN1N2",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)",
+      ErrContext: "sMathOp.IFinal contains the value of sMathOp.N1",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
