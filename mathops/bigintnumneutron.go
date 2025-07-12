@@ -1565,7 +1565,20 @@ func (bNumNeutron *bigIntNumNeutron) newDecimal(
 			}
 	}
 
-	precision := uint(decNum.GetPrecision())
+	decNumPrecision, err := decNum.GetPrecision()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumPrecision, err := decNum.GetPrecision()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	precision := uint(decNumPrecision)
 
 	b := new(bigIntNumMechanics).new()
 

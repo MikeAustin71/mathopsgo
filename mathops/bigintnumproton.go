@@ -311,7 +311,17 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 		return fmt.Errorf("%v\n%w", ePrefix, err)
 	}
 
-	result := new(BigIntMathSubtract).SubtractPair(bPair)
+	result, err := new(BigIntMathSubtract).SubtractPair(bPair)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "result, err := new(BigIntMathSubtract).SubtractPair(bPair)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	err = new(bigIntNumUtility).bigIntNumCopyIn(
 		bNum,

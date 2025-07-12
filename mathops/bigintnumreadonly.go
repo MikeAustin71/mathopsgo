@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 )
 
@@ -13,14 +14,26 @@ type BigIntNumReadOnly struct {
 // base BigIntNum as a *big.Int integer value
 func (birO *BigIntNumReadOnly) GetIntegerValue() *big.Int {
 
-	return birO.bigIntNum.GetIntegerValue()
+	birOIntValue, err := birO.bigIntNum.GetIntegerValue()
+
+	if err != nil {
+		birOIntValue = big.NewInt(0)
+	}
+
+	return birOIntValue
 }
 
 // GetPrecisionUint - Returns the precision of the underlying
 // BigIntNum as a type uint.
 func (birO *BigIntNumReadOnly) GetPrecisionUint() uint {
 
-	return birO.bigIntNum.GetPrecisionUint()
+	birOPrecisionUint, err := birO.bigIntNum.GetPrecisionUint()
+
+	if err != nil {
+		birOPrecisionUint = 0
+	}
+
+	return birOPrecisionUint
 }
 
 // GetBigIntNum - Returns a deep copy of the underlying
@@ -50,16 +63,31 @@ func (birO *BigIntNumReadOnly) GetBigIntNum() (BigIntNum, error) {
 // numeric value as a type BigIntFixedDecimal
 func (birO *BigIntNumReadOnly) GetFixedDecimal() BigIntFixedDecimal {
 
-	return birO.bigIntNum.GetBigIntFixedDecimal()
+	bigIFixDec, err := birO.bigIntNum.GetBigIntFixedDecimal()
+
+	if err != nil {
+		bigIFixDec = new(BigIntFixedDecimal).NewInt(0, 0)
+	}
+
+	return bigIFixDec
 }
 
 // NewBigIntNum - Receives a BigIntNum parameter and returns a new BigIntNumReadOnly
 // instance.
 func (birO *BigIntNumReadOnly) NewBigIntNum(biNum BigIntNum) (BigIntNumReadOnly, error) {
 
-	ePrefix := "BigIntNumReadOnly.NewBigIntNum()"
-
+	var ePrefix *ePref.ErrPrefixDto
 	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNumReadOnly.NewBigIntNum",
+		"")
+
+	if err != nil {
+		return BigIntNumReadOnly{}, err
+	}
 
 	birO2 := BigIntNumReadOnly{}
 
@@ -76,7 +104,18 @@ func (birO *BigIntNumReadOnly) NewBigIntNum(biNum BigIntNum) (BigIntNumReadOnly,
 				err.Error())
 	}
 
-	birO2.bigIntNum.CopyIn(biNum)
+	err = birO2.bigIntNum.CopyIn(&biNum)
+
+	if err != nil {
+
+		return BigIntNumReadOnly{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = birO2.bigIntNum.CopyIn(&biNum)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	return birO2, nil
 }
@@ -119,19 +158,31 @@ func (birO *BigIntNumReadOnly) NewFixedDecimal(fixedDec BigIntFixedDecimal) (Big
 //			currency symbol = '$'
 func (birO *BigIntNumReadOnly) NewNumStr(numStr string) (BigIntNumReadOnly, error) {
 
-	ePrefix := "BigIntNumReadOnly.NewNumStr()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNumReadOnly.NewNumStr",
+		"")
+
+	if err != nil {
+
+		return BigIntNumReadOnly{}, err
+	}
 
 	readOnly, err := new(BigIntNum).NewNumStr(numStr)
 
 	if err != nil {
 
 		return BigIntNumReadOnly{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" new(BigIntNum).NewNumStr(numStr)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "readOnly, err := new(BigIntNum).NewNumStr(numStr)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	biRo := BigIntNumReadOnly{}
@@ -141,15 +192,26 @@ func (birO *BigIntNumReadOnly) NewNumStr(numStr string) (BigIntNumReadOnly, erro
 	if err != nil {
 
 		return BigIntNumReadOnly{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" biRo.bigIntNum, err = new(BigIntNum).NewZero(0)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biRo.bigIntNum, err = new(BigIntNum).NewZero(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	biRo.bigIntNum.CopyIn(readOnly)
+	err = biRo.bigIntNum.CopyIn(&readOnly)
+
+	if err != nil {
+
+		return BigIntNumReadOnly{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biRo.bigIntNum.CopyIn(&readOnly)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	return biRo, nil
 }
