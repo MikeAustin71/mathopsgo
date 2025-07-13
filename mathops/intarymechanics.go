@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type intAryMechanics struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // decrementIntegerOne
@@ -15,157 +15,157 @@ type intAryMechanics struct {
 //	Decrements the numeric value of the IntAry instance ('intAry')
 //	by subtracting '1'.
 func (iaMech *intAryMechanics) decrementIntegerOne(
-	intAry *IntAry,
-	validateIntAry bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  validateIntAry bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if iaMech.lock == nil {
-		iaMech.lock = new(sync.Mutex)
-	}
+  if iaMech.lock == nil {
+    iaMech.lock = new(sync.Mutex)
+  }
 
-	iaMech.lock.Lock()
+  iaMech.lock.Lock()
 
-	defer iaMech.lock.Unlock()
+  defer iaMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMechanics.decrementIntegerOne()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMechanics.decrementIntegerOne()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	if validateIntAry {
+  if validateIntAry {
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry, ePrefix.XCpy("Validating 'intAry'").String())
+    err = new(intAryElectron).isValidIntAry(
+      intAry, ePrefix.XCpy("Validating 'intAry'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy(Validating 'intAry').String())",
-				ErrContext: "IntAry instanace 'intAry' is INVALID!\n" +
-					"'intAry' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy(Validating 'intAry').String())",
+        ErrContext: "IntAry instanace 'intAry' is INVALID!\n" +
+          "'intAry' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
 
-	}
+  }
 
-	err = new(intAryNanobot).setInternalFlags(
-		intAry, ePrefix)
+  err = new(intAryNanobot).setInternalFlags(
+    intAry, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(intAry, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(intAry, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if intAry.isZeroValue || intAry.isIntegerZeroValue {
-		intAry.signVal = -1
-	}
+  if intAry.isZeroValue || intAry.isIntegerZeroValue {
+    intAry.signVal = -1
+  }
 
-	intLen := intAry.intAryLen - intAry.precision
-	intIdx := intLen - 1
-	lastIdx := intAry.intAryLen - 1
+  intLen := intAry.intAryLen - intAry.precision
+  intIdx := intLen - 1
+  lastIdx := intAry.intAryLen - 1
 
-	n1 := 0
-	n2 := 0
-	carry := 0
+  n1 := 0
+  n2 := 0
+  carry := 0
 
-	intAry.isZeroValue = true
-	intAry.isIntegerZeroValue = true
+  intAry.isZeroValue = true
+  intAry.isIntegerZeroValue = true
 
-	for i := lastIdx; i >= 0; i-- {
-		n1 = int(intAry.intAry[i])
+  for i := lastIdx; i >= 0; i-- {
+    n1 = int(intAry.intAry[i])
 
-		if i > intIdx {
-			//  i > intIdx
-			// This must be a fractional digit
-			// Retain fractional digits
+    if i > intIdx {
+      //  i > intIdx
+      // This must be a fractional digit
+      // Retain fractional digits
 
-			if n1 != 0 {
-				intAry.isZeroValue = false
-			}
+      if n1 != 0 {
+        intAry.isZeroValue = false
+      }
 
-			continue
+      continue
 
-		} else if i == intIdx {
+    } else if i == intIdx {
 
-			n2 = n1 + (-1 * intAry.signVal)
+      n2 = n1 + (-1 * intAry.signVal)
 
-			if n2 < 0 {
-				n2 = n1 + 10 - 1
-				carry = 1
+      if n2 < 0 {
+        n2 = n1 + 10 - 1
+        carry = 1
 
-			} else if n2 > 9 {
-				n2 = n1 + 1 - 10
-				carry = 1
+      } else if n2 > 9 {
+        n2 = n1 + 1 - 10
+        carry = 1
 
-			} else {
-				carry = 0
-			}
+      } else {
+        carry = 0
+      }
 
-		} else {
-			// Must be i < intIdx
+    } else {
+      // Must be i < intIdx
 
-			n2 = n1 + ((intAry.signVal * carry) * -1)
+      n2 = n1 + ((intAry.signVal * carry) * -1)
 
-			if n2 < 0 {
-				n2 = n1 + 10 - carry
-				carry = 1
-			} else if n2 > 9 {
-				n2 = n1 - 10 + carry
-				carry = 1
-			} else {
-				carry = 0
-			}
+      if n2 < 0 {
+        n2 = n1 + 10 - carry
+        carry = 1
+      } else if n2 > 9 {
+        n2 = n1 - 10 + carry
+        carry = 1
+      } else {
+        carry = 0
+      }
 
-		}
+    }
 
-		if n2 != 0 {
-			intAry.isZeroValue = false
-			intAry.isIntegerZeroValue = false
-		}
+    if n2 != 0 {
+      intAry.isZeroValue = false
+      intAry.isIntegerZeroValue = false
+    }
 
-		intAry.intAry[i] = uint8(n2)
+    intAry.intAry[i] = uint8(n2)
 
-	}
+  }
 
-	if intAry.isZeroValue && carry == 0 {
-		intAry.signVal = 1
-	}
+  if intAry.isZeroValue && carry == 0 {
+    intAry.signVal = 1
+  }
 
-	if carry > 0 {
+  if carry > 0 {
 
-		intAry.intAry = append([]uint8{1}, intAry.intAry...)
-		intAry.intAryLen++
+    intAry.intAry = append([]uint8{1}, intAry.intAry...)
+    intAry.intAryLen++
 
-	} else if intAry.intAry[0] == 0 && intLen > 1 {
-		intAry.intAry = intAry.intAry[1:]
-		intAry.intAryLen--
-	}
+  } else if intAry.intAry[0] == 0 && intLen > 1 {
+    intAry.intAry = intAry.intAry[1:]
+    intAry.intAryLen--
+  }
 
-	return nil
+  return nil
 }
 
 // getMagnitudeDigits
@@ -181,75 +181,75 @@ func (iaMech *intAryMechanics) decrementIntegerOne(
 //	If input parameter 'validateIntAry' is set to true, this
 //	method will subject 'intAry' to validation tests.
 func (iaMech *intAryMechanics) getMagnitudeDigits(
-	intAry *IntAry,
-	validateIntAry bool,
-	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+  intAry *IntAry,
+  validateIntAry bool,
+  errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-	if iaMech.lock == nil {
-		iaMech.lock = new(sync.Mutex)
-	}
+  if iaMech.lock == nil {
+    iaMech.lock = new(sync.Mutex)
+  }
 
-	iaMech.lock.Lock()
+  iaMech.lock.Lock()
 
-	defer iaMech.lock.Unlock()
+  defer iaMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMechanics.getMagnitudeDigits()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMechanics.getMagnitudeDigits()",
+    "")
 
-	if err != nil {
-		return 0, err
-	}
+  if err != nil {
+    return 0, err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return 0,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'intAry'",
-			}
-	}
+    return 0,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'intAry'",
+      }
+  }
 
-	if validateIntAry {
+  if validateIntAry {
 
-		err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
+    err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return 0,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return 0,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+            "  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	err = new(intAryNanobot).setInternalFlags(
-		intAry, ePrefix)
+  err = new(intAryNanobot).setInternalFlags(
+    intAry, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return 0, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return 0, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	intAryMagnitude :=
-		intAry.intAryLen - intAry.precision - intAry.firstDigitIdx
+  intAryMagnitude :=
+    intAry.intAryLen - intAry.precision - intAry.firstDigitIdx
 
-	return intAryMagnitude, nil
+  return intAryMagnitude, nil
 }
 
 // inverseIntAry
@@ -271,141 +271,142 @@ func (iaMech *intAryMechanics) getMagnitudeDigits(
 //	  maximum number of decimal digits is automatically set to
 //	  4096 digits to the right of the decimal	place.
 func (iaMech *intAryMechanics) inverseIntAry(
-	ia *IntAry,
-	validateIntAry bool,
-	maxPrecision int,
-	errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+  ia *IntAry,
+  validateIntAry bool,
+  maxPrecision int,
+  errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
 
-	if iaMech.lock == nil {
-		iaMech.lock = new(sync.Mutex)
-	}
+  if iaMech.lock == nil {
+    iaMech.lock = new(sync.Mutex)
+  }
 
-	iaMech.lock.Lock()
+  iaMech.lock.Lock()
 
-	defer iaMech.lock.Unlock()
+  defer iaMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMechanics.inverseIntAry()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMechanics.inverseIntAry()",
+    "")
 
-	if err != nil {
-		return IntAry{}, err
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	if ia == nil {
+  if ia == nil {
 
-		return IntAry{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'ia'",
-			}
-	}
+    return IntAry{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'ia'",
+      }
+  }
 
-	if validateIntAry {
+  if validateIntAry {
 
-		err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy("Validating 'intAry'").String())
+    err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy("Validating 'intAry'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"  ia, ePrefix.XCpy(Validating 'ia').String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+            "  ia, ePrefix.XCpy(Validating 'ia').String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	if maxPrecision < 0 {
+  if maxPrecision < 0 {
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: fmt.Sprintf("ERROR: Input parameter 'maxPrecision' is INVALID.\n"+
-					"'maxPrecision' cannot be less than zero.\n"+
-					"maxPrecision= '%v'", maxPrecision),
-			}
-	}
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: fmt.Sprintf("ERROR: Input parameter 'maxPrecision' is INVALID.\n"+
+          "'maxPrecision' cannot be less than zero.\n"+
+          "maxPrecision= '%v'", maxPrecision),
+      }
+  }
 
-	internalPrecision := maxPrecision + 50
+  internalPrecision := maxPrecision + 50
 
-	iaOne := new(intAryElectron).newIntAry()
+  iaOne := new(intAryElectron).newIntAry()
 
-	nsProfile := NumSepsProfileSelection{
-		SourceObjectName:         "ia",
-		OutputNumSepsName:        "numSeps",
-		UseDefaultNumSeps:        false,
-		SetDefaultNumSepsIfEmpty: true,
-		ValidateNumSeps:          false,
-		OverrideNumSeps:          NumericSeparatorDto{},
-	}
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
+  }
 
-	err = new(intAryGluon).setIntAryWithInt(
-		&iaOne,
-		ia,
-		nsProfile,
-		1,
-		0,
-		ePrefix.XCpy("Creating iaOne"))
+  err = new(intAryGluon).setIntAryWithInt(
+    &iaOne,
+    ia,
+    nsProfile,
+    1,
+    0,
+    true,
+    ePrefix.XCpy("Creating iaOne"))
 
-	if err != nil {
+  if err != nil {
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
-					"  &iaOne, ia,nsProfile, 1, 0, ePrefix.XCpy(Creating iaOne))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
+          "  &iaOne, ia,nsProfile, 1, 0, ePrefix.XCpy(Creating iaOne))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	iaInverse, err := new(intAryNeutron).
-		divideIntArys(&iaOne, true, ia, false, 0, internalPrecision, ePrefix)
+  iaInverse, err := new(intAryNeutron).
+    divideIntArys(&iaOne, true, ia, false, 0, internalPrecision, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "iaInverse, err := new(intAryNeutron).divideIntArys(\n" +
-					"  &iaOne, true, ia, false, 0, internalPrecision, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "iaInverse, err := new(intAryNeutron).divideIntArys(\n" +
+          "  &iaOne, true, ia, false, 0, internalPrecision, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if iaInverse.GetPrecision() > maxPrecision {
+  if iaInverse.GetPrecision() > maxPrecision {
 
-		err = new(intAryMolecule).roundToPrecision(
-			&iaInverse,
-			false,
-			maxPrecision,
-			ePrefix)
+    err = new(intAryMolecule).roundToPrecision(
+      &iaInverse,
+      false,
+      maxPrecision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = new(intAryMolecule).roundToPrecision(&iaInverse, false, maxPrecision, ePrefix)",
-					ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(intAryMolecule).roundToPrecision(&iaInverse, false, maxPrecision, ePrefix)",
+          ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	return iaInverse, nil
+  return iaInverse, nil
 }
 
 // isIntAryEvenNumber
@@ -416,110 +417,110 @@ func (iaMech *intAryMechanics) inverseIntAry(
 //	Even Number Definition:
 //	  https://www.mathsisfun.com/definitions/even-number.html
 func (iaMech *intAryMechanics) isIntAryEvenNumber(
-	intAry *IntAry,
-	validateIntAry bool,
-	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+  intAry *IntAry,
+  validateIntAry bool,
+  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
-	if iaMech.lock == nil {
-		iaMech.lock = new(sync.Mutex)
-	}
+  if iaMech.lock == nil {
+    iaMech.lock = new(sync.Mutex)
+  }
 
-	iaMech.lock.Lock()
+  iaMech.lock.Lock()
 
-	defer iaMech.lock.Unlock()
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaMech.lock.Unlock()
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMechanics.setAbsoluteValue()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMechanics.setAbsoluteValue()",
+    "")
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return false,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'ia'",
-			}
-	}
+    return false,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'ia'",
+      }
+  }
 
-	if validateIntAry {
+  if validateIntAry {
 
-		err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
+    err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return false,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return false,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+            "  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	err = new(intAryNanobot).setInternalFlags(
-		intAry, ePrefix)
+  err = new(intAryNanobot).setInternalFlags(
+    intAry, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return false, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return false, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if intAry.precision > 0 {
+  if intAry.precision > 0 {
 
-		return false, nil
+    return false, nil
 
-	}
+  }
 
-	if intAry.isZeroValue {
-		return true, nil
-	}
+  if intAry.isZeroValue {
+    return true, nil
+  }
 
-	tNum := IntAry{}
+  tNum := IntAry{}
 
-	err = new(intAryProton).copy(
-		&tNum,
-		intAry,
-		false,
-		true,
-		ePrefix.XCpy("Copy 'ia' -> 'tNum'"))
+  err = new(intAryProton).copy(
+    &tNum,
+    intAry,
+    false,
+    true,
+    ePrefix.XCpy("Copy 'ia' -> 'tNum'"))
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	err = new(IntAryMathDivide).DivideByTwo(&tNum)
+  err = new(IntAryMathDivide).DivideByTwo(&tNum)
 
-	if err != nil {
+  if err != nil {
 
-		return false, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathDivide).DivideByTwo(&tNum)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return false, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathDivide).DivideByTwo(&tNum)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if tNum.precision > 0 {
-		return false, nil
-	}
+  if tNum.precision > 0 {
+    return false, nil
+  }
 
-	return true, nil
+  return true, nil
 }
 
 // setAbsoluteValue
@@ -527,42 +528,42 @@ func (iaMech *intAryMechanics) isIntAryEvenNumber(
 //	Converts the numeric value of the IntAry object passed as
 //	input parameter 'IntAry' to its absolute value.
 func (iaMech *intAryMechanics) setAbsoluteValue(
-	intAry *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if iaMech.lock == nil {
-		iaMech.lock = new(sync.Mutex)
-	}
+  if iaMech.lock == nil {
+    iaMech.lock = new(sync.Mutex)
+  }
 
-	iaMech.lock.Lock()
+  iaMech.lock.Lock()
 
-	defer iaMech.lock.Unlock()
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaMech.lock.Unlock()
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMechanics.setAbsoluteValue()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMechanics.setAbsoluteValue()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	err = new(intAryNeutron).setSign(intAry, 1, ePrefix)
+  err = new(intAryNeutron).setSign(intAry, 1, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryNeutron).\n" +
-				"   setSign(intAry, 1, ePrefix)\n",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryNeutron).\n" +
+        "   setSign(intAry, 1, ePrefix)\n",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
