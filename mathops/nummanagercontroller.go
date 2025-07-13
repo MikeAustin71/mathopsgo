@@ -1,73 +1,73 @@
 package mathops
 
 import (
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type NumMgrContrlr struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 func (nMgrContrlr *NumMgrContrlr) GetNumMgrFromNumValue(
-  numericValue interface{},
-  numSeps NumericSeparatorDto,
-  outputNMgrTypeCode NumMgrTypeCode) (numMgr INumMgr, err error) {
+	numericValue interface{},
+	numSeps NumericSeparatorDto,
+	outputNMgrTypeCode NumMgrTypeCode) (numMgr INumMgr, err error) {
 
-  if nMgrContrlr.lock == nil {
-    nMgrContrlr.lock = new(sync.Mutex)
-  }
+	if nMgrContrlr.lock == nil {
+		nMgrContrlr.lock = new(sync.Mutex)
+	}
 
-  nMgrContrlr.lock.Lock()
+	nMgrContrlr.lock.Lock()
 
-  defer nMgrContrlr.lock.Unlock()
+	defer nMgrContrlr.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "NumMgrContrlr.GetNumMgrFromNumValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumMgrContrlr.GetNumMgrFromNumValue",
+		"")
 
-  if err != nil {
-    return new(BigIntNum), err
-  }
+	if err != nil {
+		return new(BigIntNum), err
+	}
 
-  if numericValue == nil {
+	if numericValue == nil {
 
-    return new(BigIntNum),
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'numericValue'",
-      }
-  }
+		return new(BigIntNum),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'numericValue'",
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  switch outputNMgrTypeCode {
+	switch outputNMgrTypeCode {
 
-  case BigIntNumNMgrCode:
+	case BigIntNumNMgrCode:
 
-    numMgr = new(BigIntNum)
+		numMgr = new(BigIntNum)
 
-  case BigIntFixedDecimalNMgrCode:
+	case BigIntFixedDecimalNMgrCode:
 
-    numMgr = new(BigIntFixedDecimal)
+		numMgr = new(BigIntFixedDecimal)
 
-  case DecimalNMgrCode:
+	case DecimalNMgrCode:
 
-    numMgr = new(Decimal)
+		numMgr = new(Decimal)
 
-  case IntAryNMgrCode:
+	case IntAryNMgrCode:
 
-    numMgr = new(IntAry)
+		numMgr = new(IntAry)
 
-  case NumStrDtoNMgrCode:
+	case NumStrDtoNMgrCode:
 
-    numMgr = new(NumStrDto)
+		numMgr = new(NumStrDto)
 
-  }
+	}
 
-  return numMgr, nil
+	return numMgr, nil
 }
