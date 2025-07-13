@@ -1,4 +1,4 @@
 
 Start Test clean-up here:
-mathops/xt_bigintmathdivide_02_test.go
-  TestBigIntMathDivide_BigIntNumIntQuotient_01
+xt_bigintmathdivide_03_test.go
+  TestBigIntMathDivide_BigIntNumModulo_01

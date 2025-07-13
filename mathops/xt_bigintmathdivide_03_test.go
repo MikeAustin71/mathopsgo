@@ -10,35 +10,35 @@ func TestBigIntMathDivide_BigIntNumModulo_01(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -60,35 +60,35 @@ func TestBigIntMathDivide_BigIntNumModulo_02(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -110,35 +110,35 @@ func TestBigIntMathDivide_BigIntNumModulo_03(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -160,35 +160,35 @@ func TestBigIntMathDivide_BigIntNumModulo_04(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -210,35 +210,35 @@ func TestBigIntMathDivide_BigIntNumModulo_05(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -260,35 +260,35 @@ func TestBigIntMathDivide_BigIntNumModulo_06(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -310,35 +310,35 @@ func TestBigIntMathDivide_BigIntNumModulo_07(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -360,35 +360,35 @@ func TestBigIntMathDivide_BigIntNumModulo_08(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -410,35 +410,35 @@ func TestBigIntMathDivide_BigIntNumModulo_09(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -460,35 +460,35 @@ func TestBigIntMathDivide_BigIntNumModulo_10(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -510,35 +510,35 @@ func TestBigIntMathDivide_BigIntNumModulo_11(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -560,35 +560,35 @@ func TestBigIntMathDivide_BigIntNumModulo_12(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -610,35 +610,35 @@ func TestBigIntMathDivide_BigIntNumModulo_13(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -660,35 +660,35 @@ func TestBigIntMathDivide_BigIntNumModulo_14(t *testing.T) {
 
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
 			"expectedModuloStr='%v' Error='%v' ",
 			expectedModuloStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -708,10 +708,10 @@ func TestBigIntMathDivide_BigIntNumModulo_15(t *testing.T) {
 	expectedModuloStr := "0,055"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
@@ -732,19 +732,19 @@ func TestBigIntMathDivide_BigIntNumModulo_15(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -773,10 +773,10 @@ func TestBigIntMathDivide_BigIntNumModulo_16(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
@@ -794,19 +794,19 @@ func TestBigIntMathDivide_BigIntNumModulo_16(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
 	modulo, err :=
-		BigIntMathDivide{}.BigIntNumModulo(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumModulo(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumModulo"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumModulo"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -836,35 +836,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_01(t *testing.T) {
 	expectedQuoStr := "5.25"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -884,35 +884,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_02(t *testing.T) {
 	expectedQuoStr := "5"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -932,35 +932,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_03(t *testing.T) {
 	expectedQuoStr := "4.6"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -980,35 +980,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_04(t *testing.T) {
 	expectedQuoStr := "0.199123855037834"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1028,35 +1028,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_05(t *testing.T) {
 	expectedQuoStr := "-5.022"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1076,35 +1076,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_06(t *testing.T) {
 	expectedQuoStr := "-6.2775"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1124,35 +1124,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_07(t *testing.T) {
 	expectedQuoStr := "-0.199123855037834"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1172,35 +1172,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_08(t *testing.T) {
 	expectedQuoStr := "-5.022"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1220,35 +1220,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_09(t *testing.T) {
 	expectedQuoStr := "-6.2775"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1268,35 +1268,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_10(t *testing.T) {
 	expectedQuoStr := "-0.199123855037834"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1316,35 +1316,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_11(t *testing.T) {
 	expectedQuoStr := "5.022"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1364,35 +1364,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_12(t *testing.T) {
 	expectedQuoStr := "6.2775"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1412,35 +1412,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_13(t *testing.T) {
 	expectedQuoStr := "0.199123855037834"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1460,35 +1460,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_14(t *testing.T) {
 	expectedQuoStr := "5"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1508,35 +1508,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_15(t *testing.T) {
 	expectedQuoStr := "0"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1556,26 +1556,26 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_16(t *testing.T) {
 	expectedQuoStr := "0"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
@@ -1587,10 +1587,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_16(t *testing.T) {
 	expectedNumSeps.CurrencySymbol = '$'
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1618,10 +1618,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_17(t *testing.T) {
 	expectedQuoStr := "4.6"
 	maxPrecision := uint(15)
 
-	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+	dividend, err := new(BigIntNum).NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
@@ -1632,27 +1632,27 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_17(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = ','
 	expectedNumSeps.CurrencySymbol = '$'
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+	expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1689,35 +1689,35 @@ func TestBigIntMathDivide_BigIntNumFracQuotient_18(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
 	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	dividend, err := BigIntNum{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(dividendStr,expectedNumSeps). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps(dividendStr,expectedNumSeps). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+	expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
 	quotient, err :=
-		BigIntMathDivide{}.BigIntNumFracQuotient(dividend, divisor, maxPrecision)
+		new(BigIntMathDivide).BigIntNumFracQuotient(dividend, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotient"+
 			"(dividend, divisor, maxPrecision).  Error='%v' ",
 			err.Error())
 	}
@@ -1772,10 +1772,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_01(t *testing.T) {
 
 	lenDividends := len(dividendArrayStr)
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisor='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -1785,28 +1785,28 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_01(t *testing.T) {
 
 	for i := 0; i < lenDividends; i++ {
 
-		dividends[i], err = BigIntNum{}.NewNumStr(dividendArrayStr[i])
+		dividends[i], err = new(BigIntNum).NewNumStr(dividendArrayStr[i])
 
 		if err != nil {
-			t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendArrayStr[i]). "+
+			t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendArrayStr[i]). "+
 				"dividendArrayStr[%v]='%v' Error='%v' ",
 				i, dividendArrayStr[i], err.Error())
 		}
 
-		expectedResults[i], err = BigIntNum{}.NewNumStr(expectedArrayStr[i])
+		expectedResults[i], err = new(BigIntNum).NewNumStr(expectedArrayStr[i])
 
 		if err != nil {
-			t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedArrayStr[i]). "+
+			t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedArrayStr[i]). "+
 				"expectedArrayStr[%v]='%v' Error='%v' ",
 				i, expectedArrayStr[i], err.Error())
 		}
 
 	}
 
-	resultArray, err := BigIntMathDivide{}.BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
+	resultArray, err := new(BigIntMathDivide).BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotientArray"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotientArray"+
 			"(dividends, divisor, maxPrecision ). "+
 			"divisor='%v' maxPrecision='%v' Error='%v' ",
 			divisor.GetNumStr(), maxPrecision, err.Error())
@@ -1867,10 +1867,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
 
 	lenDividends := len(dividendArrayStr)
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisor='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -1885,28 +1885,28 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
 
 	for i := 0; i < lenDividends; i++ {
 
-		dividends[i], err = BigIntNum{}.NewNumStr(dividendArrayStr[i])
+		dividends[i], err = new(BigIntNum).NewNumStr(dividendArrayStr[i])
 
 		if err != nil {
-			t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendArrayStr[i]). "+
+			t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendArrayStr[i]). "+
 				"dividendArrayStr[%v]='%v' Error='%v' ",
 				i, dividendArrayStr[i], err.Error())
 		}
 
-		expectedResults[i], err = BigIntNum{}.NewNumStr(expectedArrayStr[i])
+		expectedResults[i], err = new(BigIntNum).NewNumStr(expectedArrayStr[i])
 
 		if err != nil {
-			t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedArrayStr[i]). "+
+			t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedArrayStr[i]). "+
 				"expectedArrayStr[%v]='%v' Error='%v' ",
 				i, expectedArrayStr[i], err.Error())
 		}
 
 	}
 
-	resultArray, err := BigIntMathDivide{}.BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
+	resultArray, err := new(BigIntMathDivide).BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotientArray"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotientArray"+
 			"(dividends, divisor, maxPrecision ). "+
 			"divisor='%v' maxPrecision='%v' Error='%v' ",
 			divisor.GetNumStr(), maxPrecision, err.Error())
@@ -1974,10 +1974,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
 
 	lenDividends := len(dividendArrayStr)
 
-	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+	divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
 			"divisor='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -1995,10 +1995,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
 
 	for i := 0; i < lenDividends; i++ {
 
-		dividends[i], err = BigIntNum{}.NewNumStr(dividendArrayStr[i])
+		dividends[i], err = new(BigIntNum).NewNumStr(dividendArrayStr[i])
 
 		if err != nil {
-			t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendArrayStr[i]). "+
+			t.Errorf("Error returned by new(BigIntNum).NewNumStr(dividendArrayStr[i]). "+
 				"dividendArrayStr[%v]='%v' Error='%v' ",
 				i, dividendArrayStr[i], err.Error())
 		}
@@ -2012,10 +2012,10 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
 			"Error='%v'", err.Error())
 	}
 
-	resultArray, err := BigIntMathDivide{}.BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
+	resultArray, err := new(BigIntMathDivide).BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotientArray"+
+		t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotientArray"+
 			"(dividends, divisor, maxPrecision ). "+
 			"divisor='%v' maxPrecision='%v' Error='%v' ",
 			divisor.GetNumStr(), maxPrecision, err.Error())
