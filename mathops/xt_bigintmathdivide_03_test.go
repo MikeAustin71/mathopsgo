@@ -6975,6 +6975,18 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
     return
   }
 
+  if len(expectedArrayStr) != lenDividends {
+
+    t.Errorf("%v\n"+
+      "Test Configuration Error!\n"+
+      "Lengths of 'expectedArrayStr' and 'dividendArrayStr' are not equal.\n"+
+      "Length of 'dividendArrayStr' = '%v'\n"+
+      "Length of 'expectedArrayStr' = '%v'\n\n",
+      ePrefix, lenDividends, len(expectedArrayStr))
+
+    return
+  }
+
   err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
@@ -7157,7 +7169,6 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
 
       return
     }
-
   }
 
   return
@@ -7201,6 +7212,18 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
   }
 
   lenDividends := len(dividendArrayStr)
+
+  if len(expectedArrayStr) != lenDividends {
+
+    t.Errorf("%v\n"+
+      "Test Configuration Error!\n"+
+      "Lengths of 'expectedArrayStr' and 'dividendArrayStr' are not equal.\n"+
+      "Length of 'dividendArrayStr' = '%v'\n"+
+      "Length of 'expectedArrayStr' = '%v'\n\n",
+      ePrefix, lenDividends, len(expectedArrayStr))
+
+    return
+  }
 
   divisor, err := new(BigIntNum).NewNumStr(divisorStr)
 
@@ -7253,60 +7276,162 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
     return
   }
 
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividends := make([]BigIntNum, lenDividends)
+
+  expectedResults := make([]BigIntNum, lenDividends)
 
   for i := 0; i < lenDividends; i++ {
 
-    dividends[i], err = new(BigIntNum).NewNumStr(dividendArrayStr[i])
+    dividends[i], err = new(BigIntNum).NewNumStrWithNumSeps(dividendArrayStr[i], &usaNumSeps)
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "  new(BigIntNum).NewNumStr(dividendArrayStr[%d])\n"+
-        "dividendArrayStr[%v]='%v'\nError='%v'\n\n",
-        ePrefix, i, i, dividendArrayStr[i], err.Error())
+        "  new(BigIntNum).NewNumStrWithNumSeps(\n"+
+        "  dividendArrayStr[%d], &usaNumSeps)\n"+
+        "dividendArrayStr[%v]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, dividendArrayStr[i], usaNumSeps.String(), err.Error())
+      return
+    }
+
+    expectedResults[i], err = new(BigIntNum).NewNumStrWithNumSeps(expectedArrayStr[i], &expectedNumSeps)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        " new(BigIntNum).NewNumStrWithNumSeps(\n"+
+        "  expectedArrayStr[%d], &expectedNumSeps)\n"+
+        "expectedArrayStr[%v]='%v'\n"+
+        "expectedNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, expectedArrayStr[i],
+        expectedNumSeps.String(), err.Error())
       return
     }
 
   }
 
-  err = dividends[0].SetNumericSeparatorsDto(expectedNumSeps)
+  resultArray, err := new(BigIntMathDivide).BigIntNumFracQuotientArray(dividends, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by dividends[0].SetNumericSeparatorsDto(expectedNumSeps). "+
-      "Error='%v'", err.Error())
-  }
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultArray, err := new(BigIntMathDivide).\n"+
+      "  BigIntNumFracQuotientArray(dividends, divisor,\n"+
+      "    expectedNumSeps, maxPrecision)\n"+
+      "divisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      divisorNumStr,
+      maxPrecision,
+      err.Error())
 
-  resultArray, err := new(BigIntMathDivide).BigIntNumFracQuotientArray(dividends, divisor, maxPrecision)
-
-  if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).BigIntNumFracQuotientArray"+
-      "(dividends, divisor, maxPrecision ). "+
-      "divisor='%v' maxPrecision='%v' Error='%v' ",
-      divisor.GetNumStr(), maxPrecision, err.Error())
+    return
   }
 
   lenResultArray := len(resultArray)
 
   if lenDividends != lenResultArray {
-    t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
-      lenDividends, lenResultArray)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because lenDividends != lenResultArray\n"+
+      "Expected Length of Results Array = '%v'\n"+
+      "  Actual Length of Results Array = '%v'\n\n",
+      ePrefix, lenDividends, lenResultArray)
+
+    return
   }
+
+  var actualEqualsExpectedResults bool
+
+  var resultsArrayNumStr, expectedResultsNumStr string
+
+  var actualNumSeps NumericSeparatorDto
 
   for k := 0; k < lenDividends; k++ {
 
-    actualNumStr := resultArray[k].GetNumStr()
+    resultsArrayNumStr, err = resultArray[k].GetNumStr()
 
-    if expectedArrayStr[k] != actualNumStr {
-      t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v' ",
-        expectedArrayStr[k], actualNumStr, k)
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "resultsArrayNumStr, err = resultArray[%d].GetNumStr()\n"+
+        "Error='%v'\n\n",
+        ePrefix, k, err.Error())
+      return
     }
 
-    actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+    expectedResultsNumStr, err = expectedResults[k].GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "expectedResultsNumStr, err = expectedResults[%d].GetNumStr()\n"+
+        "Error='%v'\n\n",
+        ePrefix, k, err.Error())
+      return
+    }
+
+    actualEqualsExpectedResults, err = resultArray[k].Equal(expectedResults[k])
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "actualEqualsExpectedResults, err = resultArray[%d].Equal(expectedResults[%d])\n"+
+        "resultsArray[%d]= '%v'\n"+
+        "expectedResults[%d]= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix,
+        k,
+        k,
+        k,
+        resultsArrayNumStr,
+        k,
+        expectedResultsNumStr,
+        err.Error())
+
+      return
+    }
+
+    if !actualEqualsExpectedResults {
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because actualEqualsExpectedResults == 'false'\n"+
+        "Cycle 'k' Value = '%v'\n"+
+        "Expected Results Value = '%v'\n"+
+        "  Actual Results Value = '%v'\n\n",
+        ePrefix, k, expectedResultsNumStr, resultsArrayNumStr)
+
+      return
+    }
+
+    actualNumSeps, err = resultArray[k].GetNumericSeparatorsDto()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "actualNumSeps, err = resultArray[%d].GetNumericSeparatorsDto()\n"+
+        "Error='%v'\n\n",
+        ePrefix, k, err.Error())
+      return
+    }
 
     if !expectedNumSeps.Equal(actualNumSeps) {
-      t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
-        expectedNumSeps.String(), actualNumSeps.String())
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumSeps.Equal(actualNumSeps) == 'false'\n"+
+        "Expected Numeric Separators = '%v'\n"+
+        "  Actual Numeric Separators = '%v'\n\n",
+        ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+
+      return
     }
   }
+
+  return
 }

@@ -1091,65 +1091,64 @@ func (bIDivide *BigIntMathDivide) BigIntNumFracQuotient(
 
 // BigIntNumFracQuotientArray
 //
-// Performs a division operation on BigIntNum input parameters
-// 'dividends' and 'divisor'. 'dividends' is an array of BigIntNum
-// types and the division is operation is performed on each element
-// of the array using a single 'divisor'.
+//	Performs a division operation on BigIntNum input parameters
+//	'dividends' and 'divisor'. 'dividends' is an array of BigIntNum
+//	types and the division is operation is performed on each element
+//	of the array using a single 'divisor'.
 //
-// The resulting quotients are returned as an array BigIntNum types
-// representing the result of each division operation expressed as
-// integer and fractional digits. Remember that the BigIntNum type
-// specifies 'precision'. Precision is defined as the number of
-// fractional digits to the right of the decimal place.
+//	The resulting quotients are returned as an array BigIntNum types
+//	representing the result of each division operation expressed as
+//	integer and fractional digits. Remember that the BigIntNum type
+//	specifies 'precision'. Precision is defined as the number of
+//	fractional digits to the right of the decimal place.
 //
-// The input parameter 'maxPrecision' is used to control the
-// precision of the resulting fractional quotients. Be advised that
-// this method is capable of calculating quotients with very long
-// strings of fractional digits. Therefore, the user is advised to
-// set a relevant value for 'maxPrecision'.
+//	The input parameter 'maxPrecision' is used to control the
+//	precision of the resulting fractional quotients. Be advised that
+//	this method is capable of calculating quotients with very long
+//	strings of fractional digits. Therefore, the user is advised to
+//	set a relevant value for 'maxPrecision'.
 //
-//			Examples
-//			=========
+//	Examples
+//	=========
 //
-//		 Note: For all examples maximum precision is specified as '15'.
+//	Note: For all examples maximum precision is specified as '15'.
 //
-//		                                              Returned
-//		   Dividend    divided by  Divisor     =       Array          =    Result
-//		   --------    ----------  --------       -----------------       ---------
+//	                                               Returned
+//	   Dividend    divided by  Divisor      =       Array           =   Result
+//	   --------    ----------  --------        -----------------       ---------
 //
-//	      10.5          /         2.5       =   fracQuoArray[0]    =       4.2
-//	      10            /         2.5       =   fracQuoArray[1]    =       4
-//	      11.5          /         2.5       =   fracQuoArray[2]    =       4.6
-//	      2.5           /         2.5       =   fracQuoArray[3]    =       1
-//	    -12.555         /         2.5       =   fracQuoArray[4]    =   -   5.022
-//	   -  2.5           /         2.5       =   fracQuoArray[5]    =   -   1
-//	     12.555         /         2.5       =   fracQuoArray[6]    =       5.022
-//	  - 122.783         /         2.5       =   fracQuoArray[7]    =   -  49.1132
-//	  -6847.231         /         2.5       =   fracQuoArray[8]    =   -2738.8924
-//	  -   2.5           /         2.5       =   fracQuoArray[9]    =   -   1
-//	  -  10             /         2.5       =   fracQuoArray[10]   =   -   4
-//	  -  10.5           /         2.5       =   fracQuoArray[11]   =   -   4.2
+//	     10.5           /          2.5       =   fracQuoArray[0]    =       4.2
+//	     10             /          2.5       =   fracQuoArray[1]    =       4
+//	     11.5           /          2.5       =   fracQuoArray[2]    =       4.6
+//	      2.5           /          2.5       =   fracQuoArray[3]    =       1
+//	     12.555         /          2.5       =   fracQuoArray[4]    =   -   5.022
+//	      2.5           /          2.5       =   fracQuoArray[5]    =   -   1
+//	     12.555         /          2.5       =   fracQuoArray[6]    =       5.022
+//	  - 122.783         /          2.5       =   fracQuoArray[7]    =   -  49.1132
+//	  -6847.231         /          2.5       =   fracQuoArray[8]    =   -2738.8924
+//	  -   2.5           /          2.5       =   fracQuoArray[9]    =   -   1
+//	  -  10             /          2.5       =   fracQuoArray[10]   =   -   4
+//	  -  10.5           /          2.5       =   fracQuoArray[11]   =   -   4.2
 //
-// Each element of the returned BigIntNum array resulting from this division operation
-// will contain contain numeric separators (decimal separator, thousands separator
-// and currency symbol) copied from the first element of the input parameter 'dividends'
-// array.
+//	Each element of the returned BigIntNum array resulting from this division operation
+//	will contain contain numeric separators (decimal separator, thousands separator
+//	and currency symbol) copied from the first element of the input parameter 'dividends'
+//	array.
 //
-//			 Numeric Separators
-//			 ==================
+//	Numeric Separators
+//	==================
 //
-//	    Input parameter, 'numSeps' consits of a NumericSeparatorDto
-//	    instance. A NumericSeparatorDto contains symbols or characters
-//	    for the decimal separator, thousands separator and currency
-//	    symbol. These separators are used when presenting numeric
-//	    values in number strings.
+//	Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//	instance. A NumericSeparatorDto contains symbols or characters
+//	for the decimal separator, thousands separator and currency
+//	symbol. These separators are used when presenting numeric
+//	values in number strings.
 //
-//	    If any of the 'numSeps' Numeric Separator Components are set
-//	    to zero, those components will be automatically reset to USA
-//	    default values.
+//	If any of the 'numSeps' Numeric Separator Components are set
+//	to zero, an error will be returned.
 //
-//	    The returned value ('fracQuoArray') will be configured with
-//	    'numSeps'.
+//	The returned BigIntNum array ('fracQuoArray') will be configured
+//	with Numeric Separators contained in input parameter 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumFracQuotientArray(
 	dividends []BigIntNum,
 	divisor BigIntNum,
