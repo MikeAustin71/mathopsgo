@@ -6964,17 +6964,6 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
 
   lenDividends := len(dividendArrayStr)
 
-  divisor, err := new(BigIntNum).NewNumStr(divisorStr)
-
-  if err != nil {
-    t.Errorf("Error returned by\n"+
-      "divisor, err := new(BigIntNum).NewNumStr(divisorStr)\n"+
-      "divisorStr='%v'\n"+
-      "Error='%v'\n\n",
-      divisorStr, err.Error())
-    return
-  }
-
   if len(expectedArrayStr) != lenDividends {
 
     t.Errorf("%v\n"+
@@ -6984,6 +6973,17 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_02(t *testing.T) {
       "Length of 'expectedArrayStr' = '%v'\n\n",
       ePrefix, lenDividends, len(expectedArrayStr))
 
+    return
+  }
+
+  divisor, err := new(BigIntNum).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by\n"+
+      "divisor, err := new(BigIntNum).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
     return
   }
 
@@ -7324,10 +7324,12 @@ func TestBigIntMathDivide_BigIntNumFracQuotientArray_03(t *testing.T) {
       "  BigIntNumFracQuotientArray(dividends, divisor,\n"+
       "    expectedNumSeps, maxPrecision)\n"+
       "divisor= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
       "maxPrecision= '%v'\n"+
       "Error='%v'\n\n",
       ePrefix,
       divisorNumStr,
+      expectedNumSeps.String(),
       maxPrecision,
       err.Error())
 

@@ -248,13 +248,24 @@ func TestBigIntMathDivide_BigIntNumQuotientMod_02(t *testing.T) {
 		return
 	}
 
+	dividendNumStr, err := dividend.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dividendNumStr, err := dividend.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
 	dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
-			"Error='%v'\n\n", ePrefix, err.Error())
+			"dividend= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
 		return
 	}
 
@@ -265,7 +276,8 @@ func TestBigIntMathDivide_BigIntNumQuotientMod_02(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"err = dividendNumSeps.IsValid(ePrefix)\n"+
-			"Error='%v'\n\n", ePrefix, err.Error())
+			"dividend= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
 		return
 	}
 
@@ -286,6 +298,16 @@ func TestBigIntMathDivide_BigIntNumQuotientMod_02(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"err = divisor.IsValid(ePrefix)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	divisorNumStr, err := divisor.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"divisorNumStr, err := divisor.GetNumStr()\n"+
 			"Error='%v'\n\n", ePrefix, err.Error())
 		return
 	}
@@ -319,7 +341,32 @@ func TestBigIntMathDivide_BigIntNumQuotientMod_02(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"quotient, modulo, err := new(BigIntMathDivide).BigIntNumQuotientMod(\n"+
-			"  dividend, divisor, dividendNumSeps, maxPrecision)"+
+			"  dividend, divisor, dividendNumSeps, maxPrecision)\n"+
+			"dividend= '%v'\n"+
+			"divisor= '%v'\n"+
+			"dividendNumSeps= '%v'\n"+
+			"maxPrecision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dividendNumStr, divisorNumStr,
+			dividendNumSeps.String(), maxPrecision, err.Error())
+		return
+	}
+
+	err = quotient.IsValid(ePrefix + "\nValidating quotient")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = quotient.IsValid(ePrefix)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	err = modulo.IsValid(ePrefix + "\nValidating modulo")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = modulo.IsValid(ePrefix)\n"+
 			"Error='%v'\n\n", ePrefix, err.Error())
 		return
 	}
