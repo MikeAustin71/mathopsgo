@@ -3,9 +3,11 @@ package mathops
 import "testing"
 
 func TestBigIntMathDivide_BigIntNumQuotientMod_01(t *testing.T) {
+
+	ePrefix := "TestBigIntMathDivide_BigIntNumQuotientMod_01"
+
 	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
 	//   12.555					/						 2.5			=			 5							 0.055
-	ePrefix := "TestBigIntMathDivide_BigIntNumQuotientMod_01"
 	dividendStr := "12.555"
 	divisorStr := "2.5"
 	expectedQuoStr := "5"
@@ -1964,7 +1966,7 @@ func TestBigIntMathDivide_BigIntNumQuotientMod_10(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"quotient, modulo, err := new(BigIntMathDivide).BigIntNumQuotientMod(\n"+
-			"  dividend, divisor, dividendNumSeps, maxPrecision)"+
+			"  dividend, divisor, dividendNumSeps, maxPrecision)\n"+
 			"Error='%v'\n\n", ePrefix, err.Error())
 		return
 	}
