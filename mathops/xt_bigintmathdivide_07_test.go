@@ -1877,14 +1877,6 @@ func TestBigIntMathDivide_INumMgrQuotientMod_06(t *testing.T) {
   dividend, err := new(IntAry).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-      "dividendStr, expectedNumSeps). "+
-      "dividendStr='%v' Error='%v'", dividendStr, err.Error())
-  }
-
-  divisor, err := new(BigIntNum).NewNumStr(divisorStr)
-
-  if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "dividend, err := new(IntAry).NewNumStrWithNumSeps(\n"+
