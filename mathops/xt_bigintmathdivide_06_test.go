@@ -73,7 +73,7 @@ func TestBigIntMathDivide_IntAryQuotientMod_01(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Error returned by:\n"+
-			"new(IntAry).NewNumStr(divisorStr).\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr)\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -423,8 +423,8 @@ func TestBigIntMathDivide_IntAryQuotientMod_02(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -774,8 +774,8 @@ func TestBigIntMathDivide_IntAryQuotientMod_03(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -1155,8 +1155,8 @@ func TestBigIntMathDivide_IntAryQuotientMod_04(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -1540,8 +1540,8 @@ func TestBigIntMathDivide_IntAryQuotientMod_05(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -1943,8 +1943,8 @@ func TestBigIntMathDivide_IntAryQuotientMod_06(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -2306,8 +2306,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_01(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -2540,8 +2540,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_02(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -2774,8 +2774,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_03(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -3038,8 +3038,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_04(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -3310,8 +3310,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_05(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -3586,8 +3586,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_06(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -3850,8 +3850,8 @@ func TestBigIntMathDivide_IntAryFracQuotient_07(t *testing.T) {
 	divisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(divisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"divisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -4832,8 +4832,8 @@ func TestBigIntMathDivide_IntAryModulo_01(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(iaDivisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -5065,8 +5065,8 @@ func TestBigIntMathDivide_IntAryModulo_02(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -5298,8 +5298,8 @@ func TestBigIntMathDivide_IntAryModulo_03(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -5820,7 +5820,7 @@ func TestBigIntMathDivide_IntAryModulo_05(t *testing.T) {
 	if !expectedNumSeps.Equal(iaDividendNumSeps) {
 		t.Errorf("%v\n"+
 			"Error: Unexpected Result!\n"+
-			"Because!!!!\n"+
+			"Because expectedNumSeps != iaDividendNumSeps\n"+
 			"Expected iaDividendNumSeps = '%v'\n"+
 			"  Actual iaDividendNumSeps = '%v'\n\n",
 			ePrefix, expectedNumSeps.String(), iaDividendNumSeps.String())
@@ -5833,7 +5833,8 @@ func TestBigIntMathDivide_IntAryModulo_05(t *testing.T) {
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(divisorStr, usaNumSeps)\n"+
+			"iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(\n"+
+			"  divisorStr, usaNumSeps)\n"+
 			"divisorStr= '%v'\n"+
 			"usaNumSeps= '%v'\n"+
 			"Error='%v'\n\n", ePrefix, divisorStr, usaNumSeps.String(), err.Error())
@@ -6333,8 +6334,8 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_01(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -6566,8 +6567,8 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_02(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
@@ -6799,8 +6800,8 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_03(t *testing.T) {
 	iaDivisor, err := new(IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntNum).\n"+
-			"  NewNumStr(iaDivisorStr).\n"+
+		t.Errorf("Error returned by:\n"+
+			"iaDivisor, err := new(IntAry).NewNumStr(divisorStr).\n"+
 			"divisorStr='%v'\n"+
 			"Error='%v'\n\n",
 			divisorStr, err.Error())
