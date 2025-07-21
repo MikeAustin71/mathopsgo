@@ -5499,7 +5499,7 @@ func TestBigIntMathDivide_IntAryModulo_04(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned by\n"+
 			"iaDividend, err := new(IntAry).NewNumStrWithNumSeps("+
-			"  dividendStr,expectedNumSeps)"+
+			"  dividendStr,expectedNumSeps)\n"+
 			"dividendStr= '%v'\n"+
 			"expectedNumSeps= '%v'\n"+
 			"Error= '%v'\n\n",
@@ -5769,7 +5769,7 @@ func TestBigIntMathDivide_IntAryModulo_05(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned by\n"+
 			"iaDividend, err := new(IntAry).NewNumStrWithNumSeps("+
-			"  dividendStr,expectedNumSeps)"+
+			"  dividendStr,expectedNumSeps)\n"+
 			"dividendStr= '%v'\n"+
 			"expectedNumSeps= '%v'\n"+
 			"Error= '%v'\n\n",
@@ -6036,7 +6036,7 @@ func TestBigIntMathDivide_IntAryModulo_06(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned by\n"+
 			"iaDividend, err := new(IntAry).NewNumStrWithNumSeps("+
-			"  dividendStr,expectedNumSeps)"+
+			"  dividendStr,expectedNumSeps)\n"+
 			"dividendStr= '%v'\n"+
 			"expectedNumSeps= '%v'\n"+
 			"Error= '%v'\n\n",
