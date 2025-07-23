@@ -4116,7 +4116,7 @@ func TestBigIntMathDivide_IntAryFracQuotientArray_01(t *testing.T) {
 			t.Errorf("%v\n"+
 				"Error returned by:\n"+
 				"  new(IntAry).NewNumStrWithNumSeps(\n"+
-				"  dividendArrayStr[%d], expectedNumSeps)\n"+
+				"  dividendArrayStr[%d], &expectedNumSeps)\n"+
 				"dividendArrayStr[%v]= '%v'\n"+
 				"expectedNumSeps= '%v'\n"+
 				"Error='%v'\n\n",
@@ -4129,8 +4129,8 @@ func TestBigIntMathDivide_IntAryFracQuotientArray_01(t *testing.T) {
 		if err != nil {
 			t.Errorf("%v\n"+
 				"Error returned by:\n"+
-				" new(BigIntNum).NewNumStrWithNumSeps(\n"+
-				"  expectedArrayStr[%d], expectedNumSeps)\n"+
+				" new(IntAry).NewNumStrWithNumSeps(\n"+
+				"  expectedArrayStr[%d], &expectedNumSeps)\n"+
 				"expectedArrayStr[%v]='%v'\n"+
 				"expectedNumSeps= '%v'\n"+
 				"Error='%v'\n\n",
