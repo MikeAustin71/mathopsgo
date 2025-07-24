@@ -2665,7 +2665,8 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_01(t *testing.T) {
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
       "divisorStr='%v'\n"+
       "Error='%v'\n\n",
       divisorStr, err.Error())
@@ -2959,7 +2960,8 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_02(t *testing.T) {
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(divisorStr). "+
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
       "divisorStr='%v'\n"+
       "Error='%v'\n\n",
       divisorStr, err.Error())
@@ -3168,6 +3170,9 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_02(t *testing.T) {
 }
 
 func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   12.555					% 				 - 2.5			=			 0.055
@@ -3177,38 +3182,296 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03(t *testing.T) {
   expectedModuloStr := "0.055"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloNDto.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "divisorStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(
+    dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(\n"+
+      "  dividendStr, divisorStr, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloNDto.IsValid("Validating moduloNDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloNDto.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloNDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloNDto.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo := expectedModulo.Equal(moduloNDto)
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //    2.5 				  % 				 -12.555		= 		 2.5
@@ -3218,38 +3481,296 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04(t *testing.T) {
   expectedModuloStr := "2.5"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloNDto.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected moduloNDto='%v'. Instead moduloNDto='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "divisorStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(
+    dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(\n"+
+      "  dividendStr, divisorStr, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloNDto.IsValid("Validating moduloNDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloNDto.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloNDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloNDto.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo := expectedModulo.Equal(moduloNDto)
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   12,555					%					 2.5				=			 0,055
@@ -3268,45 +3789,291 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  nDtoDividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloNDto.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := moduloNDto.GetNumericSeparatorsDto()
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
   }
 
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "divisorStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(
+    dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(\n"+
+      "  dividendStr, divisorStr, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloNDto.IsValid("Validating moduloNDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloNDto.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloNDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloNDto.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo := expectedModulo.Equal(moduloNDto)
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //  12.555					%					 2.5				=			 0.055
@@ -3322,45 +4089,291 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
-  nDtoDividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloNDto.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := moduloNDto.GetNumericSeparatorsDto()
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
   }
 
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "divisorStr='%v'\n"+
+      "usaNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(
+    dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(\n"+
+      "  dividendStr, divisorStr, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloNDto.IsValid("Validating moduloNDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloNDto.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloNDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloNDto.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo := expectedModulo.Equal(moduloNDto)
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloNDto.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_01"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   12.555					%						 2.5			=			 0.055
@@ -3370,38 +4383,305 @@ func TestBigIntMathDivide_NumStrDtoModulo_01(t *testing.T) {
   expectedModuloStr := "0.055"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_02"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   -12.555 				% 				 - 2.5 			= 		-0.055
@@ -3411,38 +4691,305 @@ func TestBigIntMathDivide_NumStrDtoModulo_02(t *testing.T) {
   expectedModuloStr := "-0.055"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisor= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_03"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   12.555					% 				 - 2.5			=			 0.055
@@ -3452,38 +4999,305 @@ func TestBigIntMathDivide_NumStrDtoModulo_03(t *testing.T) {
   expectedModuloStr := "0.055"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_04"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //    2.5 				  % 				 -12.555		= 		 2.5
@@ -3493,38 +5307,305 @@ func TestBigIntMathDivide_NumStrDtoModulo_04(t *testing.T) {
   expectedModuloStr := "2.5"
   maxPrecision := uint(15)
 
-  nDtoDividend, err := new(NumStrDto).NewNumStr(dividendStr)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected moduloBINum='%v'. Instead moduloBINum='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_05"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //   12,555					%						 2.5			=			 0,055
@@ -3543,45 +5624,302 @@ func TestBigIntMathDivide_NumStrDtoModulo_05(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  nDtoDividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned by NewNumStrWithNumSeps(dividendStr,expectedNumSeps). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      " dividendStr, &expectedNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
   }
 
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStr(divisorStr)
+
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoModulo_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoModulo_06"
+
   // Dividend			  mod by			Divisor			=			Modulo/Remainder
   // --------				------			-------						----------------
   //  12.555					%						 2.5			=			 0.055
@@ -3596,44 +5934,305 @@ func TestBigIntMathDivide_NumStrDtoModulo_06(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
-  nDtoDividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned by NewNumStrWithNumSeps(dividendStr,expectedNumSeps). "+
-      "dividendStr='%v' error='%v'", dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  nDtoDivisor, err := new(NumStrDto).NewNumStr(divisorStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' error='%v'", divisorStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      " dividendStr, &expectedNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, nDtoDivisor, maxPrecision)
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoModulo(nDtoDividend, "+
-      "nDtoDivisor, maxPrecision). Error='%v'", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualModuloStr := moduloBINum.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-  if expectedModuloStr != actualModuloStr {
-    t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-      expectedModuloStr, actualModuloStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
   }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
+  }
+
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(divisorStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisor, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
+      " divisorStr, &expectedNumSeps)\n"+
+      "divisorStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, divisorStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "moduloBINum, err := new(BigIntMathDivide).NumStrDtoModulo(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividendStr= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = moduloBINum.IsValid("Validating moduloBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = moduloBINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := moduloBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := moduloBINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(moduloBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err :=\n"+
+      "  expectedModulo.Equal(moduloBINum)\n"+
+      "expectedModulo= '%v'\n"+
+      "moduloBINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected Modulo = '%v'\n"+
+      "  Actual Modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := moduloBINum.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_01"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //  - 2.5 					/ 				 	12.555		= 		 0							-2.5
   dividendStr := "-2.5"
@@ -3642,60 +6241,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_01(t *testing.T) {
   expectedModuloStr := "-2.5"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_02"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //   12.555  	 			/ 				 	 2  			= 		 6							 0.555
   dividendStr := "12.555"
@@ -3704,60 +6689,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_02(t *testing.T) {
   expectedModuloStr := "0.555"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_03"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //	-12.555 				/ 				   2.5 			= 		-5							-0.055
   dividendStr := "-12.555"
@@ -3766,60 +7137,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_03(t *testing.T) {
   expectedModuloStr := "-0.055"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_04"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //  -12.555     		/    			 	 2  			= 		-6							-0.555
   dividendStr := "-12.555"
@@ -3828,60 +7585,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_04(t *testing.T) {
   expectedModuloStr := "-0.555"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_05"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   // 	 12.555					/ 				 - 2.5			=			-5							 0.055
 
@@ -3891,60 +8034,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_05(t *testing.T) {
   expectedModuloStr := "0.055"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_06"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //   12.555 				/ 				 - 2 				= 		-6							 0.555
 
@@ -3954,60 +8483,446 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_06(t *testing.T) {
   expectedModuloStr := "0.555"
   maxPrecision := uint(15)
 
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
+
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
   dividend, err := new(NumStrDto).NewNumStr(dividendStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(dividendStr). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).NewNumStr(dividendStr)\n"+
+      "dividendStr='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
   }
 
-  expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedQuoStr). "+
-      "expectedQuoStr='%v' Error='%v' ",
-      expectedQuoStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expectedModulo, err := new(BigIntNum).NewNumStr(expectedModuloStr)
+  divisorNumStr, err := divisor.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedModuloStr). "+
-      "expectedModuloStr='%v' Error='%v' ",
-      expectedModuloStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  if !expectedQuo.Equal(quotient) {
-    t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-      expectedQuo.GetNumStr(), quotient.GetNumStr())
+  err = quotient.IsValid("Validating quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedModulo.Equal(modulo) {
-    t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-      expectedModulo.GetNumStr(), modulo.GetNumStr())
+  actualQuotientNumStr, err := quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = modulo.IsValid("Validating modulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualModuloNumStr, err := modulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_07(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_07"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //   12,555  	 			/ 				 	 2  			= 		 6							 0,555
   dividendStr := "12,555"
@@ -4025,63 +8940,443 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_07(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStrWithNumSeps("+
-      "dividendStr,expectedNumSeps). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).\n"+
+      "  NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStr(divisorStr). "+
-      "divisorStr='%v' Error='%v' ",
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
       divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
   }
 
   quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  actualNumStr := quotient.GetNumStr()
+  err = quotient.IsValid("Validating quotient")
 
-  if expectedQuoStr != actualNumStr {
-    t.Errorf("Error: Expected Quotient NumStr='%v'. Instead Quotient NumStr='%v'",
-      expectedQuoStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := quotient.GetNumericSeparatorsDto()
+  actualQuotientNumStr, err := quotient.GetNumStr()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected Quotient NumSeps='%v'. Instead Quotient NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr = modulo.GetNumStr()
+  err = modulo.IsValid("Validating modulo")
 
-  if expectedModuloStr != actualNumStr {
-    t.Errorf("Error: Expected Modulo NumStr='%v'. Instead Modulo NumStr='%v'",
-      expectedModuloStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps = modulo.GetNumericSeparatorsDto()
+  actualModuloNumStr, err := modulo.GetNumStr()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected modulo NumSeps='%v'. Instead modulo NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathDivide_NumStrDtoQuotientMod_08(t *testing.T) {
+
+  ePrefix := "TestBigIntMathDivide_NumStrDtoQuotientMod_08"
+
   // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
   //   12.555  	 			/ 				 	 2  			= 		 6							 0.555
   dividendStr := "12.555"
@@ -4096,13 +9391,73 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_08(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
-  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned bynew(NumStrDto).NewNumStrWithNumSeps("+
-      "dividendStr,expectedNumSeps). "+
-      "dividendStr='%v' Error='%v' ",
-      dividendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividend, err := new(NumStrDto).\n"+
+      "  NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)\n"+
+      "dividendStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = dividend.IsValid(ePrefix + "\nValidating dividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dividend.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumStr, err := dividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumStr, err := dividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dividendNumSeps, err := dividend.GetNumericSeparatorsDto()\n"+
+      "dividend= '%v'"+
+      "Error='%v'\n\n", ePrefix, dividendNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(dividendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Expected dividendNumSeps = '%v'\n"+
+      "  Actual dividendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+
+    return
   }
 
   divisor, err := new(NumStrDto).NewNumStr(divisorStr)
@@ -4113,41 +9468,364 @@ func TestBigIntMathDivide_NumStrDtoQuotientMod_08(t *testing.T) {
       divisorStr, err.Error())
   }
 
-  quotient, modulo, err :=
-    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, maxPrecision)
+  if err != nil {
+    t.Errorf("Error returned by:\n"+
+      "new(NumStrDto).NewNumStr(divisorStr)\n"+
+      "divisorStr='%v'\n"+
+      "Error='%v'\n\n",
+      divisorStr, err.Error())
+    return
+  }
+
+  err = divisor.IsValid(ePrefix + "\nValidating divisor")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathDivide).NumStrDtoQuotientMod"+
-      "(dividend, divisor, maxPrecision).  Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = divisor.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumStr, err := divisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumStr, err := divisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  divisorNumSeps, err := divisor.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "divisorNumSeps, err := divisor.GetNumericSeparatorsDto()\n"+
+      "divisor= '%v'"+
+      "Error='%v'\n\n", ePrefix, divisorNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(divisorNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
+      "Expected divisorNumSeps = '%v'\n"+
+      "  Actual divisorNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
+
+    return
+  }
+
+  expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedQuoStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedQuoStr, &expectedNumSeps)\n"+
+      "expectedQuoStr='%v'\n"+
+      "expectedNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedQuo.IsValid("Validating expectedQuo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedQuo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumStr, err := expectedQuo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumStr, err := expectedQuo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err := expectedQuo.GetNumericSeparatorsDto()\n"+
+      "expectedQuo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedQuoNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedQuoNumSeps\n"+
+      "Expected expectedQuoNumSeps = '%v'\n"+
+      "  Actual expectedQuoNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedQuoNumSeps.String())
+
+    return
+  }
+
+  expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModulo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "expectedModuloStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedModulo.IsValid("Validating expectedModulo")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedModulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumStr, err := expectedModulo.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumStr, err := expectedModulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err := expectedModulo.GetNumericSeparatorsDto()\n"+
+      "expectedModulo= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedModuloNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Expected expectedModuloNumSeps = '%v'\n"+
+      "  Actual expectedModuloNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+
+    return
+  }
+
+  quotient, modulo, err :=
+    new(BigIntMathDivide).NumStrDtoQuotientMod(dividend, divisor, expectedNumSeps, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, modulo, err :=\n"+
+      "  new(BigIntMathDivide).NumStrDtoQuotientMod(\n"+
+      "  dividend, divisor, expectedNumSeps, maxPrecision)\n"+
+      "dividend= '%v'\n"+
+      "divisorStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      dividendStr,
+      divisorStr,
+      expectedNumSeps.String(),
+      maxPrecision,
       err.Error())
+
+    return
   }
 
-  actualNumStr := quotient.GetNumStr()
+  err = quotient.IsValid("Validating quotient")
 
-  if expectedQuoStr != actualNumStr {
-    t.Errorf("Error: Expected Quotient NumStr='%v'. Instead Quotient NumStr='%v'",
-      expectedQuoStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = quotient.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := quotient.GetNumericSeparatorsDto()
+  actualQuotientNumStr, err := quotient.GetNumStr()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected Quotient NumSeps='%v'. Instead Quotient NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuotientNumStr, err := quotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr = modulo.GetNumStr()
+  err = modulo.IsValid("Validating modulo")
 
-  if expectedModuloStr != actualNumStr {
-    t.Errorf("Error: Expected Modulo NumStr='%v'. Instead Modulo NumStr='%v'",
-      expectedModuloStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = modulo.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps = modulo.GetNumericSeparatorsDto()
+  actualModuloNumStr, err := modulo.GetNumStr()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected modulo NumSeps='%v'. Instead modulo NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumStr, err := modulo.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoEqualsActualQuo, err := expectedQuo.Equal(quotient)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedQuoEqualsActualQuo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because 'expectedQuoEqualsActualQuo' == 'false'\n"+
+      "Expected quotient = '%v'\n"+
+      "  Actual quotient = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  if expectedQuoNumStr != actualQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumStr != actualQuotientNumStr\n"+
+      "Expected actualQuotientNumStr = '%v'\n"+
+      "  Actual actualQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuoNumStr, actualQuotientNumStr)
+
+    return
+  }
+
+  expectedModuloEqualsActualModulo, err := expectedModulo.Equal(modulo)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloEqualsActualModulo, err := \n"+
+      " expectedModulo.Equal(modulo)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedModuloEqualsActualModulo {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloEqualsActualModulo == 'false'\n"+
+      "Expected modulo = '%v'\n"+
+      "  Actual modulo = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  if expectedModuloNumStr != actualModuloNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedModuloNumStr != actualModuloNumStr\n"+
+      "Expected actualModuloNumStr = '%v'\n"+
+      "  Actual actualModuloNumStr = '%v'\n\n",
+      ePrefix, expectedModuloNumStr, actualModuloNumStr)
+
+    return
+  }
+
+  actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualQuoNumSeps, err := quotient.GetNumericSeparatorsDto()\n"+
+      "quotient= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualQuotientNumStr, err.Error())
+
+    return
+  }
+
+  expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedQuoNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedQuoNumSeps.Equal(actualQuoNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Quotient Numeric Separators = '%v'\n"+
+      "  Actual Quotient Numeric Separators = '%v'\n\n",
+      ePrefix, expectedQuoNumSeps.String(), actualQuoNumSeps.String())
+
+    return
+  }
+
+  actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualModuloNumSeps, err := modulo.GetNumericSeparatorsDto()\n"+
+      "modulo= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, actualModuloNumStr, err.Error())
+
+    return
+  }
+
+  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if !expectedModuloNumSeps.Equal(actualModuloNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuoNumSeps.Equal(actualQuoNumSeps) == 'false'\n"+
+      "Expected Modulo Numeric Separators = '%v'\n"+
+      "  Actual Modulo Numeric Separators = '%v'\n\n",
+      ePrefix, expectedModuloNumSeps.String(), actualModuloNumSeps.String())
+
+    return
+  }
+
+  return
 }

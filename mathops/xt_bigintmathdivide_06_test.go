@@ -1573,10 +1573,12 @@ func TestBigIntMathDivide_IntAryQuotientMod_05(t *testing.T) {
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"expectedQuo, err := new(BigIntNum).NewNumStr(expectedQuoStr)\n"+
+			"expectedQuo, err := new(BigIntNum).NewNumStrWithNumSeps(\n"+
+			"  expectedQuoStr, &expectedNumSeps)\n"+
 			"expectedQuoStr='%v'\n"+
+			"expectedNumSeps='%v'\n"+
 			"Error='%v'\n\n",
-			ePrefix, expectedQuoStr, err.Error())
+			ePrefix, expectedQuoStr, expectedNumSeps.String(), err.Error())
 		return
 	}
 
