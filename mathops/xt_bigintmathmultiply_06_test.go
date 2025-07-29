@@ -4768,6 +4768,8 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_06(t *testing.T) {
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01(t *testing.T) {
 
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01"
+
   var err error
 
   // multiplier = 2
@@ -4793,16 +4795,25 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01(t *testing.T) {
     "12",
   }
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -4810,18 +4821,30 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
+
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_02"
 
   var err error
 
   // multiplier = 8
   multiplierStr := "8"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "100.1",
@@ -4842,16 +4865,25 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_02(t *testing.T) {
     "-39.168",
   }
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -4859,19 +4891,30 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_02(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
 
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03"
 
   var err error
 
   // multiplier = -31.2
   multiplierStr := "-31.2"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "100.1",
@@ -4892,16 +4935,25 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03(t *testing.T) {
     "152.7552",
   }
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -4909,19 +4961,30 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
 
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03"
 
   var err error
 
   // multiplier = 283
   multiplierStr := "283"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "0",
@@ -4947,14 +5010,34 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_04(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -4962,19 +5045,30 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_04(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
 
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05"
 
   var err error
 
   // multiplier = 0
   multiplierStr := "0"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "5",
@@ -5000,14 +5094,34 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -5015,19 +5129,30 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
 
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrOutputToArray_06"
 
   var err error
 
   // multiplier = -31,2
   multiplierStr := "-31,2"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "100,1",
@@ -5056,14 +5181,34 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_06(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
   result, err :=
     new(BigIntMathMultiply).MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrOutputToArray"+
-      "(multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
   }
 
   lenArray := len(multiplicandStrs)
@@ -5071,9 +5216,17 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_06(t *testing.T) {
   for j := 0; j < lenArray; j++ {
 
     if expectedNumStrs[j] != result[j] {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j])
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because expectedNumStrs[%d] != result[%d]\n"+
+        "Expected result = '%v'\n"+
+        "  Actual result = '%v'\n\n",
+        ePrefix, j, j, expectedNumStrs[j], result[j])
+
+      return
     }
 
   }
+
+  return
 }
