@@ -2921,6 +2921,8 @@ func TestBigIntMathMultiply_MultiplyNumStrs_07(t *testing.T) {
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_01(t *testing.T) {
 
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_01"
+
   var err error
 
   // multiplier = 2
@@ -2937,91 +2939,288 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_01(t *testing.T) {
   }
 
   // product = 128
-  expectedNumStr := "128"
+  expectedBigINumStr := "128"
 
   expectedBigINumSign := 1
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   lenArray := len(multiplicandStrs)
 
-  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
+  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, usaNumSeps.String(), err.Error())
+    return
   }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], usaNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v' Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], usaNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], usaNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
-      "expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error: Expected actualNumStr='%v' "+
-      "Instead, actualNumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    return
   }
+
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
+
+    return
+  }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !usaNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_02"
 
   var err error
 
@@ -3039,97 +3238,294 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_02(t *testing.T) {
   }
 
   // product = 11995826664.26376575446779648
-  expectedNumStr := "11995826664.26376575446779648"
+  expectedBigINumStr := "11995826664.26376575446779648"
 
   expectedBigINumSign := 1
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   lenArray := len(multiplicandStrs)
 
-  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
+  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, usaNumSeps.String(), err.Error())
+    return
   }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], usaNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-        "multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v'  Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], usaNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], usaNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps("+
-      "expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error: Expected actualNumStr='%v' "+
-      "Instead, actualNumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    return
   }
+
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
+
+    return
+  }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !usaNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_03"
 
   var err error
 
   // multiplier = 10.1
   multiplierStr := "10.1"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "2",
@@ -3141,96 +3537,294 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
   }
 
   // product = 2212352.1767579232
-  expectedNumStr := "2212352.1767579232"
+  expectedBigINumStr := "2212352.1767579232"
 
   expectedBigINumSign := 1
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   lenArray := len(multiplicandStrs)
 
-  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
+  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, usaNumSeps.String(), err.Error())
+    return
   }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], usaNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-        "multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v'  Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], usaNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], usaNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error: Expected actualNumStr='%v' "+
-      "Instead, actualNumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    return
   }
+
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
+
+    return
+  }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !usaNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_04"
 
   var err error
 
   // multiplier = -5.123456
   multiplierStr := "-5.123456"
+
   // multiplicandStrs
   multiplicandStrs := []string{
     "1.879",
@@ -3242,91 +3836,290 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_04(t *testing.T) {
   }
 
   // product = -20408.5138429311978576052224
-  expectedNumStr := "-20408.5138429311978576052224"
+  expectedBigINumStr := "-20408.5138429311978576052224"
 
-  expectedNumSeps := new(NumericSeparatorDto).New()
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
   expectedBigINumSign := -1
 
   lenArray := len(multiplicandStrs)
 
-  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
+  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, usaNumSeps.String(), err.Error())
+    return
   }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], usaNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-        "multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v'  Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], usaNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], usaNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &usaNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v' Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error: Expected actualNumStr='%v' "+
-      "Instead, actualNumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    return
   }
+
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
+
+    return
+  }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !usaNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !usaNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, usaNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_05"
 
   var err error
 
@@ -3344,7 +4137,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_05(t *testing.T) {
   }
 
   // product = 11995826664.26376575446779648
-  expectedNumStr := "11995826664.26376575446779648"
+  expectedBigINumStr := "11995826664.26376575446779648"
 
   expectedBigINumSign := 1
 
@@ -3354,87 +4147,309 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_05(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = ','
   expectedNumSeps.CurrencySymbol = '$'
 
-  lenArray := len(multiplicandStrs)
-
-  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
+
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  lenArray := len(multiplicandStrs)
+
+  iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], usaNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-        "multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v' Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], usaNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "usaNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], usaNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps("+
-      "expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, usaNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  resultNumStr, err := result.GetNumStr()
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error: Expected actualNumStr='%v' "+
-      "Instead, actualNumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
+
+    return
+  }
+
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
+
+    return
+  }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !expectedNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrArray_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyNumStrArray_06"
 
   var err error
 
@@ -3452,7 +4467,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_06(t *testing.T) {
   }
 
   // product = 11995826664,26376575446779648
-  expectedNumStr := "11995826664,26376575446779648"
+  expectedBigINumStr := "11995826664,26376575446779648"
 
   expectedBigINumSign := 1
 
@@ -3465,94 +4480,290 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_06(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
   lenArray := len(multiplicandStrs)
 
   iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResult, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierStr, expectedNumSeps.String(), err.Error())
+    return
   }
+
+  err = iaResult.IsValid(ePrefix + "\nValidating iaResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaResultNumStr, err := iaResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaResultNumStr, err := iaResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var iaMultiplicand IntAry
+
+  var iaMultiplicandNumStr string
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
+    iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[i], expectedNumSeps)
 
     if err != nil {
-      t.Errorf("Error returned by new(IntAry).NewNumStrWithNumSeps("+
-        "multiplicandStrs[i], expectedNumSeps) "+
-        "multiplicandStrs[%v]='%v' expectedNumSeps='%v' Error='%v'. ",
-        i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicand, err = new(IntAry).NewNumStrWithNumSeps(multiplicandStrs[%d], expectedNumSeps)\n"+
+        "multiplicandStrs[%d]= '%v'\n"+
+        "expectedNumSeps= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix, i, i, multiplicandStrs[i], expectedNumSeps.String(), err.Error())
+      return
     }
 
-    err = iaResult.MultiplyThisBy(&ia, -1, -1)
+    err = iaMultiplicand.IsValid(ePrefix + "\nValidating iaMultiplicand")
 
     if err != nil {
-      t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) "+
-        "i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = iaMultiplicand.IsValid(ePrefix)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    iaMultiplicandNumStr, err = iaMultiplicand.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaMultiplicandNumStr, err := iaMultiplicand.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
+
+    err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "\n"+
+        "iaResult= '%v'\n"+
+        "iaMultiplicand= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, iaResultNumStr, iaMultiplicandNumStr, err.Error())
+      return
+    }
+
+    iaResultNumStr, err = iaResult.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "iaResultNumStr, err = iaResult.GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
     }
 
   }
 
-  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps("+
-      "expectedNumStr, expectedNumSeps) "+
-      "expectedNumStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      expectedNumStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedBigINumStr, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = expectedBigINum.IsValid(ePrefix + "\nValidating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid(ePrefix)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntMathMultiply).MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyNumStrArray("+
-      "multiplierStr, multiplicandStrs, expectedNumSeps) "+
-      "multiplierStr='%v' expectedNumSeps='%v'  Error='%v'. ",
-      multiplierStr, expectedNumSeps.String(), err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathMultiply).\n"+
+      "  MultiplyNumStrArray(multiplierStr, multiplicandStrs, expectedNumSeps)\n"+
+      "multiplierStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      multiplierStr,
+      expectedNumSeps.String(),
+      err.Error())
 
     return
   }
 
-  booResult, err := expectedBigINum.Equal(result)
+  resultNumStr, err := result.GetNumStr()
 
   if err != nil {
-
-    t.Errorf("Error returned by expectedBigINum.Equal(result)\n"+
-      "Error: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
     return
   }
 
-  if !booResult {
-    t.Errorf("Error: Expected expectedBigINum bigInt ='%s'. Instead, result bigInt = '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'"+
+      "result= '%v'"+
+      "Error='%v'\n\n", ePrefix, expectedBigIntNumberStr, resultNumStr, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected Decimal='%s'. Instead, Decimal= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if !expectedBigINumEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualsResult = 'false'\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigIntNumberStr, resultNumStr)
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultActualBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultActualBigInt, err := result.GetBigInt()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
 
-  if iaResult.GetNumStr() != actualNumStr {
-    t.Errorf("Error:  Expected iaResultNumStr='%v' "+
-      "Instead, actual NumStr='%v'",
-      iaResult.GetNumStr(), actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigIntNumberStr, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  if expectedBigINumBigInt.Cmp(resultActualBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumBigInt.Cmp(resultActualBigInt) != 0\n"+
+      "Expected resultActualBigInt = '%v'\n"+
+      "  Actual resultActualBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultActualBigInt.Text(10))
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    return
   }
+
+  resultSign, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSign, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if expectedBigINumSign != resultSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultSign\n"+
+      "Expected resultSign = '%v'\n"+
+      "  Actual resultSign = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSign)
+
+    return
+  }
+
+  if iaResultNumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because iaResultNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, iaResultNumStr, resultNumStr)
+
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps := result.GetNumericSeparatorsDto()\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because !expectedNumSeps.Equal(resultNumSeps)\n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01(t *testing.T) {
