@@ -5013,7 +5013,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_04(t *testing.T) {
 			"Error returned by:\n"+
 			"result, err := new(BigIntMathMultiply).\n"+
 			"  MultiplyNumStrDtoArray(multiplierNumStrDto, nDtoArray[...])\n"+
-			"multiplierIntAry= '%v'\n"+
+			"multiplierNumStrDto= '%v'\n"+
 			"Error='%v'\n\n",
 			ePrefix,
 			multiplierNumStrDtoNumStr,
@@ -5242,7 +5242,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_05(t *testing.T) {
 			"Error returned by:\n"+
 			"result, err := new(BigIntMathMultiply).\n"+
 			"  MultiplyNumStrDtoArray(multiplierNumStrDto, nDtoArray[...], expectedNumSeps)\n"+
-			"multiplierIntAry= '%v'\n"+
+			"multiplierNumStrDto= '%v'\n"+
 			"expectedNumSeps= '%v'\n"+
 			"Error='%v'\n\n",
 			ePrefix,
