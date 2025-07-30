@@ -3024,7 +3024,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_01(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
@@ -3323,7 +3323,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_02(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
@@ -3622,7 +3622,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
@@ -3921,7 +3921,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_04(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
@@ -4239,7 +4239,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_05(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
@@ -4570,7 +4570,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_06(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "\n"+
+        "err = iaResult.MultiplyThisBy(&iaMultiplicand, -1, -1)\n"+
         "iaResult= '%v'\n"+
         "iaMultiplicand= '%v'\n"+
         "Error= '%v'\n\n",
