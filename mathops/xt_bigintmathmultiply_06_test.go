@@ -227,8 +227,8 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_01(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"resultBigINumBigInt, err := resultBigINum.GetBigInt()\n"+
-			"expectedBigINum= '%v'"+
-			"Error='%v'\n\n", ePrefix, expectedBigINumStr, err.Error())
+			"resultBigINum= '%v'"+
+			"Error='%v'\n\n", ePrefix, resultBigINumStr, err.Error())
 		return
 	}
 

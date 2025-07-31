@@ -1667,31 +1667,38 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) (Big
 	return mulResult, nil
 }
 
-// MultiplyBigIntNumByTenToPower - Receives two BigIntNum input parameters, 'base'
-// and 'tenExponent'. This method then proceeds to multiply 'base' time 10 to the
-// exponent, 'tenExponent'.
+// MultiplyBigIntNumByTenToPower
+//
+//	Receives two BigIntNum input parameters, 'base' and 'tenExponent'.
+//	This method then proceeds to multiply 'base' time 10 to the exponent,
+//	'tenExponent'.
 //
 //	result = base X 10^tenExponent
 //
-// The exponent can be a negative value and/or a fractional value.
+//	The exponent can be a negative value and/or a fractional value.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision for the
-// result returned by this method. Precision is defined as the number of fractional
-// digits to the right of the decimal place. Maximum precision therefore controls
-// the maximum number of decimal digits to the right of the decimal place. If the
-// returned result from this operation contains a number of fractional digits which
-// is greater than 'maxPrecision' the result will be rounded to 'maxPrecision' decimal
-// places. Be advised that these calculations can support very large precision values.
+//	Input parameter 'maxPrecision' is used to control the maximum
+//	precision for the result returned by this method. Precision is
+//	defined as the number of fractional digits to the right of the
+//	decimal place. Maximum precision therefore controls the maximum
+//	number of decimal digits to the right of the decimal place. If the
+//	returned result from this operation contains a number of fractional
+//	digits which is greater than 'maxPrecision' the result will be
+//	rounded to 'maxPrecision' decimal places. Be advised that these
+//	calculations can support very large precision values.
 //
-// Return Value
-// ============
-// The return value is of type BigIntNum and represents the result of the
-// multiplication operation described above. This returned BigIntNum multiplication
-// 'result' will contain numeric separators (decimal separator, thousands separator
-// and currency symbol) copied from input parameter,'base'.
+//	Return Value
+//	============
 //
-// If the precision of the return value precision exceeds input parameter 'maxPrecision',
-// the return value will be rounded to 'maxPrecision' decimal places.
+//	The return value is of type BigIntNum and represents the result of
+//	the multiplication operation described above. This returned
+//	BigIntNum multiplication 'result' will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol) copied
+//	from input parameter,'base'.
+//
+//	If the precision of the return value precision exceeds input
+//	parameter 'maxPrecision', the return value will be rounded to
+//	'maxPrecision' decimal places.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTenToPower(
 	base, tenExponent BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
