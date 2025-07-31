@@ -485,7 +485,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_02(t *testing.T) {
 	if expectedIntAryNumStr != resultNumStr {
 		t.Errorf("%v\n"+
 			"Error: Unexpected Result!\n"+
-			"Because!!!!\n"+
+			"Because expectedIntAryNumStr != resultNumStr\n"+
 			"Expected resultNumStr = '%v'\n"+
 			"  Actual resultNumStr = '%v'\n\n",
 			ePrefix, expectedIntAryNumStr, resultNumStr)
