@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "math/big"
   "testing"
 )
 
@@ -32,6 +31,48 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
     return
   }
 
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bIMinuendBigInt, err := minuendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bIMinuendBigInt, err := minuendBiNum.GetBigInt()\n"+
+      "minuendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendBiNumStr, err.Error())
+    return
+  }
+
+  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
@@ -41,6 +82,59 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
       "subtrahendStr= '%v'\n"+
       "Error= '%v'\n\n",
       ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  biSubtrahendBigInt, err := subtrahendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "biSubtrahendBigInt, err = subtrahendBiNum.GetBigInt()\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendBiNumStr, err.Error())
+    return
+  }
+
+  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
 
@@ -87,50 +181,26 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
     return
   }
 
-  bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
-
-  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
-
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
-      "Error= '%v'\n\n", ePrefix, err.Error())
-    return
-  }
-
-  biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
-
-  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
-
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
-      "Error= '%v'\n\n", ePrefix, err.Error())
-    return
-  }
-
   result, err := new(BigIntMathSubtract).SubtractBigInts(
-    bIMinuend,
+    bIMinuendBigInt,
     minuendPrecision,
-    biSubtrahend,
+    biSubtrahendBigInt,
     subtrahendPrecision)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "result, err := new(BigIntMathSubtract).SubtractBigInts(\n"+
-      "  bIMinuend, minuendPrecision, biSubtrahend, subtrahendPrecision)\n"+
-      "bIMinuend= '%v'\n"+
+      "  bIMinuendBigInt, minuendPrecision, biSubtrahendBigInt, subtrahendPrecision)\n"+
+      "bIMinuendBigInt= '%v'\n"+
       "minuendPrecision= '%v'\n"+
-      "biSubtrahend= '%v'\n"+
+      "biSubtrahendBigInt= '%v'\n"+
       "subtrahendPrecision= '%v'\n"+
       "Error= '%v'\n\n",
       ePrefix,
-      bIMinuend.Text(10),
+      bIMinuendBigInt.Text(10),
       minuendPrecision,
-      biSubtrahend.Text(10),
+      biSubtrahendBigInt.Text(10),
       subtrahendPrecision,
       err.Error())
 
@@ -237,6 +307,9 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
 }
 
 func TestBigIntMathSubtract_SubtractBigInts_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigInts_02"
+
   // minuend = 949321.6712
   minuendStr := "949321.6712"
 
@@ -245,57 +318,300 @@ func TestBigIntMathSubtract_SubtractBigInts_02(t *testing.T) {
 
   // result = 903643.4612
   expectedBigINumStr := "903643.4612"
+
   expectedBigINumSign := 1
+
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bIMinuendBigInt, err := minuendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bIMinuendBigInt, err := minuendBiNum.GetBigInt()\n"+
+      "minuendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendBiNumStr, err.Error())
+    return
+  }
+
+  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  biSubtrahendBigInt, err := subtrahendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "biSubtrahendBigInt, err = subtrahendBiNum.GetBigInt()\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendBiNumStr, err.Error())
+    return
+  }
+
+  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
-  minuendPrecision := minuendBiNum.GetPrecisionUint()
-  biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
-  subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   result, err := new(BigIntMathSubtract).SubtractBigInts(
-    bIMinuend,
+    bIMinuendBigInt,
     minuendPrecision,
-    biSubtrahend,
+    biSubtrahendBigInt,
     subtrahendPrecision)
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigInts(\n"+
+      "  bIMinuendBigInt, minuendPrecision, biSubtrahendBigInt, subtrahendPrecision)\n"+
+      "bIMinuendBigInt= '%v'\n"+
+      "minuendPrecision= '%v'\n"+
+      "biSubtrahendBigInt= '%v'\n"+
+      "subtrahendPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bIMinuendBigInt.Text(10),
+      minuendPrecision,
+      biSubtrahendBigInt.Text(10),
+      subtrahendPrecision,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigInts_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigInts_03"
+
   // minuend = -5876458.56789012
   minuendStr := "-5876458.56789012"
 
@@ -304,56 +620,300 @@ func TestBigIntMathSubtract_SubtractBigInts_03(t *testing.T) {
 
   // result = -6723588.44389012
   expectedBigINumStr := "-6723588.44389012"
+
   expectedBigINumSign := -1
+
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bIMinuendBigInt, err := minuendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bIMinuendBigInt, err := minuendBiNum.GetBigInt()\n"+
+      "minuendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendBiNumStr, err.Error())
+    return
+  }
+
+  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  biSubtrahendBigInt, err := subtrahendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "biSubtrahendBigInt, err = subtrahendBiNum.GetBigInt()\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendBiNumStr, err.Error())
+    return
+  }
+
+  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
-  minuendPrecision := minuendBiNum.GetPrecisionUint()
-  biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
-  subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   result, err := new(BigIntMathSubtract).SubtractBigInts(
-    bIMinuend,
+    bIMinuendBigInt,
     minuendPrecision,
-    biSubtrahend,
+    biSubtrahendBigInt,
     subtrahendPrecision)
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigInts(\n"+
+      "  bIMinuendBigInt, minuendPrecision, biSubtrahendBigInt, subtrahendPrecision)\n"+
+      "bIMinuendBigInt= '%v'\n"+
+      "minuendPrecision= '%v'\n"+
+      "biSubtrahendBigInt= '%v'\n"+
+      "subtrahendPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bIMinuendBigInt.Text(10),
+      minuendPrecision,
+      biSubtrahendBigInt.Text(10),
+      subtrahendPrecision,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigInts_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigInts_04"
+
   // minuend = -289.673849
   minuendStr := "-289.673849"
 
@@ -362,58 +922,300 @@ func TestBigIntMathSubtract_SubtractBigInts_04(t *testing.T) {
 
   // result = 14289.338151
   expectedBigINumStr := "14289.338151"
+
   expectedBigINumSign := 1
 
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bIMinuendBigInt, err := minuendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bIMinuendBigInt, err := minuendBiNum.GetBigInt()\n"+
+      "minuendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendBiNumStr, err.Error())
+    return
+  }
+
+  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  biSubtrahendBigInt, err := subtrahendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "biSubtrahendBigInt, err = subtrahendBiNum.GetBigInt()\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendBiNumStr, err.Error())
+    return
+  }
+
+  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
-  minuendPrecision := minuendBiNum.GetPrecisionUint()
-  biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
-  subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  result := new(BigIntMathSubtract).SubtractBigInts(
-    bIMinuend,
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractBigInts(
+    bIMinuendBigInt,
     minuendPrecision,
-    biSubtrahend,
+    biSubtrahendBigInt,
     subtrahendPrecision)
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigInts(\n"+
+      "  bIMinuendBigInt, minuendPrecision, biSubtrahendBigInt, subtrahendPrecision)\n"+
+      "bIMinuendBigInt= '%v'\n"+
+      "minuendPrecision= '%v'\n"+
+      "biSubtrahendBigInt= '%v'\n"+
+      "subtrahendPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bIMinuendBigInt.Text(10),
+      minuendPrecision,
+      biSubtrahendBigInt.Text(10),
+      subtrahendPrecision,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigInts_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigInts_05"
+
   // minuend = 25
   minuendStr := "25"
 
@@ -422,58 +1224,300 @@ func TestBigIntMathSubtract_SubtractBigInts_05(t *testing.T) {
 
   // result = 24
   expectedBigINumStr := "24"
+
   expectedBigINumSign := 1
 
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bIMinuendBigInt, err := minuendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bIMinuendBigInt, err := minuendBiNum.GetBigInt()\n"+
+      "minuendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendBiNumStr, err.Error())
+    return
+  }
+
+  minuendPrecision, err := minuendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendPrecision, err := minuendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  biSubtrahendBigInt, err := subtrahendBiNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "biSubtrahendBigInt, err = subtrahendBiNum.GetBigInt()\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendBiNumStr, err.Error())
+    return
+  }
+
+  subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendPrecision, err := subtrahendBiNum.GetPrecisionUint()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
-  minuendPrecision := minuendBiNum.GetPrecisionUint()
-  biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
-  subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  result := new(BigIntMathSubtract).SubtractBigInts(
-    bIMinuend,
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractBigInts(
+    bIMinuendBigInt,
     minuendPrecision,
-    biSubtrahend,
+    biSubtrahendBigInt,
     subtrahendPrecision)
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigInts(\n"+
+      "  bIMinuendBigInt, minuendPrecision, biSubtrahendBigInt, subtrahendPrecision)\n"+
+      "bIMinuendBigInt= '%v'\n"+
+      "minuendPrecision= '%v'\n"+
+      "biSubtrahendBigInt= '%v'\n"+
+      "subtrahendPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bIMinuendBigInt.Text(10),
+      minuendPrecision,
+      biSubtrahendBigInt.Text(10),
+      subtrahendPrecision,
+      err.Error())
+
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNums_01"
+
   // minuend = 123.32
   minuendStr := "123.32"
 
@@ -488,44 +1532,243 @@ func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  result := new(BigIntMathSubtract).SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  result, err := new(BigIntMathSubtract).SubtractBigIntNums(
+    minuendBiNum, subtrahendBiNum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigIntNums(\n"+
+      "  minuendBiNum, subtrahendBiNum)\n"+
+      "minuendBiNum= '%v'\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendBiNumStr,
+      subtrahendBiNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNums_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNums_02"
+
   // minuend = 949321.6712
   minuendStr := "949321.6712"
 
@@ -534,48 +1777,249 @@ func TestBigIntMathSubtract_SubtractBigIntNums_02(t *testing.T) {
 
   // result = 903643.4612
   expectedBigINumStr := "903643.4612"
+
   expectedBigINumSign := 1
+
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  result := new(BigIntMathSubtract).SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  result, err := new(BigIntMathSubtract).SubtractBigIntNums(
+    minuendBiNum, subtrahendBiNum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigIntNums(\n"+
+      "  minuendBiNum, subtrahendBiNum)\n"+
+      "minuendBiNum= '%v'\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendBiNumStr,
+      subtrahendBiNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNums_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNums_03"
+
   // minuend = -5876458.56789012
   minuendStr := "-5876458.56789012"
 
@@ -584,47 +2028,249 @@ func TestBigIntMathSubtract_SubtractBigIntNums_03(t *testing.T) {
 
   // result = -6723588.44389012
   expectedBigINumStr := "-6723588.44389012"
+
   expectedBigINumSign := -1
+
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  result := new(BigIntMathSubtract).SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  result, err := new(BigIntMathSubtract).SubtractBigIntNums(
+    minuendBiNum, subtrahendBiNum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigIntNums(\n"+
+      "  minuendBiNum, subtrahendBiNum)\n"+
+      "minuendBiNum= '%v'\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendBiNumStr,
+      subtrahendBiNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNums_04(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNums_04"
+
   // minuend = -289.673849
   minuendStr := "-289.673849"
 
@@ -633,49 +2279,249 @@ func TestBigIntMathSubtract_SubtractBigIntNums_04(t *testing.T) {
 
   // result = 14289.338151
   expectedBigINumStr := "14289.338151"
+
   expectedBigINumSign := 1
 
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)\n"+
+      "subtrahendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
   }
 
   expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
   }
 
-  result := new(BigIntMathSubtract).SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-  if !expectedBigINum.Equal(result) {
-    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
   }
 
-  if expectedBigINumSign != result.sign {
-    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-      expectedBigINumSign, result.sign)
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  result, err := new(BigIntMathSubtract).SubtractBigIntNums(
+    minuendBiNum, subtrahendBiNum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigIntNums(\n"+
+      "  minuendBiNum, subtrahendBiNum)\n"+
+      "minuendBiNum= '%v'\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendBiNumStr,
+      subtrahendBiNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNums_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNums_05"
+
   // minuend = 123.32
   minuendStr := "123.32"
 
@@ -683,14 +2529,9 @@ func TestBigIntMathSubtract_SubtractBigIntNums_05(t *testing.T) {
   subtrahendStr := "23.321"
 
   // result = 99.999
-  expectedResultStr := "99,999"
+  expectedBigINumStr := "99,999"
 
-  minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
-
-  if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-  }
+  expectedBigINumSign := 1
 
   expectedNumSeps := NumericSeparatorDto{}
   frenchDecSeparator := ','
@@ -701,70 +2542,375 @@ func TestBigIntMathSubtract_SubtractBigIntNums_05(t *testing.T) {
   expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
   expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
+  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
 
   if err != nil {
-    t.Errorf("Error returned by minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps). "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
   }
 
-  subtrahendBiNum, err := new(BigIntNum).NewNumStr(subtrahendStr)
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  minuendBiNum, err := new(BigIntNum).NewNumStrWithNumSeps(minuendStr, &usaNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(subtrahendStr) "+
-      "subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(minuendStr, &usaNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, usaNumSeps.String(), err.Error())
+    return
   }
 
-  result := new(BigIntMathSubtract).SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
 
-  actualResultStr := result.GetNumStr()
-
-  if expectedResultStr != actualResultStr {
-    t.Errorf("Error: Expected BigIntNum='%v'. Instead, BigIntNum= '%v'. ",
-      expectedResultStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumSeps := result.GetNumericSeparatorsDto()
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
-      expectedNumSeps.String(), actualNumSeps.String())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  subtrahendBiNum, err := new(BigIntNum).NewNumStrWithNumSeps(subtrahendStr, &usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(subtrahendStr, &usaNumSeps)\n"+
+      "subtrahendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, subtrahendStr, usaNumSeps.String(), err.Error())
+    return
+  }
+
+  err = subtrahendBiNum.IsValid("Validating subtrahendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = subtrahendBiNum.IsValid('Validating subtrahendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "subtrahendBiNumStr, err := subtrahendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if subtrahendStr != subtrahendBiNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values Not Equal\n"+
+      "Because subtrahendStr != subtrahendBiNumStr \n"+
+      "Expected subtrahendBiNumStr = '%v'\n"+
+      "  Actual subtrahendBiNumStr = '%v'\n\n",
+      ePrefix, subtrahendStr, subtrahendBiNumStr)
+
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractBigIntNums(
+    minuendBiNum, subtrahendBiNum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).SubtractBigIntNums(\n"+
+      "  minuendBiNum, subtrahendBiNum)\n"+
+      "minuendBiNum= '%v'\n"+
+      "subtrahendBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendBiNumStr,
+      subtrahendBiNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractBigIntNumArray_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathSubtract_SubtractBigIntNumArray_01"
 
   // minuend = 7328941.123456
   minuendStr := "7328941.123456"
 
   subtrahend0 := "123.894000"
+
   subtrahend1 := "67.1"
+
   subtrahend2 := "93.0"
+
   subtrahend3 := "-124498.67158"
+
   subtrahend4 := "647129.57"
+
   subtrahend5 := "28"
 
   // result = 6805998.231036
   expectedBigINumStr := "6805998.231036"
+
   expectedBigINumSign := 1
+
   var err error
-
-  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
-
-  if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
-      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
-  }
 
   minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(minuendStr) "+
-      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNum, err := new(BigIntNum).NewNumStr(minuendStr)\n"+
+      "minuendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, minuendStr, err.Error())
+    return
+  }
+
+  err = minuendBiNum.IsValid("Validating minuendBiNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = minuendBiNum.IsValid('Validating minuendBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  minuendBiNumStr, err := minuendBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "minuendBiNumStr, err := minuendBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   lenSubtrahends := 6
+
   subtrahendAry := make([]BigIntNum, lenSubtrahends)
 
   subtrahendAry[0], err = new(BigIntNum).NewNumStr(subtrahend0)
