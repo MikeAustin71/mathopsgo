@@ -3,3198 +3,5392 @@ package mathops
 import "testing"
 
 func TestBigIntMathSubtract_SubtractNumStr_01(t *testing.T) {
-	// minuend = 123.32
-	minuendStr := "123.32"
 
-	// subtrahend = 23.321
-	subtrahendStr := "23.321"
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStr_01"
 
-	// result = 99.999
-	expectedNumStr := "99.999"
-	expectedBigINumSign := 1
+  // minuend = 123.32
+  minuendStr := "123.32"
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  // subtrahend = 23.321
+  subtrahendStr := "23.321"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  // result = 99.999
+  expectedBigINumStr := "99.999"
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps"+
-			"(expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
-	}
+  expectedBigINumSign := 1
 
-	result, err := BigIntMathSubtract{}.SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStr(minuendStr, "+
-			"subtrahendStr, expectedNumSeps) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+    return
+  }
 
-	actualNumStr := result.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "subtrahendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      subtrahendStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStr_02(t *testing.T) {
-	// minuend = 949321.6712
-	minuendStr := "949321.6712"
 
-	// subtrahend = 45678.21
-	subtrahendStr := "45678.21"
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStr_02"
 
-	// result = 903643.4612
-	expectedNumStr := "903643.4612"
-	expectedBigINumSign := 1
+  var err error
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  // minuend = 949321.6712
+  minuendStr := "949321.6712"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  // subtrahend = 45678.21
+  subtrahendStr := "45678.21"
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
-	}
+  // result = 903643.4612
+  expectedBigINumStr := "903643.4612"
 
-	result, err := BigIntMathSubtract{}.SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+  expectedBigINumSign := 1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStr(minuendStr, "+
-			"subtrahendStr, expectedNumSeps) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	actualNumStr := result.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+    return
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "subtrahendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      subtrahendStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStr_03(t *testing.T) {
-	// minuend = -5876458.56789012
-	minuendStr := "-5876458.56789012"
 
-	// subtrahend = 847129.876
-	subtrahendStr := "847129.876"
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStr_03"
 
-	// result = -6723588.44389012
-	expectedNumStr := "-6723588.44389012"
-	expectedBigINumSign := -1
+  var err error
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  // minuend = -5876458.56789012
+  minuendStr := "-5876458.56789012"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  // subtrahend = 847129.876
+  subtrahendStr := "847129.876"
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
-	}
+  // result = -6723588.44389012
+  expectedBigINumStr := "-6723588.44389012"
 
-	result, err := BigIntMathSubtract{}.SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+  expectedBigINumSign := -1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStr(minuendStr, "+
-			"subtrahendStr, expectedNumSeps) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	actualNumStr := result.GetNumStr()
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "subtrahendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      subtrahendStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStr_04(t *testing.T) {
-	// minuend = -289.673849
-	minuendStr := "-289.673849"
 
-	// subtrahend = -14579.012
-	subtrahendStr := "-14579.012"
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStr_04"
 
-	// result = 14289.338151
-	expectedNumStr := "14289.338151"
-	expectedBigINumSign := 1
+  var err error
 
-	expectedNumSeps := NumericSeparatorDto{}
+  // minuend = -289.673849
+  minuendStr := "-289.673849"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  // subtrahend = -14579.012
+  subtrahendStr := "-14579.012"
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
-	}
+  // result = 14289.338151
+  expectedBigINumStr := "14289.338151"
 
-	result, err := BigIntMathSubtract{}.SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+  expectedBigINumSign := 1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStr(minuendStr, "+
-			"subtrahendStr, expectedNumSeps) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	expectedNumSeps.SetDefaultsIfEmpty()
+  usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+    return
+  }
 
-	actualNumStr := result.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStr(minuendStr, subtrahendStr, usaNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "subtrahendStr= '%v'\n"+
+      "usaNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      subtrahendStr,
+      usaNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStr_05(t *testing.T) {
-	// minuend = -289,673849
-	minuendStr := "-289,673849"
 
-	// subtrahend = -14579.012
-	subtrahendStr := "-14579,012"
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStr_05"
 
-	// result = 14289.338151
-	expectedNumStr := "14289,338151"
-	expectedBigINumSign := 1
+  var err error
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  // minuend = -289,673849
+  minuendStr := "-289,673849"
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  // subtrahend = -14579.012
+  subtrahendStr := "-14579,012"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  // result = 14289.338151
+  expectedBigINumStr := "14289,338151"
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
-	}
+  expectedBigINumSign := 1
 
-	result, err := BigIntMathSubtract{}.SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStr(minuendStr, "+
-			"subtrahendStr, expectedNumSeps) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	expectedNumSeps.SetDefaultsIfEmpty()
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	actualNumStr := result.GetNumStr()
+    return
+  }
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(BigIntMathSubtract).SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStr(minuendStr, subtrahendStr, expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "subtrahendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      subtrahendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrArray_01(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrArray_01"
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  var err error
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	// result = 6805998.231036
-	expectedNumStr := "6805998.231036"
-	expectedBigINumSign := 1
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  // result = 6805998.231036
+  expectedBigINumStr := "6805998.231036"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINumSign := 1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	subtrahendAry[0] = subtrahend0
-	subtrahendAry[1] = subtrahend1
-	subtrahendAry[2] = subtrahend2
-	subtrahendAry[3] = subtrahend3
-	subtrahendAry[4] = subtrahend4
-	subtrahendAry[5] = subtrahend5
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+    return
+  }
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrArray("+
-			"minuendStr, subtrahendAry, expectedNumSeps). Error='%v' ", err.Error())
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	actualNumStr := result.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  lenSubtrahends := 6
+
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  subtrahendAry[0] = subtrahend0
+  subtrahendAry[1] = subtrahend1
+  subtrahendAry[2] = subtrahend2
+  subtrahendAry[3] = subtrahend3
+  subtrahendAry[4] = subtrahend4
+  subtrahendAry[5] = subtrahend5
+
+  result, err := new(BigIntMathSubtract).SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrArray_02(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrArray_02"
 
-	// minuend = -18,973,642.1234567
-	minuendStr := "-18973642.1234567"
+  var err error
 
-	subtrahend0 := "737.21"
-	subtrahend1 := "9637591.879546"
-	subtrahend2 := "28"
-	subtrahend3 := "5284.9765"
-	subtrahend4 := "-189291837.12"
-	subtrahend5 := "7638932.12398765"
+  // minuend = -18,973,642.1234567
+  minuendStr := "-18973642.1234567"
 
-	// result = 153,035,620.80650965
-	expectedNumStr := "153035620.80650965"
-	expectedBigINumSign := 1
+  subtrahend0 := "737.21"
+  subtrahend1 := "9637591.879546"
+  subtrahend2 := "28"
+  subtrahend3 := "5284.9765"
+  subtrahend4 := "-189291837.12"
+  subtrahend5 := "7638932.12398765"
 
-	expectedNumSeps := NumericSeparatorDto{}
+  // result = 153,035,620.80650965
+  expectedBigINumStr := "153035620.80650965"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINumSign := 1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	subtrahendAry[0] = subtrahend0
-	subtrahendAry[1] = subtrahend1
-	subtrahendAry[2] = subtrahend2
-	subtrahendAry[3] = subtrahend3
-	subtrahendAry[4] = subtrahend4
-	subtrahendAry[5] = subtrahend5
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+    return
+  }
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrArray("+
-			"minuendStr, subtrahendAry). Error='%v' ", err.Error())
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	expectedNumSeps.SetDefaultsIfEmpty()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	actualNumStr := result.GetNumStr()
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+    return
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  lenSubtrahends := 6
+
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  subtrahendAry[0] = subtrahend0
+  subtrahendAry[1] = subtrahend1
+  subtrahendAry[2] = subtrahend2
+  subtrahendAry[3] = subtrahend3
+  subtrahendAry[4] = subtrahend4
+  subtrahendAry[5] = subtrahend5
+
+  result, err := new(BigIntMathSubtract).SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrArray_03(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrArray_03"
 
-	// minuend =   1,718,973,642.1234567
-	minuendStr := "1718973642.1234567"
+  var err error
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  // minuend =   1,718,973,642.1234567
+  minuendStr := "1718973642.1234567"
 
-	// Result:  2,757,547,756.287792379
-	expectedNumStr := "2757547756.287792379"
-	expectedBigINumSign := 1
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  // Result:  2,757,547,756.287792379
+  expectedBigINumStr := "2757547756.287792379"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINumSign := 1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]string, lenSubtrahends)
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-	subtrahendAry[0] = subtrahend0
-	subtrahendAry[1] = subtrahend1
-	subtrahendAry[2] = subtrahend2
-	subtrahendAry[3] = subtrahend3
-	subtrahendAry[4] = subtrahend4
-	subtrahendAry[5] = subtrahend5
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrArray("+
-			"minuendStr, subtrahendAry, expectedNumSeps). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+    return
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	actualNumStr := result.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  lenSubtrahends := 6
+
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  subtrahendAry[0] = subtrahend0
+  subtrahendAry[1] = subtrahend1
+  subtrahendAry[2] = subtrahend2
+  subtrahendAry[3] = subtrahend3
+  subtrahendAry[4] = subtrahend4
+  subtrahendAry[5] = subtrahend5
+
+  result, err := new(BigIntMathSubtract).SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrArray_04(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrArray_04"
 
-	// minuend =   -1,718,973,642.1234567
-	minuendStr := "-1718973642.1234567"
+  var err error
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  // minuend =   -1,718,973,642.1234567
+  minuendStr := "-1718973642.1234567"
 
-	// Result:   -680,399,527.959121021
-	expectedNumStr := "-680399527.959121021"
-	expectedBigINumSign := -1
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  // Result:   -680,399,527.959121021
+  expectedBigINumStr := "-680399527.959121021"
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINumSign := -1
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]string, lenSubtrahends)
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-	subtrahendAry[0] = subtrahend0
-	subtrahendAry[1] = subtrahend1
-	subtrahendAry[2] = subtrahend2
-	subtrahendAry[3] = subtrahend3
-	subtrahendAry[4] = subtrahend4
-	subtrahendAry[5] = subtrahend5
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrArray("+
-			"minuendStr, subtrahendAry, expectedNumSeps). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+    return
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	actualNumStr := result.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  lenSubtrahends := 6
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  subtrahendAry[0] = subtrahend0
+  subtrahendAry[1] = subtrahend1
+  subtrahendAry[2] = subtrahend2
+  subtrahendAry[3] = subtrahend3
+  subtrahendAry[4] = subtrahend4
+  subtrahendAry[5] = subtrahend5
+
+  result, err := new(BigIntMathSubtract).SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrArray_05(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrArray_05"
 
-	// minuend =   -1 718 973 642,1234567
-	minuendStr := "-1718973642,1234567"
+  var err error
 
-	subtrahend0 := "-28934682,721"
-	subtrahend1 := "424,987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62,94"
-	subtrahend4 := "-999999999,99999"
-	subtrahend5 := "-9638932,371"
+  // minuend =   -1 718 973 642,1234567
+  minuendStr := "-1718973642,1234567"
 
-	// Result:   -680 399 527,959121021
-	expectedNumStr := "-680399527,959121021"
-	expectedBigINumSign := -1
+  subtrahend0 := "-28934682,721"
+  subtrahend1 := "424,987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62,94"
+  subtrahend4 := "-999999999,99999"
+  subtrahend5 := "-9638932,371"
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  // Result:   -680 399 527,959121021
+  expectedBigINumStr := "-680399527,959121021"
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedBigINumSign := -1
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]string, lenSubtrahends)
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-	subtrahendAry[0] = subtrahend0
-	subtrahendAry[1] = subtrahend1
-	subtrahendAry[2] = subtrahend2
-	subtrahendAry[3] = subtrahend3
-	subtrahendAry[4] = subtrahend4
-	subtrahendAry[5] = subtrahend5
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrArray("+
-			"minuendStr, subtrahendAry, expectedNumSeps). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+      "expectedBigINumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigINumStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+    return
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-	actualNumStr := result.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
-	}
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if expectedBigINumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  lenSubtrahends := 6
+
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  subtrahendAry[0] = subtrahend0
+  subtrahendAry[1] = subtrahend1
+  subtrahendAry[2] = subtrahend2
+  subtrahendAry[3] = subtrahend3
+  subtrahendAry[4] = subtrahend4
+  subtrahendAry[5] = subtrahend5
+
+  result, err := new(BigIntMathSubtract).SubtractNumStrArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(ePrefix)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBigInt, err := result.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBigInt, err := result.GetBigInt()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultSignValue, err := result.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultSignValue, err := result.GetSign()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultNumSeps, err := result.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedEqualsResult, err := expectedBigINum.Equal(result)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedEqualsResult, err := expectedBigINum.Equal(result)\n"+
+      "expectedBigINum= '%v'\n"+
+      "result= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumStr, resultNumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsResult {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'result' values NOT Equal\n"+
+      "Because expectedEqualsResult = 'false' \n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(resultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Big Int Values NOT Equal\n"+
+      "Because expectedBigINumBigInt.Cmp(resultBigInt) != 0 \n"+
+      "Expected resultBigInt = '%v'\n"+
+      "  Actual resultBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigINumStr != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Number String Values NOT Equal\n"+
+      "Because expectedBigINumStr != resultNumStr \n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, expectedBigINumStr, resultNumStr)
+
+    return
+  }
+
+  if expectedBigINumSign != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedBigINumSign != resultSignValue \n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(resultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected resultNumSeps = '%v'\n"+
+      "  Actual resultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), resultNumSeps.String())
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_01(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_01"
 
-	// minuend =   100
-	minuendNumStr := "100"
+  var err error
 
-	subtrahendStrs := []string{
-		"5",
-		"10",
-		"30",
-		"60.55",
-		"-100.1",
-		"-5.6",
-	}
+  // minuend =   100
+  minuendStr := "100"
 
-	expectedStrs := []string{
-		"95",
-		"90",
-		"70",
-		"39.45",
-		"200.1",
-		"105.6",
-	}
+  subtrahendStrs := []string{
+    "5",
+    "10",
+    "30",
+    "60.55",
+    "-100.1",
+    "-5.6",
+  }
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedStrs := []string{
+    "95",
+    "90",
+    "70",
+    "39.45",
+    "200.1",
+    "105.6",
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
-	expectedResultsAry := make([]string, lenSubtrahends)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	for i := 0; i < lenSubtrahends; i++ {
+  lenSubtrahends := len(subtrahendStrs)
 
-		subtrahendAry[i] = subtrahendStrs[i]
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-		expectedResultsAry[i] = expectedStrs[i]
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-	}
+    return
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendNumStr, subtrahendAry, expectedNumSeps)
+  subtrahendAry := make([]string, lenSubtrahends)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendNumStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendNumStr, err.Error())
-	}
+  expectedResultsAry := make([]string, lenSubtrahends)
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		if resultArray[k] != expectedResultsAry[k] {
-			t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k], resultArray[k])
-		}
+    subtrahendAry[i] = subtrahendStrs[i]
 
-	}
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendNumStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_02(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_02"
 
-	// minuend =   5051
-	minuendNumStr := "5051"
+  var err error
 
-	subtrahendStrs := []string{
-		"8000",
-		"6051.123456",
-		"-30871.25",
-		"604.55",
-		"9100.123",
-		"-115.76",
-	}
+  // minuend =   5051
+  minuendStr := "5051"
 
-	expectedStrs := []string{
-		"-2949",
-		"-1000.123456",
-		"35922.25",
-		"4446.45",
-		"-4049.123",
-		"5166.76",
-	}
+  subtrahendStrs := []string{
+    "8000",
+    "6051.123456",
+    "-30871.25",
+    "604.55",
+    "9100.123",
+    "-115.76",
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedStrs := []string{
+    "-2949",
+    "-1000.123456",
+    "35922.25",
+    "4446.45",
+    "-4049.123",
+    "5166.76",
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	for i := 0; i < lenSubtrahends; i++ {
+  lenSubtrahends := len(subtrahendStrs)
 
-		subtrahendAry[i] = subtrahendStrs[i]
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-	}
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendNumStr, subtrahendAry, expectedNumSeps)
+    return
+  }
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendNumStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendNumStr, err.Error())
-	}
+  subtrahendAry := make([]string, lenSubtrahends)
 
-	for k := 0; k < lenSubtrahends; k++ {
+  expectedResultsAry := make([]string, lenSubtrahends)
 
-		if resultArray[k] != expectedStrs[k] {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedStrs[k], resultArray[k])
-		}
-	}
+  for i := 0; i < lenSubtrahends; i++ {
 
+    subtrahendAry[i] = subtrahendStrs[i]
+
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_03(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_03"
 
-	// minuend =   -20051.974578
-	minuendStr := "-20051.974578"
+  var err error
 
-	subtrahendStrs := []string{
-		"476.543798",
-		"6051.123456",
-		"-270871.25",
-		"15604.5589321",
-		"987100.123",
-		"-114555.76",
-	}
+  // minuend =   -20051.974578
+  minuendStr := "-20051.974578"
 
-	expectedStrs := []string{
-		"-20528.518376",
-		"-26103.098034",
-		"250819.275422",
-		"-35656.5335101",
-		"-1007152.097578",
-		"94503.785422",
-	}
+  subtrahendStrs := []string{
+    "476.543798",
+    "6051.123456",
+    "-270871.25",
+    "15604.5589321",
+    "987100.123",
+    "-114555.76",
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  expectedStrs := []string{
+    "-20528.518376",
+    "-26103.098034",
+    "250819.275422",
+    "-35656.5335101",
+    "-1007152.097578",
+    "94503.785422",
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	for i := 0; i < lenSubtrahends; i++ {
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-		subtrahendAry[i] = subtrahendStrs[i]
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	}
+  lenSubtrahends := len(subtrahendStrs)
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendStr, err.Error())
-	}
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-	for k := 0; k < lenSubtrahends; k++ {
+    return
+  }
 
-		if resultArray[k] != expectedStrs[k] {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedStrs[k], resultArray[k])
-		}
-	}
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  expectedResultsAry := make([]string, lenSubtrahends)
+
+  for i := 0; i < lenSubtrahends; i++ {
+
+    subtrahendAry[i] = subtrahendStrs[i]
+
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_04(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_04"
 
-	// minuend =   0
-	minuendStr := "0"
+  var err error
 
-	subtrahendStrs := []string{
-		"476.543798",
-		"6051.123456",
-		"-270871.25",
-		"15604.5589321",
-		"987100.123",
-		"-114555.76",
-	}
+  // minuend =   0
+  minuendStr := "0"
 
-	expectedStrs := []string{
-		"-476.543798",
-		"-6051.123456",
-		"270871.25",
-		"-15604.5589321",
-		"-987100.123",
-		"114555.76",
-	}
+  subtrahendStrs := []string{
+    "476.543798",
+    "6051.123456",
+    "-270871.25",
+    "15604.5589321",
+    "987100.123",
+    "-114555.76",
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  expectedStrs := []string{
+    "-476.543798",
+    "-6051.123456",
+    "270871.25",
+    "-15604.5589321",
+    "-987100.123",
+    "114555.76",
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	for i := 0; i < lenSubtrahends; i++ {
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-		subtrahendAry[i] = subtrahendStrs[i]
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	}
+  lenSubtrahends := len(subtrahendStrs)
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendStr, err.Error())
-	}
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-	for k := 0; k < lenSubtrahends; k++ {
+    return
+  }
 
-		if expectedStrs[k] != resultArray[k] {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedStrs[k], resultArray[k])
-		}
+  subtrahendAry := make([]string, lenSubtrahends)
 
-	}
+  expectedResultsAry := make([]string, lenSubtrahends)
 
+  for i := 0; i < lenSubtrahends; i++ {
+
+    subtrahendAry[i] = subtrahendStrs[i]
+
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_05(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_05"
 
-	// minuend =   0
-	minuendStr := "98.2"
+  var err error
 
-	subtrahendStrs := []string{
-		"0",
-		"0.000",
-		"0",
-		"0",
-		"0.00000",
-		"0.0",
-	}
+  // minuend =   0
+  minuendStr := "98.2"
 
-	expectedStrs := []string{
-		"98.2",
-		"98.200",
-		"98.2",
-		"98.2",
-		"98.20000",
-		"98.2",
-	}
+  subtrahendStrs := []string{
+    "0",
+    "0.000",
+    "0",
+    "0",
+    "0.00000",
+    "0.0",
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  expectedStrs := []string{
+    "98.2",
+    "98.200",
+    "98.2",
+    "98.2",
+    "98.20000",
+    "98.2",
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	for i := 0; i < lenSubtrahends; i++ {
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-		subtrahendAry[i] = subtrahendStrs[i]
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+  lenSubtrahends := len(subtrahendStrs)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendStr, err.Error())
-	}
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-	for k := 0; k < lenSubtrahends; k++ {
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-		if expectedStrs[k] != resultArray[k] {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedStrs[k], resultArray[k])
-		}
-	}
+    return
+  }
+
+  subtrahendAry := make([]string, lenSubtrahends)
+
+  expectedResultsAry := make([]string, lenSubtrahends)
+
+  for i := 0; i < lenSubtrahends; i++ {
+
+    subtrahendAry[i] = subtrahendStrs[i]
+
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrOutputToArray_06(t *testing.T) {
 
-	var err error
+  ePrefix := "TestBigIntMathSubtract_SubtractNumStrOutputToArray_06"
 
-	// minuend =   5051
-	minuendNumStr := "5051"
+  var err error
 
-	subtrahendStrs := []string{
-		"8000",
-		"6051,123456",
-		"-30871,25",
-		"604,55",
-		"9100,123",
-		"-115,76",
-	}
+  // minuend =   5051
+  minuendStr := "5051"
 
-	expectedStrs := []string{
-		"-2949",
-		"-1000,123456",
-		"35922,25",
-		"4446,45",
-		"-4049,123",
-		"5166,76",
-	}
+  subtrahendStrs := []string{
+    "8000",
+    "6051,123456",
+    "-30871,25",
+    "604,55",
+    "9100,123",
+    "-115,76",
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedStrs := []string{
+    "-2949",
+    "-1000,123456",
+    "35922,25",
+    "4446,45",
+    "-4049,123",
+    "5166,76",
+  }
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]string, lenSubtrahends)
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	for i := 0; i < lenSubtrahends; i++ {
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
 
-		subtrahendAry[i] = subtrahendStrs[i]
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
 
-	}
+  lenSubtrahends := len(subtrahendStrs)
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrOutputToArray(minuendNumStr, subtrahendAry, expectedNumSeps)
+  lenExpectedNumStrsAry := len(expectedStrs)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrOutputToArray"+
-			"(minuendNumStr, subtrahendAry, expectedNumSeps) minuendNumStr='%v'  Error='%v'. ",
-			minuendNumStr, err.Error())
-	}
+  if lenExpectedNumStrsAry != lenSubtrahends {
+    t.Errorf("%v\n"+
+      "Error: Test Data is corrupted!\n"+
+      "Because lenExpectedNumStrsAry := len(subtrahendStrs)\n"+
+      "Expected Length of subtrahendStrs Array = '%v'\n"+
+      "  Actual Length of subtrahendStrs Array = '%v'\n\n",
+      ePrefix, lenExpectedNumStrsAry, lenSubtrahends)
 
-	for k := 0; k < lenSubtrahends; k++ {
+    return
+  }
 
-		if resultArray[k] != expectedStrs[k] {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedStrs[k], resultArray[k])
-		}
-	}
+  subtrahendAry := make([]string, lenSubtrahends)
 
+  expectedResultsAry := make([]string, lenSubtrahends)
+
+  for i := 0; i < lenSubtrahends; i++ {
+
+    subtrahendAry[i] = subtrahendStrs[i]
+
+    expectedResultsAry[i] = expectedStrs[i]
+
+  }
+
+  result, err :=
+    new(BigIntMathSubtract).SubtractNumStrOutputToArray(minuendStr, subtrahendAry, expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathSubtract).\n"+
+      "  SubtractNumStrOutputToArray(minuendStr, subtrahendAry[...], expectedNumSeps)\n"+
+      "minuendStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      minuendStr,
+      expectedNumSeps.String(),
+      err.Error())
+
+    return
+  }
+
+  for k := 0; k < lenSubtrahends; k++ {
+
+    if expectedResultsAry[k] != result[k] {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because result[%d] != expectedResultsAry[%d]\n"+
+        "Expected result[%d] = '%v'\n"+
+        "  Actual result[%d] = '%v'\n\n",
+        ePrefix, k, k, k, expectedResultsAry[k], k, result[k])
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestBigIntMathSubtract_SubtractNumStrSeries_01(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	// result = 6805998.231036
-	expectedNumStr := "6805998.231036"
-	expectedBigINumSign := 1
+  // result = 6805998.231036
+  expectedNumStr := "6805998.231036"
+  expectedBigINumSign := 1
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).New()
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
+      "expectedNumStr, expectedNumSeps) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrSeries(
-		expectedNumSeps,
-		minuendStr,
-		subtrahend0,
-		subtrahend1,
-		subtrahend2,
-		subtrahend3,
-		subtrahend4,
-		subtrahend5)
+  result, err := new(BigIntMathSubtract).SubtractNumStrSeries(
+    expectedNumSeps,
+    minuendStr,
+    subtrahend0,
+    subtrahend1,
+    subtrahend2,
+    subtrahend3,
+    subtrahend4,
+    subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrSeries("+
-			"minuendStr, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrSeries("+
+      "minuendStr, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+      expectedNumStr, actualNumStr)
 
-	}
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrSeries_02(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = -18,973,642.1234567
-	minuendStr := "-18973642.1234567"
+  // minuend = -18,973,642.1234567
+  minuendStr := "-18973642.1234567"
 
-	subtrahend0 := "737.21"
-	subtrahend1 := "9637591.879546"
-	subtrahend2 := "28"
-	subtrahend3 := "5284.9765"
-	subtrahend4 := "-189291837.12"
-	subtrahend5 := "7638932.12398765"
+  subtrahend0 := "737.21"
+  subtrahend1 := "9637591.879546"
+  subtrahend2 := "28"
+  subtrahend3 := "5284.9765"
+  subtrahend4 := "-189291837.12"
+  subtrahend5 := "7638932.12398765"
 
-	// result = 153,035,620.80650965
-	expectedNumStr := "153035620.80650965"
-	expectedBigINumSign := 1
+  // result = 153,035,620.80650965
+  expectedNumStr := "153035620.80650965"
+  expectedBigINumSign := 1
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).New()
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
+      "expectedNumStr, expectedNumSeps) "+
+      "expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrSeries(
-		expectedNumSeps,
-		minuendStr,
-		subtrahend0,
-		subtrahend1,
-		subtrahend2,
-		subtrahend3,
-		subtrahend4,
-		subtrahend5)
+  result, err := new(BigIntMathSubtract).SubtractNumStrSeries(
+    expectedNumSeps,
+    minuendStr,
+    subtrahend0,
+    subtrahend1,
+    subtrahend2,
+    subtrahend3,
+    subtrahend4,
+    subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrSeries("+
-			"minuendStr, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrSeries("+
+      "minuendStr, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+      expectedNumStr, actualNumStr)
 
-	}
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrSeries_03(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   1,718,973,642.1234567
-	minuendStr := "1718973642.1234567"
+  // minuend =   1,718,973,642.1234567
+  minuendStr := "1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:  2,757,547,756.287792379
-	expectedNumStr := "2757547756.287792379"
-	expectedBigINumSign := 1
+  // Result:  2,757,547,756.287792379
+  expectedNumStr := "2757547756.287792379"
+  expectedBigINumSign := 1
 
-	expectedNumSeps := new(NumericSeparatorDto).New()
+  expectedNumSeps := new(NumericSeparatorDto).New()
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
+      "expectedNumStr, expectedNumSeps) "+
+      "expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrSeries(
-		expectedNumSeps,
-		minuendStr,
-		subtrahend0,
-		subtrahend1,
-		subtrahend2,
-		subtrahend3,
-		subtrahend4,
-		subtrahend5)
+  result, err := new(BigIntMathSubtract).SubtractNumStrSeries(
+    expectedNumSeps,
+    minuendStr,
+    subtrahend0,
+    subtrahend1,
+    subtrahend2,
+    subtrahend3,
+    subtrahend4,
+    subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrSeries("+
-			"minuendStr, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrSeries("+
+      "minuendStr, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+      expectedNumStr, actualNumStr)
 
-	}
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrSeries_04(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   -1,718,973,642.1234567
-	minuendStr := "-1718973642.1234567"
+  // minuend =   -1,718,973,642.1234567
+  minuendStr := "-1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:   -680,399,527.959121021
-	expectedNumStr := "-680399527.959121021"
-	expectedBigINumSign := -1
+  // Result:   -680,399,527.959121021
+  expectedNumStr := "-680399527.959121021"
+  expectedBigINumSign := -1
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+  expectedNumSeps := NumericSeparatorDto{}
+  expectedNumSeps.DecimalSeparator = '.'
+  expectedNumSeps.ThousandsSeparator = ','
+  expectedNumSeps.CurrencySymbol = '$'
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
+      "expectedNumStr, expectedNumSeps) "+
+      "expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrSeries(
-		expectedNumSeps,
-		minuendStr,
-		subtrahend0,
-		subtrahend1,
-		subtrahend2,
-		subtrahend3,
-		subtrahend4,
-		subtrahend5)
+  result, err := new(BigIntMathSubtract).SubtractNumStrSeries(
+    expectedNumSeps,
+    minuendStr,
+    subtrahend0,
+    subtrahend1,
+    subtrahend2,
+    subtrahend3,
+    subtrahend4,
+    subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrSeries("+
-			"minuendStr, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrSeries("+
+      "minuendStr, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+      expectedNumStr, actualNumStr)
 
-	}
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrSeries_05(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941,123456
-	minuendStr := "7328941,123456"
+  // minuend = 7328941,123456
+  minuendStr := "7328941,123456"
 
-	subtrahend0 := "123,894000"
-	subtrahend1 := "67,1"
-	subtrahend2 := "93,0"
-	subtrahend3 := "-124498,67158"
-	subtrahend4 := "647129,57"
-	subtrahend5 := "28"
+  subtrahend0 := "123,894000"
+  subtrahend1 := "67,1"
+  subtrahend2 := "93,0"
+  subtrahend3 := "-124498,67158"
+  subtrahend4 := "647129,57"
+  subtrahend5 := "28"
 
-	// result = 6805998,231036
-	expectedNumStr := "6805998,231036"
-	expectedBigINumSign := 1
+  // result = 6805998,231036
+  expectedNumStr := "6805998,231036"
+  expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedNumStr, expectedNumSeps) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedNumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStrWithNumSeps("+
+      "expectedNumStr, expectedNumSeps) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrSeries(
-		expectedNumSeps,
-		minuendStr,
-		subtrahend0,
-		subtrahend1,
-		subtrahend2,
-		subtrahend3,
-		subtrahend4,
-		subtrahend5)
+  result, err := new(BigIntMathSubtract).SubtractNumStrSeries(
+    expectedNumSeps,
+    minuendStr,
+    subtrahend0,
+    subtrahend1,
+    subtrahend2,
+    subtrahend3,
+    subtrahend4,
+    subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrSeries("+
-			"minuendStr, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrSeries("+
+      "minuendStr, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-			expectedNumStr, actualNumStr)
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+      expectedNumStr, actualNumStr)
 
-	}
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDto_01(t *testing.T) {
-	// minuend = 123.32
-	minuendStr := "123.32"
+  // minuend = 123.32
+  minuendStr := "123.32"
 
-	// subtrahend = 23.321
-	subtrahendStr := "23.321"
+  // subtrahend = 23.321
+  subtrahendStr := "23.321"
 
-	// result = 99.999
-	expectedBigINumStr := "99.999"
+  // result = 99.999
+  expectedBigINumStr := "99.999"
 
-	expectedBigINumSign := 1
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v'", minuendStr, err.Error())
+  }
 
-	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+  nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
-			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
+      "subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v'. ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v'. ", expectedBigINumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
-			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, "+
+      "nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+      minuendStr, subtrahendStr, err.Error())
+  }
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if !expectedBigINum.Equal(result) {
+    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDto_02(t *testing.T) {
-	// minuend = 949321.6712
-	minuendStr := "949321.6712"
+  // minuend = 949321.6712
+  minuendStr := "949321.6712"
 
-	// subtrahend = 45678.21
-	subtrahendStr := "45678.21"
+  // subtrahend = 45678.21
+  subtrahendStr := "45678.21"
 
-	// result = 903643.4612
-	expectedBigINumStr := "903643.4612"
-	expectedBigINumSign := 1
+  // result = 903643.4612
+  expectedBigINumStr := "903643.4612"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v'", minuendStr, err.Error())
+  }
 
-	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+  nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
-			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
+      "subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
-			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, "+
+      "nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+      minuendStr, subtrahendStr, err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDto_03(t *testing.T) {
-	// minuend = -5876458.56789012
-	minuendStr := "-5876458.56789012"
+  // minuend = -5876458.56789012
+  minuendStr := "-5876458.56789012"
 
-	// subtrahend = 847129.876
-	subtrahendStr := "847129.876"
+  // subtrahend = 847129.876
+  subtrahendStr := "847129.876"
 
-	// result = -6723588.44389012
-	expectedBigINumStr := "-6723588.44389012"
-	expectedBigINumSign := -1
+  // result = -6723588.44389012
+  expectedBigINumStr := "-6723588.44389012"
+  expectedBigINumSign := -1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v'", minuendStr, err.Error())
+  }
 
-	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+  nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
-			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
+      "subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
-			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, "+
+      "nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+      minuendStr, subtrahendStr, err.Error())
+  }
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if !expectedBigINum.Equal(result) {
+    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDto_04(t *testing.T) {
-	// minuend = -289.673849
-	minuendStr := "-289.673849"
+  // minuend = -289.673849
+  minuendStr := "-289.673849"
 
-	// subtrahend = -14579.012
-	subtrahendStr := "-14579.012"
+  // subtrahend = -14579.012
+  subtrahendStr := "-14579.012"
 
-	// result = 14289.338151
-	expectedBigINumStr := "14289.338151"
-	expectedBigINumSign := 1
+  // result = 14289.338151
+  expectedBigINumStr := "14289.338151"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v'", minuendStr, err.Error())
+  }
 
-	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+  nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
-			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
+      "subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
-			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, "+
+      "nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+      minuendStr, subtrahendStr, err.Error())
+  }
 
-	if !expectedBigINum.Equal(result) {
-		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if !expectedBigINum.Equal(result) {
+    t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDto_05(t *testing.T) {
-	// minuend = 123.32
-	minuendStr := "123.32"
+  // minuend = 123.32
+  minuendStr := "123.32"
 
-	// subtrahend = 23.321
-	subtrahendStr := "23.321"
+  // subtrahend = 23.321
+  subtrahendStr := "23.321"
 
-	// result = 99.999
-	expectedNumStr := "99,999"
+  // result = 99.999
+  expectedNumStr := "99,999"
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v'", minuendStr, err.Error())
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+  err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
+      "Error='%v' ", err.Error())
+  }
 
-	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+  nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
-			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) "+
+      "subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
-			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
-			minuendStr, subtrahendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDto(nDtoMinuend, "+
+      "nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+      minuendStr, subtrahendStr, err.Error())
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr)
-	}
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+      expectedNumStr, actualNumStr)
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_01(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	// result = 6805998.231036
-	expectedBigINumStr := "6805998.231036"
-	expectedBigINumSign := 1
+  // result = 6805998.231036
+  expectedBigINumStr := "6805998.231036"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractDecimalArray("+
-			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractDecimalArray("+
+      "nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_02(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = -18,973,642.1234567
-	minuendStr := "-18973642.1234567"
+  // minuend = -18,973,642.1234567
+  minuendStr := "-18973642.1234567"
 
-	subtrahend0 := "737.21"
-	subtrahend1 := "9637591.879546"
-	subtrahend2 := "28"
-	subtrahend3 := "5284.9765"
-	subtrahend4 := "-189291837.12"
-	subtrahend5 := "7638932.12398765"
+  subtrahend0 := "737.21"
+  subtrahend1 := "9637591.879546"
+  subtrahend2 := "28"
+  subtrahend3 := "5284.9765"
+  subtrahend4 := "-189291837.12"
+  subtrahend5 := "7638932.12398765"
 
-	// result = 153,035,620.80650965
-	expectedBigINumStr := "153035620.80650965"
+  // result = 153,035,620.80650965
+  expectedBigINumStr := "153035620.80650965"
 
-	expectedBigINumSign := 1
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoArray("+
-			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoArray("+
+      "nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_03(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   1,718,973,642.1234567
-	minuendStr := "1718973642.1234567"
+  // minuend =   1,718,973,642.1234567
+  minuendStr := "1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:  2,757,547,756.287792379
-	expectedBigINumStr := "2757547756.287792379"
-	expectedBigINumSign := 1
+  // Result:  2,757,547,756.287792379
+  expectedBigINumStr := "2757547756.287792379"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoArray("+
-			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoArray("+
+      "nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_04(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   -1,718,973,642.1234567
-	minuendStr := "-1718973642.1234567"
+  // minuend =   -1,718,973,642.1234567
+  minuendStr := "-1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:   -680,399,527.959121021
-	expectedBigINumStr := "-680399527.959121021"
-	expectedBigINumSign := -1
+  // Result:   -680,399,527.959121021
+  expectedBigINumStr := "-680399527.959121021"
+  expectedBigINumSign := -1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoArray("+
-			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoArray("+
+      "nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_05(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	// result = 6805998,231036
-	expectedNumStr := "6805998,231036"
+  // result = 6805998,231036
+  expectedNumStr := "6805998,231036"
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+  err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
+      "Error='%v' ", err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoArray(nDtoMinuend, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractDecimalArray("+
-			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractDecimalArray("+
+      "nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr= '%v'. ",
-			expectedNumStr, actualNumStr)
-	}
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr= '%v'. ",
+      expectedNumStr, actualNumStr)
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_01(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   100
-	minuendStr := "100"
+  // minuend =   100
+  minuendStr := "100"
 
-	subtrahendStrs := []string{
-		"5",
-		"10",
-		"30",
-		"60.55",
-		"-100.1",
-		"-5.6",
-	}
+  subtrahendStrs := []string{
+    "5",
+    "10",
+    "30",
+    "60.55",
+    "-100.1",
+    "-5.6",
+  }
 
-	expectedStrs := []string{
-		"95",
-		"90",
-		"70",
-		"39.45",
-		"200.1",
-		"105.6",
-	}
+  expectedStrs := []string{
+    "95",
+    "90",
+    "70",
+    "39.45",
+    "200.1",
+    "105.6",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
-	}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
-			t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
-		}
-	}
+    if !resultArray[k].Equal(expectedResultsAry[k]) {
+      t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
+        expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+    }
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_02(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   5051
-	minuendStr := "5051"
+  // minuend =   5051
+  minuendStr := "5051"
 
-	subtrahendStrs := []string{
-		"8000",
-		"6051.123456",
-		"-30871.25",
-		"604.55",
-		"9100.123",
-		"-115.76",
-	}
+  subtrahendStrs := []string{
+    "8000",
+    "6051.123456",
+    "-30871.25",
+    "604.55",
+    "9100.123",
+    "-115.76",
+  }
 
-	expectedStrs := []string{
-		"-2949",
-		"-1000.123456",
-		"35922.25",
-		"4446.45",
-		"-4049.123",
-		"5166.76",
-	}
+  expectedStrs := []string{
+    "-2949",
+    "-1000.123456",
+    "35922.25",
+    "4446.45",
+    "-4049.123",
+    "5166.76",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
 
-	}
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
-		}
+    if !resultArray[k].Equal(expectedResultsAry[k]) {
+      t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+        expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+    }
 
-	}
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_03(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   -20051.974578
-	minuendStr := "-20051.974578"
+  // minuend =   -20051.974578
+  minuendStr := "-20051.974578"
 
-	subtrahendStrs := []string{
-		"476.543798",
-		"6051.123456",
-		"-270871.25",
-		"15604.5589321",
-		"987100.123",
-		"-114555.76",
-	}
+  subtrahendStrs := []string{
+    "476.543798",
+    "6051.123456",
+    "-270871.25",
+    "15604.5589321",
+    "987100.123",
+    "-114555.76",
+  }
 
-	expectedStrs := []string{
-		"-20528.518376",
-		"-26103.098034",
-		"250819.275422",
-		"-35656.5335101",
-		"-1007152.097578",
-		"94503.785422",
-	}
+  expectedStrs := []string{
+    "-20528.518376",
+    "-26103.098034",
+    "250819.275422",
+    "-35656.5335101",
+    "-1007152.097578",
+    "94503.785422",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
 
-	}
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
-		}
+    if !resultArray[k].Equal(expectedResultsAry[k]) {
+      t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+        expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+    }
 
-	}
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_04(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   0
-	minuendStr := "0"
+  // minuend =   0
+  minuendStr := "0"
 
-	subtrahendStrs := []string{
-		"476.543798",
-		"6051.123456",
-		"-270871.25",
-		"15604.5589321",
-		"987100.123",
-		"-114555.76",
-	}
+  subtrahendStrs := []string{
+    "476.543798",
+    "6051.123456",
+    "-270871.25",
+    "15604.5589321",
+    "987100.123",
+    "-114555.76",
+  }
 
-	expectedStrs := []string{
-		"-476.543798",
-		"-6051.123456",
-		"270871.25",
-		"-15604.5589321",
-		"-987100.123",
-		"114555.76",
-	}
+  expectedStrs := []string{
+    "-476.543798",
+    "-6051.123456",
+    "270871.25",
+    "-15604.5589321",
+    "-987100.123",
+    "114555.76",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
 
-	}
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
-		}
-	}
+    if !resultArray[k].Equal(expectedResultsAry[k]) {
+      t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+        expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+    }
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   0
-	minuendStr := "98.2"
+  // minuend =   0
+  minuendStr := "98.2"
 
-	subtrahendStrs := []string{
-		"0",
-		"0.000",
-		"0",
-		"0",
-		"0.00000",
-		"0.0",
-	}
+  subtrahendStrs := []string{
+    "0",
+    "0.000",
+    "0",
+    "0",
+    "0.00000",
+    "0.0",
+  }
 
-	expectedStrs := []string{
-		"98.2",
-		"98.200",
-		"98.2",
-		"98.2",
-		"98.20000",
-		"98.2",
-	}
+  expectedStrs := []string{
+    "98.2",
+    "98.200",
+    "98.2",
+    "98.2",
+    "98.20000",
+    "98.2",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
 
-	}
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
-			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
-				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
-		}
+    if !resultArray[k].Equal(expectedResultsAry[k]) {
+      t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+        expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+    }
 
-	}
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_06(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   100
-	minuendStr := "100"
+  // minuend =   100
+  minuendStr := "100"
 
-	subtrahendStrs := []string{
-		"5",
-		"10",
-		"30",
-		"60.55",
-		"-100.1",
-		"-5.6",
-	}
+  subtrahendStrs := []string{
+    "5",
+    "10",
+    "30",
+    "60.55",
+    "-100.1",
+    "-5.6",
+  }
 
-	expectedStrs := []string{
-		"95",
-		"90",
-		"70",
-		"39,45",
-		"200,1",
-		"105,6",
-	}
+  expectedStrs := []string{
+    "95",
+    "90",
+    "70",
+    "39,45",
+    "200,1",
+    "105,6",
+  }
 
-	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+  minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err = minuendNumStrDto.SetNumericSeparatorsDto(expectedNumSeps)
+  err = minuendNumStrDto.SetNumericSeparatorsDto(expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
+      "Error='%v' ", err.Error())
+  }
 
-	lenSubtrahends := len(subtrahendStrs)
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
-	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := len(subtrahendStrs)
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  expectedResultsAry := make([]NumStrDto, lenSubtrahends)
 
-	for i := 0; i < lenSubtrahends; i++ {
+  for i := 0; i < lenSubtrahends; i++ {
 
-		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+    subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
-				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
-		}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) "+
+        "subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+    }
 
-		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+    expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
 
-		if err != nil {
-			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
-				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
-		}
-	}
+    if err != nil {
+      t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) "+
+        "expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+    }
+  }
 
-	resultArray, err :=
-		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+  resultArray, err :=
+    new(BigIntMathSubtract).SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
 
-	if err != nil {
-		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray"+
-			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
-			minuendNumStrDto.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned bynew(BigIntMathSubtract).SubtractNumStrDtoOutputToArray"+
+      "(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+      minuendNumStrDto.GetNumStr(), err.Error())
+  }
 
-	for k := 0; k < lenSubtrahends; k++ {
+  for k := 0; k < lenSubtrahends; k++ {
 
-		actualNumStr := resultArray[k].GetNumStr()
+    actualNumStr := resultArray[k].GetNumStr()
 
-		if expectedStrs[k] != actualNumStr {
-			t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
-				expectedStrs[k], actualNumStr, k)
-		}
+    if expectedStrs[k] != actualNumStr {
+      t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
+        expectedStrs[k], actualNumStr, k)
+    }
 
-		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+    actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
 
-		if !expectedNumSeps.Equal(actualNumSeps) {
-			t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
-				expectedNumSeps.String(), actualNumSeps.String(), k)
-		}
-	}
+    if !expectedNumSeps.Equal(actualNumSeps) {
+      t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
+        expectedNumSeps.String(), actualNumSeps.String(), k)
+    }
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_01(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	// result = 6805998.231036
-	expectedBigINumStr := "6805998.231036"
-	expectedBigINumSign := 1
+  // result = 6805998.231036
+  expectedBigINumStr := "6805998.231036"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoSeries(
-		nDtoMinuend,
-		subtrahendAry[0],
-		subtrahendAry[1],
-		subtrahendAry[2],
-		subtrahendAry[3],
-		subtrahendAry[4],
-		subtrahendAry[5])
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoSeries(
+    nDtoMinuend,
+    subtrahendAry[0],
+    subtrahendAry[1],
+    subtrahendAry[2],
+    subtrahendAry[3],
+    subtrahendAry[4],
+    subtrahendAry[5])
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoSeries("+
-			"nDtoMinuend, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoSeries("+
+      "nDtoMinuend, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_02(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = -18,973,642.1234567
-	minuendStr := "-18973642.1234567"
+  // minuend = -18,973,642.1234567
+  minuendStr := "-18973642.1234567"
 
-	subtrahend0 := "737.21"
-	subtrahend1 := "9637591.879546"
-	subtrahend2 := "28"
-	subtrahend3 := "5284.9765"
-	subtrahend4 := "-189291837.12"
-	subtrahend5 := "7638932.12398765"
+  subtrahend0 := "737.21"
+  subtrahend1 := "9637591.879546"
+  subtrahend2 := "28"
+  subtrahend3 := "5284.9765"
+  subtrahend4 := "-189291837.12"
+  subtrahend5 := "7638932.12398765"
 
-	// result = 153,035,620.80650965
-	expectedBigINumStr := "153035620.80650965"
-	expectedBigINumSign := 1
+  // result = 153,035,620.80650965
+  expectedBigINumStr := "153035620.80650965"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoSeries(
-		nDtoMinuend,
-		subtrahendAry[0],
-		subtrahendAry[1],
-		subtrahendAry[2],
-		subtrahendAry[3],
-		subtrahendAry[4],
-		subtrahendAry[5])
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoSeries(
+    nDtoMinuend,
+    subtrahendAry[0],
+    subtrahendAry[1],
+    subtrahendAry[2],
+    subtrahendAry[3],
+    subtrahendAry[4],
+    subtrahendAry[5])
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoSeries("+
-			"nDtoMinuend, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoSeries("+
+      "nDtoMinuend, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_03(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   1,718,973,642.1234567
-	minuendStr := "1718973642.1234567"
+  // minuend =   1,718,973,642.1234567
+  minuendStr := "1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:  2,757,547,756.287792379
-	expectedBigINumStr := "2757547756.287792379"
-	expectedBigINumSign := 1
+  // Result:  2,757,547,756.287792379
+  expectedBigINumStr := "2757547756.287792379"
+  expectedBigINumSign := 1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoSeries(
-		nDtoMinuend,
-		subtrahendAry[0],
-		subtrahendAry[1],
-		subtrahendAry[2],
-		subtrahendAry[3],
-		subtrahendAry[4],
-		subtrahendAry[5])
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoSeries(
+    nDtoMinuend,
+    subtrahendAry[0],
+    subtrahendAry[1],
+    subtrahendAry[2],
+    subtrahendAry[3],
+    subtrahendAry[4],
+    subtrahendAry[5])
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoSeries("+
-			"nDtoMinuend, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoSeries("+
+      "nDtoMinuend, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_04(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend =   -1,718,973,642.1234567
-	minuendStr := "-1718973642.1234567"
+  // minuend =   -1,718,973,642.1234567
+  minuendStr := "-1718973642.1234567"
 
-	subtrahend0 := "-28934682.721"
-	subtrahend1 := "424.987654321"
-	subtrahend2 := "-987"
-	subtrahend3 := "62.94"
-	subtrahend4 := "-999999999.99999"
-	subtrahend5 := "-9638932.371"
+  subtrahend0 := "-28934682.721"
+  subtrahend1 := "424.987654321"
+  subtrahend2 := "-987"
+  subtrahend3 := "62.94"
+  subtrahend4 := "-999999999.99999"
+  subtrahend5 := "-9638932.371"
 
-	// Result:   -680,399,527.959121021
-	expectedBigINumStr := "-680399527.959121021"
-	expectedBigINumSign := -1
+  // Result:   -680,399,527.959121021
+  expectedBigINumStr := "-680399527.959121021"
+  expectedBigINumSign := -1
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedBigINumStr)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedBigINumStr) "+
+      "expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoSeries(
-		nDtoMinuend,
-		subtrahendAry[0],
-		subtrahendAry[1],
-		subtrahendAry[2],
-		subtrahendAry[3],
-		subtrahendAry[4],
-		subtrahendAry[5])
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoSeries(
+    nDtoMinuend,
+    subtrahendAry[0],
+    subtrahendAry[1],
+    subtrahendAry[2],
+    subtrahendAry[3],
+    subtrahendAry[4],
+    subtrahendAry[5])
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoSeries("+
-			"nDtoMinuend, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoSeries("+
+      "nDtoMinuend, ...). Error='%v' ", err.Error())
+  }
 
-	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
-		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
-	}
+  if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
+    t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+      expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
+  }
 
-	if expectedBigINumSign != result.sign {
-		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.sign)
-	}
+  if expectedBigINumSign != result.sign {
+    t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+      expectedBigINumSign, result.sign)
+  }
 
 }
 
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_05(t *testing.T) {
 
-	var err error
+  var err error
 
-	// minuend = 7328941.123456
-	minuendStr := "7328941.123456"
+  // minuend = 7328941.123456
+  minuendStr := "7328941.123456"
 
-	subtrahend0 := "123.894000"
-	subtrahend1 := "67.1"
-	subtrahend2 := "93.0"
-	subtrahend3 := "-124498.67158"
-	subtrahend4 := "647129.57"
-	subtrahend5 := "28"
+  subtrahend0 := "123.894000"
+  subtrahend1 := "67.1"
+  subtrahend2 := "93.0"
+  subtrahend3 := "-124498.67158"
+  subtrahend4 := "647129.57"
+  subtrahend5 := "28"
 
-	// result = 6805998,231036
-	expectedNumStr := "6805998,231036"
+  // result = 6805998,231036
+  expectedNumStr := "6805998,231036"
 
-	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+  nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
-			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) "+
+      "minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+  }
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+  err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
+      "Error='%v' ", err.Error())
+  }
 
-	lenSubtrahends := 6
-	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+  lenSubtrahends := 6
+  subtrahendAry := make([]NumStrDto, lenSubtrahends)
 
-	subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
+  subtrahendAry[0], err = NumStrDto{}.NewNumStr(subtrahend0)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
-			"subtrahend0='%v' Error='%v'. ",
-			subtrahend0, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend0). "+
+      "subtrahend0='%v' Error='%v'. ",
+      subtrahend0, err.Error())
+  }
 
-	subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
+  subtrahendAry[1], err = NumStrDto{}.NewNumStr(subtrahend1)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
-			"subtrahend1='%v' Error='%v'. ",
-			subtrahend1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend1). "+
+      "subtrahend1='%v' Error='%v'. ",
+      subtrahend1, err.Error())
+  }
 
-	subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
+  subtrahendAry[2], err = NumStrDto{}.NewNumStr(subtrahend2)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
-			"subtrahend2='%v' Error='%v'. ",
-			subtrahend2, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend2). "+
+      "subtrahend2='%v' Error='%v'. ",
+      subtrahend2, err.Error())
+  }
 
-	subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
+  subtrahendAry[3], err = NumStrDto{}.NewNumStr(subtrahend3)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
-			"subtrahend3='%v' Error='%v'. ",
-			subtrahend3, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend3). "+
+      "subtrahend3='%v' Error='%v'. ",
+      subtrahend3, err.Error())
+  }
 
-	subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
+  subtrahendAry[4], err = NumStrDto{}.NewNumStr(subtrahend4)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
-			"subtrahend4='%v' Error='%v'. ",
-			subtrahend4, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend4). "+
+      "subtrahend4='%v' Error='%v'. ",
+      subtrahend4, err.Error())
+  }
 
-	subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
+  subtrahendAry[5], err = NumStrDto{}.NewNumStr(subtrahend5)
 
-	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
-			"subtrahend5='%v' Error='%v'. ",
-			subtrahend5, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from NumStrDto{}.NewNumStr(subtrahend5). "+
+      "subtrahend5='%v' Error='%v'. ",
+      subtrahend5, err.Error())
+  }
 
-	result, err := BigIntMathSubtract{}.SubtractNumStrDtoSeries(
-		nDtoMinuend,
-		subtrahendAry[0],
-		subtrahendAry[1],
-		subtrahendAry[2],
-		subtrahendAry[3],
-		subtrahendAry[4],
-		subtrahendAry[5])
+  result, err := new(BigIntMathSubtract).SubtractNumStrDtoSeries(
+    nDtoMinuend,
+    subtrahendAry[0],
+    subtrahendAry[1],
+    subtrahendAry[2],
+    subtrahendAry[3],
+    subtrahendAry[4],
+    subtrahendAry[5])
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDtoSeries("+
-			"nDtoMinuend, ...). Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by new(BigIntMathSubtract).SubtractNumStrDtoSeries("+
+      "nDtoMinuend, ...). Error='%v' ", err.Error())
+  }
 
-	actualNumStr := result.GetNumStr()
+  actualNumStr := result.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr)
-	}
+  if expectedNumStr != actualNumStr {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+      expectedNumStr, actualNumStr)
+  }
 
-	actualNumSeps := result.GetNumericSeparatorsDto()
+  actualNumSeps := result.GetNumericSeparatorsDto()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if !expectedNumSeps.Equal(actualNumSeps) {
+    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+      expectedNumSeps.String(), actualNumSeps.String())
+  }
 }
