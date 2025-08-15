@@ -1492,6 +1492,16 @@ func TestBigIntMathSubtract_SubtractIntArySeries_05(t *testing.T) {
 
 	err = iaMinuend.SetNumericSeparatorsDto(expectedNumSeps)
 
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = iaMinuend.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), err.Error())
+		return
+	}
+
 	err = iaMinuend.IsValid("Validating iaMinuend")
 
 	if err != nil {
