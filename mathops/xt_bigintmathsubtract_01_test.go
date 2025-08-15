@@ -76,7 +76,7 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
 
 	if minuendStr != minuendBiNumStr {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Number String Values Are Not Equal\n"+
 			"Because minuendStr != minuendBiNumStr\n"+
 			"Expected minuendBiNumStr = '%v'\n"+
 			"  Actual minuendBiNumStr = '%v'\n\n",
