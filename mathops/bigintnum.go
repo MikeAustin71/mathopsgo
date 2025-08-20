@@ -1,9 +1,10 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
+  "fmt"
+  "math/big"
+
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 // BigIntNum

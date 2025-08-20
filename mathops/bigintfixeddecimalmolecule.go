@@ -1,9 +1,10 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntFixedDecMolecule struct {
@@ -66,4 +67,115 @@ func (bigIFdMolecule *bigIntFixedDecMolecule) isBigIntFxDecZero(
 	}
 
 	return false, nil
+}
+
+// areBigIntFixDecsEqualValue
+//
+// Receives pointers to two instances of BigIntFixedDecimal and proceeds
+// to compare the numeric values. If the two values are equal, this
+// method returns 'true'.
+//
+// If the two values are not equal, this method returns 'false'.
+//
+// If the two 'precision' values are not equal, this method returns 'false'.
+//
+// The Numeric Separators are NOT included in this comparison. If the two
+// values are equal but the Numeric Separators are unequal, this method
+// will return true.
+func (bigIFdMolecule *bigIntFixedDecMolecule) areBigIntFixDecsEqualValue(
+	bigIFxDecBase *BigIntFixedDecimal,
+	validateBigIFxDecBase bool,
+	bigIFxDecComparison *BigIntFixedDecimal,
+	validateBigIFxDecComparison bool,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	if bigIFdMolecule.lock == nil {
+		bigIFdMolecule.lock = new(sync.Mutex)
+	}
+
+	bigIFdMolecule.lock.Lock()
+
+	defer bigIFdMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntFixedDecMolecule.isBigIntFxDecZero",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if bigIFxDecBase == nil {
+
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec'",
+		}
+	}
+
+	if bigIFxDecComparison == nil {
+
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec'",
+		}
+	}
+
+	bIFxDecAtom := new(bigIntFixedDecAtom)
+
+	if validateBigIFxDecBase {
+
+		err = bIFxDecAtom.isBigIntFxDecValid(
+			bigIFxDecBase,
+			ePrefix.XCpy("Validating bigIFxDecBase"))
+
+		if err != nil {
+
+			return false,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = bIFxDecAtom.isBigIntFxDecValid(\n" +
+						"bigIFxDecBase, ePrefix.XCpy('Validating bigIFxDecBase')\n ",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateBigIFxDecComparison {
+
+		err = bIFxDecAtom.isBigIntFxDecValid(
+			bigIFxDecComparison,
+			ePrefix.XCpy("Validating bigIFxDecComparison"))
+
+		if err != nil {
+
+			return false,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = bIFxDecAtom.isBigIntFxDecValid(\n" +
+						"bigIFxDecComparison, ePrefix.XCpy('Validating bigIFxDecComparison')\n ",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if bigIFxDecBase.precision != bigIFxDecComparison.precision {
+
+		return false, nil
+	}
+
+	if bigIFxDecBase.integerNum.Cmp(bigIFxDecComparison.integerNum) != 0 {
+
+		return false, nil
+	}
+
+	return true, nil
 }
