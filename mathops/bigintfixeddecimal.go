@@ -1,11 +1,11 @@
 package mathops
 
 import (
-  "fmt"
-  "math"
-  "math/big"
+	"fmt"
+	"math"
+	"math/big"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 // BigIntFixedDecimal
@@ -14,29 +14,29 @@ import (
 // with a fixed number of decimal digits. Used primarily for
 // intensive or complex calculations.
 type BigIntFixedDecimal struct {
-  integerNum *big.Int // All the numeric digits, both integer and
-  // fractional, necessary to define a fixed length floating point
-  // number. The number of digits to the right of the decimal place
-  // is specified by the data field, BigIntFixedDecimal.precision.
-  // If the numeric value of BigIntFixedDecimal is 'negative' (i.e.
-  // less than zero), integerNum will be stored with a leading minus
-  // sign ('-').
+	integerNum *big.Int // All the numeric digits, both integer and
+	// fractional, necessary to define a fixed length floating point
+	// number. The number of digits to the right of the decimal place
+	// is specified by the data field, BigIntFixedDecimal.precision.
+	// If the numeric value of BigIntFixedDecimal is 'negative' (i.e.
+	// less than zero), integerNum will be stored with a leading minus
+	// sign ('-').
 
-  precision uint // Specifies the number of digits to the right of the decimal
-  // place in the series of numeric digits represented by
-  // BigIntFixedDecimal.precision.
+	precision uint // Specifies the number of digits to the right of the decimal
+	// place in the series of numeric digits represented by
+	// BigIntFixedDecimal.precision.
 
-  // Example: To represent the floating point number 52.459
-  // a BigIntDecimal Structure would be configured as follows:
-  // 			BigIntFixedDecimal.integerNum	= 52459
-  // 			BigIntFixedDecimal.precision	= 3
+	// Example: To represent the floating point number 52.459
+	// a BigIntDecimal Structure would be configured as follows:
+	// 			BigIntFixedDecimal.integerNum	= 52459
+	// 			BigIntFixedDecimal.precision	= 3
 
-  // Numeric Separators
-  decimalSeparator rune // Character used to separate integer and fractional digits ('.')
+	// Numeric Separators
+	decimalSeparator rune // Character used to separate integer and fractional digits ('.')
 
-  thousandsSeparator rune // Character used to separate thousands (1,000,000,000
+	thousandsSeparator rune // Character used to separate thousands (1,000,000,000
 
-  currencySymbol rune // Currency Symbol
+	currencySymbol rune // Currency Symbol
 
 }
 
@@ -72,30 +72,30 @@ var _ INumMgr = (*BigIntFixedDecimal)(nil)
 //	  -2           -2
 func (bigIFd *BigIntFixedDecimal) Ceiling() (BigIntFixedDecimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Ceiling",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Ceiling",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  return new(bigIntFixedDecUtility).ceiling(
-    bigIFd,
-    ePrefix.XCpy("Computing 'bigIFd' ceiling"))
+	return new(bigIntFixedDecUtility).ceiling(
+		bigIFd,
+		ePrefix.XCpy("Computing 'bigIFd' ceiling"))
 }
 
 // ChangeSign
@@ -107,30 +107,30 @@ func (bigIFd *BigIntFixedDecimal) Ceiling() (BigIntFixedDecimal, error) {
 // calling this method will change the sign to negative.
 func (bigIFd *BigIntFixedDecimal) ChangeSign() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Ceiling",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Ceiling",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecElectron).changeSign(
-    bigIFd,
-    ePrefix.XCpy("Changing sign of 'bigIFd'"))
+	return new(bigIntFixedDecElectron).changeSign(
+		bigIFd,
+		ePrefix.XCpy("Changing sign of 'bigIFd'"))
 }
 
 // Cmp
@@ -163,31 +163,31 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() error {
 //				        35.123456          2.5        1
 //	           -5.0               5.0       -1
 func (bigIFd *BigIntFixedDecimal) Cmp(
-  fd2 BigIntFixedDecimal) (int, error) {
+	fd2 BigIntFixedDecimal) (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Cmp",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Cmp",
+		"")
 
-  if err != nil {
-    return -1, err
-  }
+	if err != nil {
+		return -1, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return -1, err
-  }
+	if err != nil {
+		return -1, err
+	}
 
-  return new(bigIntFixedDecElectron).cmp(
-    bigIFd, fd2, ePrefix.XCpy("Comparing 'bigIFd' & 'fd2'"))
+	return new(bigIntFixedDecElectron).cmp(
+		bigIFd, fd2, ePrefix.XCpy("Comparing 'bigIFd' & 'fd2'"))
 }
 
 // CmpZero
@@ -202,30 +202,30 @@ func (bigIFd *BigIntFixedDecimal) Cmp(
 //	-1 = BigINtFixedDecimal < 0
 func (bigIFd *BigIntFixedDecimal) CmpZero() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.CmpZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CmpZero",
+		"")
 
-  if err != nil {
-    return -1, err
-  }
+	if err != nil {
+		return -1, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return -1, err
-  }
+	if err != nil {
+		return -1, err
+	}
 
-  return new(bigIntFixedDecElectron).cmpZero(
-    bigIFd,
-    ePrefix.XCpy("Comparing 'bigIFd' to Zero"))
+	return new(bigIntFixedDecElectron).cmpZero(
+		bigIFd,
+		ePrefix.XCpy("Comparing 'bigIFd' to Zero"))
 }
 
 // CopyIn
@@ -238,23 +238,23 @@ func (bigIFd *BigIntFixedDecimal) CmpZero() (int, error) {
 // returned.
 func (bigIFd *BigIntFixedDecimal) CopyIn(bigIFdSrc BigIntFixedDecimal) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.CopyIn",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyIn",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecUtility).copyIn(
-    bigIFd,
-    &bigIFdSrc,
-    ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
+	return new(bigIntFixedDecUtility).copyIn(
+		bigIFd,
+		&bigIFdSrc,
+		ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
 }
 
 // CopyInPtr
@@ -264,23 +264,23 @@ func (bigIFd *BigIntFixedDecimal) CopyIn(bigIFdSrc BigIntFixedDecimal) error {
 // BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) CopyInPtr(bigIFdSrc *BigIntFixedDecimal) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.CopyInPtr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyInPtr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecUtility).copyIn(
-    bigIFd,
-    bigIFdSrc,
-    ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
+	return new(bigIntFixedDecUtility).copyIn(
+		bigIFd,
+		bigIFdSrc,
+		ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
 }
 
 // CopyOut
@@ -292,30 +292,30 @@ func (bigIFd *BigIntFixedDecimal) CopyInPtr(bigIFdSrc *BigIntFixedDecimal) error
 // to be invalid, an error will be returned.
 func (bigIFd *BigIntFixedDecimal) CopyOut() (BigIntFixedDecimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.CopyInPtr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyInPtr",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  return new(bigIntFixedDecUtility).copyOut(
-    bigIFd,
-    ePrefix.XCpy("Copying 'bigIFd' -> Out"))
+	return new(bigIntFixedDecUtility).copyOut(
+		bigIFd,
+		ePrefix.XCpy("Copying 'bigIFd' -> Out"))
 }
 
 // DivideByTenToPower
@@ -340,34 +340,34 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() (BigIntFixedDecimal, error) {
 //		 of the current BigIntFixedDecimal instance with the results
 //		 of this calculation.
 func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(
-  exponent uint) error {
+	exponent uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Ceiling",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Ceiling",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecNeutron).divideByTenToPower(
-    bigIFd,
-    exponent,
-    ePrefix.XCpy(fmt.Sprintf("bigIFd/10^(exponent= '%v')",
-      exponent)))
+	return new(bigIntFixedDecNeutron).divideByTenToPower(
+		bigIFd,
+		exponent,
+		ePrefix.XCpy(fmt.Sprintf("bigIFd/10^(exponent= '%v')",
+			exponent)))
 }
 
 // DivideByTwoToPower
@@ -415,53 +415,53 @@ func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(
 //	of this calculation.
 func (bigIFd *BigIntFixedDecimal) DivideByTwoToPower(exponent uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.DivideByTwoToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.DivideByTwoToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bigIFd.integerNum, err = new(BigIntMathDivide).
-    BigIntDividedByTwoToPower(bigIFd.integerNum, exponent)
+	bigIFd.integerNum, err = new(BigIntMathDivide).
+		BigIntDividedByTwoToPower(bigIFd.integerNum, exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "bigIFd.integerNum, err = new(BigIntMathDivide).\n" +
-        "BigIntDividedByTwoToPower(bigIFd.integerNum, exponent)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bigIFd.integerNum, err = new(BigIntMathDivide).\n" +
+				"BigIntDividedByTwoToPower(bigIFd.integerNum, exponent)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bigIFd.precision = 0
+	bigIFd.precision = 0
 
-  return nil
+	return nil
 }
 
 // Empty - Reinitialize the current BigIntFixedDecimal instance
 // to a zero value with zero precision.
 func (bigIFd *BigIntFixedDecimal) Empty() {
 
-  bigIFd.integerNum = big.NewInt(0)
-  bigIFd.precision = 0
+	bigIFd.integerNum = big.NewInt(0)
+	bigIFd.precision = 0
 
 }
 
@@ -482,24 +482,24 @@ func (bigIFd *BigIntFixedDecimal) Empty() {
 // values are equal but the Numeric Separators are unequal, this method
 // will return true.
 func (bigIFd *BigIntFixedDecimal) EqualValue(
-  bigIFxDecComparison BigIntFixedDecimal) (bool, error) {
+	bigIFxDecComparison BigIntFixedDecimal) (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.EqualValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.EqualValue",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntFixedDecMolecule).areBigIntFixDecsEqualValue(
-    bigIFd, true, &bigIFxDecComparison,
-    true, ePrefix)
+	return new(bigIntFixedDecMolecule).areBigIntFixDecsEqualValue(
+		bigIFd, true, &bigIFxDecComparison,
+		true, ePrefix)
 }
 
 // Floor
@@ -542,60 +542,60 @@ func (bigIFd *BigIntFixedDecimal) EqualValue(
 //	  value for 'error'.
 func (bigIFd *BigIntFixedDecimal) Floor() (BigIntFixedDecimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Floor",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Floor",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
-        ErrContext: "",
-        ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
+	}
 
-  cmpZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
+	cmpZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
 
-  if cmpZeroResult == 0 {
-    return new(BigIntFixedDecimal).NewZero(0), nil
-  }
+	if cmpZeroResult == 0 {
+		return new(BigIntFixedDecimal).NewZero(0), nil
+	}
 
-  floor := big.NewInt(0).Set(bigIFd.integerNum)
+	floor := big.NewInt(0).Set(bigIFd.integerNum)
 
-  if bigIFd.precision > 0 {
+	if bigIFd.precision > 0 {
 
-    scale := big.NewInt(0).Exp(
-      big.NewInt(10),
-      big.NewInt(int64(bigIFd.precision)),
-      nil)
+		scale := big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(bigIFd.precision)),
+			nil)
 
-    floor.Quo(floor, scale)
+		floor.Quo(floor, scale)
 
-    if cmpZeroResult == -1 {
-      // signVal must be -1
-      floor.Add(floor, big.NewInt(-1))
-    }
-  }
+		if cmpZeroResult == -1 {
+			// signVal must be -1
+			floor.Add(floor, big.NewInt(-1))
+		}
+	}
 
-  // else bigIFd.precision must be zero
-  return new(BigIntFixedDecimal).New(floor, 0)
+	// else bigIFd.precision must be zero
+	return new(BigIntFixedDecimal).New(floor, 0)
 }
 
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
@@ -628,140 +628,140 @@ func (bigIFd *BigIntFixedDecimal) Floor() (BigIntFixedDecimal, error) {
 //	Example: (12345678)
 func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
 
-  decimalSeparator := '.'
-  baseZero := big.NewInt(0)
-  bigIFdSign := 1
+	decimalSeparator := '.'
+	baseZero := big.NewInt(0)
+	bigIFdSign := 1
 
-  if bigIFd.integerNum.Cmp(baseZero) == -1 {
-    bigIFdSign = -1
-  }
+	if bigIFd.integerNum.Cmp(baseZero) == -1 {
+		bigIFdSign = -1
+	}
 
-  absBigInt := big.NewInt(0).Set(bigIFd.integerNum)
+	absBigInt := big.NewInt(0).Set(bigIFd.integerNum)
 
-  if absBigInt.Cmp(baseZero) == -1 {
-    absBigInt.Neg(absBigInt)
-  }
+	if absBigInt.Cmp(baseZero) == -1 {
+		absBigInt.Neg(absBigInt)
+	}
 
-  outRunes := make([]rune, 0, 300)
+	outRunes := make([]rune, 0, 300)
 
-  scratchNum := big.NewInt(0).Set(absBigInt)
+	scratchNum := big.NewInt(0).Set(absBigInt)
 
-  if scratchNum.Cmp(baseZero) == 0 {
-    bigIFdSign = 1
+	if scratchNum.Cmp(baseZero) == 0 {
+		bigIFdSign = 1
 
-    outRunes = append(outRunes, '0')
+		outRunes = append(outRunes, '0')
 
-    if bigIFd.precision > 0 {
+		if bigIFd.precision > 0 {
 
-      if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
-        outRunes = append(outRunes, decimalSeparator)
-      }
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, decimalSeparator)
+			}
 
-      cnt := int(bigIFd.precision)
+			cnt := int(bigIFd.precision)
 
-      if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-        cnt--
-      }
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
 
-      for h := 0; h < cnt; h++ {
-        outRunes = append(outRunes, '0')
-      }
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
 
-    }
+		}
 
-    return string(outRunes)
-  }
+		return string(outRunes)
+	}
 
-  startIdx := 0
-  modulo := big.NewInt(0)
-  baseTen := big.NewInt(10)
-  digitCnt := 0
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
 
-  for scratchNum.Cmp(baseZero) == 1 {
+	for scratchNum.Cmp(baseZero) == 1 {
 
-    if startIdx == 0 &&
-      bigIFdSign == -1 &&
-      negValMode == PARENTHESESNEGVALFMTMODE {
+		if startIdx == 0 &&
+			bigIFdSign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, ')')
-    }
+			outRunes = append(outRunes, ')')
+		}
 
-    modX := big.NewInt(0)
-    scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-    outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
-    digitCnt++
-    startIdx++
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
 
-    if bigIFd.precision > 0 &&
-      int(bigIFd.precision) == startIdx &&
-      negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+		if bigIFd.precision > 0 &&
+			int(bigIFd.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-      outRunes = append(outRunes, decimalSeparator)
-      startIdx++
-    }
+			outRunes = append(outRunes, decimalSeparator)
+			startIdx++
+		}
 
-  }
+	}
 
-  if int(bigIFd.precision) >= digitCnt {
+	if int(bigIFd.precision) >= digitCnt {
 
-    delta := int(bigIFd.precision) - digitCnt + 1
+		delta := int(bigIFd.precision) - digitCnt + 1
 
-    if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-      delta--
-    }
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
-    for k := 0; k < delta; k++ {
-      outRunes = append(outRunes, '0')
-      startIdx++
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
 
-      if bigIFd.precision > 0 &&
-        int(bigIFd.precision) == startIdx &&
-        negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+			if bigIFd.precision > 0 &&
+				int(bigIFd.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-        outRunes = append(outRunes, decimalSeparator)
-        startIdx++
-      }
-    }
-  }
+				outRunes = append(outRunes, decimalSeparator)
+				startIdx++
+			}
+		}
+	}
 
-  startIdx--
+	startIdx--
 
-  // adjust for negative sign value
-  if bigIFdSign == -1 {
+	// adjust for negative sign value
+	if bigIFdSign == -1 {
 
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      outRunes = append(outRunes, '-')
-      startIdx++
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
 
-    } else if negValMode == PARENTHESESNEGVALFMTMODE {
-      outRunes = append(outRunes, '(')
-      startIdx += 2
-    }
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
 
-    /*
-    		MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
-    	  Do NOT Display Sign Character
+		/*
+				MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
+			  Do NOT Display Sign Character
 
-    */
-  }
+		*/
+	}
 
-  sortLimit := startIdx / 2
-  tRune := rune(0)
-  yCnt := 0
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
 
-  for i := startIdx; i > sortLimit; i-- {
-    tRune = outRunes[yCnt]
-    outRunes[yCnt] = outRunes[i]
-    outRunes[i] = tRune
-    yCnt++
-  }
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
 
-  return string(outRunes)
+	return string(outRunes)
 }
 
 // GetBigInt
@@ -771,58 +771,58 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 // '*big.Int'.
 func (bigIFd *BigIntFixedDecimal) GetBigInt() (*big.Int, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetBigInt"
+	ePrefix := "BigIntFixedDecimal.GetBigInt"
 
-  err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
-        ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.\n" +
-          "'bigIFd' FAILED validation testing. 'bigIFd' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+				ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.\n" +
+					"'bigIFd' FAILED validation testing. 'bigIFd' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bigIFd.integerNum, nil
+	return bigIFd.integerNum, nil
 }
 
 // GetBigIntNum - Returns a new BigIntNum object initialized
 // to the value of the current BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) GetBigIntNum() (BigIntNum, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetBigIntNum"
+	ePrefix := "BigIntFixedDecimal.GetBigIntNum"
 
-  err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
-        ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+				ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)
+	bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bigINum, nil
+	return bigINum, nil
 }
 
 // GetDecimal
@@ -831,48 +831,48 @@ func (bigIFd *BigIntFixedDecimal) GetBigIntNum() (BigIntNum, error) {
 // value and returns that value as a type 'Decimal'.
 func (bigIFd *BigIntFixedDecimal) GetDecimal() (Decimal, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetDecimal"
+	ePrefix := "BigIntFixedDecimal.GetDecimal"
 
-  err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
-        ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+				ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)
+	bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNum, err := bigINum.GetDecimal()
+	decNum, err := bigINum.GetDecimal()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "decNum, err := bigINum.GetDecimal()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "decNum, err := bigINum.GetDecimal()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decNum, nil
+	return decNum, nil
 }
 
 // GetIntegerValue - Returns the 'integerNum' for the current
@@ -894,25 +894,25 @@ func (bigIFd *BigIntFixedDecimal) GetDecimal() (Decimal, error) {
 //	582.12345            58212345
 func (bigIFd *BigIntFixedDecimal) GetIntegerValue() (*big.Int, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetIntegerValue()"
+	ePrefix := "BigIntFixedDecimal.GetIntegerValue()"
 
-  if bigIFd.integerNum == nil {
+	if bigIFd.integerNum == nil {
 
-    bigIFd.integerNum = big.NewInt(0)
+		bigIFd.integerNum = big.NewInt(0)
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "",
-        ErrContext: "if bigIFd.integerNum == nil {",
-        ErrMessage: "ERROR: bigIFd.integerNum, an instance of type\n" +
-          "BigIntFixedDecimal, is 'nil'!",
-      }
-  }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "",
+				ErrContext: "if bigIFd.integerNum == nil {",
+				ErrMessage: "ERROR: bigIFd.integerNum, an instance of type\n" +
+					"BigIntFixedDecimal, is 'nil'!",
+			}
+	}
 
-  retVal := big.NewInt(0).Set(bigIFd.integerNum)
+	retVal := big.NewInt(0).Set(bigIFd.integerNum)
 
-  return retVal, nil
+	return retVal, nil
 }
 
 // GetIntegerFractionalParts - Returns two BigIntFixedDecimals comprising the integer
@@ -931,97 +931,97 @@ func (bigIFd *BigIntFixedDecimal) GetIntegerValue() (*big.Int, error) {
 //
 // -859649.123456789							 -859649				 	0					 -0.123456789            9
 func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal,
-  fraction BigIntFixedDecimal,
-  err error) {
+	fraction BigIntFixedDecimal,
+	err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.GetIntegerFractionalParts",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.GetIntegerFractionalParts",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{}, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{}, BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
-        ErrContext: "",
-        ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
-      }
-  }
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
+	}
 
-  integer = new(BigIntFixedDecimal).NewZero(0)
-  fraction = new(BigIntFixedDecimal).NewZero(0)
+	integer = new(BigIntFixedDecimal).NewZero(0)
+	fraction = new(BigIntFixedDecimal).NewZero(0)
 
-  if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-    return integer, fraction, nil
-  }
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+		return integer, fraction, nil
+	}
 
-  scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil)
+	scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil)
 
-  scratch := big.NewInt(0)
+	scratch := big.NewInt(0)
 
-  intRadicand, fracRadicand := big.NewInt(0).QuoRem(bigIFd.integerNum, scale, scratch)
+	intRadicand, fracRadicand := big.NewInt(0).QuoRem(bigIFd.integerNum, scale, scratch)
 
-  integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)
+	integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{}, BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)
+	fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{}, BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return integer, fraction, nil
+	return integer, fraction, nil
 }
 
 // GetIntAry - Returns a new IntAry instance initialized to the
 // value of the current BigIntFixedDecimal object.
 func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetIntAry() "
+	ePrefix := "BigIntFixedDecimal.GetIntAry() "
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
 
-  ia, err := new(IntAry).NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
+	ia, err := new(IntAry).NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
 
-  if err != nil {
-    return new(IntAry).New(),
-      fmt.Errorf(ePrefix+"Error returned: %v", err.Error())
-  }
+	if err != nil {
+		return new(IntAry).New(),
+			fmt.Errorf(ePrefix+"Error returned: %v", err.Error())
+	}
 
-  return ia, nil
+	return ia, nil
 }
 
 // GetMagnitude - Returns the magnitude of the current BigIntFixedDecimal
@@ -1049,47 +1049,47 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 //	                324.123456							2
 func (bigIFd *BigIntFixedDecimal) GetMagnitude() (*big.Int, error) {
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-    return bigZero, nil
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return bigZero, nil
+	}
 
-  target := big.NewInt(0).Set(bigIFd.integerNum)
-  bigTen := big.NewInt(10)
+	target := big.NewInt(0).Set(bigIFd.integerNum)
+	bigTen := big.NewInt(10)
 
-  if bigIFd.precision > 0 {
-    target.Quo(
-      target,
-      big.NewInt(0).Exp(bigTen, big.NewInt(int64(bigIFd.precision)),
-        nil))
-  }
+	if bigIFd.precision > 0 {
+		target.Quo(
+			target,
+			big.NewInt(0).Exp(bigTen, big.NewInt(int64(bigIFd.precision)),
+				nil))
+	}
 
-  magnitude, err := new(BigIntMath).GetMagnitude(target)
+	magnitude, err := new(BigIntMath).GetMagnitude(target)
 
-  if err != nil {
-    ePrefix := "BigIntFixedDecimal.GetMagnitude() "
-    return bigZero,
-      fmt.Errorf(ePrefix+
-        "Error returned "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		ePrefix := "BigIntFixedDecimal.GetMagnitude() "
+		return bigZero,
+			fmt.Errorf(ePrefix+
+				"Error returned "+
+				"Error='%v' ", err.Error())
+	}
 
-  return magnitude, nil
+	return magnitude, nil
 }
 
 // GetNumericValue - Returns the 'integerNum' and 'precision' values for the
 // current BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
 
-  return big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision
+	return big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision
 }
 
 // GetNumericSeparatorsDto
@@ -1099,15 +1099,15 @@ func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
 // currency symbol.
 func (bigIFd *BigIntFixedDecimal) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
-  numSeps := NumericSeparatorDto{}
+	numSeps := NumericSeparatorDto{}
 
-  numSeps.DecimalSeparator = bigIFd.decimalSeparator
+	numSeps.DecimalSeparator = bigIFd.decimalSeparator
 
-  numSeps.ThousandsSeparator = bigIFd.thousandsSeparator
+	numSeps.ThousandsSeparator = bigIFd.thousandsSeparator
 
-  numSeps.CurrencySymbol = bigIFd.currencySymbol
+	numSeps.CurrencySymbol = bigIFd.currencySymbol
 
-  return numSeps, nil
+	return numSeps, nil
 
 }
 
@@ -1116,7 +1116,7 @@ func (bigIFd *BigIntFixedDecimal) GetNumericSeparatorsDto() (NumericSeparatorDto
 // digits if they exist.
 func (bigIFd *BigIntFixedDecimal) GetNumStr() (string, error) {
 
-  return bigIFd.FormatNumStr(LEADMINUSNEGVALFMTMODE), nil
+	return bigIFd.FormatNumStr(LEADMINUSNEGVALFMTMODE), nil
 }
 
 // GetNumStrDto
@@ -1132,41 +1132,41 @@ func (bigIFd *BigIntFixedDecimal) GetNumStr() (string, error) {
 // This method performs a validity test on the current BigIntNum instance.
 func (bigIFd *BigIntFixedDecimal) GetNumStrDto() (NumStrDto, error) {
 
-  ePrefix := "BigIntFixedDecimal.GetNumStrDto()"
+	ePrefix := "BigIntFixedDecimal.GetNumStrDto()"
 
-  err := bigIFd.IsValid(ePrefix + "Testing current instance of BigIntFixedDecimal (bigIFd).")
+	err := bigIFd.IsValid(ePrefix + "Testing current instance of BigIntFixedDecimal (bigIFd).")
 
-  if err != nil {
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = nDto.SetNumericSeparatorsDto(numSepDto)",
-        ErrContext: "The 'bigIFd' FAILED the Validation Test.",
-        ErrMessage: "The current instance of BigIntFixedDecimal ('bigIFd') is INVALID!",
-      }
-  }
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = nDto.SetNumericSeparatorsDto(numSepDto)",
+				ErrContext: "The 'bigIFd' FAILED the Validation Test.",
+				ErrMessage: "The current instance of BigIntFixedDecimal ('bigIFd') is INVALID!",
+			}
+	}
 
-  nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision)
+	nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision)
 
-  if err != nil {
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix,
-        ReturnFunc: "nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).\n" +
-          "Set(bigIFd.integerNum), bigIFd.precision)",
-        ErrContext: fmt.Sprintf("bigIFd.integerNum='%v'\nbigIFd.precision='%v'",
-          bigIFd.integerNum.Text(10), bigIFd.precision),
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix,
+				ReturnFunc: "nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).\n" +
+					"Set(bigIFd.integerNum), bigIFd.precision)",
+				ErrContext: fmt.Sprintf("bigIFd.integerNum='%v'\nbigIFd.precision='%v'",
+					bigIFd.integerNum.Text(10), bigIFd.precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  nDto.decimalSeparator = bigIFd.decimalSeparator
+	nDto.decimalSeparator = bigIFd.decimalSeparator
 
-  nDto.thousandsSeparator = bigIFd.thousandsSeparator
+	nDto.thousandsSeparator = bigIFd.thousandsSeparator
 
-  nDto.currencySymbol = bigIFd.currencySymbol
+	nDto.currencySymbol = bigIFd.currencySymbol
 
-  return nDto, nil
+	return nDto, nil
 }
 
 // GetPrecisionInt - Returns the 'precision' value for the current
@@ -1175,52 +1175,52 @@ func (bigIFd *BigIntFixedDecimal) GetNumStrDto() (NumStrDto, error) {
 // BigIntFixedDecimal.integerNum.
 func (bigIFd *BigIntFixedDecimal) GetPrecisionInt() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.GetPrecisionInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.GetPrecisionInt",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
-        ErrContext: "",
-        ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
+	}
 
-  bIntMaxInt :=
-    big.NewInt(0).SetUint64(uint64(math.MaxInt))
+	bIntMaxInt :=
+		big.NewInt(0).SetUint64(uint64(math.MaxInt))
 
-  bUintPrecision :=
-    big.NewInt(0).SetUint64(uint64(bigIFd.precision))
+	bUintPrecision :=
+		big.NewInt(0).SetUint64(uint64(bigIFd.precision))
 
-  if bUintPrecision.Cmp(bIntMaxInt) == 1 {
+	if bUintPrecision.Cmp(bIntMaxInt) == 1 {
 
-    return 0, &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf("Max 'int' value= '%v'\n'Precision= '%v'",
-        bIntMaxInt.Text(10), bUintPrecision.Text(10)),
-      ErrMessage: "Error: The value of uint 'Precision' exceeds the limit for int values!",
-    }
-  }
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("Max 'int' value= '%v'\n'Precision= '%v'",
+				bIntMaxInt.Text(10), bUintPrecision.Text(10)),
+			ErrMessage: "Error: The value of uint 'Precision' exceeds the limit for int values!",
+		}
+	}
 
-  return int(bigIFd.precision), nil
+	return int(bigIFd.precision), nil
 }
 
 // GetPrecisionUint - Returns the 'precision' value for the current
@@ -1232,7 +1232,7 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionInt() (int, error) {
 // interface.
 func (bigIFd *BigIntFixedDecimal) GetPrecisionUint() (uint, error) {
 
-  return bigIFd.precision, nil
+	return bigIFd.precision, nil
 }
 
 // GetPrecisionBigInt - Returns the 'precision' value for the current
@@ -1242,36 +1242,36 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionUint() (uint, error) {
 // returned as a *big.Int type.
 func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.GetPrecisionBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.GetPrecisionBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Validating current BigIntFixedDecimal 'bigIFd')"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal 'bigIFd')"))
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(bigIFd,ePrefix)",
-        ErrContext: "This instance of BigIntFixedDecimal is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(bigIFd,ePrefix)",
+				ErrContext: "This instance of BigIntFixedDecimal is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil
+	return big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil
 }
 
 // GetSign - Returns the numeric sign associated
@@ -1285,7 +1285,7 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() (*big.Int, error) {
 //	+1 if x > 0.
 func (bigIFd *BigIntFixedDecimal) GetSign() (int, error) {
 
-  return bigIFd.integerNum.Sign(), nil
+	return bigIFd.integerNum.Sign(), nil
 }
 
 // Inverse - Converts the current BigIntFixedDecimal
@@ -1309,68 +1309,68 @@ func (bigIFd *BigIntFixedDecimal) GetSign() (int, error) {
 //												the right of the decimal place.
 func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.Inverse",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Inverse",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
 
-    return nil
-  }
+		return nil
+	}
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  inverseBigInt, inversePrecision, err :=
-    new(BigIntMathDivide).BigIntFracQuotient(
-      bigOne,
-      big.NewInt(0),
-      bigIFd.integerNum,
-      big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
-      big.NewInt(0).SetUint64(uint64(maxPrecision)))
+	inverseBigInt, inversePrecision, err :=
+		new(BigIntMathDivide).BigIntFracQuotient(
+			bigOne,
+			big.NewInt(0),
+			bigIFd.integerNum,
+			big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
+			big.NewInt(0).SetUint64(uint64(maxPrecision)))
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "inverseBigInt, inversePrecision, err := new(BigIntMathDivide).\n" +
-        "BigIntFracQuotient(bigOne, big.NewInt(0), bigIFd.integerNum,\n" +
-        "big.NewInt(0).SetUint64(uint64(bigIFd.precision)),\n" +
-        "big.NewInt(0).SetUint64(uint64(maxPrecision)))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "inverseBigInt, inversePrecision, err := new(BigIntMathDivide).\n" +
+				"BigIntFracQuotient(bigOne, big.NewInt(0), bigIFd.integerNum,\n" +
+				"big.NewInt(0).SetUint64(uint64(bigIFd.precision)),\n" +
+				"big.NewInt(0).SetUint64(uint64(maxPrecision)))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps := NumericSeparatorDto{
-    DecimalSeparator:   bigIFd.decimalSeparator,
-    ThousandsSeparator: bigIFd.thousandsSeparator,
-    CurrencySymbol:     bigIFd.currencySymbol,
-  }
+	numSeps := NumericSeparatorDto{
+		DecimalSeparator:   bigIFd.decimalSeparator,
+		ThousandsSeparator: bigIFd.thousandsSeparator,
+		CurrencySymbol:     bigIFd.currencySymbol,
+	}
 
-  return new(bigIntFixedDecAtom).setNumericValue(
-    bigIFd,
-    inverseBigInt,
-    uint(inversePrecision.Uint64()),
-    numSeps,
-    ePrefix.XCpy("Setting 'bigIFd'"))
+	return new(bigIntFixedDecAtom).setNumericValue(
+		bigIFd,
+		inverseBigInt,
+		uint(inversePrecision.Uint64()),
+		numSeps,
+		ePrefix.XCpy("Setting 'bigIFd'"))
 
 }
 
@@ -1378,17 +1378,17 @@ func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) error {
 // the current BigIntFixedDecimal is an integer value.
 func (bigIFd *BigIntFixedDecimal) IsInteger() bool {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-    return true
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return true
+	}
 
-  if bigIFd.precision == 0 {
-    return true
-  }
+	if bigIFd.precision == 0 {
+		return true
+	}
 
-  return false
+	return false
 }
 
 // IsEven - returns 'true' if the numeric value
@@ -1408,30 +1408,30 @@ func (bigIFd *BigIntFixedDecimal) IsInteger() bool {
 // Also, see 	https://www.mathsisfun.com/definitions/even-number.html
 func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-    return true
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return true
+	}
 
-  if bigIFd.precision > 0 {
-    //BigIntFixedDecimal is NOT an integer
-    return false
-  }
+	if bigIFd.precision > 0 {
+		//BigIntFixedDecimal is NOT an integer
+		return false
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if bigIFd.integerNum.Cmp(bigZero) == 0 {
-    return true
-  }
+	if bigIFd.integerNum.Cmp(bigZero) == 0 {
+		return true
+	}
 
-  remainder := big.NewInt(0).Rem(bigIFd.integerNum, big.NewInt(2))
+	remainder := big.NewInt(0).Rem(bigIFd.integerNum, big.NewInt(2))
 
-  if remainder.Cmp(bigZero) == 0 {
-    return true
-  }
+	if remainder.Cmp(bigZero) == 0 {
+		return true
+	}
 
-  return false
+	return false
 }
 
 // IsValid
@@ -1447,28 +1447,28 @@ func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 // will be returned.
 func (bigIFd *BigIntFixedDecimal) IsValid(callingMethodName string) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  if len(callingMethodName) > 0 {
-    callingMethodName = "BigIntFixedDecimal.IsValid" + "\n" + callingMethodName
-  } else {
-    callingMethodName = "BigIntFixedDecimal.IsValid"
-  }
+	if len(callingMethodName) > 0 {
+		callingMethodName = "BigIntFixedDecimal.IsValid" + "\n" + callingMethodName
+	} else {
+		callingMethodName = "BigIntFixedDecimal.IsValid"
+	}
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    callingMethodName,
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix)
+	return new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix)
 }
 
 // IsZero
@@ -1478,30 +1478,30 @@ func (bigIFd *BigIntFixedDecimal) IsValid(callingMethodName string) error {
 // is invalid, an error will be returned.
 func (bigIFd *BigIntFixedDecimal) IsZero() (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.IsZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.IsZero",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntFixedDecMolecule).isBigIntFxDecZero(
-    bigIFd,
-    ePrefix.XCpy("Is 'bigIFd' Zero"))
+	return new(bigIntFixedDecMolecule).isBigIntFxDecZero(
+		bigIFd,
+		ePrefix.XCpy("Is 'bigIFd' Zero"))
 }
 
 // MultiplyByTenToPower - Multiplies the numeric value of the current
@@ -1538,83 +1538,83 @@ func (bigIFd *BigIntFixedDecimal) IsZero() (bool, error) {
 //				of this calculation.
 func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.DivideByTwoToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.DivideByTwoToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  scale :=
-    big.NewInt(0).Exp(
-      big.NewInt(10),
-      big.NewInt(int64(exponent)), nil)
+	scale :=
+		big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(exponent)), nil)
 
-  factor, err := new(BigIntFixedDecimal).New(scale, 0)
+	factor, err := new(BigIntFixedDecimal).New(scale, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bigIFd2, err := bigIFd.CopyOut()
+	bigIFd2, err := bigIFd.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigIFd2, err := bigIFd.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigIFd2, err := bigIFd.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  result, err := new(BigIntMathMultiply).FixedDecimalMultiply(bigIFd2, factor)
+	result, err := new(BigIntMathMultiply).FixedDecimalMultiply(bigIFd2, factor)
 
-  if err != nil {
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "result, err := new(BigIntMathMultiply).\n" +
-        "    FixedDecimalMultiply(bigIFd2, factor)",
-      ErrContext: "",
-      ErrMessage: "",
-    }
-  }
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "result, err := new(BigIntMathMultiply).\n" +
+				"    FixedDecimalMultiply(bigIFd2, factor)",
+			ErrContext: "",
+			ErrMessage: "",
+		}
+	}
 
-  result.TrimTrailingFracZeros()
+	result.TrimTrailingFracZeros()
 
-  err = bigIFd.CopyIn(result)
+	err = bigIFd.CopyIn(result)
 
-  if err != nil {
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err := bigIFd.CopyIn(result)",
-      ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
-      ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
-    }
-  }
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err := bigIFd.CopyIn(result)",
+			ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
+			ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // MultiplyByTwoToPower - Multiplies the numeric value of the current
@@ -1652,47 +1652,47 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) error {
 //				of this calculation.
 func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) error {
 
-  ePrefix := "BigIntFixedDecimal.MultiplyByTwoToPower"
+	ePrefix := "BigIntFixedDecimal.MultiplyByTwoToPower"
 
-  var err error
+	var err error
 
-  err = bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+	err = bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix,
-      ReturnFunc: "err = bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
-      ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.\n" +
-        "'bigIFd' FAILED validity testing and is INVALID!",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "err = bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+			ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.\n" +
+				"'bigIFd' FAILED validity testing and is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  precision := big.NewInt(0)
+	precision := big.NewInt(0)
 
-  bigIFd.integerNum, precision, err =
-    new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(
-      bigIFd.integerNum,
-      big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
-      exponent)
+	bigIFd.integerNum, precision, err =
+		new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(
+			bigIFd.integerNum,
+			big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
+			exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix,
-      ReturnFunc: "bigIFd.integerNum, precision, err =\n" +
-        "    new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(\n" +
-        "    bigIFd.integerNum,\n" +
-        "    big.NewInt(0).SetUint64(uint64(bigIFd.precision))",
-      ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix,
+			ReturnFunc: "bigIFd.integerNum, precision, err =\n" +
+				"    new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(\n" +
+				"    bigIFd.integerNum,\n" +
+				"    big.NewInt(0).SetUint64(uint64(bigIFd.precision))",
+			ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bigIFd.precision = uint(precision.Uint64())
+	bigIFd.precision = uint(precision.Uint64())
 
-  return nil
+	return nil
 }
 
 // New
@@ -1779,97 +1779,97 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) error {
 //	  If no errors are encountered, this method will return a 'nil'
 //	  value for 'error'.
 func (bigIFd *BigIntFixedDecimal) New(
-  integer *big.Int,
-  precision uint,
-  outputNumSeps ...NumericSeparatorDto) (BigIntFixedDecimal, error) {
+	integer *big.Int,
+	precision uint,
+	outputNumSeps ...NumericSeparatorDto) (BigIntFixedDecimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.New",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.New",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  if integer == nil {
+	if integer == nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "integer == nil",
-        ErrMessage: "Input Prameter 'integer' is a 'nil' pointer",
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "integer == nil",
+				ErrMessage: "Input Prameter 'integer' is a 'nil' pointer",
+			}
+	}
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(0).Set(integer)
-  num.precision = precision
+	num.integerNum = big.NewInt(0).Set(integer)
+	num.precision = precision
 
-  defaultUsaNumSeps := new(NumericSeparatorDto)
+	defaultUsaNumSeps := new(NumericSeparatorDto)
 
-  defaultUsaNumSeps.SetUSADefaults()
+	defaultUsaNumSeps.SetUSADefaults()
 
-  var finalOutputNumSeps NumericSeparatorDto
+	var finalOutputNumSeps NumericSeparatorDto
 
-  if len(outputNumSeps) > 0 {
+	if len(outputNumSeps) > 0 {
 
-    _, finalOutputNumSeps,
-      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
-      "outputNumSeps",
-      "defaultUsa",
-      defaultUsaNumSeps,
-      ePrefix,
-      outputNumSeps...)
+		_, finalOutputNumSeps,
+			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+			"outputNumSeps",
+			"defaultUsa",
+			defaultUsaNumSeps,
+			ePrefix,
+			outputNumSeps...)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntFixedDecimal{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
-            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
-            "    \"outputNumSeps\", \"defaultUsa\")",
-          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
-          ErrMessage: err.Error(),
-        }
-    }
-  } else {
+			return BigIntFixedDecimal{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+						"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+						"    \"outputNumSeps\", \"defaultUsa\")",
+					ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
 
-    // Checks validity of multiplierNumSeps
+		// Checks validity of multiplierNumSeps
 
-    err = new(numSepsDtoMechanics).copyNumSepsDto(
-      &finalOutputNumSeps, // Destination
-      defaultUsaNumSeps,
-      false, // Set Defaults if Empty
-      ePrefix.XCpy("Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'"))
+		err = new(numSepsDtoMechanics).copyNumSepsDto(
+			&finalOutputNumSeps, // Destination
+			defaultUsaNumSeps,
+			false, // Set Defaults if Empty
+			ePrefix.XCpy("Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'"))
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntFixedDecimal{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
-            "    &finalOutputNumSeps, &defaultUsaNumSeps, false,\n" +
-            "    ePrefix.XCpy(\"Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'\"))",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntFixedDecimal{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+						"    &finalOutputNumSeps, &defaultUsaNumSeps, false,\n" +
+						"    ePrefix.XCpy(\"Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'\"))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  num.decimalSeparator = finalOutputNumSeps.DecimalSeparator
-  num.thousandsSeparator = finalOutputNumSeps.ThousandsSeparator
-  num.currencySymbol = finalOutputNumSeps.CurrencySymbol
+	num.decimalSeparator = finalOutputNumSeps.DecimalSeparator
+	num.thousandsSeparator = finalOutputNumSeps.ThousandsSeparator
+	num.currencySymbol = finalOutputNumSeps.CurrencySymbol
 
-  return *num, nil
+	return *num, nil
 }
 
 // NewBigIntPrecision - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -1896,66 +1896,66 @@ func (bigIFd *BigIntFixedDecimal) New(
 //													2^32 − 1), an error will be triggered. Also, if 'precision' is less
 //	                       than zero, an error will be triggered.
 func (bigIFd *BigIntFixedDecimal) NewBigIntPrecision(
-  bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
+	bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
 
-  ePrefix := "BigIntFixedDecimal.NewBigIntBigPrecision() "
+	ePrefix := "BigIntFixedDecimal.NewBigIntBigPrecision() "
 
-  if precision.Cmp(big.NewInt(0)) == -1 {
+	if precision.Cmp(big.NewInt(0)) == -1 {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "result, err := new(BigIntMathMultiply).MultiplyBigIntNumByThree(bNum2)",
-        ErrContext: fmt.Sprintf("precision= '%v'", precision.Text(10)),
-        ErrMessage: "Error: Input parameter 'precision' LESS THAN ZERO!",
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "result, err := new(BigIntMathMultiply).MultiplyBigIntNumByThree(bNum2)",
+				ErrContext: fmt.Sprintf("precision= '%v'", precision.Text(10)),
+				ErrMessage: "Error: Input parameter 'precision' LESS THAN ZERO!",
+			}
+	}
 
-  maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
 
-  if precision.Cmp(maxUint32) == 1 {
+	if precision.Cmp(maxUint32) == 1 {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "",
-        ErrContext: " if precision.Cmp(maxUint32) == 1 {",
-        ErrMessage: "Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'!\n" +
-          fmt.Sprintf("precision= '%v'", precision.Text(10)),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "",
+				ErrContext: " if precision.Cmp(maxUint32) == 1 {",
+				ErrMessage: "Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'!\n" +
+					fmt.Sprintf("precision= '%v'", precision.Text(10)),
+			}
+	}
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  var err error
+	var err error
 
-  err = num.SetNumericValue(bigInt, uint(precision.Uint64()))
+	err = num.SetNumericValue(bigInt, uint(precision.Uint64()))
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = num.SetNumericValue(bigInt, uint(precision.Uint64()))",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = num.SetNumericValue(bigInt, uint(precision.Uint64()))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = num.SetNumericSeparatorsToDefaultIfEmpty()
+	err = num.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = num.SetNumericSeparatorsToDefaultIfEmpty()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = num.SetNumericSeparatorsToDefaultIfEmpty()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return *num, nil
+	return *num, nil
 }
 
 // NewInt - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -1980,19 +1980,19 @@ func (bigIFd *BigIntFixedDecimal) NewBigIntPrecision(
 //	in input parameter, 'integer'.
 func (bigIFd *BigIntFixedDecimal) NewInt(integer int, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(int64(integer))
+	num.integerNum = big.NewInt(int64(integer))
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewInt32 - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -2017,19 +2017,19 @@ func (bigIFd *BigIntFixedDecimal) NewInt(integer int, precision uint) BigIntFixe
 //	in input parameter, 'integer'.
 func (bigIFd *BigIntFixedDecimal) NewInt32(integer int32, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(int64(integer))
+	num.integerNum = big.NewInt(int64(integer))
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewInt64 - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -2054,19 +2054,19 @@ func (bigIFd *BigIntFixedDecimal) NewInt32(integer int32, precision uint) BigInt
 //	in input parameter, 'integer'.
 func (bigIFd *BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(integer)
+	num.integerNum = big.NewInt(integer)
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewNumStr - Receives a number string as input and returns
@@ -2095,24 +2095,24 @@ func (bigIFd *BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigInt
 //			thousands separator = ','
 //	   currency separator = '$'
 func (bigIFd *BigIntFixedDecimal) NewNumStr(
-  numStr string,
-  decimalSeparator rune) (BigIntFixedDecimal, error) {
+	numStr string,
+	decimalSeparator rune) (BigIntFixedDecimal, error) {
 
-  ePrefix := "BigIntFixedDecimal.NewNumStr() "
+	ePrefix := "BigIntFixedDecimal.NewNumStr() "
 
-  fixedDecimal := new(BigIntFixedDecimal)
+	fixedDecimal := new(BigIntFixedDecimal)
 
-  err := fixedDecimal.SetNumStr(numStr, decimalSeparator)
+	err := fixedDecimal.SetNumStr(numStr, decimalSeparator)
 
-  if err != nil {
-    return BigIntFixedDecimal{},
-      fmt.Errorf(ePrefix+"Error returned by fixedDecimal.SetNumStr(numStr). "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return BigIntFixedDecimal{},
+			fmt.Errorf(ePrefix+"Error returned by fixedDecimal.SetNumStr(numStr). "+
+				"Error='%v' ", err.Error())
+	}
 
-  _ = fixedDecimal.SetNumericSeparatorsToDefaultIfEmpty()
+	_ = fixedDecimal.SetNumericSeparatorsToDefaultIfEmpty()
 
-  return *fixedDecimal, nil
+	return *fixedDecimal, nil
 }
 
 // NewNumStrWithNumSeps
@@ -2127,42 +2127,42 @@ func (bigIFd *BigIntFixedDecimal) NewNumStr(
 // In addition, the numeric separators contained in input parameter
 // 'numSeps' will be copied to the returned IntAry instance.
 func (bigIFd *BigIntFixedDecimal) NewNumStrWithNumSeps(
-  numStr string,
-  numSeps NumericSeparatorDto) (BigIntFixedDecimal, error) {
+	numStr string,
+	numSeps NumericSeparatorDto) (BigIntFixedDecimal, error) {
 
-  ePrefix := "BigIntFixedDecimal.NewNumStrWithNumSeps() "
+	ePrefix := "BigIntFixedDecimal.NewNumStrWithNumSeps() "
 
-  var err error
+	var err error
 
-  fixedDecimal := new(BigIntFixedDecimal)
+	fixedDecimal := new(BigIntFixedDecimal)
 
-  err = numSeps.IsValid("Validating numSeps")
+	err = numSeps.IsValid("Validating numSeps")
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = numSeps.IsValid('Validating numSeps')",
-        ErrContext: fmt.Sprintf("numStr= '%v'\nnumSeps= '%v'\n", numStr, numSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = numSeps.IsValid('Validating numSeps')",
+				ErrContext: fmt.Sprintf("numStr= '%v'\nnumSeps= '%v'\n", numStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = fixedDecimal.SetNumStr(numStr, numSeps.DecimalSeparator)
+	err = fixedDecimal.SetNumStr(numStr, numSeps.DecimalSeparator)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = fixedDecimal.SetNumStr(numStr, numSeps.DecimalSeparator)",
-        ErrContext: fmt.Sprintf("numStr= '%v'\nnumSeps= '%v'\n", numStr, numSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = fixedDecimal.SetNumStr(numStr, numSeps.DecimalSeparator)",
+				ErrContext: fmt.Sprintf("numStr= '%v'\nnumSeps= '%v'\n", numStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return *fixedDecimal, nil
+	return *fixedDecimal, nil
 }
 
 // NewUInt - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -2187,19 +2187,19 @@ func (bigIFd *BigIntFixedDecimal) NewNumStrWithNumSeps(
 //	   currency separator = '$'
 func (bigIFd *BigIntFixedDecimal) NewUInt(integer uint, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(0).SetUint64(uint64(integer))
+	num.integerNum = big.NewInt(0).SetUint64(uint64(integer))
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewUInt32 - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -2224,19 +2224,19 @@ func (bigIFd *BigIntFixedDecimal) NewUInt(integer uint, precision uint) BigIntFi
 //	   currency separator = '$'
 func (bigIFd *BigIntFixedDecimal) NewUInt32(integer uint32, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(0).SetUint64(uint64(integer))
+	num.integerNum = big.NewInt(0).SetUint64(uint64(integer))
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewUInt64 - Creates and returns a new BigIntFixedDecimal type based on input parameters,
@@ -2261,19 +2261,19 @@ func (bigIFd *BigIntFixedDecimal) NewUInt32(integer uint32, precision uint) BigI
 //	   currency separator = '$'
 func (bigIFd *BigIntFixedDecimal) NewUInt64(integer uint64, precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(0).SetUint64(integer)
+	num.integerNum = big.NewInt(0).SetUint64(integer)
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // NewZero - Creates and returns a new BigIntFixedDecimal type with a zero value. The
@@ -2295,19 +2295,19 @@ func (bigIFd *BigIntFixedDecimal) NewUInt64(integer uint64, precision uint) BigI
 // precision		uint	- Specifies the number of digits to the right of the decimal point.
 func (bigIFd *BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 
-  num := new(BigIntFixedDecimal)
+	num := new(BigIntFixedDecimal)
 
-  num.integerNum = big.NewInt(0)
+	num.integerNum = big.NewInt(0)
 
-  num.precision = precision
+	num.precision = precision
 
-  num.decimalSeparator = '.'
+	num.decimalSeparator = '.'
 
-  num.thousandsSeparator = ','
+	num.thousandsSeparator = ','
 
-  num.currencySymbol = '$'
+	num.currencySymbol = '$'
 
-  return *num
+	return *num
 }
 
 // RoundToDecPlace - Rounds the numeric value of the current BigIntFixedDecimal
@@ -2353,131 +2353,131 @@ func (bigIFd *BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 // Note: This method does NOT trim or delete trailing fractional zero
 // digits.
 func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(
-  precision uint) error {
+	precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.RoundToDecPlace",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.RoundToDecPlace",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
-    bigIFd,
-    ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigIFd.precision == precision {
-    // Nothing to do. Specified 'precision' is already implemented.
-    return nil
-  }
+	if bigIFd.precision == precision {
+		// Nothing to do. Specified 'precision' is already implemented.
+		return nil
+	}
 
-  cmpToZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
+	cmpToZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
 
-  // bigInt == zero, set precision and return
-  if cmpToZeroResult == 0 {
+	// bigInt == zero, set precision and return
+	if cmpToZeroResult == 0 {
 
-    err := bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))
+		err := bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err := bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err := bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  scale := big.NewInt(0)
+	scale := big.NewInt(0)
 
-  base10 := big.NewInt(10)
+	base10 := big.NewInt(10)
 
-  // If existing precision is less than new specified precision,
-  // add trailing zeros, set new precision parameter and return.
-  if bigIFd.precision < precision {
+	// If existing precision is less than new specified precision,
+	// add trailing zeros, set new precision parameter and return.
+	if bigIFd.precision < precision {
 
-    deltaPrecision := precision - bigIFd.precision
+		deltaPrecision := precision - bigIFd.precision
 
-    scale =
-      big.NewInt(0).Exp(
-        base10,
-        big.NewInt(int64(deltaPrecision)),
-        nil)
+		scale =
+			big.NewInt(0).Exp(
+				base10,
+				big.NewInt(int64(deltaPrecision)),
+				nil)
 
-    bigIFd.integerNum.Mul(bigIFd.integerNum, scale)
+		bigIFd.integerNum.Mul(bigIFd.integerNum, scale)
 
-    bigIFd.precision += deltaPrecision
+		bigIFd.precision += deltaPrecision
 
-    return nil
-  }
+		return nil
+	}
 
-  // Must be: bigIFd.precision >  precision
+	// Must be: bigIFd.precision >  precision
 
-  bigNumRound5 :=
-    new(BigIntFixedDecimal).NewInt(5, precision+1)
+	bigNumRound5 :=
+		new(BigIntFixedDecimal).NewInt(5, precision+1)
 
-  if cmpToZeroResult == -1 {
+	if cmpToZeroResult == -1 {
 
-    bigNumRound5.integerNum.Mul(
-      bigNumRound5.integerNum,
-      big.NewInt(-1))
-  }
+		bigNumRound5.integerNum.Mul(
+			bigNumRound5.integerNum,
+			big.NewInt(-1))
+	}
 
-  bigIFd2, err := bigIFd.CopyOut()
+	bigIFd2, err := bigIFd.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigIFd2, err := bigIFd.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigIFd2, err := bigIFd.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  result, err := new(BigIntMathAdd).FixedDecimalAdd(bigIFd2, bigNumRound5)
+	result, err := new(BigIntMathAdd).FixedDecimalAdd(bigIFd2, bigNumRound5)
 
-  if err != nil {
-    return fmt.Errorf("%v\n"+
-      "Error returned by BigIntMathAdd{}.FixedDecimalAdd()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
+		return fmt.Errorf("%v\n"+
+			"Error returned by BigIntMathAdd{}.FixedDecimalAdd()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  // 10^deltaPrecision
-  scale.Exp(big.NewInt(10),
-    big.NewInt(int64(bigIFd.precision-precision)), nil)
+	// 10^deltaPrecision
+	scale.Exp(big.NewInt(10),
+		big.NewInt(int64(bigIFd.precision-precision)), nil)
 
-  result.integerNum.Quo(result.integerNum, scale)
+	result.integerNum.Quo(result.integerNum, scale)
 
-  err = bigIFd.SetNumericValue(result.integerNum, precision)
+	err = bigIFd.SetNumericValue(result.integerNum, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigIFd.SetNumericValue(result.integerNum, precision)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigIFd.SetNumericValue(result.integerNum, precision)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetDecimalSeparator
@@ -2499,28 +2499,28 @@ func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(
 // Example: 123.456
 func (bigIFd *BigIntFixedDecimal) SetDecimalSeparator(decimalSeparator rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetCurrencySymbol",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetCurrencySymbol",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var numSepSymbolType NumSepSymbolCode
+	var numSepSymbolType NumSepSymbolCode
 
-  numSepSymbolType = DECIMALSYMBOL
+	numSepSymbolType = DECIMALSYMBOL
 
-  return new(bigIntFixedDecBoson).setNumSepSymbol(
-    bigIFd,
-    numSepSymbolType,
-    decimalSeparator,
-    ePrefix.XCpy("Setting 'bNum' Decimal Symbol"))
+	return new(bigIntFixedDecBoson).setNumSepSymbol(
+		bigIFd,
+		numSepSymbolType,
+		decimalSeparator,
+		ePrefix.XCpy("Setting 'bNum' Decimal Symbol"))
 }
 
 // SetCurrencySymbol
@@ -2540,41 +2540,41 @@ func (bigIFd *BigIntFixedDecimal) SetDecimalSeparator(decimalSeparator rune) err
 // Example: $123.45
 func (bigIFd *BigIntFixedDecimal) SetCurrencySymbol(currencySymbol rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetCurrencySymbol",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetCurrencySymbol",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var numSepSymbolType NumSepSymbolCode
+	var numSepSymbolType NumSepSymbolCode
 
-  numSepSymbolType = CURRENCYSYMBOL
+	numSepSymbolType = CURRENCYSYMBOL
 
-  return new(bigIntFixedDecBoson).setNumSepSymbol(
-    bigIFd,
-    numSepSymbolType,
-    currencySymbol,
-    ePrefix.XCpy("Setting 'bNum' Currency Symbol"))
+	return new(bigIntFixedDecBoson).setNumSepSymbol(
+		bigIFd,
+		numSepSymbolType,
+		currencySymbol,
+		ePrefix.XCpy("Setting 'bNum' Currency Symbol"))
 }
 
 // SetIntegerValue - Sets the BigIntFixedDecimal.integerNum or integer value
 // for the current BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 
-  if integer == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-  } else {
-    bigIFd.integerNum = big.NewInt(0).Set(integer)
-    bigIFd.precision = 0
-  }
+	if integer == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	} else {
+		bigIFd.integerNum = big.NewInt(0).Set(integer)
+		bigIFd.precision = 0
+	}
 
 }
 
@@ -2610,29 +2610,29 @@ func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
 func (bigIFd *BigIntFixedDecimal) SetNumericSeparators(
-  decimalSeparator rune,
-  thousandsSeparator rune,
-  currencySymbol rune) error {
+	decimalSeparator rune,
+	thousandsSeparator rune,
+	currencySymbol rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetNumericSeparators",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetNumericSeparators",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecBoson).setNumericSeparators(
-    bigIFd,
-    decimalSeparator,
-    thousandsSeparator,
-    currencySymbol,
-    ePrefix.XCpy("Set NumSeps for 'bigIFd'"))
+	return new(bigIntFixedDecBoson).setNumericSeparators(
+		bigIFd,
+		decimalSeparator,
+		thousandsSeparator,
+		currencySymbol,
+		ePrefix.XCpy("Set NumSeps for 'bigIFd'"))
 }
 
 // SetNumericSeparatorsDto
@@ -2665,25 +2665,25 @@ func (bigIFd *BigIntFixedDecimal) SetNumericSeparators(
 //	    CurrencySymbol     rune // Currency Symbol
 //	  }
 func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsDto(
-  customSeparators NumericSeparatorDto) error {
+	customSeparators NumericSeparatorDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetNumericSeparatorsDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetNumericSeparatorsDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecBoson).setNumericSeparatorsDto(
-    bigIFd,
-    customSeparators,
-    ePrefix.XCpy("Setting NumSeps on 'bigIFd'"))
+	return new(bigIntFixedDecBoson).setNumericSeparatorsDto(
+		bigIFd,
+		customSeparators,
+		ePrefix.XCpy("Setting NumSeps on 'bigIFd'"))
 }
 
 // SetNumericSeparatorsToDefaultIfEmpty
@@ -2702,21 +2702,21 @@ func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsDto(
 // are set to valid values.
 func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsToDefaultIfEmpty() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetNumericSeparatorsToDefaultIfEmpty",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetNumericSeparatorsToDefaultIfEmpty",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntFixedDecBoson).setNumericSeparatorsToDefaultIfEmpty(
-    bigIFd, ePrefix)
+	return new(bigIntFixedDecBoson).setNumericSeparatorsToDefaultIfEmpty(
+		bigIFd, ePrefix)
 }
 
 // SetNumStr
@@ -2736,142 +2736,142 @@ func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsToDefaultIfEmpty() error {
 // The only decimal separator recognized by this method is the
 // period ('.').
 func (bigIFd *BigIntFixedDecimal) SetNumStr(
-  numStr string,
-  numStrDecimalSeparator rune) error {
+	numStr string,
+	numStrDecimalSeparator rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetNumStr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if len(numStr) == 0 {
+	if len(numStr) == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "len(numStr) == 0",
-      ErrMessage: "Error: Input parameter 'numStr' is an EMPTY string!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(numStr) == 0",
+			ErrMessage: "Error: Input parameter 'numStr' is an EMPTY string!",
+		}
+	}
 
-  if numStrDecimalSeparator == 0 {
+	if numStrDecimalSeparator == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'numStrDecimalSeparator' is INVALID!\n" +
-        "'numStrDecimalSeparator', of type 'rune', is equal to zero.",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'numStrDecimalSeparator' is INVALID!\n" +
+				"'numStrDecimalSeparator', of type 'rune', is equal to zero.",
+		}
+	}
 
-  if bigIFd.integerNum == nil {
+	if bigIFd.integerNum == nil {
 
-    bigIFd.integerNum = big.NewInt(0)
+		bigIFd.integerNum = big.NewInt(0)
 
-  }
+	}
 
-  baseRunes := []rune(numStr)
-  lBaseRunes := len(baseRunes)
+	baseRunes := []rune(numStr)
+	lBaseRunes := len(baseRunes)
 
-  newPrecision := uint(0)
-  newAbsBigInt := big.NewInt(0)
-  baseTen := big.NewInt(10)
-  hasLeftParen := false
-  hasRightParen := false
-  hasMinusSign := false
-  startFractionalDigits := false
-  isStartNumericDigits := false
-  isEndNumericDigits := false
-  numOfNumericDigits := uint(0)
+	newPrecision := uint(0)
+	newAbsBigInt := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	hasLeftParen := false
+	hasRightParen := false
+	hasMinusSign := false
+	startFractionalDigits := false
+	isStartNumericDigits := false
+	isEndNumericDigits := false
+	numOfNumericDigits := uint(0)
 
-  for i := 0; i < lBaseRunes; i++ {
+	for i := 0; i < lBaseRunes; i++ {
 
-    if isEndNumericDigits == true {
-      continue
-    }
+		if isEndNumericDigits == true {
+			continue
+		}
 
-    if baseRunes[i] == '-' && isStartNumericDigits == false {
+		if baseRunes[i] == '-' && isStartNumericDigits == false {
 
-      hasMinusSign = true
+			hasMinusSign = true
 
-      continue
-    }
+			continue
+		}
 
-    if baseRunes[i] == '(' && isStartNumericDigits == false {
+		if baseRunes[i] == '(' && isStartNumericDigits == false {
 
-      hasLeftParen = true
+			hasLeftParen = true
 
-      continue
-    }
+			continue
+		}
 
-    if baseRunes[i] == ')' &&
-      isStartNumericDigits == true &&
-      hasLeftParen == true {
+		if baseRunes[i] == ')' &&
+			isStartNumericDigits == true &&
+			hasLeftParen == true {
 
-      hasRightParen = true
+			hasRightParen = true
 
-      isEndNumericDigits = true
+			isEndNumericDigits = true
 
-    }
+		}
 
-    if baseRunes[i] == numStrDecimalSeparator {
+		if baseRunes[i] == numStrDecimalSeparator {
 
-      startFractionalDigits = true
+			startFractionalDigits = true
 
-      continue
-    }
+			continue
+		}
 
-    if baseRunes[i] >= '0' &&
-      baseRunes[i] <= '9' {
+		if baseRunes[i] >= '0' &&
+			baseRunes[i] <= '9' {
 
-      isStartNumericDigits = true
+			isStartNumericDigits = true
 
-      newAbsBigInt.Mul(newAbsBigInt, baseTen)
+			newAbsBigInt.Mul(newAbsBigInt, baseTen)
 
-      newAbsBigInt.Add(newAbsBigInt, big.NewInt(int64(baseRunes[i]-48)))
+			newAbsBigInt.Add(newAbsBigInt, big.NewInt(int64(baseRunes[i]-48)))
 
-      numOfNumericDigits++
+			numOfNumericDigits++
 
-      if startFractionalDigits == true {
-        newPrecision++
-      }
+			if startFractionalDigits == true {
+				newPrecision++
+			}
 
-      continue
-    }
+			continue
+		}
 
-  }
+	}
 
-  if numOfNumericDigits == 0 {
+	if numOfNumericDigits == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "if numOfNumericDigits == 0 {",
-      ErrMessage: fmt.Sprintf("Error: No numeric digits were found in input parameter 'numStr'.\n"+
-        "Original Number String Value: numStr='%v'", numStr),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "if numOfNumericDigits == 0 {",
+			ErrMessage: fmt.Sprintf("Error: No numeric digits were found in input parameter 'numStr'.\n"+
+				"Original Number String Value: numStr='%v'", numStr),
+		}
+	}
 
-  if hasMinusSign == true || (hasLeftParen == true && hasRightParen == true) {
+	if hasMinusSign == true || (hasLeftParen == true && hasRightParen == true) {
 
-    newAbsBigInt.Neg(newAbsBigInt)
+		newAbsBigInt.Neg(newAbsBigInt)
 
-  }
+	}
 
-  bigIFd.integerNum.Set(newAbsBigInt)
+	bigIFd.integerNum.Set(newAbsBigInt)
 
-  bigIFd.precision = newPrecision
+	bigIFd.precision = newPrecision
 
-  return nil
+	return nil
 }
 
 // SetNumericValue
@@ -2891,40 +2891,40 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(
 //	automaically be reset to USA default numeric separators.
 func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.SetNumericValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.SetNumericValue",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntFixedDecBoson).
-    setNumericSeparatorsToDefaultIfEmpty(
-      bigIFd,
-      ePrefix.XCpy("Setting 'bigIFd'"))
+	err = new(bigIntFixedDecBoson).
+		setNumericSeparatorsToDefaultIfEmpty(
+			bigIFd,
+			ePrefix.XCpy("Setting 'bigIFd'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  numSepsDto := NumericSeparatorDto{
-    DecimalSeparator:   bigIFd.decimalSeparator,
-    ThousandsSeparator: bigIFd.thousandsSeparator,
-    CurrencySymbol:     bigIFd.currencySymbol,
-  }
+	numSepsDto := NumericSeparatorDto{
+		DecimalSeparator:   bigIFd.decimalSeparator,
+		ThousandsSeparator: bigIFd.thousandsSeparator,
+		CurrencySymbol:     bigIFd.currencySymbol,
+	}
 
-  return new(bigIntFixedDecAtom).setNumericValue(
-    bigIFd,
-    integer,
-    precision,
-    numSepsDto,
-    ePrefix.XCpy("Setting 'bigIFd'"))
+	return new(bigIntFixedDecAtom).setNumericValue(
+		bigIFd,
+		integer,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy("Setting 'bigIFd'"))
 }
 
 // SetPrecisionValue - Sets the 'precision' value for the current BigIntFixedDecimal
@@ -2932,11 +2932,11 @@ func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision ui
 // of the decimal place.
 func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
 
-  bigIFd.precision = precision
+	bigIFd.precision = precision
 
 }
 
@@ -2953,28 +2953,28 @@ func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 // 1,000,000
 func (bigIFd *BigIntFixedDecimal) SetThousandsSeparator(thousandsSeparator rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntFixedDecimal.IsZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.IsZero",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var numSepSymbolType NumSepSymbolCode
+	var numSepSymbolType NumSepSymbolCode
 
-  numSepSymbolType = THOUSANDSYMBOL
+	numSepSymbolType = THOUSANDSYMBOL
 
-  return new(bigIntFixedDecBoson).setNumSepSymbol(
-    bigIFd,
-    numSepSymbolType,
-    thousandsSeparator,
-    ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
+	return new(bigIntFixedDecBoson).setNumSepSymbol(
+		bigIFd,
+		numSepSymbolType,
+		thousandsSeparator,
+		ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
 }
 
 // TrimTrailingFracZeros - This method will delete non-significant
@@ -2990,29 +2990,29 @@ func (bigIFd *BigIntFixedDecimal) SetThousandsSeparator(thousandsSeparator rune)
 //	 -456.123000			-456.123
 func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-    return
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return
+	}
 
-  if bigIFd.precision == 0 {
-    return
-  }
+	if bigIFd.precision == 0 {
+		return
+	}
 
-  // bigIFd.precision must be GREATER THAN ZERO
-  // Delete trailing fractional zeros
+	// bigIFd.precision must be GREATER THAN ZERO
+	// Delete trailing fractional zeros
 
-  scrap := big.NewInt(0)
-  biBase10 := big.NewInt(10)
-  biBaseZero := big.NewInt(0)
-  newintegerNum, mod10 := big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
+	scrap := big.NewInt(0)
+	biBase10 := big.NewInt(10)
+	biBaseZero := big.NewInt(0)
+	newintegerNum, mod10 := big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
 
-  for mod10.Cmp(biBaseZero) == 0 && bigIFd.precision > 0 {
-    bigIFd.integerNum.Set(newintegerNum)
-    bigIFd.precision--
-    newintegerNum, mod10 = big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
-  }
+	for mod10.Cmp(biBaseZero) == 0 && bigIFd.precision > 0 {
+		bigIFd.integerNum.Set(newintegerNum)
+		bigIFd.precision--
+		newintegerNum, mod10 = big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
+	}
 
 }
 
@@ -3056,43 +3056,43 @@ func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 //			0.000000								0									0
 func (bigIFd *BigIntFixedDecimal) TruncToDecPlace(precision uint) {
 
-  if bigIFd.integerNum == nil {
-    bigIFd.integerNum = big.NewInt(0)
-    bigIFd.precision = 0
-  }
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
 
-  if bigIFd.precision == precision {
-    // Nothing to do. Specified 'precision' is already implemented.
-    return
-  }
+	if bigIFd.precision == precision {
+		// Nothing to do. Specified 'precision' is already implemented.
+		return
+	}
 
-  // bigInt == zero, set precision and return
-  if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-    bigIFd.precision = precision
-    return
-  }
+	// bigInt == zero, set precision and return
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+		bigIFd.precision = precision
+		return
+	}
 
-  scale := big.NewInt(0)
-  big10 := big.NewInt(10)
-  delta := uint(0)
+	scale := big.NewInt(0)
+	big10 := big.NewInt(10)
+	delta := uint(0)
 
-  // If existing precision is less than new specified precision,
-  // add trailing zeros, set new precision parameter and return.
-  if bigIFd.precision < precision {
-    delta = precision - bigIFd.precision
-    scale.Exp(
-      big10,
-      big.NewInt(int64(delta)),
-      nil)
-    bigIFd.integerNum.Mul(bigIFd.integerNum, scale)
-    bigIFd.precision += delta
-    return
-  }
+	// If existing precision is less than new specified precision,
+	// add trailing zeros, set new precision parameter and return.
+	if bigIFd.precision < precision {
+		delta = precision - bigIFd.precision
+		scale.Exp(
+			big10,
+			big.NewInt(int64(delta)),
+			nil)
+		bigIFd.integerNum.Mul(bigIFd.integerNum, scale)
+		bigIFd.precision += delta
+		return
+	}
 
-  // Must be bigIFd.precision > precision
-  delta = bigIFd.precision - precision
-  scale.Exp(big10, big.NewInt(int64(delta)), nil)
-  bigIFd.integerNum.Quo(bigIFd.integerNum, scale)
-  bigIFd.precision = precision
+	// Must be bigIFd.precision > precision
+	delta = bigIFd.precision - precision
+	scale.Exp(big10, big.NewInt(int64(delta)), nil)
+	bigIFd.integerNum.Quo(bigIFd.integerNum, scale)
+	bigIFd.precision = precision
 
 }
