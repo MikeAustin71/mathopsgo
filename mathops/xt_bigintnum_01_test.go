@@ -10162,7 +10162,7 @@ func TestBigIntNum_DivideByTenToPower_06(t *testing.T) {
 
   var err error
 
-  originalNumStr := "654.123"
+  originalNumStr := "654,123"
 
   expectedNumStr := "0,654123"
 
@@ -10232,15 +10232,17 @@ func TestBigIntNum_DivideByTenToPower_06(t *testing.T) {
     return
   }
 
-  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
+  bINum, err := new(BigIntNum).NewNumStrWithNumSeps(originalNumStr, &expectedNumSeps)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewNumStrWithNumSeps(originalNumStr,&expectedNumSeps)\n"+
       "originalNumStr= '%v'\n"+
+      "expectedNumSeps= '%v'\n"+
       "Error= '%v'\n\n",
-      ePrefix, originalNumStr, err.Error())
+      ePrefix, originalNumStr, expectedNumSeps.String(), err.Error())
     return
   }
 
@@ -10527,9 +10529,9 @@ func TestBigIntNum_ExtendPrecision_01(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -10718,9 +10720,9 @@ func TestBigIntNum_ExtendPrecision_02(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -10909,9 +10911,9 @@ func TestBigIntNum_ExtendPrecision_03(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -11100,9 +11102,9 @@ func TestBigIntNum_ExtendPrecision_04(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -11291,9 +11293,9 @@ func TestBigIntNum_ExtendPrecision_05(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -11482,9 +11484,9 @@ func TestBigIntNum_ExtendPrecision_06(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
@@ -11695,9 +11697,9 @@ func TestBigIntNum_ExtendPrecision_07(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedEqualsBINum, err := expectedBigINum.Equal(bINum)\n"+
-      "expectedNumStr= '%v'\n"+
+      "expectedBigINum= '%v'\n"+
       "bINumFinalNumStr= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumStr, bINumFinalNumStr, err.Error())
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, bINumFinalNumStr, err.Error())
     return
   }
 
