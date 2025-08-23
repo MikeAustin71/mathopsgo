@@ -3868,971 +3868,4055 @@ func TestBigIntNum_Floor_16(t *testing.T) {
 
 func TestBigIntNum_FormatNumStr_01(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_01"
+
+  var err error
+
   originalNumStr := "-123.45"
+
   expectedNumStr := "-123.45"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_02(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_02"
+
+  var err error
+
   originalNumStr := "123.45"
+
   expectedNumStr := "123.45"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_03(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_03"
+
+  var err error
+
   originalNumStr := "-123.45"
+
   expectedNumStr := "(123.45)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_04(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_04"
+
+  var err error
+
   originalNumStr := "-1234.56"
+
   expectedNumStr := "-1234.56"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_05(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_05"
+
+  var err error
+
   originalNumStr := "1234.56"
+
   expectedNumStr := "1234.56"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_06(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_06"
+
+  var err error
+
   originalNumStr := "-1234.56"
+
   expectedNumStr := "(1234.56)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_07(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_07"
+
+  var err error
+
   originalNumStr := "0"
+
   expectedNumStr := "0"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_08(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_08"
+
+  var err error
+
   originalNumStr := "0.000"
+
   expectedNumStr := "0.000"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_09(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_09"
+
+  var err error
+
   originalNumStr := "0.000"
+
   expectedNumStr := "0.000"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_12(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_12"
+
+  var err error
+
   originalNumStr := "12345"
+
   expectedNumStr := "12345"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_13(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_13"
+
+  var err error
+
   originalNumStr := "-12345"
+
   expectedNumStr := "(12345)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_14(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_14"
+
+  var err error
+
   originalNumStr := "-12345"
+
   expectedNumStr := "-12345"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatNumStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_15(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_15"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "0.00012345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_16(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_16"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "0.12345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_17(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_17"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "-0.00012345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_18(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_18"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "-0.12345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_19(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_19"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "(0.00012345)"
+
   mode := PARENTHESESNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_20(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_20"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "(0.12345)"
+
   mode := PARENTHESESNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_21(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_21"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "12345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_22(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_22"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(2)
+
+  precisionUint := uint(2)
+
   expectedNumStr := "12345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_23(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_23"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(7)
+
+  precisionUint := uint(7)
+
   expectedNumStr := "0012345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatNumStr_24(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatNumStr_24"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(2)
+
+  precisionUint := uint(2)
+
   expectedNumStr := "12345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatNumStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatNumStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatNumStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_01(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_01"
+
+  var err error
+
   originalNumStr := "1234"
+
   expectedNumStr := "1,234"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_02(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_02"
+
+  var err error
+
   originalNumStr := "123"
+
   expectedNumStr := "123"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_03(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_03"
+
+  var err error
+
   originalNumStr := "-1234"
+
   expectedNumStr := "(1,234)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_04(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_04"
+
+  var err error
+
   originalNumStr := "-1234"
+
   expectedNumStr := "-1,234"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_05(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_05"
+
+  var err error
+
   originalNumStr := "1234.567"
+
   expectedNumStr := "1,234.567"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_06(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_06"
+
+  var err error
+
   originalNumStr := "-1234.567"
+
   expectedNumStr := "-1,234.567"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_07(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_07"
+
+  var err error
+
   originalNumStr := "-1234.567"
+
   expectedNumStr := "(1,234.567)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_08(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_08"
+
+  var err error
+
   originalNumStr := "0"
+
   expectedNumStr := "0"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_09(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_09"
+
+  var err error
+
   originalNumStr := "0.0000"
+
   expectedNumStr := "0.0000"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_10(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_10"
+
+  var err error
+
   originalNumStr := "0.0000"
+
   expectedNumStr := "0.0000"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_11(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_11"
+
+  var err error
+
   originalNumStr := "1234567890.12"
+
   expectedNumStr := "1,234,567,890.12"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_12(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_12"
+
+  var err error
+
   originalNumStr := "-1234567890.12"
+
   expectedNumStr := "-1,234,567,890.12"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_13(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_13"
+
+  var err error
+
   originalNumStr := "-1234567890.12"
+
   expectedNumStr := "(1,234,567,890.12)"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_14(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_14"
+
+  var err error
+
   originalNumStr := "1234567890"
+
   expectedNumStr := "1,234,567,890"
+
   mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_15(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_15"
+
+  var err error
+
   originalNumStr := "-1234567890"
+
   expectedNumStr := "-1,234,567,890"
+
   mode := LEADMINUSNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
 
   bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(originalNumStr). "+
-      " num1Str= '%v' Error='%v' ",
-      originalNumStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  outStr := bINum.FormatThousandsStr(mode)
+  err = bINum.IsValid("Validating bINum")
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_16(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_16"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "0.00012345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_17(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_17"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "0.12345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_18(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_18"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "-0.00012345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_19(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_19"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "-0.12345"
+
   mode := LEADMINUSNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_20(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_20"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(8)
+
+  precisionUint := uint(8)
+
   expectedNumStr := "(0.00012345)"
+
   mode := PARENTHESESNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
 
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_21(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_21"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "(0.12345)"
+
   mode := PARENTHESESNEGVALFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_22(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_22"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(5)
+
+  precisionUint := uint(5)
+
   expectedNumStr := "12345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_23(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_23"
+
+  var err error
+
   originalBInt := big.NewInt(12345)
-  precision := uint(0)
+
+  precisionUint := uint(0)
+
   expectedNumStr := "12,345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_24(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_24"
+
+  var err error
+
   originalBInt := big.NewInt(-12345)
-  precision := uint(0)
+
+  precisionUint := uint(0)
+
   expectedNumStr := "12,345"
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatThousandsStr_25(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_FormatThousandsStr_25"
+
+  var err error
+
   originalBInt := big.NewInt(123)
-  precision := uint(0)
+
   expectedNumStr := "123"
+
+  precisionUint := uint(0)
+
   mode := ABSOLUTEPURENUMSTRFMTMODE
 
-  bINum := new(BigIntNum).NewBigInt(originalBInt, precision)
+  var modeStr string
 
-  outStr := bINum.FormatThousandsStr(mode)
+  labelLen := len(NegativeValueFmtModeLabels)
 
-  if expectedNumStr != outStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, outStr)
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
   }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  bINum, err := new(BigIntNum).NewBigInt(originalBInt, precisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).\n"+
+      "  NewBigInt(originalBInt, precisionUint)\n"+
+      "originalBInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBInt.Text(10),
+      precisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalBInt= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalBInt.Text(10), err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  return
+}
+
+func TestBigIntNum_FormatThousandsStr_26(t *testing.T) {
+
+  ePrefix := "TestBigIntNum_FormatThousandsStr_26"
+
+  var err error
+
+  originalNumStr := "1234"
+
+  expectedNumStr := "1 234"
+
+  mode := PARENTHESESNEGVALFMTMODE
+
+  var modeStr string
+
+  labelLen := len(NegativeValueFmtModeLabels)
+
+  intModeValue := int(mode)
+
+  if intModeValue < 0 || intModeValue >= labelLen {
+
+    t.Errorf("%v\n"+
+      "Error: Test Data is Corrupted!\n"+
+      "Because intModeValue < 0 || intModeValue >= labelLen\n"+
+      "Actual intModeValue = '%v'\n\n",
+      ePrefix, intModeValue)
+
+    return
+  }
+
+  modeStr = NegativeValueFmtModeLabels[mode]
+
+  expectedNumSeps := NumericSeparatorDto{}
+  frenchDecSeparator := ','
+  frenchThousandsSeparator := ' '
+  frenchCurrencySymbol := '€'
+
+  expectedNumSeps.DecimalSeparator = frenchDecSeparator
+  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+  err = expectedNumSeps.IsValid("Validating expectedNumSeps")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
+  }
+
+  err = bINum.SetNumericSeparatorsDto(expectedNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), err.Error())
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumFormattedNumStr, err := bINum.FormatThousandsStr(mode)\n"+
+      "mode String= '%v'\n"+
+      "mode Value= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, modeStr, intModeValue, err.Error())
+    return
+  }
+
+  if expectedNumStr != bINumFormattedNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumStr != bINumFormattedNumStr\n"+
+      "Expected bINumFormattedNumStr = '%v'\n"+
+      "  Actual bINumFormattedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bINumFormattedNumStr)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != resultNumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_FormatCurrencyStr_01(t *testing.T) {
