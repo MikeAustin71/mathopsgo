@@ -6280,13 +6280,11 @@ func TestBigIntMathSubtract_SubtractNumStrDtoArray_01(t *testing.T) {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			" expectedBigINum, err := new(BigIntNum).\n"+
-			"  NewNumStrWithNumSeps(expectedBigINumStr, &expectedNumSeps)\n"+
+			"  NewNumStr(expectedBigINumStr)\n"+
 			"expectedBigINumStr= '%v'\n"+
-			"expectedNumSeps= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
 			expectedBigINumStr,
-			expectedNumSeps.String(),
 			err.Error())
 
 		return
