@@ -447,188 +447,1616 @@ func TestBigIntNum_GetBigIntFixedDecimal_01(t *testing.T) {
 
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
-  nStr := "123.456"
-  expectedNumStr := "0.456"
-  expectedPrecision := uint(3)
+  ePrefix := "TestBigIntNum_GetFractionalPart_01"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "123.456"
+
+  expectedNumStr := "0.456"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetFractionalPart_02(t *testing.T) {
 
-  nStr := "-123.456"
-  expectedNumStr := "-0.456"
-  expectedPrecision := uint(3)
+  ePrefix := "TestBigIntNum_GetFractionalPart_02"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "-123.456"
+
+  expectedNumStr := "-0.456"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetFractionalPart_03(t *testing.T) {
 
-  nStr := "123"
-  expectedNumStr := "0"
-  expectedPrecision := uint(0)
+  ePrefix := "TestBigIntNum_GetFractionalPart_03"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "123"
+
+  expectedNumStr := "0"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetFractionalPart_04(t *testing.T) {
 
-  nStr := "-123"
-  expectedNumStr := "0"
-  expectedPrecision := uint(0)
+  ePrefix := "TestBigIntNum_GetFractionalPart_04"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "-123"
+
+  expectedNumStr := "0"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetFractionalPart_05(t *testing.T) {
 
-  nStr := "0.000"
-  expectedNumStr := "0"
-  expectedPrecision := uint(0)
+  ePrefix := "TestBigIntNum_GetFractionalPart_05"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "0.000"
+
+  expectedNumStr := "0"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetFractionalPart_06(t *testing.T) {
 
-  nStr := "0"
-  expectedNumStr := "0"
-  expectedPrecision := uint(0)
+  ePrefix := "TestBigIntNum_GetFractionalPart_06"
 
-  bINum1, err := new(BigIntNum).NewNumStr(nStr)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  originalNumStr := "0"
+
+  expectedNumStr := "0"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because originalNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, originalNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumSeps, err := expectedBigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumNumSeps, err := expectedBigINum.GetNumericSeparatorsDto()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(expectedBigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected expectedBigINumSeps = '%v'\n"+
+      "  Actual expectedBigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), expectedBigINumSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
     t.Errorf("Error returned by new(BigIntNum).NewNumStr(nStr). "+
       " nStr='%v'  Error='%v'",
-      nStr, err.Error())
+      originalNumStr, err.Error())
   }
 
-  fractionalPart := bINum1.GetFractionalPart()
-
-  actualNumStr := fractionalPart.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
-      "Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  if expectedPrecision != fractionalPart.GetPrecisionUint() {
-    t.Errorf("Error: Expected Fractional Part precision='%v' "+
-      "Instead, precision='%v'",
-      expectedPrecision, fractionalPart.GetPrecisionUint())
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  bINumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumStr != bINumStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because originalNumStr != bINumStr \n"+
+      "Expected bINumStr = '%v'\n"+
+      "  Actual bINumStr = '%v'\n\n",
+      ePrefix, originalNumStr, bINumStr)
+
+    return
+  }
+
+  fractionalPartBINum, err := bINum.GetFractionalPart()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINum, err := bINum.GetFractionalPart()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumStr, err.Error())
+    return
+  }
+
+  err = fractionalPartBINum.IsValid("Validating fractionalPartBINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fractionalPartBINum.IsValid('Validating fractionalPartBINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumStr, err := fractionalPartBINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fractionalPartBINumPrecisionUint, err := fractionalPartBINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumPrecisionUint, err := \n"+
+      "   fractionalPartBINum.GetPrecisionUint()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  fractionalPartBINumSeps, err := fractionalPartBINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fractionalPartBINumSeps, err :=\n"+
+      "  fractionalPartBINum.GetNumericSeparatorsDto()\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  expectedEqualsFractionalPart, err := expectedBigINum.Equal(fractionalPartBINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedEqualsFractionalPart, err :=\n"+
+      "  expectedBigINum.Equal(fractionalPartBINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "fractionalPartBINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, fractionalPartBINumStr, err.Error())
+    return
+  }
+
+  if !expectedEqualsFractionalPart {
+    t.Errorf("%v\n"+
+      "Error: Expected and 'fractionalPartBINum' values ARE NOT Equal\n"+
+      "Because expectedEqualsFractionalPart = 'false' \n"+
+      "Expected fractionalPartBINum = '%v'\n"+
+      "  Actual fractionalPartBINum = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedNumStr != fractionalPartBINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and fractionalPartBINumStr number strings NOT EQUAL!\n"+
+      "Because expectedNumStr != fractionalPartBINumStr\n"+
+      "Expected fractionalPartBINumStr = '%v'\n"+
+      "  Actual fractionalPartBINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fractionalPartBINumStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != fractionalPartBINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Fractional Part Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != fractionalPartBINumPrecisionUint\n"+
+      "Expected fractionalPartBINumPrecisionUint = '%v'\n"+
+      "  Actual fractionalPartBINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, fractionalPartBINumPrecisionUint)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(fractionalPartBINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal\n"+
+      "Because expectedNumSeps != fractionalPartBINumSeps \n"+
+      "Expected fractionalPartBINumSeps = '%v'\n"+
+      "  Actual fractionalPartBINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), fractionalPartBINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_GetDecimal_01(t *testing.T) {
