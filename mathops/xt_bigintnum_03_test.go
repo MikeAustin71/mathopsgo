@@ -2060,29 +2060,206 @@ func TestBigIntNum_GetFractionalPart_06(t *testing.T) {
 }
 
 func TestBigIntNum_GetDecimal_01(t *testing.T) {
-  expectedStr := "-847921684.347"
-  ePrecision := uint(3)
 
-  bINum, err := new(BigIntNum).NewNumStr(expectedStr)
+  ePrefix := "TestBigIntNum_GetDecimal_01"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  expectedNumStr := "-847921684.347"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedStr). Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewNumStr(expectedNumStr)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedNumStr,
+      err.Error())
+
+    return
   }
 
-  decActual, err := bINum.GetDecimal()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedStr != decActual.GetNumStr() {
-    t.Errorf("Error: Expected decActual.GetNumStr()='%v'. "+
-      "Instead, decActual.GetNumStr()='%v'.",
-      expectedStr, decActual.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != decActual.GetPrecisionUint() {
-    t.Errorf("Error: Expected decActual.GetPrecisionUint()='%v'. "+
-      "Instead, decActual.GetPrecisionUint()='%v'.",
-      ePrecision, decActual.GetPrecisionUint())
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values ARE NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  expectedBigINumPrecisionUint, err := expectedBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumPrecisionUint, err := \n"+
+      "  expectedBigINum.GetPrecisionUint()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != expectedBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != expectedBigINumPrecisionUint \n"+
+      "Expected expectedBigINumPrecisionUint = '%v'\n"+
+      "  Actual expectedBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, expectedBigINumPrecisionUint)
+
+    return
+  }
+
+  expectedBigINumBigInt, err := expectedBigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumBigInt, err :=\n"+
+      "  expectedBigINum.GetBigInt()\n"+
+      "expectedBigINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  decimalNum, err := expectedBigINum.GetDecimal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNum, err := expectedBigINum.GetDecimal()\n"+
+      "expectedBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumberStr, err.Error())
+    return
+  }
+
+  err = decimalNum.IsValid("Validating decimalNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decimalNum.IsValid('Validating decimalNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumNumberStr, err := decimalNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumNumberStr, err := decimalNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumPrecisionUint, err := decimalNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumPrecisionUint, err :=\n"+
+      "  decimalNum.GetPrecisionUint()\n"+
+      "decimalNum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, decimalNumNumberStr, err.Error())
+    return
+  }
+
+  decimalNumBigInt, err := decimalNum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumBigInt, err := decimalNum.GetBigInt()\n"+
+      "decimalNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalNumNumberStr, err.Error())
+    return
+  }
+
+  decimalNumSeps, err := decimalNum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumSeps, err := decimalNum.GetNumericSeparatorsDto()\n"+
+      "decimalNum= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, decimalNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String != Decimal Number String\n"+
+      "Because expectedNumStr != decimalNumNumberStr\n"+
+      "Expected decimalNumNumberStr = '%v'\n"+
+      "  Actual decimalNumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != decimalNumPrecisionUint\n"+
+      "Expected decimalNumPrecisionUint = '%v'\n"+
+      "  Actual decimalNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalNumPrecisionUint)
+
+    return
+  }
+
+  if expectedBigINumBigInt.Cmp(decimalNumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Absolute BigInt Values ARE NOT Equal!\n"+
+      "Because expectedBigINumBigInt.Cmp(decimalNumBigInt) != 0 \n"+
+      "Expected decimalNumBigInt = '%v'\n"+
+      "  Actual decimalNumBigInt = '%v'\n\n",
+      ePrefix, expectedBigINumBigInt.Text(10), decimalNumBigInt.Text(10))
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != expectedBigINumSeps \n"+
+      "Expected decimalNumSeps = '%v'\n"+
+      "  Actual decimalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalNumSeps.String())
+
+    return
+  }
 }
 
 func TestBigIntNum_GetNumStrDto_01(t *testing.T) {
