@@ -1305,7 +1305,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_01(t *testing.T) {
 
 	if !usaNumSeps.Equal(iaResultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != iaResultNumSeps \n"+
 			"Expected iaResultNumSeps = '%v'\n"+
 			"  Actual iaResultNumSeps = '%v'\n\n",
@@ -1316,7 +1316,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_01(t *testing.T) {
 
 	if !usaNumSeps.Equal(expectedBigINumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != expectedBigINumSeps \n"+
 			"Expected expectedBigINumSeps = '%v'\n"+
 			"  Actual expectedBigINumSeps = '%v'\n\n",
@@ -1327,7 +1327,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_01(t *testing.T) {
 
 	if !usaNumSeps.Equal(resultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != resultNumSeps \n"+
 			"Expected resultNumSeps = '%v'\n"+
 			"  Actual resultNumSeps = '%v'\n\n",
@@ -1765,7 +1765,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02(t *testing.T) {
 
 	if !usaNumSeps.Equal(expectedBigINumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != expectedBigINumSeps \n"+
 			"Expected expectedBigINumSeps = '%v'\n"+
 			"  Actual expectedBigINumSeps = '%v'\n\n",
@@ -1776,7 +1776,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02(t *testing.T) {
 
 	if !usaNumSeps.Equal(resultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != resultNumSeps \n"+
 			"Expected resultNumSeps = '%v'\n"+
 			"  Actual resultNumSeps = '%v'\n\n",
@@ -2192,7 +2192,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 
 	if iaResultNumStr != resultNumStr {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because iaResultNumStr != resultNumStr \n"+
 			"Expected resultNumStr = '%v'\n"+
 			"  Actual resultNumStr = '%v'\n\n",
@@ -2203,7 +2203,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 
 	if !usaNumSeps.Equal(iaResultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != iaResultNumSeps \n"+
 			"Expected iaResultNumSeps = '%v'\n"+
 			"  Actual iaResultNumSeps = '%v'\n\n",
@@ -2214,7 +2214,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 
 	if !usaNumSeps.Equal(expectedBigINumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != expectedBigINumSeps \n"+
 			"Expected expectedBigINumSeps = '%v'\n"+
 			"  Actual expectedBigINumSeps = '%v'\n\n",
@@ -2225,7 +2225,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 
 	if !usaNumSeps.Equal(resultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != resultNumSeps \n"+
 			"Expected resultNumSeps = '%v'\n"+
 			"  Actual resultNumSeps = '%v'\n\n",
@@ -2663,7 +2663,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04(t *testing.T) {
 
 	if !usaNumSeps.Equal(iaResultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != iaResultNumSeps \n"+
 			"Expected iaResultNumSeps = '%v'\n"+
 			"  Actual iaResultNumSeps = '%v'\n\n",
@@ -2674,7 +2674,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04(t *testing.T) {
 
 	if !usaNumSeps.Equal(expectedBigINumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != expectedBigINumSeps \n"+
 			"Expected expectedBigINumSeps = '%v'\n"+
 			"  Actual expectedBigINumSeps = '%v'\n\n",
@@ -2685,7 +2685,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04(t *testing.T) {
 
 	if !usaNumSeps.Equal(resultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because usaNumSeps != resultNumSeps \n"+
 			"Expected resultNumSeps = '%v'\n"+
 			"  Actual resultNumSeps = '%v'\n\n",
@@ -2871,7 +2871,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_05(t *testing.T) {
 
 	if !expectedNumSeps.Equal(resultNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: Number String Values Not Equal\n"+
+			"Error: Numeric Separator Values Not Equal\n"+
 			"Because expectedNumSeps != resultNumSeps \n"+
 			"Expected resultNumSeps = '%v'\n"+
 			"  Actual resultNumSeps = '%v'\n\n",
