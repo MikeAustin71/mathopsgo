@@ -9888,7 +9888,7 @@ func TestBigIntNum_IntAry_01(t *testing.T) {
 
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "bOriginal, isOk := big.NewInt(0).\n"+
+      "originalBigInt, isOk := big.NewInt(0).\n"+
       "   SetString(expectedNumIntStr, 10)\n"+
       "expectedNumIntStr= '%v'\n"+
       "Error= 'isOk == false'\n\n",
@@ -10432,7 +10432,7 @@ func TestBigIntNum_IntAry_02(t *testing.T) {
 
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "bOriginal, isOk := big.NewInt(0).\n"+
+      "originalBigInt, isOk := big.NewInt(0).\n"+
       "   SetString(expectedNumIntStr, 10)\n"+
       "expectedNumIntStr= '%v'\n"+
       "Error= 'isOk == false'\n\n",
