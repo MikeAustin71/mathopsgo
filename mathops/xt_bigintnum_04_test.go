@@ -6303,68 +6303,215 @@ func TestBigIntNum_MultiplyByTenToPowerAdd_04(t *testing.T) {
 
 func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 
-  bfloat := big.NewFloat(32.123)
+  ePrefix := "TestBigIntNum_NewBigFloat_01"
 
   expectedNumStr := "32.123"
 
-  bINum, err := new(BigIntNum).NewBigFloat(bfloat, 3)
+  maxPrecisionUint := uint(3)
+
+  bfloat, isOk := big.NewFloat(0).SetString(expectedNumStr)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error: big.NewFloat(0).SetString(expectedNumStr) Failed!\n"+
+      "Because isOk == false\n"+
+      "expectedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr)
+
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewBigFloat(bfloat, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewBigFloat(bfloat, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "bfloat= '%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bfloat.Text('f', int(maxPrecisionUint)),
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewBigFloat_02(t *testing.T) {
 
-  bFloat := big.NewFloat(float64(32.129))
+  ePrefix := "TestBigIntNum_NewBigFloat_02"
 
   expectedNumStr := "32.13"
 
-  bINum, err := new(BigIntNum).NewBigFloat(bFloat, 2)
+  maxPrecisionUint := uint(2)
+
+  bfloat, isOk := big.NewFloat(0).SetString(expectedNumStr)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error: big.NewFloat(0).SetString(expectedNumStr) Failed!\n"+
+      "Because isOk == false\n"+
+      "expectedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr)
+
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewBigFloat(bfloat, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewBigFloat(bFloat, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "bfloat= '%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bfloat.Text('f', int(maxPrecisionUint)),
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewBigFloat_03(t *testing.T) {
 
-  bFloat := big.NewFloat(-32.129)
+  ePrefix := "TestBigIntNum_NewBigFloat_03"
 
   expectedNumStr := "-32.13"
 
-  bINum, err := new(BigIntNum).NewBigFloat(bFloat, 2)
+  maxPrecisionUint := uint(2)
+
+  bfloat, isOk := big.NewFloat(0).SetString(expectedNumStr)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error: big.NewFloat(0).SetString(expectedNumStr) Failed!\n"+
+      "Because isOk == false\n"+
+      "expectedNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr)
+
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewBigFloat(bfloat, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewBigFloat(bFloat, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "bfloat= '%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bfloat.Text('f', int(maxPrecisionUint)),
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat32_01(t *testing.T) {
