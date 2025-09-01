@@ -1,3 +1,3 @@
 
 Start Test clean-up here:
-TestBigIntNum_NewBigFloat_03; xt_bigintnum_04_test.go
+TestBigIntNum_NewInt64Exponent_09; xt_bigintnum_04_test.go

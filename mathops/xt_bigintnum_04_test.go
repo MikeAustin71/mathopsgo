@@ -1,7 +1,9 @@
 package mathops
 
 import (
+  "fmt"
   "math/big"
+  "strconv"
   "testing"
 )
 
@@ -6326,7 +6328,8 @@ func TestBigIntNum_NewBigFloat_01(t *testing.T) {
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewBigFloat(bfloat, maxPrecisionUint)\n"+
       "bfloat= '%v'\n"+
       "maxPrecisionUint= '%v'\n"+
       "Error= '%v'\n\n",
@@ -6397,7 +6400,8 @@ func TestBigIntNum_NewBigFloat_02(t *testing.T) {
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewBigFloat(bfloat, maxPrecisionUint)\n"+
       "bfloat= '%v'\n"+
       "maxPrecisionUint= '%v'\n"+
       "Error= '%v'\n\n",
@@ -6468,7 +6472,8 @@ func TestBigIntNum_NewBigFloat_03(t *testing.T) {
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewBigFloat(bfloat, maxPrecisionUint)\n"+
       "bfloat= '%v'\n"+
       "maxPrecisionUint= '%v'\n"+
       "Error= '%v'\n\n",
@@ -6516,824 +6521,2957 @@ func TestBigIntNum_NewBigFloat_03(t *testing.T) {
 
 func TestBigIntNum_NewFloat32_01(t *testing.T) {
 
+  ePrefix := "TestBigIntNum_NewFloat32_01"
+
   numf32 := float32(32.123)
 
   expectedNumStr := "32.123"
 
-  maxPrecision := uint(4)
+  maxPrecisionUint := uint(4)
 
-  bINum, err := new(BigIntNum).NewFloat32(numf32, maxPrecision)
+  numf32Str := fmt.Sprintf("%f4", numf32)
+
+  expectedBigINum, err := new(BigIntNum).NewFloat32(numf32, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat32(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat32(numf32, maxPrecision)\n"+
+      "numf32='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf32Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat32_02(t *testing.T) {
+
+  ePrefix := "TestBigIntNum_NewFloat32_02"
 
   numf32 := float32(32.129)
 
   expectedNumStr := "32.13"
 
-  bINum, err := new(BigIntNum).NewFloat32(numf32, 2)
+  maxPrecisionUint := uint(2)
+
+  numf32Str := fmt.Sprintf("%f2", numf32)
+
+  expectedBigINum, err := new(BigIntNum).NewFloat32(numf32, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat32(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat32(numf32, maxPrecision)\n"+
+      "numf32='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf32Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat32_03(t *testing.T) {
+
+  ePrefix := "TestBigIntNum_NewFloat32_03"
 
   numf32 := float32(-32.129)
 
   expectedNumStr := "-32.13"
 
-  bINum, err := new(BigIntNum).NewFloat32(numf32, 2)
+  maxPrecisionUint := uint(2)
+
+  numf32Str := fmt.Sprintf("%f2", numf32)
+
+  expectedBigINum, err := new(BigIntNum).NewFloat32(numf32, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat32(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat32(numf32, maxPrecision)\n"+
+      "numf32='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf32Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat64_01(t *testing.T) {
 
-  numf32 := float64(32.123)
+  ePrefix := "TestBigIntNum_NewFloat64_01"
+
+  var numf64 float64
+
+  numf64 = 32.123
+
+  numf64Str := strconv.FormatFloat(numf64, 'f', 3, 64)
 
   expectedNumStr := "32.123"
 
-  maxPrecision := uint(3)
+  maxPrecisionUint := uint(3)
 
-  bINum, err := new(BigIntNum).NewFloat64(numf32, maxPrecision)
+  expectedBigINum, err := new(BigIntNum).NewFloat64(numf64, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat64(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat64(numf64, maxPrecision)\n"+
+      "numf64='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf64Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat64_02(t *testing.T) {
 
-  numf32 := float64(32.129)
+  ePrefix := "TestBigIntNum_NewFloat64_02"
+
+  var numf64 float64
+
+  numf64 = 32.129
+
+  numf64Str := strconv.FormatFloat(numf64, 'f', 3, 64)
 
   expectedNumStr := "32.13"
 
-  bINum, err := new(BigIntNum).NewFloat64(numf32, 2)
+  maxPrecisionUint := uint(2)
+
+  expectedBigINum, err := new(BigIntNum).NewFloat64(numf64, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat64(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat64(numf64, maxPrecision)\n"+
+      "numf64='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf64Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewFloat64_03(t *testing.T) {
 
-  numf32 := float64(-32.129)
+  ePrefix := "TestBigIntNum_NewFloat64_03"
+
+  var numf64 float64
+
+  numf64 = -32.129
+
+  numf64Str := strconv.FormatFloat(numf64, 'f', 3, 64)
 
   expectedNumStr := "-32.13"
 
-  bINum, err := new(BigIntNum).NewFloat64(numf32, 2)
+  maxPrecisionUint := uint(2)
+
+  expectedBigINum, err := new(BigIntNum).NewFloat64(numf64, maxPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewFloat64(numf32, 4) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewFloat64(numf64, maxPrecision)\n"+
+      "numf64='%v'\n"+
+      "maxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numf64Str,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_01(t *testing.T) {
 
-  numInt := int(1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt_01"
+
+  var numInt int
+
+  numInt = 1234
+
+  precisionUint := uint(3)
+
   expectedNumStr := "1.234"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_02(t *testing.T) {
 
-  numInt := int(1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt_02"
+
+  var numInt int
+
+  numInt = 1234
+
+  precisionUint := uint(0)
+
   expectedNumStr := "1234"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_03(t *testing.T) {
 
-  numInt := int(-1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt_03"
+
+  var numInt int
+
+  numInt = -1234
+
+  precisionUint := uint(3)
+
   expectedNumStr := "-1.234"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_04(t *testing.T) {
 
-  numInt := int(-1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt_04"
+
+  var numInt int
+
+  numInt = -1234
+
+  precisionUint := uint(0)
+
   expectedNumStr := "-1234"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_05(t *testing.T) {
 
-  numInt := int(0)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt_05"
+
+  var numInt int
+
+  numInt = 0
+
+  precisionUint := uint(0)
+
   expectedNumStr := "0"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt_06(t *testing.T) {
 
-  numInt := int(0)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt_06"
+
+  var numInt int
+
+  numInt = 0
+
+  precisionUint := uint(3)
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt(numInt, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt(numInt, precisionUint)\n"+
+      "numInt= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_01(t *testing.T) {
 
-  numInt := 1234
+  ePrefix := "TestBigIntNum_NewIntExponent_01"
+
+  var numInt, exponentInt int
+
+  numInt = 1234
+
+  exponentInt = 3
 
   expectedNumStr := "1234.000"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, 3)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_02(t *testing.T) {
 
-  numInt := 123456
+  ePrefix := "TestBigIntNum_NewIntExponent_02"
+
+  var numInt, exponentInt int
+
+  numInt = 123456
+
+  exponentInt = -2
 
   expectedNumStr := "1234.56"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, -2)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_03(t *testing.T) {
 
-  numInt := 123456
-  exponent := 0
+  ePrefix := "TestBigIntNum_NewIntExponent_03"
+
+  var numInt, exponentInt int
+
+  numInt = 123456
+
+  exponentInt = 0
+
   expectedNumStr := "123456"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_04(t *testing.T) {
 
-  numInt := 0
-  exponent := 0
+  ePrefix := "TestBigIntNum_NewIntExponent_04"
+
+  var numInt, exponentInt int
+
+  numInt = 0
+
+  exponentInt = 0
+
   expectedNumStr := "0"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_05(t *testing.T) {
 
-  numInt := 0
-  exponent := 3
+  ePrefix := "TestBigIntNum_NewIntExponent_05"
+
+  var numInt, exponentInt int
+
+  numInt = 0
+
+  exponentInt = 3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewIntExponent_06(t *testing.T) {
 
-  numInt := 0
-  exponent := -3
+  ePrefix := "TestBigIntNum_NewIntExponent_05"
+
+  var numInt, exponentInt int
+
+  numInt = 0
+
+  exponentInt = -3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewIntExponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewIntExponent(numInt, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewIntExponent(numInt, exponentInt)\n"+
+      "numInt= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_01(t *testing.T) {
 
-  numInt := int32(1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt32_01"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = 1234
+
+  precisionUint = 3
+
   expectedNumStr := "1.234"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_02(t *testing.T) {
 
-  numInt := int32(1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt32_02"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = int32(1234)
+
+  precisionUint = uint(0)
+
   expectedNumStr := "1234"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_03(t *testing.T) {
 
-  numInt := int32(-1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt32_03"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = -1234
+
+  precisionUint = 3
+
   expectedNumStr := "-1.234"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_04(t *testing.T) {
 
-  numInt := int32(-1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt32_04"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = -1234
+
+  precisionUint = 0
+
   expectedNumStr := "-1234"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_05(t *testing.T) {
 
-  numInt := int32(0)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt32_05"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = 0
+
+  precisionUint = 0
+
   expectedNumStr := "0"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32_06(t *testing.T) {
 
-  numInt := int32(0)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt32_06"
+
+  var numInt32 int32
+
+  var precisionUint uint
+
+  numInt32 = 0
+
+  precisionUint = 3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt32(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt32(numInt32, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32(numInt32, precisionUint)\n"+
+      "numInt32= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_01(t *testing.T) {
 
-  numInt := int32(1234)
+  ePrefix := "TestBigIntNum_NewInt32Exponent_01"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 1234
+
+  exponentInt = 3
 
   expectedNumStr := "1234.000"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, 3)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_02(t *testing.T) {
 
-  numInt := int32(123456)
+  ePrefix := "TestBigIntNum_NewInt32Exponent_02"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 123456
+
+  exponentInt = -2
 
   expectedNumStr := "1234.56"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, -2)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_03(t *testing.T) {
 
-  numInt := int32(123456)
+  ePrefix := "TestBigIntNum_NewInt32Exponent_03"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 123456
+
+  exponentInt = 0
 
   expectedNumStr := "123456"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, 0)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_04(t *testing.T) {
 
-  numInt := int32(0)
-  exponent := 0
+  ePrefix := "TestBigIntNum_NewInt32Exponent_04"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 0
+
+  exponentInt = 0
+
   expectedNumStr := "0"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_05(t *testing.T) {
 
-  numInt := int32(0)
-  exponent := 3
+  ePrefix := "TestBigIntNum_NewInt32Exponent_05"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 0
+
+  exponentInt = 3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt32Exponent_06(t *testing.T) {
 
-  numInt := int32(0)
-  exponent := -3
+  ePrefix := "TestBigIntNum_NewInt32Exponent_06"
+
+  var numInt32 int32
+
+  var exponentInt int
+
+  numInt32 = 0
+
+  exponentInt = -3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt32Exponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewInt32Exponent(numInt32, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt32Exponent(numInt32, exponentInt)\n"+
+      "numInt32= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt32,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_01(t *testing.T) {
 
-  numInt := int64(1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt64_01"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = 1234
+
+  precisionUint = 3
+
   expectedNumStr := "1.234"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_02(t *testing.T) {
 
-  numInt := int64(1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt64_02"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = 1234
+
+  precisionUint = 0
+
   expectedNumStr := "1234"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_03(t *testing.T) {
 
-  numInt := int64(-1234)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt64_03"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = -1234
+
+  precisionUint = 3
+
   expectedNumStr := "-1.234"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_04(t *testing.T) {
 
-  numInt := int64(-1234)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt64_04"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = -1234
+
+  precisionUint = 0
+
   expectedNumStr := "-1234"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_05(t *testing.T) {
 
-  numInt := int64(0)
-  precision := uint(0)
+  ePrefix := "TestBigIntNum_NewInt64_05"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = 0
+
+  precisionUint = 0
+
   expectedNumStr := "0"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64_06(t *testing.T) {
 
-  numInt := int64(0)
-  precision := uint(3)
+  ePrefix := "TestBigIntNum_NewInt64_06"
+
+  var numInt64 int64
+
+  var precisionUint uint
+
+  numInt64 = 0
+
+  precisionUint = 3
+
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt64(numInt, precision)
+  expectedBigINum, err := new(BigIntNum).NewInt64(numInt64, precisionUint)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64(numInt64, precisionUint)\n"+
+      "numInt64= '%v'\n"+
+      "precisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      precisionUint,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_01(t *testing.T) {
 
-  numInt := int64(1234)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_01"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 1234
+
+  exponentInt = 3
 
   expectedNumStr := "1234.000"
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, 3)
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_02(t *testing.T) {
 
-  numInt := int64(123456)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_02"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 123456
+
+  exponentInt = -2
 
   expectedNumStr := "1234.56"
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, -2)
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_03(t *testing.T) {
 
-  numInt := int64(123456)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_03"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 123456
+
+  exponentInt = 0
 
   expectedNumStr := "123456"
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, 0)
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_04(t *testing.T) {
 
-  numInt := int64(-123456)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_04"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = -123456
+
+  exponentInt = 0
 
   expectedNumStr := "-123456"
 
-  exponent := 0
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  actualNumStr := bINum.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_05(t *testing.T) {
 
-  numInt := int64(-123456)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_05"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = -123456
+
+  exponentInt = -3
 
   expectedNumStr := "-123.456"
 
-  exponent := -3
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  actualNumStr := bINum.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_06(t *testing.T) {
 
-  numInt := int64(-123456)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_06"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = -123456
+
+  exponentInt = 3
 
   expectedNumStr := "-123456.000"
 
-  exponent := 3
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  actualNumStr := bINum.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_07(t *testing.T) {
 
-  numInt := int64(0)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_07"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 0
+
+  exponentInt = 0
 
   expectedNumStr := "0"
 
-  exponent := 0
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  actualNumStr := bINum.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_08(t *testing.T) {
 
-  numInt := int64(0)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_08"
+
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 0
+
+  exponentInt = 3
 
   expectedNumStr := "0.000"
 
-  exponent := 3
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  actualNumStr := bINum.GetNumStr()
-
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewInt64Exponent_09(t *testing.T) {
 
-  numInt := int64(0)
+  ePrefix := "TestBigIntNum_NewInt64Exponent_09"
 
-  exponent := -3
+  var numInt64 int64
+
+  var exponentInt int
+
+  numInt64 = 0
+
+  exponentInt = -3
 
   expectedNumStr := "0.000"
 
-  bINum := new(BigIntNum).NewInt64Exponent(numInt, exponent)
+  expectedBigINum, err := new(BigIntNum).NewInt64Exponent(numInt64, exponentInt)
 
-  actualNumStr := bINum.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINum, err := new(BigIntNum).\n"+
+      "  NewInt64Exponent(numInt64, exponentInt)\n"+
+      "numInt64= '%v'\n"+
+      "exponentInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numInt64,
+      exponentInt,
+      err.Error())
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
-      expectedNumStr, actualNumStr)
+    return
   }
 
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINumberStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumberStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedBigINumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumberStr \n"+
+      "Expected expectedBigINumberStr = '%v'\n"+
+      "  Actual expectedBigINumberStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 
-  nStr := "123.456"
-  expectedPrecision := uint(3)
-  nbStr := "123456"
+  expectedNumStr := "123.456"
+
+  expectedPrecisionUint := uint(3)
+
+  originalNumStr := "123456"
+
   expectedScale := big.NewInt(1000)
+
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+  bOriginal, isOk := big.NewInt(0).SetString(originalNumStr, 10)
 
   if !isOk {
     t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
@@ -7341,7 +9479,7 @@ func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 
   expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
 
-  dec, err := Decimal{}.NewNumStr(nStr)
+  dec, err := Decimal{}.NewNumStr(expectedNumStr)
 
   if err != nil {
     t.Errorf("Error returned by Decimal{}.NewNumStr(nStr). Error='%v' ",
@@ -7367,9 +9505,9 @@ func TestBigIntNum_NewINumMgr_01(t *testing.T) {
       bOriginal.Text(10), bINum.bigInt.Text(10))
   }
 
-  if expectedPrecision != bINum.precision {
+  if expectedPrecisionUint != bINum.precision {
     t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecision, bINum.precision)
+      expectedPrecisionUint, bINum.precision)
   }
 
   if bINum.scaleFactor.Cmp(expectedScale) != 0 {
@@ -7387,9 +9525,9 @@ func TestBigIntNum_NewINumMgr_01(t *testing.T) {
       expectedSignVal, bINum.sign)
   }
 
-  if nStr != nDto.GetNumStr() {
+  if expectedNumStr != nDto.GetNumStr() {
     t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      nStr, nDto.GetNumStr())
+      expectedNumStr, nDto.GetNumStr())
   }
 
 }
@@ -7397,9 +9535,13 @@ func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 func TestBigIntNum_NewINumMgr_02(t *testing.T) {
 
   nStr := "123.456"
+
   expectedPrecision := uint(3)
+
   nbStr := "123456"
+
   expectedScale := big.NewInt(1000)
+
   expectedSignVal := 1
 
   bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
