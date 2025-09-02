@@ -9461,354 +9461,3024 @@ func TestBigIntNum_NewInt64Exponent_09(t *testing.T) {
 
 func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 
-  expectedNumStr := "123.456"
+  ePrefix := "TestBigIntNum_NewINumMgr_01"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  expectedNumberStr := "123.456"
 
   expectedPrecisionUint := uint(3)
 
-  originalNumStr := "123456"
+  expectedBigIntNumStr := "123456"
 
-  expectedScale := big.NewInt(1000)
+  expectedAbsBigIntNumStr := "123456"
+
+  expectedScaleFactor := big.NewInt(1000)
 
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(originalNumStr, 10)
+  expectedBigIntNum, isOk := big.NewInt(0).SetString(expectedBigIntNumStr, 10)
 
   if !isOk {
-    t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedBigIntNumStr, 10)\n"+
+      "expectedBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedBigIntNumStr)
+    return
   }
 
-  expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+  expectedAbsBigIntNum, isOk := big.NewInt(0).SetString(expectedAbsBigIntNumStr, 10)
 
-  dec, err := Decimal{}.NewNumStr(expectedNumStr)
+  if !isOk {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAbsBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedAbsBigIntNumStr, 10)\n"+
+      "expectedAbsBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedAbsBigIntNumStr)
+    return
+  }
+
+  dec, err := new(Decimal).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(nStr). Error='%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec, err := new(Decimal).\n"+
+      "  NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
+
+  err = dec.IsValid("Validating dec")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec.IsValid('Validating dec')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumberStr, err := dec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := dec.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumberStr \n"+
+      "Expected decNumberStr = '%v'\n"+
+      "  Actual decNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumberStr)
+
+    return
+  }
+
+  decPrecisionUint, err := dec.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decPrecisionUint, err := dec.GetPrecisionUint()\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decPrecisionUint\n"+
+      "Expected decPrecisionUint = '%v'\n"+
+      "  Actual decPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decPrecisionUint)
+
+    return
+  }
+
+  decBigInt, err := dec.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decBigInt, err := dec.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(decBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(decBigInt) != 0\n"+
+      "Expected decBigInt = '%v'\n"+
+      "  Actual decBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), decBigInt.Text(10))
+
+    return
+  }
+
+  decAbsValue, err := dec.GetAbsoluteValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsValue, err := dec.GetAbsoluteValue()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  decAbsBigInt, err := decAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsBigInt, err := decAbsValue.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0\n"+
+      "Expected decAbsBigInt = '%v'\n"+
+      "  Actual decAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), decAbsBigInt.Text(10))
+
+    return
+  }
+
+  decScaleFactor, err := dec.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decScaleFactor, err := dec.GetScaleVal()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(decScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(decScaleFactor) != 0\n"+
+      "Expected decScaleFactor = '%v'\n"+
+      "  Actual decScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), decScaleFactor.Text(10))
+
+    return
+  }
+
+  decSignValue, err := dec.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSignValue, err := dec.GetSign()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != decSignValue\n"+
+      "Expected decSignValue = '%v'\n"+
+      "  Actual decSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decSignValue)
+
+    return
+  }
+
+  decSeps, err := dec.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSeps, err := dec.GetNumericSeparatorsDto()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(decSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != decSeps \n"+
+      "Expected decSeps = '%v'\n"+
+      "  Actual decSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decSeps.String())
+
+    return
   }
 
   bINum, err := new(BigIntNum).NewINumMgr(&dec)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewINumMgr(&dec) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewINumMgr(&dec)\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
   }
 
-  nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
+  err = bINum.IsValid("Validating bINum")
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if bOriginal.Cmp(bINum.bigInt) != 0 {
-    t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
-      bOriginal.Text(10), bINum.bigInt.Text(10))
+  bINumNumberStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumNumberStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedPrecisionUint != bINum.precision {
-    t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecisionUint, bINum.precision)
+  if expectedNumberStr != bINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != bINumNumberStr \n"+
+      "Expected bINumNumberStr = '%v'\n"+
+      "  Actual bINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bINumNumberStr)
+
+    return
   }
 
-  if bINum.scaleFactor.Cmp(expectedScale) != 0 {
-    t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
-      expectedScale.Text(10), bINum.scaleFactor.Text(10))
+  bINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumPrecisionUint, err := bINum.GetPrecisionUint()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
-    t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
-      expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+  if expectedPrecisionUint != bINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bINumPrecisionUint\n"+
+      "Expected bINumPrecisionUint = '%v'\n"+
+      "  Actual bINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bINumPrecisionUint)
+
+    return
   }
 
-  if expectedSignVal != bINum.sign {
-    t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
-      expectedSignVal, bINum.sign)
+  bINumBigInt, err := bINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumBigInt, err := bINum.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if expectedNumStr != nDto.GetNumStr() {
-    t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, nDto.GetNumStr())
+  if expectedBigIntNum.Cmp(bINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(bINumBigInt) != 0\n"+
+      "Expected bINumBigInt = '%v'\n"+
+      "  Actual bINumBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), bINumBigInt.Text(10))
+
+    return
   }
 
+  bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  bINumAbsBigInt, err := bINumAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsBigInt, err := bINumAbsValue.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0\n"+
+      "Expected bINumAbsBigInt = '%v'\n"+
+      "  Actual bINumAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), bINumAbsBigInt.Text(10))
+
+    return
+  }
+
+  bINumScaleFactor, err := bINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumScaleFactor, err := bINum.GetScaleFactor()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bINumScaleFactor) != 0\n"+
+      "Expected bINumScaleFactor = '%v'\n"+
+      "  Actual bINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bINumScaleFactor.Text(10))
+
+    return
+  }
+
+  bINumSignValue, err := bINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSignValue, err := bINum.GetSign()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != bINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != bINumSignValue\n"+
+      "Expected bINumSignValue = '%v'\n"+
+      "  Actual bINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, bINumSignValue)
+
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != bINumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  nDto, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = nDto.IsValid("Validating nDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto.IsValid('Validating nDto')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  nDtoNumberStr, err := nDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoNumberStr, err := nDto.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != nDtoNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDtoNumberStr \n"+
+      "Expected nDtoNumberStr = '%v'\n"+
+      "  Actual nDtoNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDtoNumberStr)
+
+    return
+  }
+
+  nDtoPrecisionUint, err := nDto.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoPrecisionUint, err := nDto.GetPrecisionUint()\n"+
+      "nDto= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != nDtoPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDtoPrecisionUint\n"+
+      "Expected nDtoPrecisionUint = '%v'\n"+
+      "  Actual nDtoPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDtoPrecisionUint)
+
+    return
+  }
+
+  nDtoBigInt, err := nDto.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoBigInt, err := nDto.GetBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(nDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDtoBigInt) != 0\n"+
+      "Expected nDtoBigInt = '%v'\n"+
+      "  Actual nDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDtoBigInt.Text(10))
+
+    return
+  }
+
+  nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0\n"+
+      "Expected nDtoAbsBigIntNum = '%v'\n"+
+      "  Actual nDtoAbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDtoAbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDtoScaleFactor, err := nDto.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoScaleFactor, err := nDto.GetScaleVal()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDtoScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDtoScaleFactor) != 0\n"+
+      "Expected nDtoScaleFactor = '%v'\n"+
+      "  Actual nDtoScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDtoScaleFactor.Text(10))
+
+    return
+  }
+
+  nDtoSignValue, err := nDto.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSignValue, err := nDto.GetSign()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDtoSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDtoSignValue\n"+
+      "Expected nDtoSignValue = '%v'\n"+
+      "  Actual nDtoSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDtoSignValue)
+
+    return
+  }
+
+  nDtoSeps, err := nDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSeps, err := nDto.GetNumericSeparatorsDto()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDtoSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDtoSeps \n"+
+      "Expected nDtoSeps = '%v'\n"+
+      "  Actual nDtoSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDtoSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewINumMgr_02(t *testing.T) {
 
-  nStr := "123.456"
+  ePrefix := "TestBigIntNum_NewINumMgr_02"
 
-  expectedPrecision := uint(3)
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  nbStr := "123456"
+  expectedNumberStr := "123.456"
 
-  expectedScale := big.NewInt(1000)
+  expectedPrecisionUint := uint(3)
+
+  expectedBigIntNumStr := "123456"
+
+  expectedAbsBigIntNumStr := "123456"
+
+  expectedScaleFactor := big.NewInt(1000)
 
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+  expectedBigIntNum, isOk := big.NewInt(0).SetString(expectedBigIntNumStr, 10)
 
   if !isOk {
-    t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedBigIntNumStr, 10)\n"+
+      "expectedBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedBigIntNumStr)
+    return
   }
 
-  expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+  expectedAbsBigIntNum, isOk := big.NewInt(0).SetString(expectedAbsBigIntNumStr, 10)
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+  if !isOk {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAbsBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedAbsBigIntNumStr, 10)\n"+
+      "expectedAbsBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedAbsBigIntNumStr)
+    return
+  }
+
+  ia, err := new(IntAry).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). Error='%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia, err := new(IntAry).\n"+
+      "  NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
+
+  err = ia.IsValid("Validating ia")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia.IsValid('Validating ia')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaNumberStr, err := ia.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaNumberStr, err := ia.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != iaNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != iaNumberStr \n"+
+      "Expected iaNumberStr = '%v'\n"+
+      "  Actual iaNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, iaNumberStr)
+
+    return
+  }
+
+  iaPrecisionUint, err := ia.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaPrecisionUint, err := ia.GetPrecisionUint()\n"+
+      "ia= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != iaPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/ia Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != iaPrecisionUint\n"+
+      "Expected iaPrecisionUint = '%v'\n"+
+      "  Actual iaPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, iaPrecisionUint)
+
+    return
+  }
+
+  iaBigInt, err := ia.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaBigInt, err := ia.GetBigInt()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(iaBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/ia Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(iaBigInt) != 0\n"+
+      "Expected iaBigInt = '%v'\n"+
+      "  Actual iaBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), iaBigInt.Text(10))
+
+    return
+  }
+
+  iaAbsValue, err := ia.GetAbsoluteValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaAbsValue, err := ia.GetAbsoluteValue()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  iaAbsBigInt, err := iaAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaAbsBigInt, err := iaAbsValue.GetBigInt()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(iaAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & ia Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(iaAbsBigInt) != 0\n"+
+      "Expected iaAbsBigInt = '%v'\n"+
+      "  Actual iaAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), iaAbsBigInt.Text(10))
+
+    return
+  }
+
+  iaScaleFactor, err := ia.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaScaleFactor, err := ia.GetScaleFactor()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(iaScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & ia Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(iaScaleFactor) != 0\n"+
+      "Expected iaScaleFactor = '%v'\n"+
+      "  Actual iaScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), iaScaleFactor.Text(10))
+
+    return
+  }
+
+  iaSignValue, err := ia.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaSignValue, err := ia.GetSign()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != iaSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != iaSignValue\n"+
+      "Expected iaSignValue = '%v'\n"+
+      "  Actual iaSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, iaSignValue)
+
+    return
+  }
+
+  iaNumSeps, err := ia.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaNumSeps, err := ia.GetNumericSeparatorsDto()\n"+
+      "ia= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, iaNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(iaNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != iaNumSeps \n"+
+      "Expected iaNumSeps = '%v'\n"+
+      "  Actual iaNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), iaNumSeps.String())
+
+    return
   }
 
   bINum, err := new(BigIntNum).NewINumMgr(&ia)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewINumMgr(&ia) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewINumMgr(&ia)\n"+
+      "ia= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaNumberStr, err.Error())
+    return
   }
 
-  nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
+  err = bINum.IsValid("Validating bINum")
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if bOriginal.Cmp(bINum.bigInt) != 0 {
-    t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
-      bOriginal.Text(10), bINum.bigInt.Text(10))
+  bINumNumberStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumNumberStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedPrecision != bINum.precision {
-    t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecision, bINum.precision)
+  if expectedNumberStr != bINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != bINumNumberStr \n"+
+      "Expected bINumNumberStr = '%v'\n"+
+      "  Actual bINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bINumNumberStr)
+
+    return
   }
 
-  if bINum.scaleFactor.Cmp(expectedScale) != 0 {
-    t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
-      expectedScale.Text(10), bINum.scaleFactor.Text(10))
+  bINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumPrecisionUint, err := bINum.GetPrecisionUint()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
-    t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
-      expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+  if expectedPrecisionUint != bINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bINumPrecisionUint\n"+
+      "Expected bINumPrecisionUint = '%v'\n"+
+      "  Actual bINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bINumPrecisionUint)
+
+    return
   }
 
-  if expectedSignVal != bINum.sign {
-    t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
-      expectedSignVal, bINum.sign)
+  bINumBigInt, err := bINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumBigInt, err := bINum.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if nStr != nDto.GetNumStr() {
-    t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      nStr, nDto.GetNumStr())
+  if expectedBigIntNum.Cmp(bINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(bINumBigInt) != 0\n"+
+      "Expected bINumBigInt = '%v'\n"+
+      "  Actual bINumBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), bINumBigInt.Text(10))
+
+    return
   }
 
+  bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  bINumAbsBigInt, err := bINumAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsBigInt, err := bINumAbsValue.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0\n"+
+      "Expected bINumAbsBigInt = '%v'\n"+
+      "  Actual bINumAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), bINumAbsBigInt.Text(10))
+
+    return
+  }
+
+  bINumScaleFactor, err := bINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumScaleFactor, err := bINum.GetScaleFactor()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bINumScaleFactor) != 0\n"+
+      "Expected bINumScaleFactor = '%v'\n"+
+      "  Actual bINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bINumScaleFactor.Text(10))
+
+    return
+  }
+
+  bINumSignValue, err := bINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSignValue, err := bINum.GetSign()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != bINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != bINumSignValue\n"+
+      "Expected bINumSignValue = '%v'\n"+
+      "  Actual bINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, bINumSignValue)
+
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != bINumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  nDto, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = nDto.IsValid("Validating nDto")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto.IsValid('Validating nDto')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  nDtoNumberStr, err := nDto.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoNumberStr, err := nDto.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != nDtoNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDtoNumberStr \n"+
+      "Expected nDtoNumberStr = '%v'\n"+
+      "  Actual nDtoNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDtoNumberStr)
+
+    return
+  }
+
+  nDtoPrecisionUint, err := nDto.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoPrecisionUint, err := nDto.GetPrecisionUint()\n"+
+      "nDto= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != nDtoPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDtoPrecisionUint\n"+
+      "Expected nDtoPrecisionUint = '%v'\n"+
+      "  Actual nDtoPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDtoPrecisionUint)
+
+    return
+  }
+
+  nDtoBigInt, err := nDto.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoBigInt, err := nDto.GetBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(nDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDtoBigInt) != 0\n"+
+      "Expected nDtoBigInt = '%v'\n"+
+      "  Actual nDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDtoBigInt.Text(10))
+
+    return
+  }
+
+  nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0\n"+
+      "Expected nDtoAbsBigIntNum = '%v'\n"+
+      "  Actual nDtoAbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDtoAbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDtoScaleFactor, err := nDto.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoScaleFactor, err := nDto.GetScaleVal()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDtoScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDtoScaleFactor) != 0\n"+
+      "Expected nDtoScaleFactor = '%v'\n"+
+      "  Actual nDtoScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDtoScaleFactor.Text(10))
+
+    return
+  }
+
+  nDtoSignValue, err := nDto.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSignValue, err := nDto.GetSign()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDtoSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDtoSignValue\n"+
+      "Expected nDtoSignValue = '%v'\n"+
+      "  Actual nDtoSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDtoSignValue)
+
+    return
+  }
+
+  nDtoSeps, err := nDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSeps, err := nDto.GetNumericSeparatorsDto()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDtoSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDtoSeps \n"+
+      "Expected nDtoSeps = '%v'\n"+
+      "  Actual nDtoSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDtoSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewINumMgr_03(t *testing.T) {
 
-  nStr := "123.456"
-  expectedPrecision := uint(3)
-  nbStr := "123456"
-  expectedScale := big.NewInt(1000)
+  ePrefix := "TestBigIntNum_NewINumMgr_03"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  expectedNumberStr := "123.456"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigIntNumStr := "123456"
+
+  expectedAbsBigIntNumStr := "123456"
+
+  expectedScaleFactor := big.NewInt(1000)
+
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+  expectedBigIntNum, isOk := big.NewInt(0).SetString(expectedBigIntNumStr, 10)
 
   if !isOk {
-    t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedBigIntNumStr, 10)\n"+
+      "expectedBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedBigIntNumStr)
+    return
   }
 
-  expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+  expectedAbsBigIntNum, isOk := big.NewInt(0).SetString(expectedAbsBigIntNumStr, 10)
 
-  nDto0, err := NumStrDto{}.NewNumStr(nStr)
+  if !isOk {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAbsBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedAbsBigIntNumStr, 10)\n"+
+      "expectedAbsBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedAbsBigIntNumStr)
+    return
+  }
+
+  nDto0, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
       err.Error())
+
+    return
+  }
+
+  err = nDto0.IsValid("Validating nDto0")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto0.IsValid('Validating nDto0')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  nDto0NumberStr, err := nDto0.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0NumberStr, err := nDto0.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != nDto0NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDto0NumberStr \n"+
+      "Expected nDto0NumberStr = '%v'\n"+
+      "  Actual nDto0NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDto0NumberStr)
+
+    return
+  }
+
+  nDto0PrecisionUint, err := nDto0.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0PrecisionUint, err := nDto0.GetPrecisionUint()\n"+
+      "nDto0= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != nDto0PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto0 Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDto0PrecisionUint\n"+
+      "Expected nDto0PrecisionUint = '%v'\n"+
+      "  Actual nDto0PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDto0PrecisionUint)
+
+    return
+  }
+
+  nDto0BigInt, err := nDto0.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0BigInt, err := nDto0.GetBigInt()\n"+
+      "nDto0= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(nDto0BigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto0 Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDto0BigInt) != 0\n"+
+      "Expected nDto0BigInt = '%v'\n"+
+      "  Actual nDto0BigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDto0BigInt.Text(10))
+
+    return
+  }
+
+  nDto0AbsBigIntNum, _, err := nDto0.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0AbsBigIntNum, _, err := nDto0.GetAbsoluteBigInt()\n"+
+      "nDto0= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(nDto0AbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto0 Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDto0AbsBigIntNum) != 0\n"+
+      "Expected nDto0AbsBigIntNum = '%v'\n"+
+      "  Actual nDto0AbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDto0AbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDto0ScaleFactor, err := nDto0.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0ScaleFactor, err := nDto0.GetScaleVal()\n"+
+      "nDto0= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDto0ScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto0 Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDto0ScaleFactor) != 0\n"+
+      "Expected nDto0ScaleFactor = '%v'\n"+
+      "  Actual nDto0ScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDto0ScaleFactor.Text(10))
+
+    return
+  }
+
+  nDto0SignValue, err := nDto0.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0SignValue, err := nDto0.GetSign()\n"+
+      "nDto0= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDto0SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto0 Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDto0SignValue\n"+
+      "Expected nDto0SignValue = '%v'\n"+
+      "  Actual nDto0SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDto0SignValue)
+
+    return
+  }
+
+  nDto0Seps, err := nDto0.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto0Seps, err := nDto0.GetNumericSeparatorsDto()\n"+
+      "nDto0= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto0NumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDto0Seps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDto0Seps \n"+
+      "Expected nDto0Seps = '%v'\n"+
+      "  Actual nDto0Seps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDto0Seps.String())
+
+    return
   }
 
   bINum, err := new(BigIntNum).NewINumMgr(&nDto0)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewINumMgr(&nDto0) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewINumMgr(&nDto0)\n"+
+      "nDto0= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDto0NumberStr, err.Error())
+    return
   }
 
-  nDto1, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
+  err = bINum.IsValid("Validating bINum")
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if bOriginal.Cmp(bINum.bigInt) != 0 {
-    t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
-      bOriginal.Text(10), bINum.bigInt.Text(10))
+  bINumNumberStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumNumberStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedPrecision != bINum.precision {
-    t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecision, bINum.precision)
+  if expectedNumberStr != bINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != bINumNumberStr \n"+
+      "Expected bINumNumberStr = '%v'\n"+
+      "  Actual bINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bINumNumberStr)
+
+    return
   }
 
-  if bINum.scaleFactor.Cmp(expectedScale) != 0 {
-    t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
-      expectedScale.Text(10), bINum.scaleFactor.Text(10))
+  bINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumPrecisionUint, err := bINum.GetPrecisionUint()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
-    t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
-      expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+  if expectedPrecisionUint != bINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bINumPrecisionUint\n"+
+      "Expected bINumPrecisionUint = '%v'\n"+
+      "  Actual bINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bINumPrecisionUint)
+
+    return
   }
 
-  if expectedSignVal != bINum.sign {
-    t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
-      expectedSignVal, bINum.sign)
+  bINumBigInt, err := bINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumBigInt, err := bINum.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
   }
 
-  if nStr != nDto1.GetNumStr() {
-    t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      nStr, nDto1.GetNumStr())
+  if expectedBigIntNum.Cmp(bINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(bINumBigInt) != 0\n"+
+      "Expected bINumBigInt = '%v'\n"+
+      "  Actual bINumBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), bINumBigInt.Text(10))
+
+    return
   }
 
+  bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  bINumAbsBigInt, err := bINumAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsBigInt, err := bINumAbsValue.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0\n"+
+      "Expected bINumAbsBigInt = '%v'\n"+
+      "  Actual bINumAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), bINumAbsBigInt.Text(10))
+
+    return
+  }
+
+  bINumScaleFactor, err := bINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumScaleFactor, err := bINum.GetScaleFactor()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bINumScaleFactor) != 0\n"+
+      "Expected bINumScaleFactor = '%v'\n"+
+      "  Actual bINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bINumScaleFactor.Text(10))
+
+    return
+  }
+
+  bINumSignValue, err := bINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSignValue, err := bINum.GetSign()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != bINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != bINumSignValue\n"+
+      "Expected bINumSignValue = '%v'\n"+
+      "  Actual bINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, bINumSignValue)
+
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != bINumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  nDto1, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = nDto1.IsValid("Validating nDto1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto1.IsValid('Validating nDto1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  nDto1NumberStr, err := nDto1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1NumberStr, err := nDto1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != nDto1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDto1NumberStr \n"+
+      "Expected nDto1NumberStr = '%v'\n"+
+      "  Actual nDto1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDto1NumberStr)
+
+    return
+  }
+
+  nDto1PrecisionUint, err := nDto1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1PrecisionUint, err := nDto1.GetPrecisionUint()\n"+
+      "nDto1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != nDto1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto1 Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDto1PrecisionUint\n"+
+      "Expected nDto1PrecisionUint = '%v'\n"+
+      "  Actual nDto1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDto1PrecisionUint)
+
+    return
+  }
+
+  nDto1BigInt, err := nDto1.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1BigInt, err := nDto1.GetBigInt()\n"+
+      "nDto1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(nDto1BigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto1 Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDto1BigInt) != 0\n"+
+      "Expected nDto1BigInt = '%v'\n"+
+      "  Actual nDto1BigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDto1BigInt.Text(10))
+
+    return
+  }
+
+  nDto1AbsBigIntNum, _, err := nDto1.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1AbsBigIntNum, _, err := nDto1.GetAbsoluteBigInt()\n"+
+      "nDto1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(nDto1AbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto1 Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDto1AbsBigIntNum) != 0\n"+
+      "Expected nDto1AbsBigIntNum = '%v'\n"+
+      "  Actual nDto1AbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDto1AbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDto1ScaleFactor, err := nDto1.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1ScaleFactor, err := nDto1.GetScaleVal()\n"+
+      "nDto1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDto1ScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto1 Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDto1ScaleFactor) != 0\n"+
+      "Expected nDto1ScaleFactor = '%v'\n"+
+      "  Actual nDto1ScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDto1ScaleFactor.Text(10))
+
+    return
+  }
+
+  nDto1SignValue, err := nDto1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1SignValue, err := nDto1.GetSign()\n"+
+      "nDto1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDto1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto1 Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDto1SignValue\n"+
+      "Expected nDto1SignValue = '%v'\n"+
+      "  Actual nDto1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDto1SignValue)
+
+    return
+  }
+
+  nDto1Seps, err := nDto1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto1Seps, err := nDto1.GetNumericSeparatorsDto()\n"+
+      "nDto1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDto1NumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDto1Seps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDto1Seps \n"+
+      "Expected nDto1Seps = '%v'\n"+
+      "  Actual nDto1Seps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDto1Seps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewINumMgr_04(t *testing.T) {
 
-  nStr := "123.456"
-  expectedPrecision := uint(3)
-  nbStr := "123456"
-  expectedScale := big.NewInt(1000)
+  ePrefix := "TestBigIntNum_NewINumMgr_04"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  expectedNumberStr := "123.456"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigIntNumStr := "123456"
+
+  expectedAbsBigIntNumStr := "123456"
+
+  expectedScaleFactor := big.NewInt(1000)
+
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+  expectedBigIntNum, isOk := big.NewInt(0).SetString(expectedBigIntNumStr, 10)
 
   if !isOk {
-    t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedBigIntNumStr, 10)\n"+
+      "expectedBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedBigIntNumStr)
+    return
   }
 
-  expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+  expectedAbsBigIntNum, isOk := big.NewInt(0).SetString(expectedAbsBigIntNumStr, 10)
 
-  dec, err := Decimal{}.NewNumStr(nStr)
+  if !isOk {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAbsBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedAbsBigIntNumStr, 10)\n"+
+      "expectedAbsBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedAbsBigIntNumStr)
+    return
+  }
+
+  dec, err := new(Decimal).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(nStr). Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec, err := new(Decimal).\n"+
+      "  NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
+
+  err = dec.IsValid("Validating dec")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec.IsValid('Validating dec')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumberStr, err := dec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := dec.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumberStr \n"+
+      "Expected decNumberStr = '%v'\n"+
+      "  Actual decNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumberStr)
+
+    return
+  }
+
+  decPrecisionUint, err := dec.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decPrecisionUint, err := dec.GetPrecisionUint()\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decPrecisionUint\n"+
+      "Expected decPrecisionUint = '%v'\n"+
+      "  Actual decPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decPrecisionUint)
+
+    return
+  }
+
+  decBigInt, err := dec.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decBigInt, err := dec.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(decBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(decBigInt) != 0\n"+
+      "Expected decBigInt = '%v'\n"+
+      "  Actual decBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), decBigInt.Text(10))
+
+    return
+  }
+
+  decAbsValue, err := dec.GetAbsoluteValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsValue, err := dec.GetAbsoluteValue()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  decAbsBigInt, err := decAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsBigInt, err := decAbsValue.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0\n"+
+      "Expected decAbsBigInt = '%v'\n"+
+      "  Actual decAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), decAbsBigInt.Text(10))
+
+    return
+  }
+
+  decScaleFactor, err := dec.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decScaleFactor, err := dec.GetScaleVal()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(decScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(decScaleFactor) != 0\n"+
+      "Expected decScaleFactor = '%v'\n"+
+      "  Actual decScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), decScaleFactor.Text(10))
+
+    return
+  }
+
+  decSignValue, err := dec.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSignValue, err := dec.GetSign()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != decSignValue\n"+
+      "Expected decSignValue = '%v'\n"+
+      "  Actual decSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decSignValue)
+
+    return
+  }
+
+  decSeps, err := dec.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSeps, err := dec.GetNumericSeparatorsDto()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(decSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != decSeps \n"+
+      "Expected decSeps = '%v'\n"+
+      "  Actual decSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewINumMgr(&dec)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewINumMgr(&dec)\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bINumNumberStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumNumberStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != bINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != bINumNumberStr \n"+
+      "Expected bINumNumberStr = '%v'\n"+
+      "  Actual bINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bINumNumberStr)
+
+    return
+  }
+
+  bINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumPrecisionUint, err := bINum.GetPrecisionUint()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != bINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bINumPrecisionUint\n"+
+      "Expected bINumPrecisionUint = '%v'\n"+
+      "  Actual bINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bINumPrecisionUint)
+
+    return
+  }
+
+  bINumBigInt, err := bINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumBigInt, err := bINum.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(bINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(bINumBigInt) != 0\n"+
+      "Expected bINumBigInt = '%v'\n"+
+      "  Actual bINumBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), bINumBigInt.Text(10))
+
+    return
+  }
+
+  bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  bINumAbsBigInt, err := bINumAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsBigInt, err := bINumAbsValue.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0\n"+
+      "Expected bINumAbsBigInt = '%v'\n"+
+      "  Actual bINumAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), bINumAbsBigInt.Text(10))
+
+    return
+  }
+
+  bINumScaleFactor, err := bINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumScaleFactor, err := bINum.GetScaleFactor()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bINumScaleFactor) != 0\n"+
+      "Expected bINumScaleFactor = '%v'\n"+
+      "  Actual bINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bINumScaleFactor.Text(10))
+
+    return
+  }
+
+  bINumSignValue, err := bINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSignValue, err := bINum.GetSign()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != bINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != bINumSignValue\n"+
+      "Expected bINumSignValue = '%v'\n"+
+      "  Actual bINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, bINumSignValue)
+
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != bINumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  nDto, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
       err.Error())
+
+    return
   }
 
-  bINum, err := new(BigIntNum).NewINumMgr(dec.GetThisPointer())
+  err = nDto.IsValid("Validating nDto")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewINumMgr(&dec) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto.IsValid('Validating nDto')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
+  nDtoNumberStr, err := nDto.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoNumberStr, err := nDto.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if bOriginal.Cmp(bINum.bigInt) != 0 {
-    t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
-      bOriginal.Text(10), bINum.bigInt.Text(10))
+  if expectedNumberStr != nDtoNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDtoNumberStr \n"+
+      "Expected nDtoNumberStr = '%v'\n"+
+      "  Actual nDtoNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDtoNumberStr)
+
+    return
   }
 
-  if expectedPrecision != bINum.precision {
-    t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecision, bINum.precision)
+  nDtoPrecisionUint, err := nDto.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoPrecisionUint, err := nDto.GetPrecisionUint()\n"+
+      "nDto= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
-  if bINum.scaleFactor.Cmp(expectedScale) != 0 {
-    t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
-      expectedScale.Text(10), bINum.scaleFactor.Text(10))
+  if expectedPrecisionUint != nDtoPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDtoPrecisionUint\n"+
+      "Expected nDtoPrecisionUint = '%v'\n"+
+      "  Actual nDtoPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDtoPrecisionUint)
+
+    return
   }
 
-  if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
-    t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
-      expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+  nDtoBigInt, err := nDto.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoBigInt, err := nDto.GetBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
-  if expectedSignVal != bINum.sign {
-    t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
-      expectedSignVal, bINum.sign)
+  if expectedBigIntNum.Cmp(nDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDtoBigInt) != 0\n"+
+      "Expected nDtoBigInt = '%v'\n"+
+      "  Actual nDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDtoBigInt.Text(10))
+
+    return
   }
 
-  if nStr != nDto.GetNumStr() {
-    t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      nStr, nDto.GetNumStr())
+  nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
+  if expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0\n"+
+      "Expected nDtoAbsBigIntNum = '%v'\n"+
+      "  Actual nDtoAbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDtoAbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDtoScaleFactor, err := nDto.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoScaleFactor, err := nDto.GetScaleVal()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDtoScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDtoScaleFactor) != 0\n"+
+      "Expected nDtoScaleFactor = '%v'\n"+
+      "  Actual nDtoScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDtoScaleFactor.Text(10))
+
+    return
+  }
+
+  nDtoSignValue, err := nDto.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSignValue, err := nDto.GetSign()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDtoSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDtoSignValue\n"+
+      "Expected nDtoSignValue = '%v'\n"+
+      "  Actual nDtoSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDtoSignValue)
+
+    return
+  }
+
+  nDtoSeps, err := nDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSeps, err := nDto.GetNumericSeparatorsDto()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDtoSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDtoSeps \n"+
+      "Expected nDtoSeps = '%v'\n"+
+      "  Actual nDtoSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDtoSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestBigIntNum_NewINumMgr_05(t *testing.T) {
 
-  nStr := "123.456"
-  expectedPrecision := uint(3)
-  nbStr := "123456"
-  expectedScale := big.NewInt(1000)
+  ePrefix := "TestBigIntNum_NewINumMgr_01"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  expectedNumberStr := "123.456"
+
+  expectedPrecisionUint := uint(3)
+
+  expectedBigIntNumStr := "123456"
+
+  expectedAbsBigIntNumStr := "123456"
+
+  expectedScaleFactor := big.NewInt(1000)
+
   expectedSignVal := 1
 
-  bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+  expectedBigIntNum, isOk := big.NewInt(0).SetString(expectedBigIntNumStr, 10)
 
   if !isOk {
-    t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedBigIntNumStr, 10)\n"+
+      "expectedBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedBigIntNumStr)
+    return
   }
 
-  expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+  expectedAbsBigIntNum, isOk := big.NewInt(0).SetString(expectedAbsBigIntNumStr, 10)
 
-  dec := Decimal{}.NewPtr()
-  err := dec.SetNumStr(nStr)
+  if !isOk {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAbsBigIntNum, isOk := big.NewInt(0).\n"+
+      "   SetString(expectedAbsBigIntNumStr, 10)\n"+
+      "expectedAbsBigIntNumStr= '%v'\n"+
+      "Error= 'isOk == false'\n\n",
+      ePrefix, expectedAbsBigIntNumStr)
+    return
+  }
+
+  dec, err := new(Decimal).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(nStr). Error='%v' ",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec, err := new(Decimal).\n"+
+      "  NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
+
+  err = dec.IsValid("Validating dec")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec.IsValid('Validating dec')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumberStr, err := dec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := dec.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumberStr \n"+
+      "Expected decNumberStr = '%v'\n"+
+      "  Actual decNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumberStr)
+
+    return
+  }
+
+  decPrecisionUint, err := dec.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decPrecisionUint, err := dec.GetPrecisionUint()\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decPrecisionUint\n"+
+      "Expected decPrecisionUint = '%v'\n"+
+      "  Actual decPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decPrecisionUint)
+
+    return
+  }
+
+  decBigInt, err := dec.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decBigInt, err := dec.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(decBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(decBigInt) != 0\n"+
+      "Expected decBigInt = '%v'\n"+
+      "  Actual decBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), decBigInt.Text(10))
+
+    return
+  }
+
+  decAbsValue, err := dec.GetAbsoluteValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsValue, err := dec.GetAbsoluteValue()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  decAbsBigInt, err := decAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAbsBigInt, err := decAbsValue.GetBigInt()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(decAbsBigInt) != 0\n"+
+      "Expected decAbsBigInt = '%v'\n"+
+      "  Actual decAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), decAbsBigInt.Text(10))
+
+    return
+  }
+
+  decScaleFactor, err := dec.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decScaleFactor, err := dec.GetScaleVal()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(decScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(decScaleFactor) != 0\n"+
+      "Expected decScaleFactor = '%v'\n"+
+      "  Actual decScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), decScaleFactor.Text(10))
+
+    return
+  }
+
+  decSignValue, err := dec.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSignValue, err := dec.GetSign()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != decSignValue\n"+
+      "Expected decSignValue = '%v'\n"+
+      "  Actual decSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decSignValue)
+
+    return
+  }
+
+  decSeps, err := dec.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSeps, err := dec.GetNumericSeparatorsDto()\n"+
+      "dec= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(decSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != decSeps \n"+
+      "Expected decSeps = '%v'\n"+
+      "  Actual decSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decSeps.String())
+
+    return
+  }
+
+  bINum, err := new(BigIntNum).NewINumMgr(&dec)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewINumMgr(&dec)\n"+
+      "dec= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  err = bINum.IsValid("Validating bINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.IsValid('Validating bINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bINumNumberStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumNumberStr, err := bINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != bINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != bINumNumberStr \n"+
+      "Expected bINumNumberStr = '%v'\n"+
+      "  Actual bINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bINumNumberStr)
+
+    return
+  }
+
+  bINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumPrecisionUint, err := bINum.GetPrecisionUint()\n"+
+      "bINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != bINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bINumPrecisionUint\n"+
+      "Expected bINumPrecisionUint = '%v'\n"+
+      "  Actual bINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bINumPrecisionUint)
+
+    return
+  }
+
+  bINumBigInt, err := bINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumBigInt, err := bINum.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedBigIntNum.Cmp(bINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(bINumBigInt) != 0\n"+
+      "Expected bINumBigInt = '%v'\n"+
+      "  Actual bINumBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), bINumBigInt.Text(10))
+
+    return
+  }
+
+  bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsValue, err := bINum.GetAbsoluteBigIntNumValue()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  bINumAbsBigInt, err := bINumAbsValue.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumAbsBigInt, err := bINumAbsValue.GetBigInt()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(bINumAbsBigInt) != 0\n"+
+      "Expected bINumAbsBigInt = '%v'\n"+
+      "  Actual bINumAbsBigInt = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), bINumAbsBigInt.Text(10))
+
+    return
+  }
+
+  bINumScaleFactor, err := bINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumScaleFactor, err := bINum.GetScaleFactor()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bINumScaleFactor) != 0\n"+
+      "Expected bINumScaleFactor = '%v'\n"+
+      "  Actual bINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bINumScaleFactor.Text(10))
+
+    return
+  }
+
+  bINumSignValue, err := bINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSignValue, err := bINum.GetSign()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != bINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != bINumSignValue\n"+
+      "Expected bINumSignValue = '%v'\n"+
+      "  Actual bINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, bINumSignValue)
+
+    return
+  }
+
+  bINumSeps, err := bINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINumSeps, err := bINum.GetNumericSeparatorsDto()\n"+
+      "bINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bINumNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(bINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != bINumSeps \n"+
+      "Expected bINumSeps = '%v'\n"+
+      "  Actual bINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bINumSeps.String())
+
+    return
+  }
+
+  nDto, err := new(NumStrDto).NewBigInt(expectedBigIntNum, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDto, err := new(NumStrDto).\n"+
+      "  NewBigInt(expectedBigIntNum, expectedPrecisionUint)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNum.Text(10),
+      expectedPrecisionUint,
       err.Error())
+
+    return
   }
 
-  bINum, err := new(BigIntNum).NewINumMgr(dec)
+  err = nDto.IsValid("Validating nDto")
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewINumMgr(&dec) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nDto.IsValid('Validating nDto')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
+  nDtoNumberStr, err := nDto.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoNumberStr, err := nDto.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if bOriginal.Cmp(bINum.bigInt) != 0 {
-    t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
-      bOriginal.Text(10), bINum.bigInt.Text(10))
+  if expectedNumberStr != nDtoNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != nDtoNumberStr \n"+
+      "Expected nDtoNumberStr = '%v'\n"+
+      "  Actual nDtoNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, nDtoNumberStr)
+
+    return
   }
 
-  if expectedPrecision != bINum.precision {
-    t.Errorf("Expected precision='%v' Instead, precision='%v' ",
-      expectedPrecision, bINum.precision)
+  nDtoPrecisionUint, err := nDto.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoPrecisionUint, err := nDto.GetPrecisionUint()\n"+
+      "nDto= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
-  if bINum.scaleFactor.Cmp(expectedScale) != 0 {
-    t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
-      expectedScale.Text(10), bINum.scaleFactor.Text(10))
+  if expectedPrecisionUint != nDtoPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != nDtoPrecisionUint\n"+
+      "Expected nDtoPrecisionUint = '%v'\n"+
+      "  Actual nDtoPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, nDtoPrecisionUint)
+
+    return
   }
 
-  if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
-    t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
-      expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+  nDtoBigInt, err := nDto.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoBigInt, err := nDto.GetBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
-  if expectedSignVal != bINum.sign {
-    t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
-      expectedSignVal, bINum.sign)
+  if expectedBigIntNum.Cmp(nDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/nDto Big Int Values ARE NOT EQUAL!\n"+
+      "Because expectedBigIntNum.Cmp(nDtoBigInt) != 0\n"+
+      "Expected nDtoBigInt = '%v'\n"+
+      "  Actual nDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigIntNum.Text(10), nDtoBigInt.Text(10))
+
+    return
   }
 
-  if nStr != nDto.GetNumStr() {
-    t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      nStr, nDto.GetNumStr())
+  nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoAbsBigIntNum, _, err := nDto.GetAbsoluteBigInt()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
   }
 
+  if expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Absolute Big Ints ARE NOT EQUAL!\n"+
+      "Because expectedAbsBigIntNum.Cmp(nDtoAbsBigIntNum) != 0\n"+
+      "Expected nDtoAbsBigIntNum = '%v'\n"+
+      "  Actual nDtoAbsBigIntNum = '%v'\n\n",
+      ePrefix, expectedAbsBigIntNum.Text(10), nDtoAbsBigIntNum.Text(10))
+
+    return
+  }
+
+  nDtoScaleFactor, err := nDto.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoScaleFactor, err := nDto.GetScaleVal()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedScaleFactor.Cmp(nDtoScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Scale Factors ARE NOT EQUAL!\n"+
+      "Because  expectedScaleFactor.Cmp(nDtoScaleFactor) != 0\n"+
+      "Expected nDtoScaleFactor = '%v'\n"+
+      "  Actual nDtoScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), nDtoScaleFactor.Text(10))
+
+    return
+  }
+
+  nDtoSignValue, err := nDto.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSignValue, err := nDto.GetSign()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != nDtoSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & nDto Sign Values ARE NOT EQUAL!\n"+
+      "Because  expectedSignVal != nDtoSignValue\n"+
+      "Expected nDtoSignValue = '%v'\n"+
+      "  Actual nDtoSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, nDtoSignValue)
+
+    return
+  }
+
+  nDtoSeps, err := nDto.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "nDtoSeps, err := nDto.GetNumericSeparatorsDto()\n"+
+      "nDto= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, nDtoNumberStr, err.Error())
+    return
+  }
+
+  if !expectedNumSeps.Equal(nDtoSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values NOT Equal\n"+
+      "Because expectedNumSeps != nDtoSeps \n"+
+      "Expected nDtoSeps = '%v'\n"+
+      "  Actual nDtoSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), nDtoSeps.String())
+
+    return
+  }
+
+  return
 }
