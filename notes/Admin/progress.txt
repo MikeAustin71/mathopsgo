@@ -1,3 +1,3 @@
 
 Start Test clean-up here:
-TestBigIntNum_ShiftPrecisionRight_03; xt_bigintnum_06_test.go
+TestBigIntNum_SetPrecision_11; xt_bigintnum_07_test.go
