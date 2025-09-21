@@ -2,10 +2,11 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"strconv"
 	"strings"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -394,8 +395,16 @@ func (ns *NumStrUtility) ParseNumString(str string) (NumStrDto, error) {
 	return numStrDto, nil
 }
 
-// ConvertNumStrToDecimal - Receives a string of numbers as input, then proceeds
+// ConvertNumStrToDecimal
+//
+// Receives a string of numbers as input, then proceeds
 // to convert and return the number string as a Type, 'Decimal'.
+//
+// BE ADVISED
+// ----------
+//
+// You MUST set NumStrUtility Numeric Separators BEFORE you call this
+// method!
 func (ns *NumStrUtility) ConvertNumStrToDecimal(str string) (Decimal, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -404,24 +413,63 @@ func (ns *NumStrUtility) ConvertNumStrToDecimal(str string) (Decimal, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"NumStrDto.CopyIn",
+		"NumStrDto.ConvertNumStrToDecimal",
 		"")
 
 	if err != nil {
 		return Decimal{}, err
 	}
 
-	dec := new(Decimal).New()
+	numSeps := NumericSeparatorDto{}
 
-	err = dec.SetNumStr(str)
+	if ns.DecimalSeparator == 0 {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "ns.DecimalSeparator == 0",
+				ErrContext: "Error: NumStrUtility DecimalSeparator is INVALID! ",
+				ErrMessage: "",
+			}
+	}
+
+	numSeps.DecimalSeparator = ns.DecimalSeparator
+
+	if ns.ThousandsSeparator == 0 {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "ns.ThousandsSeparator == 0",
+				ErrContext: "Error: NumStrUtility ThousandsSeparator is INVALID! ",
+				ErrMessage: "",
+			}
+	}
+
+	numSeps.ThousandsSeparator = ns.ThousandsSeparator
+
+	if ns.CurrencySymbol == 0 {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "ns.CurrencySymbol == 0",
+				ErrContext: "Error: NumStrUtility CurrencySymbol is INVALID! ",
+				ErrMessage: "",
+			}
+	}
+
+	numSeps.CurrencySymbol = ns.CurrencySymbol
+
+	dec, err := new(Decimal).NewNumStrWithNumSeps(str, numSeps)
 
 	if err != nil {
 
 		return Decimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dec.SetNumStr(str)",
-				ErrContext: fmt.Sprintf("str= '%v'", str),
+				ReturnFunc: "dec, err := new(Decimal).NewNumStrWithNumSeps(str, numSeps)",
+				ErrContext: fmt.Sprintf("str= '%v'\nnumSeps= '%v'\n", str, numSeps),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -565,6 +613,24 @@ func (ns *NumStrUtility) ConvertInt64ToFractionalValue(i64 int64) (float64, erro
 	return r64, nil
 }
 
+// New
+//
+// Returns a new instance of NumStrUtility configured with USA
+// default numeric separators (decimal separator, thousands separator
+// and currency symbol).
+func (ns *NumStrUtility) New() NumStrUtility {
+
+	numStrUtility := NumStrUtility{}
+
+	numSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+	numStrUtility.DecimalSeparator = numSeps.DecimalSeparator
+	numStrUtility.ThousandsSeparator = numSeps.ThousandsSeparator
+	numStrUtility.CurrencySymbol = numSeps.CurrencySymbol
+
+	return numStrUtility
+}
+
 // ScaleNumStr
 //
 //	Receives a string consisting of numeric digits. All numeric
@@ -612,8 +678,47 @@ func (ns *NumStrUtility) ScaleNumStr(
 	return numStrDto, nil
 }
 
-// SetCountryAndCurrency - Sets the Country and Currency flags for the
-// current NumStrUtility values.
+// SetCountryAndCurrency
+//
+// Sets the Country and Currency flags for the current NumStrUtility
+// values.
+//
+// Valid Country String Values
+//
+//	United States
+//	United Kingdom
+//	Australia
+//	Brazil
+//	Canada
+//	China
+//	Colombia
+//	Czechoslovakia
+//	Egypt
+//	Euro
+//	Germany
+//	France
+//	Italy
+//	Spain
+//	Hungary
+//	Iceland
+//	Indonesia
+//	Israel
+//	Japan
+//	Korea
+//	Malaysia
+//	Mexico
+//	Norway
+//	Netherlands
+//	Pakistan
+//	Russia
+//	Saudi Arabia
+//	South Africa
+//	Switzerland
+//	Taiwan
+//	Turkey
+//	Venezuela
+//	Vietnam
+//	Taiwan
 func (ns *NumStrUtility) SetCountryAndCurrency(country string) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -835,7 +940,7 @@ func (ns *NumStrUtility) SetCountryAndCurrency(country string) error {
 	}
 
 	if strings.Contains(lcStr, "viet nam") {
-		ns.Nation = "Viet Nam"
+		ns.Nation = "Vietnam"
 		ns.CurrencySymbol = NumStrCurrencySymbols[27]
 		return nil
 	}
@@ -846,4 +951,43 @@ func (ns *NumStrUtility) SetCountryAndCurrency(country string) error {
 		ErrContext: "",
 		ErrMessage: fmt.Sprintf("Failed to initialize country: %v.", country),
 	}
+}
+
+// SetNumSeps
+//
+// Set Numeric Separators
+func (ns *NumStrUtility) SetNumSeps(numSeps NumericSeparatorDto) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrUtility.SetNumSeps",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = numSeps.IsValid(ePrefix.String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.String())",
+			ErrContext: "Input Parameter 'numSeps' is not valid.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	ns.DecimalSeparator = numSeps.DecimalSeparator
+
+	ns.ThousandsSeparator = numSeps.ThousandsSeparator
+
+	ns.CurrencySymbol = numSeps.CurrencySymbol
+
+	return nil
 }

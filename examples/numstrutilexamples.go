@@ -304,6 +304,11 @@ func TestParseAndPrintOutNumStrs(str string) {
 func TestConvertNumStrToDecimal(str string) {
 
 	nsu := mathops.NumStrUtility{}
+
+	nsu.CurrencySymbol = '$'
+	nsu.DecimalSeparator = '.'
+	nsu.ThousandsSeparator = ','
+
 	dec, err := nsu.ConvertNumStrToDecimal(str)
 
 	if err != nil {
