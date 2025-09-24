@@ -1222,144 +1222,762 @@ func TestDecimal_Add_02(t *testing.T) {
 
 func TestDecimal_Add_03(t *testing.T) {
 
-  numStr1 := "35.50"
-  numStr2 := "35.51"
-  sub1 := "71.01"
-  numStr3 := "0.5"
-  sub2 := "71.51"
-  numStr4 := "1.00"
-  sub3 := "72.51"
-  expected := ""
+  ePrefix := "TestDecimal_Add_03"
 
-  dec1, err := Decimal{}.NewNumStr(numStr1)
+  numStr1 := "35.50"
+
+  numStr2 := "35.51"
+
+  sub1 := "71.01"
+
+  numStr3 := "0.5"
+
+  sub2 := "71.51"
+
+  numStr4 := "1.00"
+
+  sub3 := "72.51"
+
+  expectedNumberStr := ""
+
+  dec1, err := new(Decimal).NewNumStr(numStr1)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1). "+
-      "numStr1='%v'  Error='%v'",
-      numStr1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec1, err := new(Decimal).NewNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
   }
 
-  dec2, err := Decimal{}.NewNumStr(numStr2)
+  err = dec1.IsValid("Validating dec1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
-      "numStr2='%v'  Error='%v'",
-      numStr2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec1.IsValid('Validating dec1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec1NumberStr, err := dec1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec1NumberStr, err := dec1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2, err := new(Decimal).NewNumStr(numStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2, err := new(Decimal).NewNumStr(numStr2)\n"+
+      "numStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2NumberStr, err := dec2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2NumberStr, err := dec2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   dec3, err := dec1.Add(dec2)
 
   if err != nil {
-    t.Errorf("Received error from dec1.Add(dec2). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err := dec1.Add(dec2)\n"+
+      "dec1= '%v'\n"+
+      "dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dec1NumberStr, dec2NumberStr, err.Error())
+    return
   }
 
-  if !dec3.GetIsValid() {
-    t.Error("Expected dec3.isValid='true'. Instead, got 'false'")
-  }
-
-  expected = sub1 // 71.01
-
-  if expected != dec3.GetNumStr() {
-    t.Errorf("Expected After decy numStr3 NumStrOut='%v'. Instead, got '%v'", expected, dec3.GetNumStr())
-  }
-
-  decy, err := Decimal{}.NewNumStr(numStr3)
+  err = dec3.IsValid("Validating dec3")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr3). "+
-      "numStr3='%v'  Error='%v'",
-      numStr3, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected = "0.5"
-  if expected != decy.GetNumStr() {
-    t.Errorf("Expected After decy numStr3 NumStrOut='%v'. Instead, got '%v'", expected, decy.GetNumStr())
+  dec3NumberStr, err := dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err := dec3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedNumberStr = sub1 // 71.01
+
+  if expectedNumberStr != dec3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec3NumberStr\n"+
+      "Expected dec3NumberStr = '%v'\n"+
+      "  Actual dec3NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec3NumberStr)
+
+    return
+  }
+
+  decy, err := new(Decimal).NewNumStr(numStr3)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decy, err := new(Decimal).NewNumStr(numStr3)\n"+
+      "numStr3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr3, err.Error())
+    return
+  }
+
+  err = decy.IsValid("Validating decy")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decy.IsValid('Validating decy')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decyNumberStr, err := decy.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decyNumberStr, err := decy.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedNumberStr = "0.5"
+
+  if expectedNumberStr != decyNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != decyNumberStr\n"+
+      "Expected decyNumberStr = '%v'\n"+
+      "  Actual decyNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decyNumberStr)
+
+    return
   }
 
   dec4, err := dec3.Add(decy)
 
-  expected = sub2 // 71.51
-  if expected != dec4.GetNumStr() {
-    t.Errorf("Expected After dec4 numStr3 NumStrOut='%v'. Instead, got '%v'", expected, dec4.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec4, err := dec3.Add(decy)\n"+
+      "decy= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decyNumberStr, err.Error())
+    return
   }
 
-  dec2.SetNumStr(numStr4)
+  err = dec4.IsValid("Validating dec4")
 
-  expected = "1.00"
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec4.IsValid('Validating dec4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-  if expected != dec2.GetNumStr() {
-    t.Errorf("Expected After reuse of dec2 NumStrOut='%v'. Instead, got '%v'", expected, dec2.GetNumStr())
+  dec4NumberStr, err := dec4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec4NumberStr, err := dec4.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedNumberStr = sub2 // 71.51
+
+  if expectedNumberStr != dec4NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec4NumberStr\n"+
+      "Expected dec4NumberStr = '%v'\n"+
+      "  Actual dec4NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec4NumberStr)
+
+    return
+  }
+
+  err = dec2.SetNumStr(numStr4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.SetNumStr(numStr4)\n"+
+      "numStr4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2')\n"+
+      "dec2 is set to 'numStr4'\n"+
+      "numStr4= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, numStr4, err.Error())
+    return
+  }
+
+  dec2NumberStr, err = dec2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2NumberStr, err = dec2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedNumberStr = "1.00"
+
+  if expectedNumberStr != dec2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec3NumberStr\n"+
+      "Expected dec2NumberStr = '%v'\n"+
+      "  Actual dec2NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec2NumberStr)
+
+    return
   }
 
   // Re-use dec3
   dec3, err = dec4.Add(dec2)
 
-  expected = sub3 // 72.56
-
-  if expected != dec3.GetNumStr() {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got '%v'", expected, dec3.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err = dec4.Add(dec2)\n"+
+      "dec2= '%v'\n"+
+      "dec4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dec2NumberStr, dec4NumberStr, err.Error())
+    return
   }
 
+  err = dec3.IsValid("Validating dec3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err = dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err = dec3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedNumberStr = sub3 // 72.56
+
+  if expectedNumberStr != dec3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec3NumberStr\n"+
+      "Expected dec3NumberStr = '%v'\n"+
+      "  Actual dec3NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec3NumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Add_04(t *testing.T) {
+
+  ePrefix := "TestDecimal_Add_04"
+
   numStr1 := "35.50"
+
   numStr2 := ".5"
-  expected := "36.00"
 
-  d1 := Decimal{}
+  expectedNumberStr := "36.00"
 
-  d1.SetNumStr(numStr1)
-  d2, err := Decimal{}.NewNumStr(numStr2)
+  dec1 := Decimal{}
+
+  err := dec1.SetNumStr(numStr1)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
-      "numStr2='%v'  Error='%v'",
-      numStr2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := dec1.SetNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
   }
 
-  d3, _ := d2.Add(d1)
+  err = dec1.IsValid("Validating dec1")
 
-  if expected != d3.GetNumStr() {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got '%v'", expected, d3.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec1.IsValid('Validating dec1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dec1NumberStr, err := dec1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec1NumberStr, err := dec1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2, err := new(Decimal).NewNumStr(numStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2, err := new(Decimal).NewNumStr(numStr2)\n"+
+      "numStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr2, err.Error())
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2NumberStr, err := dec2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2NumberStr, err := dec2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3, err := dec2.Add(dec1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err := dec2.Add(dec1)\n"+
+      "dec1= '%v'\n"+
+      "dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dec1NumberStr, dec2NumberStr, err.Error())
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err := dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err := dec3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != dec3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec3NumberStr\n"+
+      "Expected dec3NumberStr = '%v'\n"+
+      "  Actual dec3NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec3NumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Add_05(t *testing.T) {
+
+  ePrefix := "TestDecimal_Add_05"
+
   numStr1 := "35.50"
+
   numStr2 := ".5"
+
   numStr3 := "1.00"
+
   numStr4 := "9.32"
+
   numStr5 := "101.912"
-  expected := "148.232"
 
-  d1 := Decimal{}
+  expectedNumberStr := "148.232"
 
-  d1.SetNumStr(numStr1)
-  d2, err := Decimal{}.NewNumStr(numStr2)
+  dec1 := Decimal{}
+
+  err := dec1.SetNumStr(numStr1)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
-      "numStr2='%v'  Error='%v'",
-      numStr2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := dec1.SetNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
   }
 
-  d3, _ := d2.Add(d1)
+  err = dec1.IsValid("Validating dec1")
 
-  d2.SetNumStr(numStr3)
-  d3, _ = d3.Add(d2)
-
-  d2.SetNumStr(numStr4)
-  d3, _ = d3.Add(d2)
-
-  d2.SetNumStr(numStr5)
-  d3, _ = d3.Add(d2)
-
-  if expected != d3.GetNumStr() {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got '%v'", expected, d3.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec1.IsValid('Validating dec1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  dec1NumberStr, err := dec1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec1NumberStr, err := dec1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2, err := new(Decimal).NewNumStr(numStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2, err := new(Decimal).NewNumStr(numStr2)\n"+
+      "numStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr2, err.Error())
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2NumberStr, err := dec2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2NumberStr, err := dec2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3, err := dec2.Add(dec1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err := dec2.Add(dec1)\n"+
+      "dec1= '%v'\n"+
+      "dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dec1NumberStr, dec2NumberStr, err.Error())
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err := dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err := dec3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = dec2.SetNumStr(numStr3)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.SetNumStr(numStr3)\n"+
+      "numStr3= '%v'\n"+
+      "dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr3, dec2NumberStr, err.Error())
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2-numStr3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating -numStr3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3, err = dec3.Add(dec2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err = dec3.Add(dec2)\n"+
+      "dec2= '%v'\n"+
+      "original - dec3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      dec2NumberStr,
+      dec3NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3++")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3++')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err = dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err = dec3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = dec2.SetNumStr(numStr4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.SetNumStr(numStr4)\n"+
+      "numStr4= '%v'\n"+
+      "original - dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStr4,
+      dec2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = dec2.IsValid("Validating dec2-numStr4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2-numStr4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec2NumberStr, err = dec2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2NumberStr, err = dec2.GetNumStr()\n"+
+      "dec2 = numStr4\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3, err = dec3.Add(dec2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err = dec3.Add(dec2)\n"+
+      "dec2= '%v'\n"+
+      "original - dec3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      dec2NumberStr,
+      dec3NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3- add dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3- add dec2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err = dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err = dec3.GetNumStr()\n"+
+      "dec3 - add dec2"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = dec2.SetNumStr(numStr5)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.SetNumStr(numStr5)\n"+
+      "numStr5= '%v'\n"+
+      "original - dec2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStr5,
+      dec2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  dec3, err = dec3.Add(dec2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err = dec3.Add(dec2)\n"+
+      "dec2= '%v'\n"+
+      "original - dec3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      dec2NumberStr,
+      dec3NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3- add dec2#2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3- add dec2#2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3NumberStr, err = dec3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3NumberStr, err = dec3.GetNumStr()\n"+
+      "dec3 - add dec2"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != dec3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != dec3NumberStr\n"+
+      "Expected dec3NumberStr = '%v'\n"+
+      "  Actual dec3NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, dec3NumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_AddToThis_01(t *testing.T) {
