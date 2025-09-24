@@ -1982,6 +1982,8 @@ func TestDecimal_Add_05(t *testing.T) {
 
 func TestDecimal_AddToThis_01(t *testing.T) {
 
+  ePrefix := "TestDecimal_AddToThis_01"
+
   nStrAry := []string{
     "35.50",
     "36.50",
@@ -1989,26 +1991,131 @@ func TestDecimal_AddToThis_01(t *testing.T) {
     "92.75",
   }
 
-  expected := "170.25"
+  originalNumerStr := "0"
 
-  d, err := Decimal{}.NewNumStr("0")
+  expectedNumberStr := "170.25"
+
+  decSum, err := new(Decimal).NewNumStr(originalNumerStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"0\"). "+
-      "Error='%v'",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSum, err := new(Decimal).NewNumStr(originalNumerStr)\n"+
+      "originalNumerStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumerStr, err.Error())
+    return
   }
+
+  err = decSum.IsValid("Validating decSum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decSum.IsValid('Validating decSum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decSumNumberStr, err := decSum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decSumNumberStr, err := decSum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend := Decimal{}
+
+  var decAddendNumberStr string
 
   for i := 0; i < len(nStrAry); i++ {
-    dx := Decimal{}
-    dx.SetNumStr(nStrAry[i])
-    d.AddToThis(dx)
+
+    err = decAddend.SetNumStr(nStrAry[i])
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decAddend.SetNumStr(nStrAry[%v])\n"+
+        "nStrAry[%v]= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, i, i, nStrAry[i], err.Error())
+      return
+    }
+
+    err = decAddend.IsValid(fmt.Sprintf("Validating decAddend[%v]", i))
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decAddend.IsValid('Validating decAddend[%v]')\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
+
+    decAddendNumberStr, err = decAddend.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decAddendNumberStr, err := decAddend.GetNumStr()\n"+
+        "index i= '%v'"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
+
+    err = decSum.AddToThis(decAddend)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decSum.AddToThis(decAddend)\n"+
+        "decAddend= '%v'\n"+
+        "orignal-decSum= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        decAddendNumberStr,
+        decSumNumberStr,
+        err.Error())
+
+      return
+    }
+
+    err = decSum.IsValid(fmt.Sprintf("Validating decSum[%v]", i))
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decSum.IsValid('Validating decSum[%v]')\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
+
+    decSumNumberStr, err = decSum.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decSumNumberStr, err = decSum[%v].GetNumStr()\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
   }
 
-  if expected != d.GetNumStr() {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got '%v'", expected, d.GetNumStr())
+  if expectedNumberStr != decSumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != decSumNumberStr\n"+
+      "Expected decSumNumberStr = '%v'\n"+
+      "  Actual decSumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decSumNumberStr)
+
+    return
   }
 
+  return
 }
 
 func TestDecimal_AddToThis_02(t *testing.T) {
