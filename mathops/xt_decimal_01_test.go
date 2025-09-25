@@ -2704,127 +2704,576 @@ func TestDecimal_AddToThisArray_02(t *testing.T) {
 
 func TestDecimal_AddToThisSeries_01(t *testing.T) {
 
-  ePrecision := 3
-  eSignVal := 1
+  ePrefix := "TestDecimal_AddToThisSeries_01"
 
-  base, err := Decimal{}.NewNumStr("25.72")
+  originalNumerStr := "25.72"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
-      "Error = '%v' ", err.Error())
-  }
+  decAddend1NumberStr := "150"
 
-  d1, err := Decimal{}.NewNumStr("150")
+  decAddend2NumberStr := "650.25"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") "+
-      "Error = '%v' ", err.Error())
-  }
+  decAddend3NumberStr := "20.625"
 
-  d2, err := Decimal{}.NewNumStr("650.25")
+  decAddend4NumberStr := "-16.59"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"650.25\") "+
-      "Error = '%v' ", err.Error())
-  }
+  expectedNumberStr := "830.005"
 
-  d3, err := Decimal{}.NewNumStr("20.625")
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  decNumBase, err := new(Decimal).NewNumStr(originalNumerStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") "+
-      "Error = '%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBase, err := new(Decimal).NewNumStr(originalNumerStr)\n"+
+      "originalNumerStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumerStr, err.Error())
+    return
   }
 
-  d4, err := Decimal{}.NewNumStr("-16.59")
+  err = decNumBase.IsValid("Validating decNumBase")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") "+
-      "Error = '%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.IsValid('Validating decNumBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  err = base.AddToThisSeries(d1, d2, d3, d4)
+  decNumBaseNumberStr, err := decNumBase.GetNumStr()
 
   if err != nil {
-    t.Errorf("Received error from base.AddToThisSeries(d1, d2, d3, d4). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseNumberStr, err := decNumBase.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "830.005"
+  decAddend1, err := new(Decimal).NewNumStr(decAddend1NumberStr)
 
-  if expected != base.GetNumStr() {
-    t.Errorf("Expected NumStr== %v . Instead, NumStr== %v .", expected, base.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend1, err := new(Decimal).NewNumStr(decAddend1NumberStr)\n"+
+      "decAddend1NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend1NumberStr, err.Error())
+    return
   }
 
-  if ePrecision != base.GetPrecision() {
-    t.Errorf("Expected precision== %v . Instead, precision== %v .", ePrecision, base.GetPrecision())
+  err = decAddend1.IsValid("Validating decAddend1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend1.IsValid('Validating decAddend1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != base.GetSign() {
-    t.Errorf("Expected sign Value == %v . Instead, sign Value == %v .", eSignVal, base.GetSign())
+  decAddend1FinalNumStr, err := decAddend1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend1FinalNumStr, err := decAddend1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decAddend2, err := new(Decimal).NewNumStr(decAddend2NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend2, err := new(Decimal).NewNumStr(decAddend2NumberStr)\n"+
+      "decAddend2NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend2NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend2.IsValid("Validating decAddend2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend2.IsValid('Validating decAddend2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend2FinalNumStr, err := decAddend2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend2FinalNumStr, err := decAddend2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend3, err := new(Decimal).NewNumStr(decAddend3NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend3, err := new(Decimal).NewNumStr(decAddend3NumberStr)\n"+
+      "decAddend3NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend3NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend3.IsValid("Validating decAddend3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend3.IsValid('Validating decAddend3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend3FinalNumStr, err := decAddend3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend3FinalNumStr, err := decAddend3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend4, err := new(Decimal).NewNumStr(decAddend4NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend4, err := new(Decimal).NewNumStr(decAddend4NumberStr)\n"+
+      "decAddend4NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend4NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend4.IsValid("Validating decAddend4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend4.IsValid('Validating decAddend4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend4FinalNumStr, err := decAddend4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend4FinalNumStr, err := decAddend4.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = decNumBase.AddToThisSeries(decAddend1, decAddend2, decAddend3, decAddend4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.AddToThisSeries(\n"+
+      "  decAddend1, decAddend2, decAddend3, decAddend4)\n"+
+      "decAddend1= '%v'\n"+
+      "decAddend2= '%v'\n"+
+      "decAddend3= '%v'\n"+
+      "decAddend4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decAddend1FinalNumStr,
+      decAddend2FinalNumStr,
+      decAddend3FinalNumStr,
+      decAddend4FinalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = decNumBase.IsValid("Validating Final decNumBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.IsValid('Validating Final decNumBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumBaseNumberStr, err = decNumBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseNumberStr, err = decNumBase.GetNumStr()\n"+
+      "Final decNumBaseNumberStr Value"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumBasePrecisionInt, err := decNumBase.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBasePrecisionInt, err := decNumBase.GetPrecision()\n"+
+      "decNumBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumBaseNumberStr, err.Error())
+    return
+  }
+
+  decNumBaseSignValue, err := decNumBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseSignValue, err := decNumBase.GetSign()\n"+
+      "decNumBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != decNumBaseNumberStr\n"+
+      "Expected decNumBaseNumberStr = '%v'\n"+
+      "  Actual decNumBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decNumBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != decNumBasePrecisionInt\n"+
+      "Expected decNumBasePrecisionInt = '%v'\n"+
+      "  Actual decNumBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decNumBasePrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != decNumBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != decNumBaseSignValue\n"+
+      "Expected decNumBaseSignValue = '%v'\n"+
+      "  Actual decNumBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decNumBaseSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_AddToThisSeries_02(t *testing.T) {
 
-  ePrecision := 3
-  eSignVal := -1
+  ePrefix := "TestDecimal_AddToThisSeries_02"
 
-  base, err := Decimal{}.NewNumStr("25.72")
+  originalNumerStr := "25.72"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
-      "Error = '%v' ", err.Error())
-  }
+  decAddend1NumberStr := "150"
 
-  d1, err := Decimal{}.NewNumStr("150")
+  decAddend2NumberStr := "-6050.25"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") "+
-      "Error = '%v' ", err.Error())
-  }
+  decAddend3NumberStr := "20.625"
 
-  d2, err := Decimal{}.NewNumStr("-6050.25")
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"-6050.25\") "+
-      "Error = '%v' ", err.Error())
-  }
+  decAddend4NumberStr := "-16.59"
 
-  d3, err := Decimal{}.NewNumStr("20.625")
+  expectedNumberStr := "-5870.495"
+
+  expectedPrecisionInt := 3
+
+  expectedSignValue := -1
+
+  decNumBase, err := new(Decimal).NewNumStr(originalNumerStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") "+
-      "Error = '%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBase, err := new(Decimal).NewNumStr(originalNumerStr)\n"+
+      "originalNumerStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumerStr, err.Error())
+    return
   }
 
-  d4, err := Decimal{}.NewNumStr("-16.59")
+  err = decNumBase.IsValid("Validating decNumBase")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") "+
-      "Error = '%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.IsValid('Validating decNumBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  base.AddToThisSeries(d1, d2, d3, d4)
+  decNumBaseNumberStr, err := decNumBase.GetNumStr()
 
-  expected := "-5870.495"
-
-  if expected != base.GetNumStr() {
-    t.Errorf("Expected NumStr== %v . Instead, NumStr== %v .", expected, base.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseNumberStr, err := decNumBase.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != base.GetPrecision() {
-    t.Errorf("Expected precision== %v . Instead, precision== %v .", ePrecision, base.GetPrecision())
+  decAddend1, err := new(Decimal).NewNumStr(decAddend1NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend1, err := new(Decimal).NewNumStr(decAddend1NumberStr)\n"+
+      "decAddend1NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend1NumberStr, err.Error())
+    return
   }
 
-  if eSignVal != base.GetSign() {
-    t.Errorf("Expected sign Value == %v . Instead, sign Value == %v .", eSignVal, base.GetSign())
+  err = decAddend1.IsValid("Validating decAddend1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend1.IsValid('Validating decAddend1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decAddend1FinalNumStr, err := decAddend1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend1FinalNumStr, err := decAddend1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend2, err := new(Decimal).NewNumStr(decAddend2NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend2, err := new(Decimal).NewNumStr(decAddend2NumberStr)\n"+
+      "decAddend2NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend2NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend2.IsValid("Validating decAddend2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend2.IsValid('Validating decAddend2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend2FinalNumStr, err := decAddend2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend2FinalNumStr, err := decAddend2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend3, err := new(Decimal).NewNumStr(decAddend3NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend3, err := new(Decimal).NewNumStr(decAddend3NumberStr)\n"+
+      "decAddend3NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend3NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend3.IsValid("Validating decAddend3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend3.IsValid('Validating decAddend3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend3FinalNumStr, err := decAddend3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend3FinalNumStr, err := decAddend3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend4, err := new(Decimal).NewNumStr(decAddend4NumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend4, err := new(Decimal).NewNumStr(decAddend4NumberStr)\n"+
+      "decAddend4NumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decAddend4NumberStr, err.Error())
+    return
+  }
+
+  err = decAddend4.IsValid("Validating decAddend4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decAddend4.IsValid('Validating decAddend4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decAddend4FinalNumStr, err := decAddend4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decAddend4FinalNumStr, err := decAddend4.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = decNumBase.AddToThisSeries(decAddend1, decAddend2, decAddend3, decAddend4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.AddToThisSeries(\n"+
+      "  decAddend1, decAddend2, decAddend3, decAddend4)\n"+
+      "decAddend1= '%v'\n"+
+      "decAddend2= '%v'\n"+
+      "decAddend3= '%v'\n"+
+      "decAddend4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decAddend1FinalNumStr,
+      decAddend2FinalNumStr,
+      decAddend3FinalNumStr,
+      decAddend4FinalNumStr,
+      err.Error())
+
+    return
+  }
+
+  err = decNumBase.IsValid("Validating Final decNumBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumBase.IsValid('Validating Final decNumBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumBaseNumberStr, err = decNumBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseNumberStr, err = decNumBase.GetNumStr()\n"+
+      "Final decNumBaseNumberStr Value"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumBasePrecisionInt, err := decNumBase.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBasePrecisionInt, err := decNumBase.GetPrecision()\n"+
+      "decNumBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumBaseNumberStr, err.Error())
+    return
+  }
+
+  decNumBaseSignValue, err := decNumBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumBaseSignValue, err := decNumBase.GetSign()\n"+
+      "decNumBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != decNumBaseNumberStr\n"+
+      "Expected decNumBaseNumberStr = '%v'\n"+
+      "  Actual decNumBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decNumBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != decNumBasePrecisionInt\n"+
+      "Expected decNumBasePrecisionInt = '%v'\n"+
+      "  Actual decNumBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decNumBasePrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != decNumBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != decNumBaseSignValue\n"+
+      "Expected decNumBaseSignValue = '%v'\n"+
+      "  Actual decNumBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decNumBaseSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Cmp_01(t *testing.T) {
 
   n1Str := "123.456"
+
   n2Str := "123.455"
+
   expectedCmpResult := 1
 
   decNum1, err := Decimal{}.NewNumStr(n1Str)
