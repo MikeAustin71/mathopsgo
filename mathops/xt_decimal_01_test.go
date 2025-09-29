@@ -4223,264 +4223,1487 @@ func TestDecimal_CubeRoot_03(t *testing.T) {
 }
 
 func TestDecimal_Divide_01(t *testing.T) {
-  // str1 / str2
-  str1 := "575.63"
-  str2 := "2014.123"
-  ePrecision := uint(20)
-  expected := "0.28579684557497233287"
 
-  d1 := Decimal{}.New()
+  // quotient = dividend / divisor
 
-  err := d1.SetNumStr(str1)
+  ePrefix := "TestDecimal_Divide_01"
 
-  if err != nil {
-    t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-  }
+  dividendNumberStr := "575.63"
 
-  d2 := Decimal{}.New()
+  divisorNumberStr := "2014.123"
 
-  err = d2.SetNumStr(str2)
+  expectedPrecisionUint := uint(20)
 
-  if err != nil {
-    t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
-  }
+  expectedQuotientNumberStr := "0.28579684557497233287"
 
-  d3, err := d1.Divide(d2, ePrecision)
+  expectedSignVal := 1
+
+  decNumDividend := new(Decimal).New()
+
+  err := decNumDividend.SetNumStr(dividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
-  }
-
-  outNumStr, _ := d3.GetBigFloatString(uint(d3.GetPrecision()))
-
-  if outNumStr != expected {
-    t.Errorf("Expected Quotient %v. Instead, got %v", expected, outNumStr)
-  }
-
-  actualResult := d3.GetNumStr()
-
-  ia1, err := IntAry{}.NewNumStr(str1)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
-      "str1='%v' Error='%v \n", str1, err.Error())
-  }
-
-  ia2, err := IntAry{}.NewNumStr(str2)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
-      "str2='%v' Error='%v \n", str2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumDividend.SetNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
     return
   }
 
-  ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
+  err = decNumDividend.IsValid("Validating decNumDividend")
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
-      "Error='%v \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDividend.IsValid('Validating decNumDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
 
-  chkResult := ia3.GetNumStr()
+  decNumDividendNumberStr, err := decNumDividend.GetNumStr()
 
-  if chkResult != actualResult {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
-      chkResult, actualResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDividendNumberStr, err := decNumDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumDivisor := new(Decimal).New()
+
+  err = decNumDivisor.SetNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.SetNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = decNumDivisor.IsValid("Validating decNumDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.IsValid('Validating decNumDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotient, err := decNumDividend.Divide(decNumDivisor, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotient, err := decNumDividend.\n"+
+      "  Divide(decNumDivisor, ePrecisionUint)\n"+
+      "decNumDividend= '%v'\n"+
+      "decNumDivisor= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumDividendNumberStr,
+      decNumDivisorNumberStr,
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumQuotient.IsValid("Validating decNumQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumQuotient.IsValid('Validating decNumQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decNumQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != decNumQuotientPrecisionUint\n"+
+      "Expected decNumQuotientPrecisionUint = '%v'\n"+
+      "  Actual decNumQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumQuotientPrecisionUint)
+
+    return
+  }
+
+  decNumQuotientSignVal, err := decNumQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientSignVal, err := decNumQuotient.GetSign()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decNumQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decNumQuotientSignVal\n"+
+      "Expected decNumQuotientSignVal = '%v'\n"+
+      "  Actual decNumQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumQuotientSignVal)
+
+    return
+  }
+
+  decNumQuotientFloatStr, err := decNumQuotient.GetBigFloatString(decNumQuotientPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientFloatStr, err := decNumQuotient.\n"+
+      "  GetBigFloatString(decNumQuotientPrecisionUint)\n"+
+      "decNumQuotient= '%v'\n"+
+      "decNumQuotientPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumQuotientNumberStr,
+      decNumQuotientPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientFloatStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientFloatStr\n"+
+      "Expected decNumQuotientFloatStr = '%v'\n"+
+      "  Actual decNumQuotientFloatStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientFloatStr)
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientNumberStr\n"+
+      "Expected decNumQuotientNumberStr = '%v'\n"+
+      "  Actual decNumQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientNumberStr)
+
+    return
+  }
+
+  iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
+    return
+  }
+
+  err = iaDividend.IsValid("Validating iaDividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDividend.IsValid('Validating iaDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDividendNumberStr, err := iaDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividendNumberStr, err := iaDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = iaDivisor.IsValid("Validating iaDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDivisor.IsValid('Validating iaDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisorNumberStr, err := iaDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisorNumberStr, err := iaDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotient, err := iaDividend.DivideThisBy(&iaDivisor, 0, 20)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "iaDividend= '%v'\n"+
+      "iaDivisor= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      iaDividendNumberStr,
+      iaDivisorNumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = iaQuotient.IsValid("Validating iaQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaQuotient.IsValid('Validating iaQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotientNumberStr, err := iaQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientNumberStr, err := iaQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != iaQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != iaQuotientNumberStr\n"+
+      "Expected iaQuotientNumberStr = '%v'\n"+
+      "  Actual iaQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, iaQuotientNumberStr)
+
+    return
+  }
+
+  iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != iaQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != iaQuotientPrecisionUint\n"+
+      "Expected iaQuotientPrecisionUint = '%v'\n"+
+      "  Actual iaQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, iaQuotientPrecisionUint)
+
+    return
+  }
+
+  iaQuotientSignVal, err := iaQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientSignVal, err := iaQuotient.GetSign()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != iaQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != iaQuotientSignVal\n"+
+      "Expected iaQuotientSignVal = '%v'\n"+
+      "  Actual iaQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, iaQuotientSignVal)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Divide_02(t *testing.T) {
-  // str1 / str2
-  str1 := "-8076.63"
-  str2 := "12014.123"
-  ePrecision := uint(20)
 
-  d1 := Decimal{}.New()
+  // quotient = dividend / divisor
 
-  err := d1.SetNumStr(str1)
+  ePrefix := "TestDecimal_Divide_02"
 
-  if err != nil {
-    t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-  }
+  dividendNumberStr := "-8076.63"
 
-  d2 := Decimal{}.New()
+  divisorNumberStr := "12014.123"
 
-  err = d2.SetNumStr(str2)
+  expectedQuotientNumberStr := "−0.67226130446641839775"
 
-  if err != nil {
-    t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
-  }
+  expectedPrecisionUint := uint(20)
 
-  d3, err := d1.Divide(d2, ePrecision)
+  expectedSignVal := -1
+
+  decNumDividend := new(Decimal).New()
+
+  err := decNumDividend.SetNumStr(dividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
-  }
-
-  actualResult := d3.GetNumStr()
-
-  ia1, err := IntAry{}.NewNumStr(str1)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
-      "str1='%v' Error='%v \n", str1, err.Error())
-  }
-
-  ia2, err := IntAry{}.NewNumStr(str2)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
-      "str2='%v' Error='%v \n", str2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumDividend.SetNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
     return
   }
 
-  ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
+  err = decNumDividend.IsValid("Validating decNumDividend")
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
-      "Error='%v \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDividend.IsValid('Validating decNumDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
 
-  chkResult := ia3.GetNumStr()
+  decNumDividendNumberStr, err := decNumDividend.GetNumStr()
 
-  if chkResult != actualResult {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
-      chkResult, actualResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDividendNumberStr, err := decNumDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumDivisor := new(Decimal).New()
+
+  err = decNumDivisor.SetNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.SetNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = decNumDivisor.IsValid("Validating decNumDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.IsValid('Validating decNumDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotient, err := decNumDividend.Divide(decNumDivisor, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotient, err := decNumDividend.\n"+
+      "  Divide(decNumDivisor, ePrecisionUint)\n"+
+      "decNumDividend= '%v'\n"+
+      "decNumDivisor= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumDividendNumberStr,
+      decNumDivisorNumberStr,
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumQuotient.IsValid("Validating decNumQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumQuotient.IsValid('Validating decNumQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decNumQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != decNumQuotientPrecisionUint\n"+
+      "Expected decNumQuotientPrecisionUint = '%v'\n"+
+      "  Actual decNumQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumQuotientPrecisionUint)
+
+    return
+  }
+
+  decNumQuotientSignVal, err := decNumQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientSignVal, err := decNumQuotient.GetSign()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decNumQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decNumQuotientSignVal\n"+
+      "Expected decNumQuotientSignVal = '%v'\n"+
+      "  Actual decNumQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumQuotientSignVal)
+
+    return
+  }
+
+  decNumQuotientFloatStr, err := decNumQuotient.GetBigFloatString(decNumQuotientPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientFloatStr, err := decNumQuotient.\n"+
+      "  GetBigFloatString(decNumQuotientPrecisionUint)\n"+
+      "decNumQuotient= '%v'\n"+
+      "decNumQuotientPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumQuotientNumberStr,
+      decNumQuotientPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientFloatStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientFloatStr\n"+
+      "Expected decNumQuotientFloatStr = '%v'\n"+
+      "  Actual decNumQuotientFloatStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientFloatStr)
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientNumberStr\n"+
+      "Expected decNumQuotientNumberStr = '%v'\n"+
+      "  Actual decNumQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientNumberStr)
+
+    return
+  }
+
+  iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
+    return
+  }
+
+  err = iaDividend.IsValid("Validating iaDividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDividend.IsValid('Validating iaDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDividendNumberStr, err := iaDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividendNumberStr, err := iaDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = iaDivisor.IsValid("Validating iaDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDivisor.IsValid('Validating iaDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisorNumberStr, err := iaDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisorNumberStr, err := iaDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotient, err := iaDividend.DivideThisBy(&iaDivisor, 0, 20)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "iaDividend= '%v'\n"+
+      "iaDivisor= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      iaDividendNumberStr,
+      iaDivisorNumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = iaQuotient.IsValid("Validating iaQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaQuotient.IsValid('Validating iaQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotientNumberStr, err := iaQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientNumberStr, err := iaQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != iaQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != iaQuotientNumberStr\n"+
+      "Expected iaQuotientNumberStr = '%v'\n"+
+      "  Actual iaQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, iaQuotientNumberStr)
+
+    return
+  }
+
+  iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != iaQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != iaQuotientPrecisionUint\n"+
+      "Expected iaQuotientPrecisionUint = '%v'\n"+
+      "  Actual iaQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, iaQuotientPrecisionUint)
+
+    return
+  }
+
+  iaQuotientSignVal, err := iaQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientSignVal, err := iaQuotient.GetSign()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != iaQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != iaQuotientSignVal\n"+
+      "Expected iaQuotientSignVal = '%v'\n"+
+      "  Actual iaQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, iaQuotientSignVal)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Divide_03(t *testing.T) {
-  // str1 / str2
-  str1 := "100"
-  str2 := "33"
-  maxPrecision := uint(20)
 
-  d1 := Decimal{}.New()
+  // quotient = dividend / divisor
 
-  err := d1.SetNumStr(str1)
+  ePrefix := "TestDecimal_Divide_03"
 
-  if err != nil {
-    t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-  }
+  dividendNumberStr := "100"
 
-  d2 := Decimal{}.New()
+  divisorNumberStr := "33"
 
-  err = d2.SetNumStr(str2)
+  expectedQuotientNumberStr := "3.030 303 030 303 030 303 03"
 
-  if err != nil {
-    t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
-  }
+  expectedPrecisionUint := uint(20)
 
-  d3, err := d1.Divide(d2, maxPrecision)
+  expectedSignVal := 1
+
+  decNumDividend := new(Decimal).New()
+
+  err := decNumDividend.SetNumStr(dividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
-  }
-
-  actualResult := d3.GetNumStr()
-
-  ia1, err := IntAry{}.NewNumStr(str1)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
-      "str1='%v' Error='%v \n", str1, err.Error())
-  }
-
-  ia2, err := IntAry{}.NewNumStr(str2)
-
-  if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
-      "str2='%v' Error='%v \n", str2, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumDividend.SetNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
     return
   }
 
-  ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
+  err = decNumDividend.IsValid("Validating decNumDividend")
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
-      "Error='%v \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDividend.IsValid('Validating decNumDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
 
-  chkResult := ia3.GetNumStr()
+  decNumDividendNumberStr, err := decNumDividend.GetNumStr()
 
-  if chkResult != actualResult {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
-      chkResult, actualResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDividendNumberStr, err := decNumDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumDivisor := new(Decimal).New()
+
+  err = decNumDivisor.SetNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.SetNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = decNumDivisor.IsValid("Validating decNumDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.IsValid('Validating decNumDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotient, err := decNumDividend.Divide(decNumDivisor, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotient, err := decNumDividend.\n"+
+      "  Divide(decNumDivisor, ePrecisionUint)\n"+
+      "decNumDividend= '%v'\n"+
+      "decNumDivisor= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumDividendNumberStr,
+      decNumDivisorNumberStr,
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumQuotient.IsValid("Validating decNumQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumQuotient.IsValid('Validating decNumQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decNumQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != decNumQuotientPrecisionUint\n"+
+      "Expected decNumQuotientPrecisionUint = '%v'\n"+
+      "  Actual decNumQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumQuotientPrecisionUint)
+
+    return
+  }
+
+  decNumQuotientSignVal, err := decNumQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientSignVal, err := decNumQuotient.GetSign()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decNumQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decNumQuotientSignVal\n"+
+      "Expected decNumQuotientSignVal = '%v'\n"+
+      "  Actual decNumQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumQuotientSignVal)
+
+    return
+  }
+
+  decNumQuotientFloatStr, err := decNumQuotient.GetBigFloatString(decNumQuotientPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientFloatStr, err := decNumQuotient.\n"+
+      "  GetBigFloatString(decNumQuotientPrecisionUint)\n"+
+      "decNumQuotient= '%v'\n"+
+      "decNumQuotientPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumQuotientNumberStr,
+      decNumQuotientPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientFloatStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientFloatStr\n"+
+      "Expected decNumQuotientFloatStr = '%v'\n"+
+      "  Actual decNumQuotientFloatStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientFloatStr)
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientNumberStr\n"+
+      "Expected decNumQuotientNumberStr = '%v'\n"+
+      "  Actual decNumQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientNumberStr)
+
+    return
+  }
+
+  iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
+    return
+  }
+
+  err = iaDividend.IsValid("Validating iaDividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDividend.IsValid('Validating iaDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDividendNumberStr, err := iaDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividendNumberStr, err := iaDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = iaDivisor.IsValid("Validating iaDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDivisor.IsValid('Validating iaDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisorNumberStr, err := iaDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisorNumberStr, err := iaDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotient, err := iaDividend.DivideThisBy(&iaDivisor, 0, 20)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "iaDividend= '%v'\n"+
+      "iaDivisor= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      iaDividendNumberStr,
+      iaDivisorNumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = iaQuotient.IsValid("Validating iaQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaQuotient.IsValid('Validating iaQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotientNumberStr, err := iaQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientNumberStr, err := iaQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != iaQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != iaQuotientNumberStr\n"+
+      "Expected iaQuotientNumberStr = '%v'\n"+
+      "  Actual iaQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, iaQuotientNumberStr)
+
+    return
+  }
+
+  iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != iaQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != iaQuotientPrecisionUint\n"+
+      "Expected iaQuotientPrecisionUint = '%v'\n"+
+      "  Actual iaQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, iaQuotientPrecisionUint)
+
+    return
+  }
+
+  iaQuotientSignVal, err := iaQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientSignVal, err := iaQuotient.GetSign()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != iaQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != iaQuotientSignVal\n"+
+      "Expected iaQuotientSignVal = '%v'\n"+
+      "  Actual iaQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, iaQuotientSignVal)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Divide_04(t *testing.T) {
-  // str1 / str2
-  str1 := "975.69"
-  str2 := "589.7654321"
-  excelResult := "1.654369597"
-  maxPrecision := uint(9)
 
-  d1 := Decimal{}.New()
+  // quotient = dividend / divisor
 
-  err := d1.SetNumStr(str1)
+  ePrefix := "TestDecimal_Divide_04"
 
-  if err != nil {
-    t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-  }
+  dividendNumberStr := "975.69"
 
-  d2 := Decimal{}.New()
+  divisorNumberStr := "589.7654321"
 
-  err = d2.SetNumStr(str2)
+  expectedQuotientNumberStr := "1.654369597"
 
-  if err != nil {
-    t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
-  }
+  expectedPrecisionUint := uint(9)
 
-  d3, err := d1.Divide(d2, maxPrecision)
+  expectedSignVal := 1
+
+  decNumDividend := new(Decimal).New()
+
+  err := decNumDividend.SetNumStr(dividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumDividend.SetNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
+    return
   }
 
-  actualResult := d3.GetNumStr()
-
-  ia1, err := IntAry{}.NewNumStr(str1)
+  err = decNumDividend.IsValid("Validating decNumDividend")
 
   if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
-      "str1='%v' Error='%v \n", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDividend.IsValid('Validating decNumDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  ia2, err := IntAry{}.NewNumStr(str2)
+  decNumDividendNumberStr, err := decNumDividend.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
-      "str2='%v' Error='%v \n", str2, err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDividendNumberStr, err := decNumDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  ia3, err := ia1.DivideThisBy(&ia2, 0, int(maxPrecision))
+  decNumDivisor := new(Decimal).New()
+
+  err = decNumDivisor.SetNumStr(divisorNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
-      "Error='%v \n", err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.SetNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
   }
 
-  chkResult := ia3.GetNumStr()
+  err = decNumDivisor.IsValid("Validating decNumDivisor")
 
-  if chkResult != actualResult {
-    t.Errorf("Error: IntAry Expected result='%v'. Instead, result='%v'. "+
-      chkResult, actualResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumDivisor.IsValid('Validating decNumDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if excelResult != actualResult {
-    t.Errorf("Error: Excel Expected result='%v'. Instead, result='%v'. ",
-      excelResult, actualResult)
+  decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumDivisorNumberStr, err := decNumDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumQuotient, err := decNumDividend.Divide(decNumDivisor, expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotient, err := decNumDividend.\n"+
+      "  Divide(decNumDivisor, ePrecisionUint)\n"+
+      "decNumDividend= '%v'\n"+
+      "decNumDivisor= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumDividendNumberStr,
+      decNumDivisorNumberStr,
+      expectedPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumQuotient.IsValid("Validating decNumQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumQuotient.IsValid('Validating decNumQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientNumberStr, err := decNumQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientPrecisionUint, err := decNumQuotient.GetPrecisionUint()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decNumQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != decNumQuotientPrecisionUint\n"+
+      "Expected decNumQuotientPrecisionUint = '%v'\n"+
+      "  Actual decNumQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumQuotientPrecisionUint)
+
+    return
+  }
+
+  decNumQuotientSignVal, err := decNumQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientSignVal, err := decNumQuotient.GetSign()\n"+
+      "decNumQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decNumQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decNumQuotientSignVal\n"+
+      "Expected decNumQuotientSignVal = '%v'\n"+
+      "  Actual decNumQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumQuotientSignVal)
+
+    return
+  }
+
+  decNumQuotientFloatStr, err := decNumQuotient.GetBigFloatString(decNumQuotientPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumQuotientFloatStr, err := decNumQuotient.\n"+
+      "  GetBigFloatString(decNumQuotientPrecisionUint)\n"+
+      "decNumQuotient= '%v'\n"+
+      "decNumQuotientPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumQuotientNumberStr,
+      decNumQuotientPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientFloatStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientFloatStr\n"+
+      "Expected decNumQuotientFloatStr = '%v'\n"+
+      "  Actual decNumQuotientFloatStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientFloatStr)
+
+    return
+  }
+
+  if expectedQuotientNumberStr != decNumQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != decNumQuotientNumberStr\n"+
+      "Expected decNumQuotientNumberStr = '%v'\n"+
+      "  Actual decNumQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, decNumQuotientNumberStr)
+
+    return
+  }
+
+  iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividend, err := new(IntAry).NewNumStr(dividendNumberStr)\n"+
+      "dividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, dividendNumberStr, err.Error())
+    return
+  }
+
+  err = iaDividend.IsValid("Validating iaDividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDividend.IsValid('Validating iaDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDividendNumberStr, err := iaDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDividendNumberStr, err := iaDividend.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisor, err := new(IntAry).NewNumStr(divisorNumberStr)\n"+
+      "divisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, divisorNumberStr, err.Error())
+    return
+  }
+
+  err = iaDivisor.IsValid("Validating iaDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaDivisor.IsValid('Validating iaDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaDivisorNumberStr, err := iaDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaDivisorNumberStr, err := iaDivisor.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotient, err := iaDividend.DivideThisBy(&iaDivisor, 0, 20)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "iaDividend= '%v'\n"+
+      "iaDivisor= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      iaDividendNumberStr,
+      iaDivisorNumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = iaQuotient.IsValid("Validating iaQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaQuotient.IsValid('Validating iaQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  iaQuotientNumberStr, err := iaQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientNumberStr, err := iaQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != iaQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedQuotientNumberStr != iaQuotientNumberStr\n"+
+      "Expected iaQuotientNumberStr = '%v'\n"+
+      "  Actual iaQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, iaQuotientNumberStr)
+
+    return
+  }
+
+  iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientPrecisionUint, err := iaQuotient.GetPrecisionUint()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != iaQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != iaQuotientPrecisionUint\n"+
+      "Expected iaQuotientPrecisionUint = '%v'\n"+
+      "  Actual iaQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, iaQuotientPrecisionUint)
+
+    return
+  }
+
+  iaQuotientSignVal, err := iaQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "iaQuotientSignVal, err := iaQuotient.GetSign()\n"+
+      "iaQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, iaQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != iaQuotientSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != iaQuotientSignVal\n"+
+      "Expected iaQuotientSignVal = '%v'\n"+
+      "  Actual iaQuotientSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, iaQuotientSignVal)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_GetNumStr_01(t *testing.T) {
