@@ -3270,247 +3270,956 @@ func TestDecimal_AddToThisSeries_02(t *testing.T) {
 
 func TestDecimal_Cmp_01(t *testing.T) {
 
+  ePrefix := "TestDecimal_Cmp_01"
+
   n1Str := "123.456"
 
   n2Str := "123.455"
 
   expectedCmpResult := 1
 
-  decNum1, err := Decimal{}.NewNumStr(n1Str)
+  decNum1, err := new(Decimal).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'", n1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n1Str, err.Error())
+    return
   }
 
-  decNum2, err := Decimal{}.NewNumStr(n2Str)
+  err = decNum1.IsValid("Validating decNum1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'", n2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := decNum1.Cmp(decNum2)
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2, err := new(Decimal).NewNumStr(n2Str)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := new(Decimal).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n2Str, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2NumberStr, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2NumberStr, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := decNum1.Cmp(decNum2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := decNum1.Cmp(decNum2)\n"+
+      "decNum1= '%v'\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      decNum2NumberStr,
+      err.Error())
+
+    return
+  }
 
   if expectedCmpResult != cmpResult {
-    t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
-      expectedCmpResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCmpResult != cmpResult\n"+
+      "Expected cmpResult = '%v'\n"+
+      "  Actual cmpResult = '%v'\n\n",
+      ePrefix, expectedCmpResult, cmpResult)
+
+    return
   }
 
+  return
 }
 
 func TestDecimal_Cmp_02(t *testing.T) {
 
+  ePrefix := "TestDecimal_Cmp_02"
+
   n1Str := "123.456"
+
   n2Str := "123.457"
+
   expectedCmpResult := -1
 
-  dec1, err := Decimal{}.NewNumStr(n1Str)
+  decNum1, err := new(Decimal).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'", n1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n1Str, err.Error())
+    return
   }
 
-  dec2, err := Decimal{}.NewNumStr(n2Str)
+  err = decNum1.IsValid("Validating decNum1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'", n2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := dec1.Cmp(dec2)
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2, err := new(Decimal).NewNumStr(n2Str)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := new(Decimal).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n2Str, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2NumberStr, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2NumberStr, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := decNum1.Cmp(decNum2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := decNum1.Cmp(decNum2)\n"+
+      "decNum1= '%v'\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      decNum2NumberStr,
+      err.Error())
+
+    return
+  }
 
   if expectedCmpResult != cmpResult {
-    t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
-      expectedCmpResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCmpResult != cmpResult\n"+
+      "Expected cmpResult = '%v'\n"+
+      "  Actual cmpResult = '%v'\n\n",
+      ePrefix, expectedCmpResult, cmpResult)
+
+    return
   }
 
+  return
 }
 
 func TestDecimal_Cmp_03(t *testing.T) {
 
+  ePrefix := "TestDecimal_Cmp_03"
+
   n1Str := "123.456"
+
   n2Str := "123.456"
+
   expectedCmpResult := 0
 
-  dec1, err := Decimal{}.NewNumStr(n1Str)
+  decNum1, err := new(Decimal).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'", n1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n1Str, err.Error())
+    return
   }
 
-  dec2, err := Decimal{}.NewNumStr(n2Str)
+  err = decNum1.IsValid("Validating decNum1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'", n2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := dec1.Cmp(dec2)
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2, err := new(Decimal).NewNumStr(n2Str)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := new(Decimal).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n2Str, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2NumberStr, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2NumberStr, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := decNum1.Cmp(decNum2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := decNum1.Cmp(decNum2)\n"+
+      "decNum1= '%v'\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      decNum2NumberStr,
+      err.Error())
+
+    return
+  }
 
   if expectedCmpResult != cmpResult {
-    t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
-      expectedCmpResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCmpResult != cmpResult\n"+
+      "Expected cmpResult = '%v'\n"+
+      "  Actual cmpResult = '%v'\n\n",
+      ePrefix, expectedCmpResult, cmpResult)
+
+    return
   }
 
+  return
 }
 
 func TestDecimal_Cmp_04(t *testing.T) {
 
+  ePrefix := "TestDecimal_Cmp_04"
+
   n1Str := "-123.456"
+
   n2Str := "-123.457"
+
   expectedCmpResult := 1
 
-  dec1, err := Decimal{}.NewNumStr(n1Str)
+  decNum1, err := new(Decimal).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'", n1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n1Str, err.Error())
+    return
   }
 
-  dec2, err := Decimal{}.NewNumStr(n2Str)
+  err = decNum1.IsValid("Validating decNum1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'", n2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := dec1.Cmp(dec2)
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2, err := new(Decimal).NewNumStr(n2Str)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := new(Decimal).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n2Str, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2NumberStr, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2NumberStr, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := decNum1.Cmp(decNum2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := decNum1.Cmp(decNum2)\n"+
+      "decNum1= '%v'\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      decNum2NumberStr,
+      err.Error())
+
+    return
+  }
 
   if expectedCmpResult != cmpResult {
-    t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
-      expectedCmpResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCmpResult != cmpResult\n"+
+      "Expected cmpResult = '%v'\n"+
+      "  Actual cmpResult = '%v'\n\n",
+      ePrefix, expectedCmpResult, cmpResult)
+
+    return
   }
 
+  return
 }
 
 func TestDecimal_Cmp_05(t *testing.T) {
 
+  ePrefix := "TestDecimal_Cmp_05"
+
   n1Str := "-123.456"
+
   n2Str := "-123.455"
+
   expectedCmpResult := -1
 
-  dec1, err := Decimal{}.NewNumStr(n1Str)
+  decNum1, err := new(Decimal).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'", n1Str, err.Error())
-  }
-
-  dec2, err := Decimal{}.NewNumStr(n2Str)
-
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'", n2Str, err.Error())
-  }
-
-  cmpResult := dec1.Cmp(dec2)
-
-  if expectedCmpResult != cmpResult {
-    t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
-      expectedCmpResult, cmpResult)
-  }
-
-}
-
-func TestDecimal_CubeRoot_01(t *testing.T) {
-  numStr1 := "2686.5"
-  maxPrecision := uint(30)
-  expected := "13.901519768959674425418091364468"
-  eSignVal := 1
-
-  d1, err := Decimal{}.NewNumStr(numStr1)
-
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
-      "numStr1='%v' Error = '%v' ", numStr1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n1Str, err.Error())
     return
   }
 
-  decCubeRoot, err := d1.CubeRoot(maxPrecision)
+  err = decNum1.IsValid("Validating decNum1")
 
   if err != nil {
-    t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expected != decCubeRoot.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != decCubeRoot.GetSign() {
-    t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+  decNum2, err := new(Decimal).NewNumStr(n2Str)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := new(Decimal).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, n2Str, err.Error())
+    return
   }
 
-  if int(maxPrecision) != decCubeRoot.GetPrecision() {
-    t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  decNum2NumberStr, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2NumberStr, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := decNum1.Cmp(decNum2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := decNum1.Cmp(decNum2)\n"+
+      "decNum1= '%v'\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      decNum2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCmpResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCmpResult != cmpResult\n"+
+      "Expected cmpResult = '%v'\n"+
+      "  Actual cmpResult = '%v'\n\n",
+      ePrefix, expectedCmpResult, cmpResult)
+
+    return
+  }
+
+  return
+}
+
+func TestDecimal_CubeRoot_01(t *testing.T) {
+
+  ePrefix := "TestDecimal_CubeRoot_01"
+
+  numStr1 := "2686.5"
+
+  maxPrecisionUint := uint(30)
+
+  expectedCubeRootNumberStr := "13.901519768959674425418091364468"
+
+  expectedSignVal := 1
+
+  decNum1, err := new(Decimal).NewNumStr(numStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
+  }
+
+  err = decNum1.IsValid("Validating decNum1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decCubeRoot, err := decNum1.CubeRoot(maxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRoot, err := decNum1.CubeRoot(maxPrecision)\n"+
+      "decNum1= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      maxPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decCubeRoot.IsValid("Validating decCubeRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decCubeRoot.IsValid('Validating decCubeRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decCubeRootNumberStr, err := decCubeRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootNumberStr, err := decCubeRoot.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedCubeRootNumberStr != decCubeRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCubeRoot != decCubeRootNumberStr\n"+
+      "Expected decCubeRootNumberStr = '%v'\n"+
+      "  Actual decCubeRootNumberStr = '%v'\n\n",
+      ePrefix, expectedCubeRootNumberStr, decCubeRootNumberStr)
+
+    return
+  }
+
+  decCubeRootSignVal, err := decCubeRoot.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootSignVal, err := decCubeRoot.GetSign()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decCubeRootSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decCubeRootSignVal\n"+
+      "Expected decCubeRootSignVal = '%v'\n"+
+      "  Actual decCubeRootSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decCubeRootSignVal)
+
+    return
+  }
+
+  decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  maxPrecisionInt := int(maxPrecisionUint)
+
+  if maxPrecisionInt != decCubeRootPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because maxPrecisionInt != decCubeRootPrecisionInt\n"+
+      "Expected decCubeRootPrecisionInt = '%v'\n"+
+      "  Actual decCubeRootPrecisionInt = '%v'\n\n",
+      ePrefix, maxPrecisionInt, decCubeRootPrecisionInt)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_CubeRoot_02(t *testing.T) {
+
+  ePrefix := "TestDecimal_CubeRoot_02"
+
   numStr1 := "390626"
-  maxPrecision := uint(29)
-  expected := "73.10050583431350346938081010498"
-  eSignVal := 1
 
-  d1, err := Decimal{}.NewNumStr(numStr1)
+  maxPrecisionUint := uint(29)
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
-      "numStr1='%v' Error = '%v' ", numStr1, err.Error())
-  }
+  expectedCubeRootNumberStr := "73.10050583431350346938081010498"
 
-  decCubeRoot, err := d1.CubeRoot(maxPrecision)
+  expectedSignVal := 1
+
+  decNum1, err := new(Decimal).NewNumStr(numStr1)
 
   if err != nil {
-    t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
   }
 
-  if expected != decCubeRoot.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+  err = decNum1.IsValid("Validating decNum1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != decCubeRoot.GetSign() {
-    t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if int(maxPrecision) != decCubeRoot.GetPrecision() {
-    t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+  decCubeRoot, err := decNum1.CubeRoot(maxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRoot, err := decNum1.CubeRoot(maxPrecision)\n"+
+      "decNum1= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
+
+  err = decCubeRoot.IsValid("Validating decCubeRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decCubeRoot.IsValid('Validating decCubeRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decCubeRootNumberStr, err := decCubeRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootNumberStr, err := decCubeRoot.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedCubeRootNumberStr != decCubeRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCubeRoot != decCubeRootNumberStr\n"+
+      "Expected decCubeRootNumberStr = '%v'\n"+
+      "  Actual decCubeRootNumberStr = '%v'\n\n",
+      ePrefix, expectedCubeRootNumberStr, decCubeRootNumberStr)
+
+    return
+  }
+
+  decCubeRootSignVal, err := decCubeRoot.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootSignVal, err := decCubeRoot.GetSign()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decCubeRootSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decCubeRootSignVal\n"+
+      "Expected decCubeRootSignVal = '%v'\n"+
+      "  Actual decCubeRootSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decCubeRootSignVal)
+
+    return
+  }
+
+  decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  maxPrecisionInt := int(maxPrecisionUint)
+
+  if maxPrecisionInt != decCubeRootPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because maxPrecisionInt != decCubeRootPrecisionInt\n"+
+      "Expected decCubeRootPrecisionInt = '%v'\n"+
+      "  Actual decCubeRootPrecisionInt = '%v'\n\n",
+      ePrefix, maxPrecisionInt, decCubeRootPrecisionInt)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_CubeRoot_03(t *testing.T) {
+
+  ePrefix := "TestDecimal_CubeRoot_03"
+
   numStr1 := "-390626"
-  maxPrecision := uint(29)
-  expected := "-73.10050583431350346938081010498"
-  eSignVal := -1
 
-  d1, err := Decimal{}.NewNumStr(numStr1)
+  maxPrecisionUint := uint(29)
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
-      "numStr1='%v' Error = '%v' ", numStr1, err.Error())
-  }
+  expectedCubeRootNumberStr := "-73.10050583431350346938081010498"
 
-  decCubeRoot, err := d1.CubeRoot(maxPrecision)
+  expectedSignVal := -1
+
+  decNum1, err := new(Decimal).NewNumStr(numStr1)
 
   if err != nil {
-    t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1, err := new(Decimal).NewNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr1, err.Error())
+    return
   }
 
-  if expected != decCubeRoot.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+  err = decNum1.IsValid("Validating decNum1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum1.IsValid('Validating decNum1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != decCubeRoot.GetSign() {
-    t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+  decNum1NumberStr, err := decNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum1NumberStr, err := decNum1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if int(maxPrecision) != decCubeRoot.GetPrecision() {
-    t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+  decCubeRoot, err := decNum1.CubeRoot(maxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRoot, err := decNum1.CubeRoot(maxPrecision)\n"+
+      "decNum1= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNum1NumberStr,
+      maxPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decCubeRoot.IsValid("Validating decCubeRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decCubeRoot.IsValid('Validating decCubeRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decCubeRootNumberStr, err := decCubeRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootNumberStr, err := decCubeRoot.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedCubeRootNumberStr != decCubeRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCubeRoot != decCubeRootNumberStr\n"+
+      "Expected decCubeRootNumberStr = '%v'\n"+
+      "  Actual decCubeRootNumberStr = '%v'\n\n",
+      ePrefix, expectedCubeRootNumberStr, decCubeRootNumberStr)
+
+    return
+  }
+
+  decCubeRootSignVal, err := decCubeRoot.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootSignVal, err := decCubeRoot.GetSign()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != decCubeRootSignVal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignVal != decCubeRootSignVal\n"+
+      "Expected decCubeRootSignVal = '%v'\n"+
+      "  Actual decCubeRootSignVal = '%v'\n\n",
+      ePrefix, expectedSignVal, decCubeRootSignVal)
+
+    return
+  }
+
+  decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decCubeRootPrecisionInt, err := decCubeRoot.GetPrecision()\n"+
+      "decCubeRoot= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decCubeRootNumberStr, err.Error())
+    return
+  }
+
+  maxPrecisionInt := int(maxPrecisionUint)
+
+  if maxPrecisionInt != decCubeRootPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because maxPrecisionInt != decCubeRootPrecisionInt\n"+
+      "Expected decCubeRootPrecisionInt = '%v'\n"+
+      "  Actual decCubeRootPrecisionInt = '%v'\n\n",
+      ePrefix, maxPrecisionInt, decCubeRootPrecisionInt)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Divide_01(t *testing.T) {
