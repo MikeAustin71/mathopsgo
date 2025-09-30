@@ -5708,42 +5708,106 @@ func TestDecimal_Divide_04(t *testing.T) {
 
 func TestDecimal_GetNumStr_01(t *testing.T) {
 
-  str1 := "575.63"
+  ePrefix := "TestDecimal_GetNumStr_01"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  expectedNumberStr := "575.63"
+
+  decNum, err := new(Decimal).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum, err := new(Decimal).NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
   }
 
-  actualStr := d1.GetNumStr()
+  err = decNum.IsValid("Validating decNum")
 
-  if str1 != actualStr {
-    t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
-      str1, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum.IsValid('Validating decNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumNumberStr, err := decNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumNumberStr, err := decNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != decNumNumberStr\n"+
+      "Expected decNumNumberStr = '%v'\n"+
+      "  Actual decNumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumNumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_GetNumStr_02(t *testing.T) {
 
-  str1 := "-575.63"
+  ePrefix := "TestDecimal_GetNumStr_02"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  expectedNumberStr := "-575.63"
+
+  decNum, err := new(Decimal).NewNumStr(expectedNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum, err := new(Decimal).NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
   }
 
-  actualStr := d1.GetNumStr()
+  err = decNum.IsValid("Validating decNum")
 
-  if str1 != actualStr {
-    t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
-      str1, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum.IsValid('Validating decNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumNumberStr, err := decNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumNumberStr, err := decNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != decNumNumberStr\n"+
+      "Expected decNumNumberStr = '%v'\n"+
+      "  Actual decNumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumNumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_GetNumParen_01(t *testing.T) {
