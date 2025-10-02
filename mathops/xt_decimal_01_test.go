@@ -6882,12 +6882,12 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
     return
   }
 
-  decNumberStr, err := decNum.GetAbsoluteAllDigitsStr()
+  decNumberStr, err := decNum.GetNumStr()
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "decNumberStr, err := decNum.GetAbsoluteAllDigitsStr()\n"+
+      "decNumberStr, err := decNum.GetNumStr()\n"+
       "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
@@ -6971,103 +6971,544 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
     return
   }
 
+  decBigINumPrecisionUint, err := decBigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decBigINumPrecisionUint, err := decBigINum.GetPrecisionUint()\n"+
+      "decBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decBigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != decBigINumPrecisionUint\n"+
+      "Expected decBigINumPrecisionUint = '%v'\n"+
+      "  Actual decBigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decBigINumPrecisionUint)
+
+    return
+  }
+
   return
 }
 
 func TestDecimal_GetIntAry_01(t *testing.T) {
-  bigI := big.NewInt(int64(123456123456))
-  precision := uint(6)
-  exStr := "123456.123456"
-  d := Decimal{}.NewBigInt(bigI, precision)
 
-  signVal := 1
+  ePrefix := "TestDecimal_GetIntAry_01"
 
-  ia, err := d.GetIntAry()
+  originalBigInt := big.NewInt(int64(123456123456))
+
+  expectedPrecisionUint := uint(6)
+
+  expectedNumberStr := "123456.123456"
+
+  expectedSignVal := 1
+
+  decNum, err := new(Decimal).NewBigInt(originalBigInt, expectedPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned from d.GetIntAryElements(). Error= %v ", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum, err := new(Decimal).NewBigInt(\n"+
+      "  originalBigInt, expectedPrecisionUint)\n"+
+      "originalBigInt= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBigInt.Text(10),
+      expectedPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  if exStr != ia.GetNumStr() {
-    t.Errorf("Expected ia.GetNumStr()== %v .  Instead ia.GetNumStr() == %v ", exStr, ia.GetNumStr())
+  err = decNum.IsValid("Validating decNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum.IsValid('Validating decNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if int(precision) != ia.GetPrecision() {
-    t.Errorf("Expected ia.Precsion== %v .   Instead, ia.precision== %v", precision, ia.GetPrecision())
+  decNumberStr, err := decNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := decNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if signVal != ia.GetSign() {
-    t.Errorf("Expected ia.SignVal== %v .   Instead, ia.SignVal== %v", signVal, ia.GetSign())
+  intArray, err := decNum.GetIntAry()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArray, err := decNum.GetIntAry()\n"+
+      "decNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
   }
 
+  err = intArray.IsValid("Validating intArray")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intArray.IsValid('Validating intArray')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intArrayNumberStr, err := intArray.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayNumberStr, err := intArray.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if decNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because decNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, decNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  if expectedNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  intArrayPrecisionUint, err := intArray.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayPrecisionUint, err := intArray.GetPrecisionUint()\n"+
+      "intArray= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != intArrayPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != intArrayPrecisionUint\n"+
+      "Expected intArrayPrecisionUint = '%v'\n"+
+      "  Actual intArrayPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intArrayPrecisionUint)
+
+    return
+  }
+
+  intArraySignValue, err := intArray.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArraySignValue, err := intArray.GetSign()\n"+
+      "intArray= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != intArraySignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedSignVal != intArraySignValue\n"+
+      "Expected intArraySignValue = '%v'\n"+
+      "  Actual intArraySignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, intArraySignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_GetIntAry_02(t *testing.T) {
-  bigI := big.NewInt(int64(-123456123456))
-  precision := uint(6)
-  exStr := "-123456.123456"
-  d := Decimal{}.NewBigInt(bigI, precision)
 
-  signVal := -1
+  ePrefix := "TestDecimal_GetIntAry_02"
 
-  ia, err := d.GetIntAry()
+  originalBigInt := big.NewInt(int64(-123456123456))
+
+  expectedPrecisionUint := uint(6)
+
+  expectedNumberStr := "-123456.123456"
+
+  expectedSignVal := -1
+
+  decNum, err := new(Decimal).NewBigInt(originalBigInt, expectedPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned from d.GetIntAryElements(). Error= %v ", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum, err := new(Decimal).NewBigInt(\n"+
+      "  originalBigInt, expectedPrecisionUint)\n"+
+      "originalBigInt= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBigInt.Text(10),
+      expectedPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  if exStr != ia.GetNumStr() {
-    t.Errorf("Expected ia.GetNumStr()== %v .  Instead ia.GetNumStr() == %v ", exStr, ia.GetNumStr())
+  err = decNum.IsValid("Validating decNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum.IsValid('Validating decNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if int(precision) != ia.GetPrecision() {
-    t.Errorf("Expected ia.Precsion== %v .   Instead, ia.precision== %v", precision, ia.GetPrecision())
+  decNumberStr, err := decNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := decNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if signVal != ia.GetSign() {
-    t.Errorf("Expected ia.SignVal== %v .   Instead, ia.SignVal== %v", signVal, ia.GetSign())
+  intArray, err := decNum.GetIntAry()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArray, err := decNum.GetIntAry()\n"+
+      "decNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
   }
 
+  err = intArray.IsValid("Validating intArray")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intArray.IsValid('Validating intArray')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intArrayNumberStr, err := intArray.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayNumberStr, err := intArray.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if decNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because decNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, decNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  if expectedNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  intArrayPrecisionUint, err := intArray.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayPrecisionUint, err := intArray.GetPrecisionUint()\n"+
+      "intArray= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != intArrayPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != intArrayPrecisionUint\n"+
+      "Expected intArrayPrecisionUint = '%v'\n"+
+      "  Actual intArrayPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intArrayPrecisionUint)
+
+    return
+  }
+
+  intArraySignValue, err := intArray.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArraySignValue, err := intArray.GetSign()\n"+
+      "intArray= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  if expectedSignVal != intArraySignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedSignVal != intArraySignValue\n"+
+      "Expected intArraySignValue = '%v'\n"+
+      "  Actual intArraySignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, intArraySignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_GetRelevantPrecision(t *testing.T) {
-  str1 := "-2.0105000"
-  expected := uint(4)
-  d1, err := Decimal{}.NewNumStr(str1)
+
+  ePrefix := "TestDecimal_GetRelevantPrecision"
+
+  originalNumberStr := "-2.0105000"
+
+  expectedPrecisionUint := uint(4)
+
+  decNum, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
-      "str1='%v' Error = '%v' ", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  rP := d1.GetRelevantPrecision()
+  err = decNum.IsValid("Validating decNum")
 
-  if rP != expected {
-    t.Errorf("Expected Relevant precision = %v. Instead, got %v", expected, rP)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum.IsValid('Validating decNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumberStr, err := decNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumberStr, err := decNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumRelevantPrecisionUint, err := decNum.GetRelevantPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumRelevantPrecisionUint, err :=\n"+
+      "  decNum.GetRelevantPrecision()\n"+
+      "decNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumberStr, err.Error())
+    return
+  }
+
+  if expectedPrecisionUint != decNumRelevantPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != decNumRelevantPrecisionUint\n"+
+      "Expected decNumRelevantPrecisionUint = '%v'\n"+
+      "  Actual decNumRelevantPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumRelevantPrecisionUint)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Inverse_01(t *testing.T) {
 
-  numStr := "25"
-  precision := uint(0)
-  expected := "0.04"
+  ePrefix := "TestDecimal_Inverse_01"
 
-  d1, err := Decimal{}.NewNumStrPrecision(numStr, precision, false)
+  originalNumberStr := "25"
+
+  originalNumberPrecisionUint := uint(0)
+
+  // expectedInverseNumberStr = 1/25
+  expectedInverseNumberStr := "0.04"
+
+  expectedInverseNumberPrecisionUint := uint(2)
+
+  expectedInverseNumberSignValue := 1
+
+  inverseMaxPrecisionUint := uint(2)
+
+  decNumOriginal, err := new(Decimal).NewNumStrPrecision(originalNumberStr, originalNumberPrecisionUint, false)
 
   if err != nil {
-    t.Errorf("Error Returned from Decimal d1.NewNumStrPrecision(numStrDto, precision, false). numStrDto= '%v' precision= '%v' Error= %v", numStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginal, err := new(Decimal).NewNumStrPrecision(\n"+
+      "  originalNumberStr, originalNumberPrecisionUint, false)\n"+
+      "originalNumberStr= '%v'\n"+
+      "originalNumberPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, originalNumberPrecisionUint, err.Error())
+    return
   }
 
-  d2, err := d1.Inverse(2)
+  err = decNumOriginal.IsValid("Validating decNumOriginal")
 
   if err != nil {
-    t.Errorf("Received error from d1.Inverse(). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumOriginal.IsValid('Validating decNumOriginal')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expected != d2.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
+  decNumOriginalNumStr, err := decNumOriginal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginalNumStr, err := decNumOriginal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumInverse, err := decNumOriginal.Inverse(inverseMaxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumInverse, err := \n"+
+      "  decNumOriginal.Inverse(inverseMaxPrecisionUint)\n"+
+      "decNumOriginal= '%v'\n"+
+      "inverseMaxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumOriginalNumStr, inverseMaxPrecisionUint, err.Error())
+    return
+  }
+
+  err = decNumInverse.IsValid("Validating decNumInverse")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumInverse.IsValid('Validating decNumInverse')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumInverseNumStr, err := decNumInverse.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumInverseStr, err := decNumInverse.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumInversePrecisionUint, err := decNumInverse.GetRelevantPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumInversePrecisionUint, err :=\n"+
+      "  decNumInverse.GetRelevantPrecision()\n"+
+      "decNumInverse= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumInverseNumStr, err.Error())
+    return
+  }
+
+  decNumInverseSignValue, err := decNumInverse.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumInverseSignValue, err := decNumInverse.GetSign()\n"+
+      "decNumInverse= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumInverseNumStr, err.Error())
+    return
+  }
+
+  if expectedInverseNumberStr != decNumInverseNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedInverseNumberStr != decNumInverseNumStr\n"+
+      "Expected decNumInverseNumStr = '%v'\n"+
+      "  Actual decNumInverseNumStr = '%v'\n\n",
+      ePrefix, expectedInverseNumberStr, decNumInverseNumStr)
+
+    return
+  }
+
+  if expectedInverseNumberPrecisionUint != decNumInversePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedInverseNumberPrecisionUint != decNumInversePrecisionUint\n"+
+      "Expected decNumInversePrecisionUint = '%v'\n"+
+      "  Actual decNumInversePrecisionUint = '%v'\n\n",
+      ePrefix, expectedInverseNumberPrecisionUint, decNumInversePrecisionUint)
+
+    return
+  }
+
+  if expectedInverseNumberSignValue != decNumInverseSignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedInverseNumberSignValue != decNumInverseSignValue\n"+
+      "Expected decNumInverseSignValue = '%v'\n"+
+      "  Actual decNumInverseSignValue = '%v'\n\n",
+      ePrefix, expectedInverseNumberSignValue, decNumInverseSignValue)
+
+    return
+  }
+
+  return
 }
