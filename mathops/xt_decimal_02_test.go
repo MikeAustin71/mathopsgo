@@ -1,237 +1,1321 @@
 package mathops
 
 import (
-	"testing"
+  "testing"
 )
 
 func TestDecimal_MakeDecimalFromIntAry_01(t *testing.T) {
 
-	numStr := "982.123456"
-	precision := uint(6)
-	signVal := 1
+  ePrefix := "TestDecimal_MakeDecimalFromIntAry_01"
 
-	ia, _ := IntAry{}.NewNumStr(numStr)
+  expectedNumberStr := "982.123456"
 
-	d1 := Decimal{}.New()
-	d2, err := d1.MakeDecimalFromIntAry(&ia)
+  expectedPrecisionUint := uint(6)
 
-	if err != nil {
-		t.Errorf("Error retruned from d1.MakeDecimalFromIntAry(&ia). Error= %v", err)
-	}
+  expectedSignVal := 1
 
-	if d2.GetNumStr() != ia.GetNumStr() {
-		t.Errorf("Expected NumStr== %v .  Instead, NumStr== %v", d2.GetNumStr(), ia.GetNumStr())
-	}
+  intArray, err := new(IntAry).NewNumStr(expectedNumberStr)
 
-	if int(precision) != d2.GetPrecision() {
-		t.Errorf("Expected precision== %v .  Instead, precision== %v", precision, d2.GetPrecision())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArray, err := new(IntAry).NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
 
-	if signVal != d2.GetSign() {
-		t.Errorf("Expected sign Value== %v .  Instead, sign Value== %v", signVal, d2.GetSign())
-	}
+  err = intArray.IsValid("Validating intArray")
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intArray.IsValid('Validating intArray')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intArrayNumberStr, err := intArray.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayNumberStr, err := intArray.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  decNum1 := new(Decimal).New()
+
+  decNum2, err := decNum1.MakeDecimalFromIntAry(&intArray)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := decNum1.MakeDecimalFromIntAry(&intArray)\n"+
+      "intArray= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2Str, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2Str, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2PrecisionUint, err := decNum2.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2PrecisionUint, err := decNum2.GetPrecisionUint()\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNum2Str, err.Error())
+    return
+  }
+
+  decNum2SignValue, err := decNum2.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2SignValue, err := decNum2.GetSign()\n"+
+      "decNum2= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNum2Str, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNum2Str {
+
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != decNum2Str\n"+
+      "Expected decNum2Str = '%v'\n"+
+      "  Actual decNum2Str = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNum2Str)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNum2PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != decNum2PrecisionUint\n"+
+      "Expected decNum2PrecisionUint = '%v'\n"+
+      "  Actual decNum2PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNum2PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNum2SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedSignVal != decNum2SignValue\n"+
+      "Expected decNum2SignValue = '%v'\n"+
+      "  Actual decNum2SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNum2SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_MakeDecimalFromIntAry_02(t *testing.T) {
 
-	numStr := "-982.123456"
-	precision := uint(6)
-	signVal := -1
+  ePrefix := "TestDecimal_MakeDecimalFromIntAry_02"
 
-	ia, _ := IntAry{}.NewNumStr(numStr)
+  expectedNumberStr := "-982.123456"
 
-	d1 := Decimal{}.New()
-	d2, err := d1.MakeDecimalFromIntAry(&ia)
+  expectedPrecisionUint := uint(6)
 
-	if err != nil {
-		t.Errorf("Error retruned from d1.MakeDecimalFromIntAry(&ia). Error= %v", err)
-	}
+  expectedSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error retruned from d2.GetNumStr(). Error= %v", err)
-	}
+  intArray, err := new(IntAry).NewNumStr(expectedNumberStr)
 
-	if d2.GetNumStr() != ia.GetNumStr() {
-		t.Errorf("Expected NumStr== %v .  Instead, NumStr== %v", d2.GetNumStr(), ia.GetNumStr())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArray, err := new(IntAry).NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
 
-	if int(precision) != d2.GetPrecision() {
-		t.Errorf("Expected precision== %v .  Instead, precision== %v", precision, d2.GetPrecision())
-	}
+  err = intArray.IsValid("Validating intArray")
 
-	if signVal != d2.GetSign() {
-		t.Errorf("Expected sign Value== %v .  Instead, sign Value== %v", signVal, d2.GetSign())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intArray.IsValid('Validating intArray')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
+  intArrayNumberStr, err := intArray.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayNumberStr, err := intArray.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intArrayNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != intArrayNumberStr\n"+
+      "Expected intArrayNumberStr = '%v'\n"+
+      "  Actual intArrayNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intArrayNumberStr)
+
+    return
+  }
+
+  decNum1 := new(Decimal).New()
+
+  decNum2, err := decNum1.MakeDecimalFromIntAry(&intArray)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2, err := decNum1.MakeDecimalFromIntAry(&intArray)\n"+
+      "intArray= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intArrayNumberStr, err.Error())
+    return
+  }
+
+  err = decNum2.IsValid("Validating decNum2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNum2.IsValid('Validating decNum2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2Str, err := decNum2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2Str, err := decNum2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNum2PrecisionUint, err := decNum2.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2PrecisionUint, err := decNum2.GetPrecisionUint()\n"+
+      "decNum2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNum2Str, err.Error())
+    return
+  }
+
+  decNum2SignValue, err := decNum2.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNum2SignValue, err := decNum2.GetSign()\n"+
+      "decNum2= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNum2Str, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNum2Str {
+
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedNumberStr != decNum2Str\n"+
+      "Expected decNum2Str = '%v'\n"+
+      "  Actual decNum2Str = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNum2Str)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNum2PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedPrecisionUint != decNum2PrecisionUint\n"+
+      "Expected decNum2PrecisionUint = '%v'\n"+
+      "  Actual decNum2PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNum2PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNum2SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedSignVal != decNum2SignValue\n"+
+      "Expected decNum2SignValue = '%v'\n"+
+      "  Actual decNum2SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNum2SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Multiply_01(t *testing.T) {
 
-	str1 := "575.63"
-	str2 := "2014.123"
-	expected := "1159389.62249"
+  ePrefix := "TestDecimal_Multiply_01"
 
-	d1 := Decimal{}.New()
+  // product = multiplier x multiplicand
 
-	err := d1.SetNumStr(str1)
+  multiplierNumStr1 := "575.63"
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
+  multiplicandNumStr2 := "2014.123"
 
-	d2 := Decimal{}.New()
+  expectedProductNumberStr := "1159389.62249"
 
-	err = d2.SetNumStr(str2)
+  expectedProductPrecisionUint := uint(5)
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
+  expectedProductSignVal := 1
 
-	d3, err := d1.Multiply(d2)
+  decNumMultiplier1 := new(Decimal).New()
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.Multiply(d2). Error= %v", err)
-	}
+  err := decNumMultiplier1.SetNumStr(multiplierNumStr1)
 
-	if d3.GetNumStr() != expected {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumMultiplier1.SetNumStr(multiplierNumStr1)\n"+
+      "multiplierNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierNumStr1, err.Error())
+    return
+  }
 
+  err = decNumMultiplier1.IsValid("Validating decNumMultiplier1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplier1.IsValid('Validating decNumMultiplier1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplierNumStr1 != decNumMultiplier1NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplierNumStr1 != decNumMultiplier1NumberStr\n"+
+      "Expected decNumMultiplier1NumberStr = '%v'\n"+
+      "  Actual decNumMultiplier1NumberStr = '%v'\n\n",
+      ePrefix, multiplierNumStr1, decNumMultiplier1NumberStr)
+
+    return
+  }
+
+  decNumMultiplicand2 := new(Decimal).New()
+
+  err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)\n"+
+      "multiplicandNumStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplicandNumStr2, err.Error())
+    return
+  }
+
+  err = decNumMultiplicand2.IsValid("Validating decNumMultiplicand2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.IsValid('Validating decNumMultiplicand2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplicandNumStr2 != decNumMultiplicand2NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplicandNumStr2 != decNumMultiplicand2NumberStr\n"+
+      "Expected decNumMultiplicand2NumberStr = '%v'\n"+
+      "  Actual decNumMultiplicand2NumberStr = '%v'\n\n",
+      ePrefix, multiplicandNumStr2, decNumMultiplicand2NumberStr)
+
+    return
+  }
+
+  decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)\n"+
+      "decNumMultiplier1= '%v'\n"+
+      "decNumMultiplicand2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      multiplierNumStr1,
+      multiplicandNumStr2,
+      err.Error())
+
+    return
+  }
+
+  err = decNumProduct3.IsValid("Validating decNumProduct3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct3.IsValid('Validating decNumProduct3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()\n"+
+      "decNumProduct3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  decNumProduct3SignValue, err := decNumProduct3.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3SignValue, err := decNumProduct3.GetSign()\n"+
+      "decNumProduct3= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  if expectedProductNumberStr != decNumProduct3NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because expectedProductNumberStr != decNumProduct3NumberStr\n"+
+      "Expected decNumProduct3NumberStr = '%v'\n"+
+      "  Actual decNumProduct3NumberStr = '%v'\n\n",
+      ePrefix, expectedProductNumberStr, decNumProduct3NumberStr)
+
+    return
+  }
+
+  if expectedProductPrecisionUint != decNumProduct3PrecisionUint {
+
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedProductPrecisionUint != decNumProduct3PrecisionUint\n"+
+      "Expected decNumProduct3PrecisionUint = '%v'\n"+
+      "  Actual decNumProduct3PrecisionUint = '%v'\n\n",
+      ePrefix, expectedProductPrecisionUint, decNumProduct3PrecisionUint)
+
+    return
+  }
+
+  if expectedProductSignVal != decNumProduct3SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedProductSignVal != decNumProduct3SignValue\n"+
+      "Expected decNumProduct3SignValue = '%v'\n"+
+      "  Actual decNumProduct3SignValue = '%v'\n\n",
+      ePrefix, expectedProductSignVal, decNumProduct3SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Multiply_02(t *testing.T) {
 
-	str1 := "-575.63"
-	str2 := "2014.123"
-	expected := "-1159389.62249"
+  ePrefix := "TestDecimal_Multiply_02"
 
-	d1 := Decimal{}.New()
+  // product = multiplier x multiplicand
 
-	err := d1.SetNumStr(str1)
+  multiplierNumStr1 := "-575.63"
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
+  multiplicandNumStr2 := "2014.123"
 
-	d2 := Decimal{}.New()
+  expectedProductNumberStr := "-1159389.62249"
 
-	err = d2.SetNumStr(str2)
+  expectedProductPrecisionUint := uint(5)
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
+  expectedProductSignVal := -1
 
-	d3, err := d1.Multiply(d2)
+  decNumMultiplier1 := new(Decimal).New()
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.Multiply(d2). Error= %v", err)
-	}
+  err := decNumMultiplier1.SetNumStr(multiplierNumStr1)
 
-	if expected != d3.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumMultiplier1.SetNumStr(multiplierNumStr1)\n"+
+      "multiplierNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierNumStr1, err.Error())
+    return
+  }
 
+  err = decNumMultiplier1.IsValid("Validating decNumMultiplier1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplier1.IsValid('Validating decNumMultiplier1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplierNumStr1 != decNumMultiplier1NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplierNumStr1 != decNumMultiplier1NumberStr\n"+
+      "Expected decNumMultiplier1NumberStr = '%v'\n"+
+      "  Actual decNumMultiplier1NumberStr = '%v'\n\n",
+      ePrefix, multiplierNumStr1, decNumMultiplier1NumberStr)
+
+    return
+  }
+
+  decNumMultiplicand2 := new(Decimal).New()
+
+  err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)\n"+
+      "multiplicandNumStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplicandNumStr2, err.Error())
+    return
+  }
+
+  err = decNumMultiplicand2.IsValid("Validating decNumMultiplicand2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.IsValid('Validating decNumMultiplicand2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplicandNumStr2 != decNumMultiplicand2NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplicandNumStr2 != decNumMultiplicand2NumberStr\n"+
+      "Expected decNumMultiplicand2NumberStr = '%v'\n"+
+      "  Actual decNumMultiplicand2NumberStr = '%v'\n\n",
+      ePrefix, multiplicandNumStr2, decNumMultiplicand2NumberStr)
+
+    return
+  }
+
+  decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)\n"+
+      "decNumMultiplier1= '%v'\n"+
+      "decNumMultiplicand2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      multiplierNumStr1,
+      multiplicandNumStr2,
+      err.Error())
+
+    return
+  }
+
+  err = decNumProduct3.IsValid("Validating decNumProduct3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct3.IsValid('Validating decNumProduct3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()\n"+
+      "decNumProduct3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  decNumProduct3SignValue, err := decNumProduct3.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3SignValue, err := decNumProduct3.GetSign()\n"+
+      "decNumProduct3= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  if expectedProductNumberStr != decNumProduct3NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because expectedProductNumberStr != decNumProduct3NumberStr\n"+
+      "Expected decNumProduct3NumberStr = '%v'\n"+
+      "  Actual decNumProduct3NumberStr = '%v'\n\n",
+      ePrefix, expectedProductNumberStr, decNumProduct3NumberStr)
+
+    return
+  }
+
+  if expectedProductPrecisionUint != decNumProduct3PrecisionUint {
+
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedProductPrecisionUint != decNumProduct3PrecisionUint\n"+
+      "Expected decNumProduct3PrecisionUint = '%v'\n"+
+      "  Actual decNumProduct3PrecisionUint = '%v'\n\n",
+      ePrefix, expectedProductPrecisionUint, decNumProduct3PrecisionUint)
+
+    return
+  }
+
+  if expectedProductSignVal != decNumProduct3SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedProductSignVal != decNumProduct3SignValue\n"+
+      "Expected decNumProduct3SignValue = '%v'\n"+
+      "  Actual decNumProduct3SignValue = '%v'\n\n",
+      ePrefix, expectedProductSignVal, decNumProduct3SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Multiply_03(t *testing.T) {
 
-	str1 := "-575.63"
-	str2 := "-2014.123"
-	expected := "1159389.62249"
+  ePrefix := "TestDecimal_Multiply_03"
 
-	d1 := Decimal{}.New()
+  // product = multiplier x multiplicand
 
-	err := d1.SetNumStr(str1)
+  multiplierNumStr1 := "-575.63"
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
+  multiplicandNumStr2 := "-2014.123"
 
-	d2 := Decimal{}.New()
+  expectedProductNumberStr := "1159389.62249"
 
-	err = d2.SetNumStr(str2)
+  expectedProductPrecisionUint := uint(5)
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
+  expectedProductSignVal := 1
 
-	d3, err := d1.Multiply(d2)
+  decNumMultiplier1 := new(Decimal).New()
 
-	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
-	}
+  err := decNumMultiplier1.SetNumStr(multiplierNumStr1)
 
-	if expected != d3.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumMultiplier1.SetNumStr(multiplierNumStr1)\n"+
+      "multiplierNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierNumStr1, err.Error())
+    return
+  }
 
+  err = decNumMultiplier1.IsValid("Validating decNumMultiplier1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplier1.IsValid('Validating decNumMultiplier1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplierNumStr1 != decNumMultiplier1NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplierNumStr1 != decNumMultiplier1NumberStr\n"+
+      "Expected decNumMultiplier1NumberStr = '%v'\n"+
+      "  Actual decNumMultiplier1NumberStr = '%v'\n\n",
+      ePrefix, multiplierNumStr1, decNumMultiplier1NumberStr)
+
+    return
+  }
+
+  decNumMultiplicand2 := new(Decimal).New()
+
+  err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)\n"+
+      "multiplicandNumStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplicandNumStr2, err.Error())
+    return
+  }
+
+  err = decNumMultiplicand2.IsValid("Validating decNumMultiplicand2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.IsValid('Validating decNumMultiplicand2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplicandNumStr2 != decNumMultiplicand2NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplicandNumStr2 != decNumMultiplicand2NumberStr\n"+
+      "Expected decNumMultiplicand2NumberStr = '%v'\n"+
+      "  Actual decNumMultiplicand2NumberStr = '%v'\n\n",
+      ePrefix, multiplicandNumStr2, decNumMultiplicand2NumberStr)
+
+    return
+  }
+
+  decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)\n"+
+      "decNumMultiplier1= '%v'\n"+
+      "decNumMultiplicand2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      multiplierNumStr1,
+      multiplicandNumStr2,
+      err.Error())
+
+    return
+  }
+
+  err = decNumProduct3.IsValid("Validating decNumProduct3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct3.IsValid('Validating decNumProduct3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()\n"+
+      "decNumProduct3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  decNumProduct3SignValue, err := decNumProduct3.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3SignValue, err := decNumProduct3.GetSign()\n"+
+      "decNumProduct3= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  if expectedProductNumberStr != decNumProduct3NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because expectedProductNumberStr != decNumProduct3NumberStr\n"+
+      "Expected decNumProduct3NumberStr = '%v'\n"+
+      "  Actual decNumProduct3NumberStr = '%v'\n\n",
+      ePrefix, expectedProductNumberStr, decNumProduct3NumberStr)
+
+    return
+  }
+
+  if expectedProductPrecisionUint != decNumProduct3PrecisionUint {
+
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedProductPrecisionUint != decNumProduct3PrecisionUint\n"+
+      "Expected decNumProduct3PrecisionUint = '%v'\n"+
+      "  Actual decNumProduct3PrecisionUint = '%v'\n\n",
+      ePrefix, expectedProductPrecisionUint, decNumProduct3PrecisionUint)
+
+    return
+  }
+
+  if expectedProductSignVal != decNumProduct3SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedProductSignVal != decNumProduct3SignValue\n"+
+      "Expected decNumProduct3SignValue = '%v'\n"+
+      "  Actual decNumProduct3SignValue = '%v'\n\n",
+      ePrefix, expectedProductSignVal, decNumProduct3SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Multiply_04(t *testing.T) {
 
-	str1 := "0"
-	str2 := "-2014.123"
-	expected := "0"
+  ePrefix := "TestDecimal_Multiply_04"
 
-	dec1 := Decimal{}.New()
+  // product = multiplier x multiplicand
 
-	err := dec1.SetNumStr(str1)
+  multiplierNumStr1 := "0"
 
-	if err != nil {
-		t.Errorf("Error thrown on dec1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
+  multiplicandNumStr2 := "-2014.123"
 
-	dec2 := Decimal{}.New()
+  expectedProductNumberStr := "0"
 
-	err = dec2.SetNumStr(str2)
+  expectedProductPrecisionUint := uint(0)
 
-	if err != nil {
-		t.Errorf("Error thrown on dec1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
+  expectedProductSignVal := 1
 
-	dec3, err := dec1.Multiply(dec2)
+  decNumMultiplier1 := new(Decimal).New()
 
-	if err != nil {
-		t.Errorf("Error thrown on dec1.Multiply(dec2). dec2= '%v' Error= %v", dec2.GetNumStr(), err)
-	}
+  err := decNumMultiplier1.SetNumStr(multiplierNumStr1)
 
-	if expected != dec3.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, dec3.GetNumStr())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decNumMultiplier1.SetNumStr(multiplierNumStr1)\n"+
+      "multiplierNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierNumStr1, err.Error())
+    return
+  }
 
+  err = decNumMultiplier1.IsValid("Validating decNumMultiplier1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplier1.IsValid('Validating decNumMultiplier1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplierNumStr1 != decNumMultiplier1NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplierNumStr1 != decNumMultiplier1NumberStr\n"+
+      "Expected decNumMultiplier1NumberStr = '%v'\n"+
+      "  Actual decNumMultiplier1NumberStr = '%v'\n\n",
+      ePrefix, multiplierNumStr1, decNumMultiplier1NumberStr)
+
+    return
+  }
+
+  decNumMultiplicand2 := new(Decimal).New()
+
+  err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.SetNumStr(multiplicandNumStr2)\n"+
+      "multiplicandNumStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplicandNumStr2, err.Error())
+    return
+  }
+
+  err = decNumMultiplicand2.IsValid("Validating decNumMultiplicand2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplicand2.IsValid('Validating decNumMultiplicand2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplicand2NumberStr, err := decNumMultiplicand2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplicandNumStr2 != decNumMultiplicand2NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplicandNumStr2 != decNumMultiplicand2NumberStr\n"+
+      "Expected decNumMultiplicand2NumberStr = '%v'\n"+
+      "  Actual decNumMultiplicand2NumberStr = '%v'\n\n",
+      ePrefix, multiplicandNumStr2, decNumMultiplicand2NumberStr)
+
+    return
+  }
+
+  decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3, err := decNumMultiplier1.Multiply(decNumMultiplicand2)\n"+
+      "decNumMultiplier1= '%v'\n"+
+      "decNumMultiplicand2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      multiplierNumStr1,
+      multiplicandNumStr2,
+      err.Error())
+
+    return
+  }
+
+  err = decNumProduct3.IsValid("Validating decNumProduct3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct3.IsValid('Validating decNumProduct3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3NumberStr, err := decNumProduct3.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3PrecisionUint, err := decNumProduct3.GetPrecisionUint()\n"+
+      "decNumProduct3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  decNumProduct3SignValue, err := decNumProduct3.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct3SignValue, err := decNumProduct3.GetSign()\n"+
+      "decNumProduct3= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumProduct3NumberStr, err.Error())
+    return
+  }
+
+  if expectedProductNumberStr != decNumProduct3NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because expectedProductNumberStr != decNumProduct3NumberStr\n"+
+      "Expected decNumProduct3NumberStr = '%v'\n"+
+      "  Actual decNumProduct3NumberStr = '%v'\n\n",
+      ePrefix, expectedProductNumberStr, decNumProduct3NumberStr)
+
+    return
+  }
+
+  if expectedProductPrecisionUint != decNumProduct3PrecisionUint {
+
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedProductPrecisionUint != decNumProduct3PrecisionUint\n"+
+      "Expected decNumProduct3PrecisionUint = '%v'\n"+
+      "  Actual decNumProduct3PrecisionUint = '%v'\n\n",
+      ePrefix, expectedProductPrecisionUint, decNumProduct3PrecisionUint)
+
+    return
+  }
+
+  if expectedProductSignVal != decNumProduct3SignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedProductSignVal != decNumProduct3SignValue\n"+
+      "Expected decNumProduct3SignValue = '%v'\n"+
+      "  Actual decNumProduct3SignValue = '%v'\n\n",
+      ePrefix, expectedProductSignVal, decNumProduct3SignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_Multiply_05(t *testing.T) {
-	numStr := "3"
-	mul, err := Decimal{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) "+
-			"numStrDto='%v'  Error = '%v' ", numStr, err.Error())
-	}
+  ePrefix := "TestDecimal_Multiply_05"
 
-	d, err := Decimal{}.NewNumStr("1")
+  // product = multiplier x multiplicand
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"1\") "+
-			"Error = '%v' ", err.Error())
-	}
+  multiplierNumStr1 := "3"
 
-	for i := 0; i < 4; i++ {
-		d, err = d.Multiply(mul)
+  multiplicandNumStr2 := "1"
 
-		if err != nil {
-			t.Errorf("Error returned by d.Multiply(mul). "+
-				"i='%v' d='%v', mul='%v' Error='%v'",
-				i, d.GetNumStr(), mul.GetNumStr(), err.Error())
-		}
-	}
+  expectedProductNumberStr := "81"
 
-	expected := "81"
+  expectedProductPrecisionUint := uint(0)
 
-	if expected != d.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d.GetNumStr())
-	}
+  expectedProductSignVal := 1
 
+  decNumMultiplier1, err := new(Decimal).NewNumStr(multiplierNumStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1, err := new(Decimal).NewNumStr(multiplierNumStr1)\n"+
+      "multiplierNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplierNumStr1, err.Error())
+    return
+  }
+
+  err = decNumMultiplier1.IsValid("Validating decNumMultiplier1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMultiplier1.IsValid('Validating decNumMultiplier1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMultiplier1NumberStr, err := decNumMultiplier1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if multiplierNumStr1 != decNumMultiplier1NumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because multiplierNumStr1 != decNumMultiplier1NumberStr\n"+
+      "Expected decNumMultiplier1NumberStr = '%v'\n"+
+      "  Actual decNumMultiplier1NumberStr = '%v'\n\n",
+      ePrefix, multiplierNumStr1, decNumMultiplier1NumberStr)
+
+    return
+  }
+
+  decNumProduct, err := new(Decimal).NewNumStr(multiplicandNumStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProduct, err := new(Decimal).NewNumStr(multiplicandNumStr2)\n"+
+      "multiplicandNumStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, multiplicandNumStr2, err.Error())
+    return
+  }
+
+  err = decNumProduct.IsValid("Validating Initial decNumProduct")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct.IsValid('Validating Initial decNumProduct')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProductNumberStr, err := decNumProduct.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProductNumberStr, err := decNumProduct.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  for i := 0; i < 4; i++ {
+
+    decNumProduct, err = decNumProduct.Multiply(decNumMultiplier1)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumProduct, err =\n"+
+        "  decNumProduct.Multiply(decNumMultiplier1)\n"+
+        "decNumMultiplier1= '%v'\n"+
+        "decNumProduct= '%v'\n"+
+        "Cycle No = '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        decNumMultiplier1NumberStr,
+        decNumProductNumberStr,
+        i,
+        err.Error())
+
+      return
+    }
+
+    decNumProductNumberStr, err = decNumProduct.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumProductNumberStr, err := decNumProduct.GetNumStr()\n"+
+        "Multiply Loop Cycle No = '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
+
+  }
+
+  err = decNumProduct.IsValid("Validating After Multiplication decNumProduct")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumProduct.IsValid('Validating After Multiplication decNumProduct')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumProductPrecisionUint, err := decNumProduct.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProductPrecisionUint, err := decNumProduct.GetPrecisionUint()\n"+
+      "decNumProduct= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumProductNumberStr, err.Error())
+    return
+  }
+
+  decNumProductSignValue, err := decNumProduct.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumProductSignValue, err := decNumProduct.GetSign()\n"+
+      "decNumProduct= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumProductNumberStr, err.Error())
+    return
+  }
+
+  if expectedProductNumberStr != decNumProductNumberStr {
+
+    t.Errorf("%v\n"+
+      "Error: UnexpectedProduct Result!\n"+
+      "Because expectedProductNumberStr != decNumProductNumberStr\n"+
+      "Expected decNumProductNumberStr = '%v'\n"+
+      "  Actual decNumProductNumberStr = '%v'\n\n",
+      ePrefix, expectedProductNumberStr, decNumProductNumberStr)
+
+    return
+  }
+
+  if expectedProductPrecisionUint != decNumProductPrecisionUint {
+
+    t.Errorf("%v\n"+
+      "Error: Precision Values ARE NOT Equal!\n"+
+      "Because expectedProductPrecisionUint != decNumProductPrecisionUint\n"+
+      "Expected decNumProductPrecisionUint = '%v'\n"+
+      "  Actual decNumProductPrecisionUint = '%v'\n\n",
+      ePrefix, expectedProductPrecisionUint, decNumProductPrecisionUint)
+
+    return
+  }
+
+  if expectedProductSignVal != decNumProductSignValue {
+    t.Errorf("%v\n"+
+      "Error: Sign Values ARE NOT Equal!\n"+
+      "Because expectedProductSignVal != decNumProductSignValue\n"+
+      "Expected decNumProductSignValue = '%v'\n"+
+      "  Actual decNumProductSignValue = '%v'\n\n",
+      ePrefix, expectedProductSignVal, decNumProductSignValue)
+
+    return
+  }
+
+  return
 }
