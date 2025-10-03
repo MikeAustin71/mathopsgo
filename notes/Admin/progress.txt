@@ -1,3 +1,8 @@
 
 Start Test clean-up here:
-TestDecimal_NewBigInt_01; xt_decimal_03_test.go
+TestDecimal_NewInt32_01; xt_decimal_03_test.go
+
+git add -A
+git commit -m"Modified README"
+git status
+git push origin dev
