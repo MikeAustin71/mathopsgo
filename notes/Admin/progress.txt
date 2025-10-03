@@ -1,3 +1,3 @@
 
 Start Test clean-up here:
-TestDecimal_MakeDecimalFromIntAry_01; xt_decimal_02_test.go
+TestDecimal_NewBigInt_01; xt_decimal_03_test.go
