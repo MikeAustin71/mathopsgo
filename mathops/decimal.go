@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -503,60 +504,6 @@ func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 	}
 
 	return xStr, nil
-}
-
-// NumStrToDecimal - Creates a Decimal type from a number
-// string.
-//
-// The returned Decimal contains teh same numeric separators (decimal separator,
-// thousands separator and currency symbol) as the current Decimal instance.
-//
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
-
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"Decimal.NumStrToDecimal()",
-		"")
-
-	if err != nil {
-		return Decimal{}, err
-	}
-
-	d2 := Decimal{}
-
-	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
-
-	if err != nil {
-
-		return Decimal{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)
-
-	if err != nil {
-
-		return Decimal{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return d2, nil
 }
 
 // CopyIn - Receives an incoming Decimal object
@@ -4856,6 +4803,60 @@ func (dec *Decimal) NthRoot(
 	}
 
 	return decNthRoot, nil
+}
+
+// NumStrToDecimal - Creates a Decimal type from a number
+// string.
+//
+// The returned Decimal contains teh same numeric separators (decimal separator,
+// thousands separator and currency symbol) as the current Decimal instance.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NumStrToDecimal()",
+		"")
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	d2 := Decimal{}
+
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return d2, nil
 }
 
 // NumStrPrecisionToDecimal - receives a number string and a
