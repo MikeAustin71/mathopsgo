@@ -1435,170 +1435,1082 @@ func TestDecimal_PowInt_01(t *testing.T) {
 
 func TestDecimal_PowInt_02(t *testing.T) {
 
-  numStr := "2.125"
-  exp := -5
-  d1, err := Decimal{}.NewNumStr(numStr)
+  ePrefix := "TestDecimal_PowInt_02"
+
+  originalNumberStr := "2.125"
+
+  exponentNumberInt := -5
+
+  //                               1         2         3
+  //                    0.12345678901234567890123456789012
+  expectedNumberStr := "0.02307838042845159759046157465153"
+
+  originalMaxPrecisionUint := uint(32)
+
+  expectedPrecisionUint := originalMaxPrecisionUint
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumOriginal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) "+
-      "numStrDto='%v' Error = '%v' ", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  d2, err := d1.PowInt(exp, 32)
+  err = decNumOriginal.IsValid("Validating decNumOriginal")
 
   if err != nil {
-    t.Errorf("Received error from d1.PowInt(exp). exp='%v' Error= %v", exp, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumOriginal.IsValid('Validating decNumOriginal')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "0.02307838042845159759046157465153"
+  decNumOriginalNumberStr, err := decNumOriginal.GetNumStr()
 
-  if expected != d2.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginalNumberStr, err := decNumOriginal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumOriginalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumOriginalNumberStr \n"+
+      "Expected decNumOriginalNumberStr = '%v'\n"+
+      "  Actual decNumOriginalNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumOriginalNumberStr)
+
+    return
+  }
+
+  decNumFinalResult, err := decNumOriginal.PowInt(exponentNumberInt, originalMaxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResult, err := decNumOriginal.PowInt(\n"+
+      "  exponentNumberInt, originalMaxPrecisionUint)\n"+
+      "decNumOriginal= '%v'\n"+
+      "exponentNumberInt= '%v'\n"+
+      "originalMaxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumOriginalNumberStr,
+      exponentNumberInt,
+      originalMaxPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumFinalResult.IsValid("Validating decNumFinalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinalResult.IsValid('Validating decNumFinalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalResultNumberStr, err := decNumFinalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultNumberStr, err := decNumFinalResult.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalResultPrecisionUint, err := decNumFinalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultPrecisionUint, err :=\n"+
+      "  decNumFinalResult.GetPrecisionUint()\n"+
+      "decNumFinalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalResultSignValue, err := decNumFinalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultSignValue, err := decNumFinalResult.GetSign()\n"+
+      "decNumFinalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalResultNumSeps, err := decNumFinalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultNumSeps, err := decNumFinalResult.GetNumericSeparatorsDto()\n"+
+      "decNumFinalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalResultNumberStr \n"+
+      "Expected decNumFinalResultNumberStr = '%v'\n"+
+      "  Actual decNumFinalResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalResultPrecisionUint\n"+
+      "Expected decNumFinalResultPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalResultSignValue\n"+
+      "Expected decNumFinalResultSignValue = '%v'\n"+
+      "  Actual decNumFinalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalResultNumSeps \n"+
+      "Expected decNumFinalResultNumSeps = '%v'\n"+
+      "  Actual decNumFinalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_PowInt_03(t *testing.T) {
 
-  numStr := "2.125"
-  exp := -5
-  d1, err := Decimal{}.NewNumStr(numStr)
+  ePrefix := "TestDecimal_PowInt_03"
+
+  originalNumberStr := "2.125"
+
+  exponentNumberInt := -5
+
+  expectedNumberStr := "0.0230783804284515975904615746515318091892352539727592285702010836302529057503678187310412245740240038257373805953698154109885713843013768287933221444131345621425256205378428954465132756326869536861810731644102187755527493261645362878092652992519669234"
+
+  originalMaxPrecisionUint := uint(250)
+
+  expectedPrecisionUint := originalMaxPrecisionUint
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumOriginal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) "+
-      "numStrDto='%v' Error = '%v' ", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  d2, err := d1.PowInt(exp, 250)
+  err = decNumOriginal.IsValid("Validating decNumOriginal")
 
   if err != nil {
-    t.Errorf("Received error from d1.PowInt(exp). exp='%v' Error= %v", exp, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumOriginal.IsValid('Validating decNumOriginal')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "0.0230783804284515975904615746515318091892352539727592285702010836302529057503678187310412245740240038257373805953698154109885713843013768287933221444131345621425256205378428954465132756326869536861810731644102187755527493261645362878092652992519669234"
+  decNumOriginalNumberStr, err := decNumOriginal.GetNumStr()
 
-  if expected != d2.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumOriginalNumberStr, err := decNumOriginal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumOriginalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumOriginalNumberStr \n"+
+      "Expected decNumOriginalNumberStr = '%v'\n"+
+      "  Actual decNumOriginalNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumOriginalNumberStr)
+
+    return
+  }
+
+  decNumFinalResult, err := decNumOriginal.PowInt(exponentNumberInt, originalMaxPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResult, err := decNumOriginal.PowInt(\n"+
+      "  exponentNumberInt, originalMaxPrecisionUint)\n"+
+      "decNumOriginal= '%v'\n"+
+      "exponentNumberInt= '%v'\n"+
+      "originalMaxPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decNumOriginalNumberStr,
+      exponentNumberInt,
+      originalMaxPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decNumFinalResult.IsValid("Validating decNumFinalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinalResult.IsValid('Validating decNumFinalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalResultNumberStr, err := decNumFinalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultNumberStr, err := decNumFinalResult.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalResultPrecisionUint, err := decNumFinalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultPrecisionUint, err :=\n"+
+      "  decNumFinalResult.GetPrecisionUint()\n"+
+      "decNumFinalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalResultSignValue, err := decNumFinalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultSignValue, err := decNumFinalResult.GetSign()\n"+
+      "decNumFinalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalResultNumSeps, err := decNumFinalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalResultNumSeps, err := decNumFinalResult.GetNumericSeparatorsDto()\n"+
+      "decNumFinalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalResultNumberStr \n"+
+      "Expected decNumFinalResultNumberStr = '%v'\n"+
+      "  Actual decNumFinalResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalResultPrecisionUint\n"+
+      "Expected decNumFinalResultPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalResultSignValue\n"+
+      "Expected decNumFinalResultSignValue = '%v'\n"+
+      "  Actual decNumFinalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalResultNumSeps \n"+
+      "Expected decNumFinalResultNumSeps = '%v'\n"+
+      "  Actual decNumFinalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SetPrecisionRound_01(t *testing.T) {
 
-  str1 := "2.0105500"
-  precision := uint(4)
-  expected := "2.0106"
+  ePrefix := "TestDecimal_SetPrecisionRound_01"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  originalNumberStr := "2.0105500"
+
+  expectedPrecisionUint := uint(4)
+
+  //                               1         2         3
+  //                    0.12345678901234567890123456789012
+  expectedNumberStr := "2.0106"
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
-      "str1='%v' Error = '%v' ", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if str1 != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
-  }
-
-  err = d1.SetPrecisionRound(precision)
+  err = decNumFinal.IsValid("Validating decNumFinal #1")
 
   if err != nil {
-    t.Errorf("Received error from d1.SetPrecisionRound(). "+
-      "precision='%v' Error='%v' ", precision, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #1')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expected != d1.GetNumStr() {
-    t.Errorf("Expected 2nd NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
+  decNumFinalNumberStr, err := decNumFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number #1 String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr #1 = '%v'\n"+
+      "  Actual decNumFinalNumberStr #1 = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  err = decNumFinal.SetPrecisionRound(expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.SetPrecisionRound(expectedPrecisionUint)\n"+
+      "decNumFinal= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, expectedPrecisionUint, err.Error())
+    return
+  }
+
+  err = decNumFinal.IsValid("Validating decNumFinal #2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #2')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalNumberStr, err = decNumFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #2 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalPrecisionUint, err := decNumFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalPrecisionUint, err :=\n"+
+      "  decNumFinal.GetPrecisionUint()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalSignValue, err := decNumFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalSignValue, err := decNumFinal.GetSign()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()\n"+
+      "decNumFinal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr = '%v'\n"+
+      "  Actual decNumFinalNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalPrecisionUint\n"+
+      "Expected decNumFinalPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalSignValue\n"+
+      "Expected decNumFinalSignValue = '%v'\n"+
+      "  Actual decNumFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalNumSeps \n"+
+      "Expected decNumFinalNumSeps = '%v'\n"+
+      "  Actual decNumFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SetPrecisionRound_02(t *testing.T) {
 
-  str1 := "-2.0105500"
+  ePrefix := "TestDecimal_SetPrecisionRound_02"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  originalNumberStr := "-2.0105500"
+
+  expectedNumberStr := "-2.0106"
+
+  expectedPrecisionUint := uint(4)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
-      "str1='%v' Error = '%v' ", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if str1 != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
-  }
-
-  err = d1.SetPrecisionRound(4)
+  err = decNumFinal.IsValid("Validating decNumFinal #1")
 
   if err != nil {
-    t.Errorf("Received error from d1.SetPrecisionRound(). "+
-      "precision='%v' Error='%v' ", 4, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #1')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "-2.0106"
+  decNumFinalNumberStr, err := decNumFinal.GetNumStr()
 
-  if expected != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number #1 String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr #1 = '%v'\n"+
+      "  Actual decNumFinalNumberStr #1 = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  err = decNumFinal.SetPrecisionRound(expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.SetPrecisionRound(expectedPrecisionUint)\n"+
+      "decNumFinal= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, expectedPrecisionUint, err.Error())
+    return
+  }
+
+  err = decNumFinal.IsValid("Validating decNumFinal #2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #2')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalNumberStr, err = decNumFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #2 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalPrecisionUint, err := decNumFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalPrecisionUint, err :=\n"+
+      "  decNumFinal.GetPrecisionUint()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalSignValue, err := decNumFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalSignValue, err := decNumFinal.GetSign()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()\n"+
+      "decNumFinal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr = '%v'\n"+
+      "  Actual decNumFinalNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalPrecisionUint\n"+
+      "Expected decNumFinalPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalSignValue\n"+
+      "Expected decNumFinalSignValue = '%v'\n"+
+      "  Actual decNumFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalNumSeps \n"+
+      "Expected decNumFinalNumSeps = '%v'\n"+
+      "  Actual decNumFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SetPrecisionTrunc_01(t *testing.T) {
-  str1 := "2.0105500"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  ePrefix := "TestDecimal_SetPrecisionTrunc_01"
+
+  originalNumberStr := "2.0105500"
+
+  expectedNumberStr := "2.0105"
+
+  expectedPrecisionUint := uint(4)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
-      "str1='%v' Error = '%v' ", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if str1 != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
-  }
-
-  err = d1.SetPrecisionTrunc(4)
+  err = decNumFinal.IsValid("Validating decNumFinal #1")
 
   if err != nil {
-    t.Errorf("Received error from d1.SetPrecisionTrunc(). "+
-      "precision='%v' Error='%v' ", 4, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #1')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "2.0105"
+  decNumFinalNumberStr, err := decNumFinal.GetNumStr()
 
-  if expected != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number #1 String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr #1 = '%v'\n"+
+      "  Actual decNumFinalNumberStr #1 = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  err = decNumFinal.SetPrecisionTrunc(expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.SetPrecisionTrunc(expectedPrecisionUint)\n"+
+      "decNumFinal= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, expectedPrecisionUint, err.Error())
+    return
+  }
+
+  err = decNumFinal.IsValid("Validating decNumFinal #2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #2')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalNumberStr, err = decNumFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #2 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalPrecisionUint, err := decNumFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalPrecisionUint, err :=\n"+
+      "  decNumFinal.GetPrecisionUint()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalSignValue, err := decNumFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalSignValue, err := decNumFinal.GetSign()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()\n"+
+      "decNumFinal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr = '%v'\n"+
+      "  Actual decNumFinalNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalPrecisionUint\n"+
+      "Expected decNumFinalPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalSignValue\n"+
+      "Expected decNumFinalSignValue = '%v'\n"+
+      "  Actual decNumFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalNumSeps \n"+
+      "Expected decNumFinalNumSeps = '%v'\n"+
+      "  Actual decNumFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SetPrecisionTrunc_02(t *testing.T) {
-  str1 := "-2.0105500"
 
-  d1, err := Decimal{}.NewNumStr(str1)
+  ePrefix := "TestDecimal_SetPrecisionTrunc_02"
+
+  originalNumberStr := "-2.0105500"
+
+  expectedNumberStr := "-2.0105"
+
+  expectedPrecisionUint := uint(4)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
-      "str1='%v' Error = '%v' ", str1, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinal, err := new(Decimal).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if str1 != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
-  }
-
-  err = d1.SetPrecisionTrunc(4)
+  err = decNumFinal.IsValid("Validating decNumFinal #1")
 
   if err != nil {
-    t.Errorf("Received error from d1.SetPrecisionTrunc(). "+
-      "precision='%v' Error='%v' ", 4, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #1')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  expected := "-2.0105"
+  decNumFinalNumberStr, err := decNumFinal.GetNumStr()
 
-  if expected != d1.GetNumStr() {
-    t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if originalNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number #1 String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr #1 = '%v'\n"+
+      "  Actual decNumFinalNumberStr #1 = '%v'\n\n",
+      ePrefix, originalNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  err = decNumFinal.SetPrecisionTrunc(expectedPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.SetPrecisionTrunc(expectedPrecisionUint)\n"+
+      "decNumFinal= '%v'\n"+
+      "expectedPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, expectedPrecisionUint, err.Error())
+    return
+  }
+
+  err = decNumFinal.IsValid("Validating decNumFinal #2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumFinal.IsValid('Validating decNumFinal #2')\n"+
+      "decNumFinal #1 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalNumberStr, err = decNumFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumberStr, err := decNumFinal.GetNumStr()\n"+
+      "decNumFinal #2 \n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumFinalPrecisionUint, err := decNumFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalPrecisionUint, err :=\n"+
+      "  decNumFinal.GetPrecisionUint()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalSignValue, err := decNumFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalSignValue, err := decNumFinal.GetSign()\n"+
+      "decNumFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumFinalNumSeps, err := decNumFinal.GetNumericSeparatorsDto()\n"+
+      "decNumFinal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumFinalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumFinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumFinalNumberStr \n"+
+      "Expected decNumFinalNumberStr = '%v'\n"+
+      "  Actual decNumFinalNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumFinalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumFinalPrecisionUint\n"+
+      "Expected decNumFinalPrecisionUint = '%v'\n"+
+      "  Actual decNumFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumFinalSignValue\n"+
+      "Expected decNumFinalSignValue = '%v'\n"+
+      "  Actual decNumFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumFinalNumSeps \n"+
+      "Expected decNumFinalNumSeps = '%v'\n"+
+      "  Actual decNumFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SetNumStr_01(t *testing.T) {
