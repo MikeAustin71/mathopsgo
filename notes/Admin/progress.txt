@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestDecimal_SetPrecisionTrunc_02; xt_decimal_04_test.go
+TestDecimal_SetNumStr_06; xt_decimal_04_test.go
 
 git add -A
 git commit -m"Modified README"
