@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+  "fmt"
+  "testing"
+)
 
 func TestDecimal_ShiftPrecisionLeft_01(t *testing.T) {
 
@@ -2687,77 +2690,459 @@ func TestDecimal_Subtract_03(t *testing.T) {
 }
 
 func TestDecimal_SubtractTotal_01(t *testing.T) {
-  nStrAry := []string{
+
+  ePrefix := "TestDecimal_SubtractTotal_01"
+
+  originalMinuendNumStr := "500.00"
+
+  expectedNumberStr := "472.75"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  nStrSubtrahendAry := []string{
     "5.50",
     "6.50",
     "7.00",
     "8.25",
   }
 
-  d, err := Decimal{}.NewNumStr("500.00")
+  decNumMinuend, err := new(Decimal).NewNumStr(originalMinuendNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"500.00\") "+
-      "Error = '%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuend, err := new(Decimal).NewNumStr(originalMinuendNumStr)\n"+
+      "originalMinuendNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalMinuendNumStr,
+      err.Error())
+
+    return
   }
 
-  expected := "472.75"
+  err = decNumMinuend.IsValid("Validating decNumMinuend-originalMinuendNumStr")
 
-  for i := 0; i < len(nStrAry); i++ {
-    dx, err := Decimal{}.NewNumStr(nStrAry[i])
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMinuend.IsValid('Validating decNumMinuend-originalMinuendNumStr')\n"+
+      "decNumMinuend set to originalMinuendNumStr\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()\n"+
+      "decNumMinuend set to originalMinuendNumStr\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var decNumSubtrahendNumberStr string
+
+  var decNumSubtrahend Decimal
+
+  for i := 0; i < len(nStrSubtrahendAry); i++ {
+
+    decNumSubtrahend, err = new(Decimal).NewNumStr(nStrSubtrahendAry[i])
 
     if err != nil {
-      t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) "+
-        "nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumSubtrahend, err := new(Decimal).NewNumStr(nStrSubtrahendAry[%v])\n"+
+        "nStrSubtrahendAry[%v]= '%v'\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, i, i, nStrSubtrahendAry[i], i, err.Error())
+      return
     }
 
-    err = d.SubtractFromThis(dx)
+    err = decNumSubtrahend.IsValid(fmt.Sprintf("Validating decNumSubtrahend-nStrSubtrahendAry[%v]", i))
 
     if err != nil {
-      t.Errorf("Error returned from d.SubtractFromThis(dx) "+
-        "Error='%v' ", err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decNumSubtrahend.IsValid('Validating decNumSubtrahend-nStrSubtrahendAry[%v]')\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, i, i, err.Error())
+      return
     }
+
+    decNumSubtrahendNumberStr, err = decNumSubtrahend.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumSubtrahendNumberStr, err := decNumSubtrahend.GetNumStr()\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, i, err.Error())
+      return
+    }
+
+    err = decNumMinuend.SubtractFromThis(decNumSubtrahend)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decNumMinuend.SubtractFromThis(decNumSubtrahend)\n"+
+        "decNumMinuend= '%v'\n"+
+        "decNumSubtrahend= '%v'\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        decNumMinuendNumberStr,
+        decNumSubtrahendNumberStr,
+        i, i,
+        err.Error())
+
+      return
+    }
+
+    decNumMinuendNumberStr, err = decNumMinuend.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
+    }
+
   }
 
-  if expected != d.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+  err = decNumMinuend.IsValid("Validating decNumMinuend-Final")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMinuend.IsValid('Validating decNumMinuend-Final')\n"+
+      "decNumMinuend set to Final Value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumMinuendPrecisionUint, err := decNumMinuend.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendPrecisionUint, err :=\n"+
+      "  decNumMinuend.GetPrecisionUint()\n"+
+      "decNumMinuend= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  decNumMinuendSignValue, err := decNumMinuend.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendSignValue, err := decNumMinuend.GetSign()\n"+
+      "decNumMinuend= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  decNumMinuendNumSeps, err := decNumMinuend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendNumSeps, err := decNumMinuend.GetNumericSeparatorsDto()\n"+
+      "decNumMinuend= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumMinuendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumMinuendNumberStr \n"+
+      "Expected decNumMinuendNumberStr Final Value = '%v'\n"+
+      "  Actual decNumMinuendNumberStr Final Value = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumMinuendNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumMinuendPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumMinuendPrecisionUint\n"+
+      "Expected decNumMinuendPrecisionUint = '%v'\n"+
+      "  Actual decNumMinuendPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumMinuendPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumMinuendSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumMinuendSignValue\n"+
+      "Expected decNumMinuendSignValue = '%v'\n"+
+      "  Actual decNumMinuendSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumMinuendSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumMinuendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumMinuendNumSeps \n"+
+      "Expected decNumMinuendNumSeps = '%v'\n"+
+      "  Actual decNumMinuendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumMinuendNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SubtractTotal_02(t *testing.T) {
-  nStrAry := []string{
+
+  ePrefix := "TestDecimal_SubtractTotal_01"
+
+  originalMinuendNumStr := "0"
+
+  expectedNumberStr := "-27.25"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  nStrSubtrahendAry := []string{
     "5.50",
     "6.50",
     "7.00",
     "8.25",
   }
 
-  d := Decimal{}.New()
+  decNumMinuend, err := new(Decimal).NewNumStr(originalMinuendNumStr)
 
-  expected := "-27.25"
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuend, err := new(Decimal).NewNumStr(originalMinuendNumStr)\n"+
+      "originalMinuendNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalMinuendNumStr,
+      err.Error())
 
-  for i := 0; i < len(nStrAry); i++ {
-    dx, err := Decimal{}.NewNumStr(nStrAry[i])
+    return
+  }
+
+  err = decNumMinuend.IsValid("Validating decNumMinuend-originalMinuendNumStr")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMinuend.IsValid('Validating decNumMinuend-originalMinuendNumStr')\n"+
+      "decNumMinuend set to originalMinuendNumStr\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()\n"+
+      "decNumMinuend set to originalMinuendNumStr\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  var decNumSubtrahendNumberStr string
+
+  var decNumSubtrahend Decimal
+
+  for i := 0; i < len(nStrSubtrahendAry); i++ {
+
+    decNumSubtrahend, err = new(Decimal).NewNumStr(nStrSubtrahendAry[i])
 
     if err != nil {
-      t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) "+
-        "nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumSubtrahend, err := new(Decimal).NewNumStr(nStrSubtrahendAry[%v])\n"+
+        "nStrSubtrahendAry[%v]= '%v'\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix, i, i, nStrSubtrahendAry[i], i, err.Error())
+      return
     }
 
-    err = d.SubtractFromThis(dx)
+    err = decNumSubtrahend.IsValid(fmt.Sprintf("Validating decNumSubtrahend-nStrSubtrahendAry[%v]", i))
 
     if err != nil {
-      t.Errorf("Error returned from d.SubtractFromThis(dx). "+
-        "Error='%v' ", err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decNumSubtrahend.IsValid('Validating decNumSubtrahend-nStrSubtrahendAry[%v]')\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, i, i, err.Error())
+      return
+    }
+
+    decNumSubtrahendNumberStr, err = decNumSubtrahend.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumSubtrahendNumberStr, err := decNumSubtrahend.GetNumStr()\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, i, err.Error())
+      return
+    }
+
+    err = decNumMinuend.SubtractFromThis(decNumSubtrahend)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "err = decNumMinuend.SubtractFromThis(decNumSubtrahend)\n"+
+        "decNumMinuend= '%v'\n"+
+        "decNumSubtrahend= '%v'\n"+
+        "decNumSubtrahend set to nStrSubtrahendAry[%v]\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        decNumMinuendNumberStr,
+        decNumSubtrahendNumberStr,
+        i, i,
+        err.Error())
+
+      return
+    }
+
+    decNumMinuendNumberStr, err = decNumMinuend.GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "decNumMinuendNumberStr, err := decNumMinuend.GetNumStr()\n"+
+        "index= '%v'\n"+
+        "Error= '%v'\n\n", ePrefix, i, err.Error())
+      return
     }
 
   }
 
-  if expected != d.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+  err = decNumMinuend.IsValid("Validating decNumMinuend-Final")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumMinuend.IsValid('Validating decNumMinuend-Final')\n"+
+      "decNumMinuend set to Final Value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumMinuendPrecisionUint, err := decNumMinuend.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendPrecisionUint, err :=\n"+
+      "  decNumMinuend.GetPrecisionUint()\n"+
+      "decNumMinuend= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  decNumMinuendSignValue, err := decNumMinuend.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendSignValue, err := decNumMinuend.GetSign()\n"+
+      "decNumMinuend= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  decNumMinuendNumSeps, err := decNumMinuend.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumMinuendNumSeps, err := decNumMinuend.GetNumericSeparatorsDto()\n"+
+      "decNumMinuend= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumMinuendNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumMinuendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumMinuendNumberStr \n"+
+      "Expected decNumMinuendNumberStr Final Value = '%v'\n"+
+      "  Actual decNumMinuendNumberStr Final Value = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumMinuendNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumMinuendPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumMinuendPrecisionUint\n"+
+      "Expected decNumMinuendPrecisionUint = '%v'\n"+
+      "  Actual decNumMinuendPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumMinuendPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumMinuendSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumMinuendSignValue\n"+
+      "Expected decNumMinuendSignValue = '%v'\n"+
+      "  Actual decNumMinuendSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumMinuendSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumMinuendNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumMinuendNumSeps \n"+
+      "Expected decNumMinuendNumSeps = '%v'\n"+
+      "  Actual decNumMinuendNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumMinuendNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
@@ -2768,6 +3153,8 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
     "7.00",
     "8.25",
   }
+
+  expected := "-27.25"
 
   decs, err := Decimal{}.NewNumStrArray(nStrAry)
 
@@ -2785,8 +3172,6 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
       err.Error())
   }
 
-  expected := "-27.25"
-
   err = total.SubtractFromThisArray(decs)
 
   if err != nil {
@@ -2802,6 +3187,8 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
 }
 
 func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
+
+  expected := "-27.25"
 
   dec1, err := Decimal{}.NewNumStr("5.50")
 
@@ -2842,8 +3229,6 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
       "Error = '%v' ",
       err.Error())
   }
-
-  expected := "-27.25"
 
   err = total.SubtractFromThisMultiple(
     dec1,
