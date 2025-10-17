@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestDecimal_SubtractFromThisMultiple_01; xt_decimal_05_test.go
+TestFracIntAry_GetRationalValue_03; xt_fintary_01_test.go
 
 git add -A
 git commit -m"Modified README"
