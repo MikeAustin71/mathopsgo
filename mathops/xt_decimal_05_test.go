@@ -3147,16 +3147,26 @@ func TestDecimal_SubtractTotal_02(t *testing.T) {
 
 func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
 
-  nStrAry := []string{
+  ePrefix := "TestDecimal_SubtractTotal_01"
+
+  expectedNumberStr := "-27.25"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  nStrInitialMinuend := "0.0"
+
+  nStrSubtrahendAry := []string{
     "5.50",
     "6.50",
     "7.00",
     "8.25",
   }
 
-  expected := "-27.25"
-
-  decs, err := Decimal{}.NewNumStrArray(nStrAry)
+  decNumSubtrahendArray, err := new(Decimal).NewNumStrArray(nStrSubtrahendAry)
 
   if err != nil {
     t.Errorf("Error returned by Decimal{}.NewNumStrArray(nStrAry) "+
@@ -3164,73 +3174,234 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
       err.Error())
   }
 
-  total, err := Decimal{}.NewNumStr("0.0")
+  decNumTotal, err := new(Decimal).NewNumStr(nStrInitialMinuend)
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotal, err := new(Decimal).NewNumStr(nStrInitialMinuend)\n"+
+      "nStrInitialMinuend= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, nStrInitialMinuend, err.Error())
+    return
   }
 
-  err = total.SubtractFromThisArray(decs)
+  err = decNumTotal.SubtractFromThisArray(decNumSubtrahendArray)
 
   if err != nil {
-    t.Errorf("Error returned by total.SubtractFromThisArray(decs) "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumTotal.SubtractFromThisArray(decNumSubtrahendArray)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expected != total.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, total.GetNumStr())
+  err = decNumTotal.IsValid("Validating decNumTotal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumTotal.IsValid('Validating decNumTotal')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumTotalNumberStr, err := decNumTotal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalNumberStr, err := decNumTotal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumTotalPrecisionUint, err := decNumTotal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalPrecisionUint, err :=\n"+
+      "  decNumTotal.GetPrecisionUint()\n"+
+      "decNumTotal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  decNumTotalSignValue, err := decNumTotal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalSignValue, err := decNumTotal.GetSign()\n"+
+      "decNumTotal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  decNumTotalNumSeps, err := decNumTotal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalNumSeps, err := decNumTotal.GetNumericSeparatorsDto()\n"+
+      "decNumTotal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumTotalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumTotalNumberStr \n"+
+      "Expected decNumTotalNumberStr Final Value = '%v'\n"+
+      "  Actual decNumTotalNumberStr Final Value = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumTotalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumTotalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumTotalPrecisionUint\n"+
+      "Expected decNumTotalPrecisionUint = '%v'\n"+
+      "  Actual decNumTotalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumTotalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumTotalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumTotalSignValue\n"+
+      "Expected decNumTotalSignValue = '%v'\n"+
+      "  Actual decNumTotalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumTotalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumTotalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumTotalNumSeps \n"+
+      "Expected decNumTotalNumSeps = '%v'\n"+
+      "  Actual decNumTotalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumTotalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 
-  expected := "-27.25"
+  ePrefix := "TestDecimal_SubtractFromThisMultiple_01"
 
-  dec1, err := Decimal{}.NewNumStr("5.50")
+  expectedNumberStr := "-27.25"
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"5.50\") "+
-      "Error = '%v' ",
-      err.Error())
-  }
+  expectedPrecisionUint := uint(2)
 
-  dec2, err := Decimal{}.NewNumStr("6.50")
+  expectedSignVal := -1
 
-  if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"6.50\") "+
-      "Error = '%v' ",
-      err.Error())
-  }
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  dec3, err := Decimal{}.NewNumStr("7.00")
+  dec1, err := new(Decimal).NewNumStr("5.50")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"7.00\") "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec1, err := new(Decimal).NewNumStr(\"5.50\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  dec4, err := Decimal{}.NewNumStr("8.25")
+  err = dec1.IsValid("Validating dec1")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"8.25\") "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec1.IsValid('Validating dec1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  total, err := Decimal{}.NewNumStr("0.0")
+  dec2, err := new(Decimal).NewNumStr("6.50")
 
   if err != nil {
-    t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec2, err := new(Decimal).NewNumStr(\"6.50\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  err = total.SubtractFromThisMultiple(
+  err = dec2.IsValid("Validating dec2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec2.IsValid('Validating dec2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec3, err := new(Decimal).NewNumStr("7.00")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec3, err := new(Decimal).NewNumStr(\"7.00\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = dec3.IsValid("Validating dec3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec3.IsValid('Validating dec3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  dec4, err := new(Decimal).NewNumStr("8.25")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "dec4, err := new(Decimal).NewNumStr(\"8.25\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = dec4.IsValid("Validating dec4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = dec4.IsValid('Validating dec4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumTotal, err := new(Decimal).NewNumStr("0.0")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotal, err := new(Decimal).NewNumStr(\"0.0\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = decNumTotal.SubtractFromThisMultiple(
     dec1,
     dec2,
     dec3,
@@ -3238,13 +3409,113 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
   )
 
   if err != nil {
-    t.Errorf("Error returned by total.SubtractFromThisMultiple(...) "+
-      "Error = '%v' ",
-      err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumTotal.SubtractFromThisMultiple("+
+      "dec1, dec2, dec3, dec4,)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expected != total.GetNumStr() {
-    t.Errorf("Expected NumStr: %v. Instead, got %v", expected, total.GetNumStr())
+  err = decNumTotal.IsValid("Validating decNumTotal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = decNumTotal.IsValid('Validating decNumTotal')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decNumTotalNumberStr, err := decNumTotal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalNumberStr, err := decNumTotal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decNumTotalPrecisionUint, err := decNumTotal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalPrecisionUint, err :=\n"+
+      "  decNumTotal.GetPrecisionUint()\n"+
+      "decNumTotal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  decNumTotalSignValue, err := decNumTotal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalSignValue, err := decNumTotal.GetSign()\n"+
+      "decNumTotal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  decNumTotalNumSeps, err := decNumTotal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decNumTotalNumSeps, err := decNumTotal.GetNumericSeparatorsDto()\n"+
+      "decNumTotal= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decNumTotalNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != decNumTotalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != decNumTotalNumberStr \n"+
+      "Expected decNumTotalNumberStr Final Value = '%v'\n"+
+      "  Actual decNumTotalNumberStr Final Value = '%v'\n\n",
+      ePrefix, expectedNumberStr, decNumTotalNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != decNumTotalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != decNumTotalPrecisionUint\n"+
+      "Expected decNumTotalPrecisionUint = '%v'\n"+
+      "  Actual decNumTotalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decNumTotalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != decNumTotalSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & dec Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != decNumTotalSignValue\n"+
+      "Expected decNumTotalSignValue = '%v'\n"+
+      "  Actual decNumTotalSignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, decNumTotalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decNumTotalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != decNumTotalNumSeps \n"+
+      "Expected decNumTotalNumSeps = '%v'\n"+
+      "  Actual decNumTotalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decNumTotalNumSeps.String())
+
+    return
+  }
+
+  return
 }
