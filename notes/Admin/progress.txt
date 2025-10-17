@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestDecimal_ShiftPrecisionRight_03; xt_decimal_05_test.go
+TestDecimal_Subtract_03; xt_decimal_05_test.go
 
 git add -A
 git commit -m"Modified README"
