@@ -2,10 +2,11 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"time"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type NthRootBeta struct {
