@@ -465,20 +465,31 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_03(t *testing.T) {
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_04(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_04"
+
   radicand := big.NewInt(-9857324656)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-5)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(32)
 
-  //                             1         2         3
-  //                    1234567890123456789012345678901234567
-  expectedResult := "-0.01002878192918682057341883690632"
+  //                                   1         2         3
+  //                          1234567890123456789012345678901234567
+  expectedResultNumStr := "-0.01002878192918682057341883690632"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := -1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -486,41 +497,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_04(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_05(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_05"
+
   radicand := big.NewInt(25614)
+
   radicandPrecision := big.NewInt(2)
+
   nthRoot := big.NewInt(-3)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(32)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "0.15746143256077581282726778712212"
+  //                                  1         2         3
+  //                         1234567890123456789012345678901234567
+  expectedResultNumStr := "0.15746143256077581282726778712212"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := 1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -528,41 +650,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_05(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_06(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_06"
+
   radicand := big.NewInt(-25614)
+
   radicandPrecision := big.NewInt(2)
+
   nthRoot := big.NewInt(-3)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(32)
 
-  //                             1         2         3
-  //                    1234567890123456789012345678901234567
-  expectedResult := "-0.15746143256077581282726778712212"
+  //                                   1         2         3
+  //                          1234567890123456789012345678901234567
+  expectedResultNumStr := "-0.15746143256077581282726778712212"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := -1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -570,41 +803,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_06(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_07(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_07"
+
   radicand := big.NewInt(648912476123)
+
   radicandPrecision := big.NewInt(3)
+
   nthRoot := big.NewInt(-9)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(31)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "0.1049223981473805598342831898137"
+  //                                  1         2         3
+  //                         1234567890123456789012345678901234567
+  expectedResultNumStr := "0.1049223981473805598342831898137"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(31)
+
+  expectedSignValue := 1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -612,41 +956,153 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_07(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_08(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_08"
+
   radicand := big.NewInt(-648912476123)
+
   radicandPrecision := big.NewInt(3)
+
   nthRoot := big.NewInt(-9)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(31)
 
-  //                             1         2         3
-  //                    1234567890123456789012345678901234567
-  expectedResult := "-0.1049223981473805598342831898137"
+  //                                   1         2         3
+  //                          1234567890123456789012345678901234567
+  expectedResultNumStr := "-0.1049223981473805598342831898137"
+  //Qalculate              −0.1049223981473805598342831898137
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(31)
+
+  expectedSignValue := -1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -654,41 +1110,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_08(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_09(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_09"
+
   radicand := big.NewInt(27)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-3)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(32)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "0.33333333333333333333333333333333"
+  //                                  1         2         3
+  //                         1234567890123456789012345678901234567
+  expectedResultNumStr := "0.33333333333333333333333333333333"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := 1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -696,41 +1263,153 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_09(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_10(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_10"
+
   radicand := big.NewInt(59487637924562)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-7)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(32)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "0.01077022443956376776023853141449"
+  //                                  1         2         3
+  //                         1234567890123456789012345678901234567
+  expectedResultNumStr := "0.01077022443956376776023853141449"
+  // Qalculate             0.010770224439563767760238531414492521
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := 1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -738,41 +1417,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_10(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_11(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_11"
+
   radicand := big.NewInt(1)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-7)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(2)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "1"
+  //                                  1         2         3
+  //                       0.1234567890123456789012345678901234567
+  expectedResultNumStr := "1"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := 1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -780,41 +1570,152 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_11(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_12(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_12"
+
   radicand := big.NewInt(-1)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-7)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(2)
 
-  //                            1         2         3
-  //                   1234567890123456789012345678901234567
-  expectedResult := "-1"
+  //                                   1         2         3
+  //                        0.1234567890123456789012345678901234567
+  expectedResultNumStr := "-1"
 
-  fdNr := FixedDecimalNthRoot{}
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := -1
+
+  fixDecNthRoot := FixedDecimalNthRoot{}
 
   result, resultPrecision, err :=
-    fdNr.CalculateNegativeIntegerNthRoot(
+    fixDecNthRoot.CalculateNegativeIntegerNthRoot(
       radicand,
       radicandPrecision,
       nthRoot,
@@ -822,31 +1723,138 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_12(t *testing.T) {
       maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fixDecNthRoot.CalculateNegativeIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot, nthRootPrecision,\n"+
+      "   maxPrecision\n"+
+      "radicand= '%v'\n"+
+      "radicandPrecision= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "nthRootPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      radicand.Text(10),
+      radicandPrecision.Text(10),
+      nthRoot.Text(10),
+      nthRootPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNum, err := new(BigIntNum).NewBigIntBigPrecision(\n"+
+      "  result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
-  actualNumStr := resultBiNum.GetNumStr()
+  err = resultBiNum.IsValid("Validating resultBiNum")
 
-  if expectedResult != actualNumStr {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = resultBiNum.IsValid('Validating resultBiNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultBiNumNumberStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumNumberStr, err := resultBiNum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumPrecisionUint, err := resultBiNum.GetPrecisionUint()\n"+
+      "resultBiNum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  resultBiNumSignValue, err := resultBiNum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultBiNumSignValue, err := resultBiNum.GetSign()\n"+
+      "resultBiNum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, resultBiNumNumberStr, err.Error())
+    return
+  }
+
+  if expectedResultNumStr != resultBiNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedResultNumStr != resultBiNumNumberStr\n"+
+      "Expected resultBiNumNumberStr = '%v'\n"+
+      "  Actual resultBiNumNumberStr = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultBiNumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != resultBiNumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedPrecisionUint != resultBiNumPrecisionUint\n"+
+      "Expected resultBiNumPrecisionUint = '%v'\n"+
+      "  Actual resultBiNumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, resultBiNumPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != resultBiNumSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != resultBiNumSignValue\n"+
+      "Expected resultBiNumSignValue = '%v'\n"+
+      "  Actual resultBiNumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, resultBiNumSignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_13(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_13"
+
   radicand := big.NewInt(0)
+
   radicandPrecision := big.NewInt(0)
+
   nthRoot := big.NewInt(-7)
+
   nthRootPrecision := big.NewInt(0)
+
   maxPrecision := big.NewInt(2)
 
   fdNr := FixedDecimalNthRoot{}
@@ -860,12 +1868,20 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_13(t *testing.T) {
       maxPrecision)
 
   if err == nil {
-    t.Error("Expected Error to be returned due to zero radicand. NO ERROR RECEIVED!")
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "radicand= 0; nthRoot= -7\n"+
+      "radicand= 0 should be an error.\n\n", ePrefix)
+    return
   }
 
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_14(t *testing.T) {
+
+  ePrefix := "TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_14"
+
   radicand := big.NewInt(92)
   radicandPrecision := big.NewInt(0)
   nthRoot := big.NewInt(0)
@@ -886,6 +1902,15 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_14(t *testing.T) {
     t.Error("Expected Error to be returned due to zero nthRoot. NO ERROR RECEIVED!")
   }
 
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "radicand= 92; nthRoot= 0\n"+
+      "nthRoot= 0 should be an error.\n\n", ePrefix)
+    return
+  }
+
+  return
 }
 
 func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_01(t *testing.T) {
