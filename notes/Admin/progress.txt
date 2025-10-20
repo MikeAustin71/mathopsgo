@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestFixedDecimalNthRoot_CalculatePositiveFractionalNthRoot_17; xt_fixeddecimalnthroot_02_test.go
+TestIntAry_AddToThis_02; xt_intary_01_test.go
 
 git add -A
 git commit -m"Modified README"

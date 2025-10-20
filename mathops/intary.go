@@ -2,10 +2,11 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"strconv"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
