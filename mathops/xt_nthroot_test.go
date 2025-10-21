@@ -16,22 +16,149 @@ import (
 */
 
 func TestNthRootOp_GetNthRootFloat32_01(t *testing.T) {
-	num := float32(125.0)
-	nthRoot := 5
-	maxPrecision := 14
-	expected := "2.62652780440377"
 
-	nRt := NthRootOp{}
-	ai, err := nRt.GetNthRootFloat32(num, 0, nthRoot, maxPrecision)
+	ePrefix := "TestNthRootOp_GetNthRootFloat32_01"
+
+	originalNum32 := float32(125.0)
+
+	nthRoot := 5
+
+	maxPrecision := 14
+
+	//                               1         2         3
+	//                    0.1234567890123456789012345678901234567
+	expectedNumberStr := "2.62652780440377"
+
+	expectedPrecisionUint := uint(14)
+
+	expectedSignVal := 1
+
+	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+	nRt := new(NthRootOp)
+
+	intAry, err := nRt.GetNthRootFloat32(originalNum32, 0, nthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from nRt.GetNthRootFloat32() - %v", err)
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAry, err := nRt.GetNthRootFloat32(\n"+
+			"  originalNum32, 0, nthRoot, maxPrecision)\n"+
+			"originalNum32= '%v'\n"+
+			"nthRoot= '%v'\n"+
+			"maxPrecision= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			originalNum32,
+			nthRoot,
+			maxPrecision,
+			err.Error())
+
+		return
 	}
 
-	if expected != ai.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, ai.GetNumStr())
+	err = intAry.IsValid("Validating intAry")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = intAry.IsValid('Validating intAry')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
 	}
 
+	intAryNumberStr, err := intAry.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumberStr, err := intAry.GetNumStr()\n"+
+			"intAry set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	intAryPrecisionUint, err := intAry.GetPrecisionUint()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryPrecisionUint, err :=\n"+
+			"  intAry.GetPrecisionUint()\n"+
+			"intAry= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, intAryNumberStr, err.Error())
+		return
+	}
+
+	intArySignValue, err := intAry.GetSign()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intArySignValue, err := intAry.GetSign()\n"+
+			"intAry= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, intAryNumberStr, err.Error())
+		return
+	}
+
+	intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+			"intAry= '%v\n"+
+			"Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+		return
+	}
+
+	if expectedNumberStr != intAryNumberStr {
+		t.Errorf("%v\n"+
+			"Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+			"Because expectedNumberStr != intAryNumberStr \n"+
+			"Expected intAryNumberStr = '%v'\n"+
+			"  Actual intAryNumberStr = '%v'\n\n",
+			ePrefix, expectedNumberStr, intAryNumberStr)
+
+		return
+	}
+
+	if expectedPrecisionUint != intAryPrecisionUint {
+		t.Errorf("%v\n"+
+			"Error: expected & IntAry Precision Values ARE NOT EQUAL!\n"+
+			"Because expectedPrecisionUint != intAryPrecisionUint\n"+
+			"Expected intAryPrecisionUint = '%v'\n"+
+			"  Actual intAryPrecisionUint = '%v'\n\n",
+			ePrefix, expectedPrecisionUint, intAryPrecisionUint)
+
+		return
+	}
+
+	if expectedSignVal != intArySignValue {
+		t.Errorf("%v\n"+
+			"Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+			"Because expectedSignVal != intArySignValue\n"+
+			"Expected intArySignValue = '%v'\n"+
+			"  Actual intArySignValue = '%v'\n\n",
+			ePrefix, expectedSignVal, intArySignValue)
+
+		return
+	}
+
+	if !expectedNumSeps.Equal(intAryNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: expected & intAry Numeric Separator Values ARE NOT Equal!\n"+
+			"Because expectedNumSeps != intAryNumSeps \n"+
+			"Expected intAryNumSeps = '%v'\n"+
+			"  Actual intAryNumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+		return
+	}
+
+	return
 }
 
 func TestNthRootOp_GetNthRootFloat64_01(t *testing.T) {
