@@ -2,6 +2,7 @@ package mathops
 
 import (
   "math/big"
+  "strconv"
   "testing"
 )
 
@@ -4611,299 +4612,1961 @@ func TestIntAry_AddBigIntNumToThis_02(t *testing.T) {
 }
 
 func TestIntAry_AddFloat32ToThis_01(t *testing.T) {
-  ia1, _ := IntAry{}.NewNumStr("1.00")
 
-  num := float32(50.00)
-  precision := 2
-  outPrecision := 2
+  ePrefix := "TestIntAry_AddFloat32ToThis_01"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalNumberStr1 := "1.00"
 
-  expected := "51.00"
+  originalFloat32Number2 := float32(50.00)
+
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "51.00"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_02(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("1.25")
+  ePrefix := "TestIntAry_AddFloat32ToThis_02"
 
-  num := float32(50.50)
-  precision := 2
-  outPrecision := 2
+  originalNumberStr1 := "1.25"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(50.50)
 
-  expected := "51.75"
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "51.75"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_03(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("-1.25")
+  ePrefix := "TestIntAry_AddFloat32ToThis_03"
 
-  num := float32(50.50)
-  precision := 2
-  outPrecision := 2
+  originalNumberStr1 := "-1.25"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(50.50)
 
-  expected := "49.25"
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "49.25"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_04(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("-5.25787")
+  ePrefix := "TestIntAry_AddFloat32ToThis_04"
 
-  num := float32(-60.324)
-  precision := 3
-  outPrecision := 5
+  originalNumberStr1 := "-5.25787"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(-60.324)
 
-  expected := "-65.58187"
+  originalPrecisionInt2 := 3
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "-65.58187"
+
+  expectedPrecisionUint := uint(5)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_05(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("5.25787")
+  ePrefix := "TestIntAry_AddFloat32ToThis_05"
 
-  num := float32(-34.324)
-  precision := 3
-  outPrecision := 5
+  originalNumberStr1 := "5.25787"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(-34.324)
 
-  expected := "-29.06613"
+  originalPrecisionInt2 := 3
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "-29.06613"
+
+  expectedPrecisionUint := uint(5)
+
+  expectedSignVal := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_06(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("1245.25787")
+  ePrefix := "TestIntAry_AddFloat32ToThis_06"
 
-  num := float32(350.324)
-  precision := 3
-  outPrecision := 5
+  originalNumberStr1 := "1245.25787"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(350.324)
 
-  expected := "1595.58187"
+  originalPrecisionInt2 := 3
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "1595.58187"
+
+  expectedPrecisionUint := uint(5)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_07(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("1245.25")
+  ePrefix := "TestIntAry_AddFloat32ToThis_07"
 
-  num := float32(84350.320000000)
-  precision := -1
-  outPrecision := 2
+  originalNumberStr1 := "1245.25"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(84350.320000000)
 
-  expected := "85595.57"
+  originalPrecisionInt2 := -1
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "85595.57"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_08(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("1245.25")
+  ePrefix := "TestIntAry_AddFloat32ToThis_08"
 
-  num := float32(84350.325)
-  precision := 2
-  outPrecision := 2
+  originalNumberStr1 := "1245.25"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(84350.325)
 
-  expected := "85595.58"
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "85595.58"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_09(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("0")
+  ePrefix := "TestIntAry_AddFloat32ToThis_09"
 
-  num := float32(0.000)
-  precision := 0
-  outPrecision := 0
+  originalNumberStr1 := "0"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(0.000)
 
-  expected := "0"
+  originalPrecisionInt2 := 0
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "0"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_10(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("0.00")
+  ePrefix := "TestIntAry_AddFloat32ToThis_10"
 
-  num := float32(0.000)
-  precision := 2
-  outPrecision := 2
+  originalNumberStr1 := "0.00"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(0.000)
 
-  expected := "0.00"
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "0.00"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat32ToThis_11(t *testing.T) {
 
-  ia1, _ := IntAry{}.NewNumStr("1.25")
+  ePrefix := "TestIntAry_AddFloat32ToThis_11"
 
-  num := float32(50.545)
-  precision := 2
-  outPrecision := 2
+  originalNumberStr1 := "1.25"
 
-  err := ia1.AddFloat32ToThis(num, precision)
+  originalFloat32Number2 := float32(50.545)
 
-  expected := "51.80"
+  originalPrecisionInt2 := 2
+
+  originalFloat32Number2Str :=
+    strconv.FormatFloat(float64(originalFloat32Number2), 'f', originalPrecisionInt2, 32)
+
+  expectedNumberStr := "51.80"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignVal := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  ia1, err := new(IntAry).NewNumStr(originalNumberStr1)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.AddFloat32ToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  result := ia1.GetNumStr()
+  err = ia1.IsValid("Validating initial ia1")
 
-  if expected != result {
-    t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating initial ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia1.GetPrecision() != outPrecision {
-    t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
+  ia1NumberStr, err := ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err := ia1.GetNumStr()\n"+
+      "ia1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = ia1.AddFloat32ToThis(originalFloat32Number2, originalPrecisionInt2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.AddFloat32ToThis(\n"+
+      "  originalFloat32Number2, originalPrecisionInt2)\n"+
+      "ia1= '%v'\n"+
+      "originalFloat32Number2= '%v'\n"+
+      "originalPrecisionInt2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      ia1NumberStr,
+      originalFloat32Number2Str,
+      originalPrecisionInt2,
+      err.Error())
+
+    return
+  }
+
+  err = ia1.IsValid("Validating final ia1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia1.IsValid('Validating final ia1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1NumberStr, err = ia1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumberStr, err = ia1.GetNumStr()\n"+
+      "ia1 set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  ia1PrecisionUint, err := ia1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1PrecisionUint, err :=\n"+
+      "  ia1.GetPrecisionUint()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1SignValue, err := ia1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1SignValue, err := ia1.GetSign()\n"+
+      "ia1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+      "ia1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, ia1NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != ia1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != ia1NumberStr \n"+
+      "Expected ia1NumberStr = '%v'\n"+
+      "  Actual ia1NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, ia1NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != ia1PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != ia1PrecisionUint\n"+
+      "Expected ia1PrecisionUint = '%v'\n"+
+      "  Actual ia1PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, ia1PrecisionUint)
+
+    return
+  }
+
+  if expectedSignVal != ia1SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & ia1 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignVal != ia1SignValue\n"+
+      "Expected ia1SignValue = '%v'\n"+
+      "  Actual ia1SignValue = '%v'\n\n",
+      ePrefix, expectedSignVal, ia1SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(ia1NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != ia1NumSeps \n"+
+      "Expected ia1NumSeps = '%v'\n"+
+      "  Actual ia1NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_AddFloat64ToThis_01(t *testing.T) {
