@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_AddFloatBigToThis_01; xt_intary_02_test.go
+TestIntAry_Ceiling_01; xt_intary_02_test.go
 
 git add -A
 git commit -m"Modified README"
