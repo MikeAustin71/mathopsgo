@@ -1602,332 +1602,1814 @@ func TestIntAry_CompareSignedValues_12(t *testing.T) {
 
 func TestIntAry_CompareAbsoluteValues_01(t *testing.T) {
 
-  nStr1 := "45.13"
-  nStr2 := "451.2"
-  expectedCompare := -1
+  ePrefix := "TestIntAry_CompareAbsoluteValues_01"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "45.13"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "451.2"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := -1
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CompareAbsoluteValues_02(t *testing.T) {
 
-  nStr1 := "45.13"
-  nStr2 := "-451.2"
-  expectedCompare := -1
+  ePrefix := "TestIntAry_CompareAbsoluteValues_02"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "45.13"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "-451.2"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := -1
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CompareAbsoluteValues_03(t *testing.T) {
 
-  nStr1 := "-45.13"
-  nStr2 := "45.13"
-  expectedCompare := 0
+  ePrefix := "TestIntAry_CompareAbsoluteValues_03"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "-45.13"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "45.13"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := 0
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CompareAbsoluteValues_04(t *testing.T) {
 
-  nStr1 := "-45.13000"
-  nStr2 := "45.13"
-  expectedCompare := 0
+  ePrefix := "TestIntAry_CompareAbsoluteValues_04"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "-45.13000"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "45.13"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := 0
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CompareAbsoluteValues_05(t *testing.T) {
 
-  nStr1 := "-45.13001"
-  nStr2 := "45.13"
-  expectedCompare := 1
+  ePrefix := "TestIntAry_CompareAbsoluteValues_05"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "-45.13001"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "45.13"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := 1
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CompareAbsoluteValues_06(t *testing.T) {
 
-  nStr1 := "-45.1300"
-  nStr2 := "452"
-  expectedCompare := -1
+  ePrefix := "TestIntAry_CompareAbsoluteValues_06"
 
-  ia1 := IntAry{}.New()
+  originalNumberStr1 := "-45.1300"
 
-  ia1.SetIntAryWithNumStr(nStr1)
+  originalNumberStr2 := "452"
 
-  ia2 := IntAry{}.New()
+  expectedCompareResult := -1
 
-  ia2.SetIntAryWithNumStr(nStr2)
+  intAry1 := new(IntAry).New()
 
-  actualCompare := ia1.CompareAbsoluteValues(&ia2)
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
 
-  if actualCompare != expectedCompare {
-    t.Errorf("Error. Expected Comparison Result= '%v'. Instead, Comparison Result= '%v'", expectedCompare, actualCompare)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  actualCompareResult, err := intAry1.CompareAbsoluteValues(&intAry2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCompareResult, err :=\n"+
+      "  intAry1.CompareAbsoluteValues(&intAry2)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  if expectedCompareResult != actualCompareResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedCompareResult != actualCompareResult\n"+
+      "Expected actualCompareResult = '%v'\n"+
+      "  Actual actualCompareResult = '%v'\n\n",
+      ePrefix, expectedCompareResult, actualCompareResult)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_CopyIn_01(t *testing.T) {
 
-  nStr1 := "00100.1230"
-  nStr2 := "-0000052.795813000"
+  ePrefix := "TestIntAry_CopyIn_01"
 
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  originalNumberStr1 := "00100.1230"
 
-  if nStr1 != ia.GetNumStr() {
-    t.Errorf("Error ia.SetIntAryWithNumStr(nStr1). Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", nStr1, ia.GetNumStr())
+  originalNumberStr2 := "-0000052.795813000"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry1 := new(IntAry).New()
+
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(nStr2)
+  err = intAry1.IsValid("Validating initial intAry1")
 
-  if nStr2 != ia2.GetNumStr() {
-    t.Errorf("Error ia2.SetIntAryWithNumStr(nStr2). Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", nStr2, ia2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  ia.CopyIn(&ia2, false)
+  intAry1NumberStr, err := intAry1.GetNumStr()
 
-  if ia2.GetNumStr() != ia.GetNumStr() {
-    t.Errorf("Error Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", ia2.GetNumStr(), ia.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia2.GetSign() != ia.GetSign() {
-    t.Errorf("Error Expcted ia.GetSign()= '%v'  .   Instead, ia.GetSign()= '%v' .", ia2.GetSign(), ia.GetSign())
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
   }
 
-  if ia2.GetPrecision() != ia.GetPrecision() {
-    t.Errorf("Error Expcted ia.GetPrecisionInt()= '%v'  .   Instead, ia.GetPrecisionInt()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
+  intAry2 := new(IntAry).New()
+
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
   }
 
-  if ia2.GetIntAryLength() != ia.GetIntAryLength() {
-    t.Errorf("Error Expcted ia integer array length= '%v'  .   Instead, ia integer array length= '%v' .", ia2.GetIntAryLength(), ia.GetIntAryLength())
+  err = intAry2.IsValid("Validating initial intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating initial intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  ia2Stats := ia2.GetIntAryStats()
-  iaStats := ia.GetIntAryStats()
+  intAry2NumberStr, err := intAry2.GetNumStr()
 
-  if ia2Stats.IntegerLen != iaStats.IntegerLen {
-    t.Errorf("Error Expected ia2 Integer Length == ia Integer Length. Instead ia2 IntegerLen= '%v'  and ia IntegerLen= '%v' .", ia2Stats.IntegerLen, iaStats.IntegerLen)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "intAry2 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia2Stats.SignificantIntegerLen != iaStats.SignificantIntegerLen {
-    t.Errorf("Error Expected ia2 Signigicant Integer Length == ia Significant Integer Length. Instead ia2 SignificantIntegerLen= '%v'  and ia SignificantIntegerLen= '%v' .", ia2Stats.SignificantIntegerLen, iaStats.SignificantIntegerLen)
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
   }
 
-  if ia2Stats.SignificantFractionLen != iaStats.SignificantFractionLen {
-    t.Errorf("Error Expected ia2 SignificantFractionLen == ia SignificantFractionLen. Intead, ia2 SignificantFractionLen= '%v' and ia SignificantFractionLen= '%v' .", ia2Stats.SignificantFractionLen, iaStats.SignificantFractionLen)
+  intAry2SignValue, err := intAry2.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2SignValue, err := intAry2.GetSign()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  if ia2Stats.FirstDigitIdx != iaStats.FirstDigitIdx {
-    t.Errorf("Error Expected ia2 FirstDigitIdx == ia FirstDigitIdx. Intead,  ia2 FirstDigitIdx= '%v' and ia FirstDigitIdx= '%v' .", ia2Stats.FirstDigitIdx, iaStats.FirstDigitIdx)
+  intAry2PrecisionUint, err := intAry2.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2PrecisionUint, err := intAry2.GetPrecisionUint()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  if ia2Stats.LastDigitIdx != iaStats.LastDigitIdx {
-    t.Errorf("Error Expected ia2 LastDigitIdx == ia LastDigitIdx. Instead, ia2 LastDigitIdx= '%v'  and ia LastDigitIdx= '%v' .", ia2Stats.LastDigitIdx, iaStats.LastDigitIdx)
+  intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()\n"+
+      "intAry2= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAry2NumberStr, err.Error())
+    return
   }
 
-  if ia2Stats.IsZeroValue != iaStats.IsZeroValue {
-    t.Errorf("Error Expected ia2 IsZero == ia IsZero. Instead, ia2 IsZero= '%v' and ia IsZero= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
+  if !expectedNumSeps.Equal(intAry2NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAry2NumSeps \n"+
+      "Expected intAry2NumSeps = '%v'\n"+
+      "  Actual intAry2NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAry2NumSeps.String())
+
+    return
   }
 
-  if ia2Stats.IsIntegerZeroValue != iaStats.IsIntegerZeroValue {
-    t.Errorf("Error Expected ia2 IsIntegerZeroValue == ia IsIntegerZeroValue. Instead,  ia2 IsIntegerZeroValue= '%v' and ia IsIntegerZeroValue= '%v' .", ia2Stats.IsIntegerZeroValue, iaStats.IsIntegerZeroValue)
+  intAry2AryLength := intAry2.GetIntAryLength()
+
+  err = intAry1.CopyIn(&intAry2, false)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.CopyIn(&intAry2, false)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  if ia2.GetDecimalSeparator() != '.' {
-    t.Errorf("Error Expcted ia2 DecimalSeparator= '%v'  .   Instead, ia2 DecimalSeparator= '%v' .", '.', ia.GetDecimalSeparator())
+  err = intAry1.IsValid("Validating final intAry1 value")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating final intAry1 value')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  for i := 0; i < ia.GetIntAryLength(); i++ {
+  intAry1FinalNumberStr, err := intAry1.GetNumStr()
 
-    ia2Element, _ := ia2.GetIntAryElement(i)
-    iaElement, _ := ia.GetIntAryElement(i)
-    if ia2Element != iaElement {
-      t.Errorf("Error Expcted ia2 integer array element [i]= '%v'  .   Instead, ia integer array element [i]= '%v' .", ia2Element, iaElement)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalNumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1Final set to intAry1 after copy operation.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1FinalSignValue, err := intAry1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalSignValue, err := intAry1.GetSign()\n"+
+      "intAry1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1FinalNumberStr,
+      err.Error())
+
+    return
+  }
+
+  intAry1FinalPrecisionUint, err := intAry1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalPrecisionUint, err := intAry1.GetPrecisionUint()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  intAry1FinalNumSeps, err := intAry1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalNumSeps, err := intAry1.GetNumericSeparatorsDto()\n"+
+      "intAry1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAry1FinalNumberStr, err.Error())
+    return
+  }
+
+  intAry1FinalAryLength := intAry1.GetIntAryLength()
+
+  if intAry2NumberStr != intAry1FinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: IntAry Number String Values ARE NOT Equal\n"+
+      "Because intAry2NumberStr != intAry1FinalNumberStr \n"+
+      "Expected intAry1FinalNumberStr = '%v'\n"+
+      "  Actual intAry1FinalNumberStr = '%v'\n\n",
+      ePrefix, intAry2NumberStr, intAry1FinalNumberStr)
+
+    return
+  }
+
+  if intAry2SignValue != intAry1FinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because intAry2SignValue != intAry1FinalSignValue\n"+
+      "Expected intAry1FinalSignValue = '%v'\n"+
+      "  Actual intAry1FinalSignValue = '%v'\n\n",
+      ePrefix, intAry2SignValue, intAry1FinalSignValue)
+
+    return
+  }
+
+  if intAry2PrecisionUint != intAry1FinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected Precision Values ARE NOT EQUAL!\n"+
+      "Because intAry2PrecisionUint != intAry1FinalPrecisionUint\n"+
+      "Expected intAry1FinalPrecisionUint = '%v'\n"+
+      "  Actual intAry1FinalPrecisionUint = '%v'\n\n",
+      ePrefix, intAry2PrecisionUint, intAry1FinalPrecisionUint)
+
+    return
+  }
+
+  if intAry2AryLength != intAry1FinalAryLength {
+    t.Errorf("%v\n"+
+      "Error: Expected Array Lengths ARE NOT EQUAL!\n"+
+      "Because intAry2AryLength != intAry1FinalAryLength\n"+
+      "Expected intAry1FinalAryLength = '%v'\n"+
+      "  Actual intAry1FinalAryLength = '%v'\n\n",
+      ePrefix, intAry2AryLength, intAry1FinalAryLength)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAry1FinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAry1FinalNumSeps \n"+
+      "Expected intAry1FinalNumSeps = '%v'\n"+
+      "  Actual intAry1FinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAry1FinalNumSeps.String())
+
+    return
+  }
+
+  intAry2Stats := intAry2.GetIntAryStats()
+
+  intAry1FinalStats := intAry1.GetIntAryStats()
+
+  if intAry2Stats.IntegerLen != intAry1FinalStats.IntegerLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IntegerLen != intAry1FinalStats.IntegerLen\n"+
+      "Expected intAry1FinalStats.IntegerLen = '%v'\n"+
+      "  Actual intAry1FinalStats.IntegerLen = '%v'\n\n",
+      ePrefix, intAry2Stats.IntegerLen, intAry1FinalStats.IntegerLen)
+
+    return
+  }
+
+  if intAry2Stats.SignificantIntegerLen != intAry1FinalStats.SignificantIntegerLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because  intAry2Stats.SignificantIntegerLen != intAry1FinalStats.SignificantIntegerLen\n"+
+      "Expected intAry1FinalStats.SignificantIntegerLen = '%v'\n"+
+      "  Actual intAry1FinalStats.SignificantIntegerLen = '%v'\n\n",
+      ePrefix, intAry2Stats.SignificantIntegerLen, intAry1FinalStats.SignificantIntegerLen)
+
+    return
+  }
+
+  if intAry2Stats.SignificantFractionLen != intAry1FinalStats.SignificantFractionLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.SignificantFractionLen != intAry1FinalStats.SignificantFractionLen\n"+
+      "Expected intAry1FinalStats.SignificantFractionLen = '%v'\n"+
+      "  Actual intAry1FinalStats.SignificantFractionLen = '%v'\n\n",
+      ePrefix, intAry2Stats.SignificantFractionLen, intAry1FinalStats.SignificantFractionLen)
+
+    return
+  }
+
+  if intAry2Stats.FirstDigitIdx != intAry1FinalStats.FirstDigitIdx {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.FirstDigitIdx != intAry1FinalStats.FirstDigitIdx\n"+
+      "Expected intAry1FinalStats.FirstDigitIdx = '%v'\n"+
+      "  Actual intAry1FinalStats.FirstDigitIdx = '%v'\n\n",
+      ePrefix, intAry2Stats.FirstDigitIdx, intAry1FinalStats.FirstDigitIdx)
+
+    return
+  }
+
+  if intAry2Stats.LastDigitIdx != intAry1FinalStats.LastDigitIdx {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.LastDigitIdx != intAry1FinalStats.LastDigitIdx\n"+
+      "Expected intAry1FinalStats.LastDigitIdx = '%v'\n"+
+      "  Actual intAry1FinalStats.LastDigitIdx = '%v'\n\n",
+      ePrefix, intAry2Stats.LastDigitIdx, intAry1FinalStats.LastDigitIdx)
+
+    return
+  }
+
+  if intAry2Stats.IsZeroValue != intAry1FinalStats.IsZeroValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IsZeroValue != intAry1FinalStats.IsZeroValue\n"+
+      "Expected intAry1FinalStats.IsZeroValue = '%v'\n"+
+      "  Actual intAry1FinalStats.IsZeroValue = '%v'\n\n",
+      ePrefix, intAry2Stats.IsZeroValue, intAry1FinalStats.IsZeroValue)
+
+    return
+  }
+
+  if intAry2Stats.IsIntegerZeroValue != intAry1FinalStats.IsIntegerZeroValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IsIntegerZeroValue != intAry1FinalStats.IsIntegerZeroValue\n"+
+      "Expected intAry1FinalStats.IsIntegerZeroValue = '%v'\n"+
+      "  Actual intAry1FinalStats.IsIntegerZeroValue = '%v'\n\n",
+      ePrefix, intAry2Stats.IsIntegerZeroValue, intAry1FinalStats.IsIntegerZeroValue)
+
+    return
+  }
+
+  var intAry2Element, intAry1FinalElement uint8
+
+  for i := 0; i < intAry1.GetIntAryLength(); i++ {
+
+    intAry2Element, err = intAry2.GetIntAryElement(i)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "intAry2Element, err = intAry2.GetIntAryElement(%v)\n"+
+        "intAry2= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        i,
+        intAry2NumberStr,
+        err.Error())
+
+      return
     }
+
+    intAry1FinalElement, err = intAry1.GetIntAryElement(i)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "intAry1FinalElement, err = intAry1.GetIntAryElement(%v)\n"+
+        "intAry1= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        i,
+        intAry1FinalNumberStr,
+        err.Error())
+
+      return
+    }
+
+    if intAry2Element != intAry1FinalElement {
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because intAry2Element != intAry1FinalElement\n"+
+        "Expected intAry1FinalElement = '%v'\n"+
+        "  Actual intAry1FinalElement = '%v'\n"+
+        "Element Array Index (i) = %v\n\n",
+        ePrefix, intAry2Element, intAry1FinalElement, i)
+
+      return
+    }
+
   }
+
+  return
 }
 
 func TestIntAry_CopyIn_02(t *testing.T) {
 
-  nStr1 := "00100.1230"
-  nStr2 := "3594176.123459"
+  ePrefix := "TestIntAry_CopyIn_02"
 
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
-  ia.CopyToBackUp()
+  originalNumberStr1 := "00100.1230"
 
-  if nStr1 != ia.GetNumStr() {
-    t.Errorf("Error ia.SetIntAryWithNumStr(nStr1). Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", nStr1, ia.GetNumStr())
+  originalNumberStr2 := "3594176.123459"
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry1 := new(IntAry).New()
+
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(nStr2)
-  ia2.CopyToBackUp()
+  err = intAry1.IsValid("Validating initial intAry1")
 
-  if nStr2 != ia2.GetNumStr() {
-    t.Errorf("Error ia2.SetIntAryWithNumStr(nStr2). Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", nStr2, ia2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  ia.CopyIn(&ia2, true)
+  intAry1NumberStr, err := intAry1.GetNumStr()
 
-  if ia2.GetNumStr() != ia.GetNumStr() {
-    t.Errorf("Error Expected ia.GetNumStr()= '%v'  .   Instead, ia.GetNumStr()= '%v' .", ia2.GetNumStr(), ia.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia2.GetSign() != ia.GetSign() {
-    t.Errorf("Error Expcted ia.GetSign()= '%v'  .   Instead, ia.GetSign()= '%v' .", ia2.GetSign(), ia.GetSign())
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
   }
 
-  if ia2.GetPrecision() != ia.GetPrecision() {
-    t.Errorf("Error Expcted ia.GetPrecisionInt()= '%v'  .   Instead, ia.GetPrecisionInt()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
+  err = intAry1.CopyToBackUp()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.CopyToBackUp()\n"+
+      "intAry1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry1NumberStr, err.Error())
+    return
   }
 
-  iaStats := ia.GetIntAryStats()
+  intAry2 := new(IntAry).New()
 
-  ia2Stats := ia2.GetIntAryStats()
+  err = intAry2.SetIntAryWithNumStr(originalNumberStr2)
 
-  if ia2Stats.IntAryLen != iaStats.IntAryLen {
-    t.Errorf("Error Expected ia2 IntAryLen == ia IntAryLen. Instead, ia2 integer array length = '%v' and ia integer array length = '%v' .", ia2Stats.IntAryLen, iaStats.IntAryLen)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = ia.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
   }
 
-  if ia2Stats.IntegerLen != iaStats.IntegerLen {
-    t.Errorf("Error Expected ai2 IntegerLen == ia IntegerLen. Instead, ia2 IntegerLen= '%v' and ia IntegerLen= '%v' .", ia2Stats.IntegerLen, iaStats.IntegerLen)
+  err = intAry2.IsValid("Validating initial intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating initial intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia2Stats.SignificantIntegerLen != iaStats.SignificantIntegerLen {
-    t.Errorf("Error Expected ia2 SignificantIntegerLen == ia SignificantIntegerLen. Instead, ia2.SignificantIntegerLen= '%v' and ia SignificantIntegerLen= '%v' .", ia2Stats.SignificantIntegerLen, iaStats.SignificantIntegerLen)
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "intAry2 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ia2Stats.SignificantFractionLen != iaStats.SignificantFractionLen {
-    t.Errorf("Error Expected ia2 SignificantFractionLen == ia SignificantFractionLen. Instead, ia2 SignificantFractionLen= '%v' and ia SignificantFractionLen= '%v' .", ia2Stats.SignificantFractionLen, iaStats.SignificantFractionLen)
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
   }
 
-  if ia2Stats.FirstDigitIdx != iaStats.FirstDigitIdx {
-    t.Errorf("Error Expected ia2 FirstDigitIdx == ia FirstDigitIdx. Instead, ia2 FirstDigitIdx= '%v' and ia FirstDigitIdx= '%v' .", ia2Stats.FirstDigitIdx, iaStats.FirstDigitIdx)
+  intAry2SignValue, err := intAry2.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2SignValue, err := intAry2.GetSign()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  if ia2Stats.LastDigitIdx != iaStats.LastDigitIdx {
-    t.Errorf("Error Expected ia2 LastDigitIdx == ia LastDigitIdx.  Instead, ia2 LastDigitIdx= '%v' and ia LastDigitIdx= '%v' .", ia2Stats.LastDigitIdx, iaStats.LastDigitIdx)
+  intAry2PrecisionUint, err := intAry2.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2PrecisionUint, err := intAry2.GetPrecisionUint()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  if ia2Stats.IsZeroValue != iaStats.IsZeroValue {
-    t.Errorf("Error Expected ia2 IsZero == ia IsZero.  Instead, ia2 IsZero= '%v' and ia IsZero= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
+  intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()\n"+
+      "intAry2= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAry2NumberStr, err.Error())
+    return
   }
 
-  if ia2Stats.IsIntegerZeroValue != iaStats.IsIntegerZeroValue {
-    t.Errorf("Error Expected ia2 IsIntegerZeroValue == ia IsIntegerZeroValue.  Instead, ia2 IsIntegerZeroValue= '%v' and ia IsIntegerZeroValue= '%v' .", ia2Stats.IsIntegerZeroValue, iaStats.IsIntegerZeroValue)
+  if !expectedNumSeps.Equal(intAry2NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAry2NumSeps \n"+
+      "Expected intAry2NumSeps = '%v'\n"+
+      "  Actual intAry2NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAry2NumSeps.String())
+
+    return
   }
 
-  if ia2Stats.DecimalSeparator != '.' {
-    t.Errorf("Error Expected ia2 DecimalSeparator= '.'  .   Instead, ia2 DecimalSeparator= '%v' .", ia2Stats.DecimalSeparator)
+  intAry2AryLength := intAry2.GetIntAryLength()
+
+  err = intAry2.CopyToBackUp()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.CopyToBackUp()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry2NumberStr, err.Error())
+    return
   }
 
-  if iaStats.DecimalSeparator != '.' {
-    t.Errorf("Error Expected ia DecimalSeparator= '.'  .   Instead, ia DecimalSeparator= '%v' .", iaStats.DecimalSeparator)
+  err = intAry1.CopyIn(&intAry2, true)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.CopyIn(&intAry2, false)\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      err.Error())
+
+    return
   }
 
-  for i := 0; i < ia.GetIntAryLength(); i++ {
+  err = intAry1.IsValid("Validating final intAry1 value")
 
-    ia2Element, _ := ia2.GetIntAryElement(i)
-    iaElement, _ := ia.GetIntAryElement(i)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating final intAry1 value')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-    if ia2Element != iaElement {
-      t.Errorf("Error Expected ia2 integer array element [i]= '%v'  .   Instead, ia integer array element [i]= '%v' .", ia2Element, iaElement)
+  intAry1FinalNumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalNumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1Final set to intAry1 after copy operation.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1FinalSignValue, err := intAry1.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalSignValue, err := intAry1.GetSign()\n"+
+      "intAry1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry1FinalNumberStr,
+      err.Error())
+
+    return
+  }
+
+  intAry1FinalPrecisionUint, err := intAry1.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalPrecisionUint, err := intAry1.GetPrecisionUint()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAry2NumberStr,
+      err.Error())
+
+    return
+  }
+
+  intAry1FinalNumSeps, err := intAry1.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalNumSeps, err := intAry1.GetNumericSeparatorsDto()\n"+
+      "intAry1= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAry1FinalNumberStr, err.Error())
+    return
+  }
+
+  intAry1FinalAryLength := intAry1.GetIntAryLength()
+
+  if intAry2NumberStr != intAry1FinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: IntAry Number String Values ARE NOT Equal\n"+
+      "Because intAry2NumberStr != intAry1FinalNumberStr \n"+
+      "Expected intAry1FinalNumberStr = '%v'\n"+
+      "  Actual intAry1FinalNumberStr = '%v'\n\n",
+      ePrefix, intAry2NumberStr, intAry1FinalNumberStr)
+
+    return
+  }
+
+  if intAry2SignValue != intAry1FinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because intAry2SignValue != intAry1FinalSignValue\n"+
+      "Expected intAry1FinalSignValue = '%v'\n"+
+      "  Actual intAry1FinalSignValue = '%v'\n\n",
+      ePrefix, intAry2SignValue, intAry1FinalSignValue)
+
+    return
+  }
+
+  if intAry2PrecisionUint != intAry1FinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected Precision Values ARE NOT EQUAL!\n"+
+      "Because intAry2PrecisionUint != intAry1FinalPrecisionUint\n"+
+      "Expected intAry1FinalPrecisionUint = '%v'\n"+
+      "  Actual intAry1FinalPrecisionUint = '%v'\n\n",
+      ePrefix, intAry2PrecisionUint, intAry1FinalPrecisionUint)
+
+    return
+  }
+
+  if intAry2AryLength != intAry1FinalAryLength {
+    t.Errorf("%v\n"+
+      "Error: Expected Array Lengths ARE NOT EQUAL!\n"+
+      "Because intAry2AryLength != intAry1FinalAryLength\n"+
+      "Expected intAry1FinalAryLength = '%v'\n"+
+      "  Actual intAry1FinalAryLength = '%v'\n\n",
+      ePrefix, intAry2AryLength, intAry1FinalAryLength)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAry1FinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAry1FinalNumSeps \n"+
+      "Expected intAry1FinalNumSeps = '%v'\n"+
+      "  Actual intAry1FinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAry1FinalNumSeps.String())
+
+    return
+  }
+
+  intAry2Stats := intAry2.GetIntAryStats()
+
+  intAry1FinalStats := intAry1.GetIntAryStats()
+
+  if intAry2Stats.IntegerLen != intAry1FinalStats.IntegerLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IntegerLen != intAry1FinalStats.IntegerLen\n"+
+      "Expected intAry1FinalStats.IntegerLen = '%v'\n"+
+      "  Actual intAry1FinalStats.IntegerLen = '%v'\n\n",
+      ePrefix, intAry2Stats.IntegerLen, intAry1FinalStats.IntegerLen)
+
+    return
+  }
+
+  if intAry2Stats.SignificantIntegerLen != intAry1FinalStats.SignificantIntegerLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because  intAry2Stats.SignificantIntegerLen != intAry1FinalStats.SignificantIntegerLen\n"+
+      "Expected intAry1FinalStats.SignificantIntegerLen = '%v'\n"+
+      "  Actual intAry1FinalStats.SignificantIntegerLen = '%v'\n\n",
+      ePrefix, intAry2Stats.SignificantIntegerLen, intAry1FinalStats.SignificantIntegerLen)
+
+    return
+  }
+
+  if intAry2Stats.SignificantFractionLen != intAry1FinalStats.SignificantFractionLen {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.SignificantFractionLen != intAry1FinalStats.SignificantFractionLen\n"+
+      "Expected intAry1FinalStats.SignificantFractionLen = '%v'\n"+
+      "  Actual intAry1FinalStats.SignificantFractionLen = '%v'\n\n",
+      ePrefix, intAry2Stats.SignificantFractionLen, intAry1FinalStats.SignificantFractionLen)
+
+    return
+  }
+
+  if intAry2Stats.FirstDigitIdx != intAry1FinalStats.FirstDigitIdx {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.FirstDigitIdx != intAry1FinalStats.FirstDigitIdx\n"+
+      "Expected intAry1FinalStats.FirstDigitIdx = '%v'\n"+
+      "  Actual intAry1FinalStats.FirstDigitIdx = '%v'\n\n",
+      ePrefix, intAry2Stats.FirstDigitIdx, intAry1FinalStats.FirstDigitIdx)
+
+    return
+  }
+
+  if intAry2Stats.LastDigitIdx != intAry1FinalStats.LastDigitIdx {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.LastDigitIdx != intAry1FinalStats.LastDigitIdx\n"+
+      "Expected intAry1FinalStats.LastDigitIdx = '%v'\n"+
+      "  Actual intAry1FinalStats.LastDigitIdx = '%v'\n\n",
+      ePrefix, intAry2Stats.LastDigitIdx, intAry1FinalStats.LastDigitIdx)
+
+    return
+  }
+
+  if intAry2Stats.IsZeroValue != intAry1FinalStats.IsZeroValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IsZeroValue != intAry1FinalStats.IsZeroValue\n"+
+      "Expected intAry1FinalStats.IsZeroValue = '%v'\n"+
+      "  Actual intAry1FinalStats.IsZeroValue = '%v'\n\n",
+      ePrefix, intAry2Stats.IsZeroValue, intAry1FinalStats.IsZeroValue)
+
+    return
+  }
+
+  if intAry2Stats.IsIntegerZeroValue != intAry1FinalStats.IsIntegerZeroValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because intAry2Stats.IsIntegerZeroValue != intAry1FinalStats.IsIntegerZeroValue\n"+
+      "Expected intAry1FinalStats.IsIntegerZeroValue = '%v'\n"+
+      "  Actual intAry1FinalStats.IsIntegerZeroValue = '%v'\n\n",
+      ePrefix, intAry2Stats.IsIntegerZeroValue, intAry1FinalStats.IsIntegerZeroValue)
+
+    return
+  }
+
+  var intAry2Element, intAry1FinalElement uint8
+
+  for i := 0; i < intAry1.GetIntAryLength(); i++ {
+
+    intAry2Element, err = intAry2.GetIntAryElement(i)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "intAry2Element, err = intAry2.GetIntAryElement(%v)\n"+
+        "intAry2= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        i,
+        intAry2NumberStr,
+        err.Error())
+
+      return
     }
+
+    intAry1FinalElement, err = intAry1.GetIntAryElement(i)
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "intAry1FinalElement, err = intAry1.GetIntAryElement(%v)\n"+
+        "intAry1= '%v'\n"+
+        "Error= '%v'\n\n",
+        ePrefix,
+        i,
+        intAry1FinalNumberStr,
+        err.Error())
+
+      return
+    }
+
+    if intAry2Element != intAry1FinalElement {
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Because intAry2Element != intAry1FinalElement\n"+
+        "Expected intAry1FinalElement = '%v'\n"+
+        "  Actual intAry1FinalElement = '%v'\n"+
+        "Element Array Index (i) = %v\n\n",
+        ePrefix, intAry2Element, intAry1FinalElement, i)
+
+      return
+    }
+
   }
 
-  if !ia.BackUp.Equals(&ia2.BackUp) {
-    t.Error("Error Expected ia.Backup to Equal ia2.Backup.   ")
+  if !intAry1.BackUp.Equals(&intAry2.BackUp) {
+    t.Errorf("%v\n"+
+      "Error: intAry1 & intAry2 Backups ARE NOT EQUAL!\n"+
+      "Because !intAry1.BackUp.Equals(&intAry2.BackUp)\n\n",
+      ePrefix)
+
+    return
   }
+
+  return
 }
 
 func TestIntAry_CopyToBackUp_01(t *testing.T) {
-  nStr1 := "100.123"
-  nStr2 := "-52.795813"
-  expected := "100.123"
 
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
-  ia.CopyToBackUp()
-  ia.SetIntAryWithNumStr(nStr2)
+  ePrefix := "TestIntAry_CopyToBackUp_01"
 
-  if nStr2 != ia.GetNumStr() {
-    t.Errorf("Error - Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v' .", nStr2, ia.GetNumStr())
+  originalNumberStr1 := "100.123"
+
+  originalNumberStr2 := "-52.795813"
+
+  expectedNumberStr := "100.123"
+
+  intAry1 := new(IntAry).New()
+
+  err := intAry1.SetIntAryWithNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
   }
 
-  str := ia.BackUp.GetNumStr()
+  err = intAry1.IsValid("Validating initial intAry1")
 
-  if expected != str {
-    t.Errorf("Error - Expected ia.BackUp.GetNumStr()= '%v' .  Instead, ia.BackUp.GetNumStr()= '%v' .", expected, str)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  err = intAry1.CopyToBackUp()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.CopyToBackUp()\n"+
+      "intAry1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry1NumberStr, err.Error())
+    return
+  }
+
+  err = intAry1.SetIntAryWithNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := ia.SetIntAryWithNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Setting Final IntAry1 Value!"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry1.IsValid("Validating final intAry1 value")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating final intAry1 value')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1FinalNumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1FinalNumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1Final set to intAry1 after copy operation.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry1FinalNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings ARE NOT EQUAL!\n"+
+      "Because originalNumberStr2 != intAry1FinalNumberStr\n"+
+      "Expected intAry1FinalNumberStr = '%v'\n"+
+      "  Actual intAry1FinalNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry1FinalNumberStr)
+
+    return
+  }
+
+  intAry1BackupNumberStr := intAry1.BackUp.GetNumStr()
+
+  if expectedNumberStr != intAry1BackupNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != intAry1BackupNumberStr\n"+
+      "Expected intAry1BackupNumberStr = '%v'\n"+
+      "  Actual intAry1BackupNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAry1BackupNumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DecrementIntegerOne_01(t *testing.T) {
