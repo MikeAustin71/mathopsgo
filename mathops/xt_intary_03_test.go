@@ -7077,509 +7077,3362 @@ func TestIntAry_DivideByTenToPower_06(t *testing.T) {
 }
 
 func TestIntAry_DivideThisBy_01(t *testing.T) {
-  dividend := "56234369384300"
-  divisor := "24"
-  eQuotient := "2343098724345.833333333333333333333"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_01"
+
+  originalDividendNumberStr := "56234369384300"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 21
-  ePrecision := 21
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                                   1         2         3
+  //                                        0.123456789012345678901234567890
+  expectedQuotientNumberStr := "2343098724345.833333333333333333333"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(21)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend := new(IntAry).New()
+
+  err := intAryDividend.SetIntAryWithNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryDividend.SetIntAryWithNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  err = intAryDividend.IsValid("Validating initial intAryDividend")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDividend.IsValid('Validating initial intAryDividend')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
+  intAryDivisor := new(IntAry).New()
+
+  err = intAryDivisor.SetIntAryWithNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryDivisor.SetIntAryWithNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
+  }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_02(t *testing.T) {
-  dividend := "48"
-  divisor := "24"
-  eSignVal := 1
-  eQuotient := "2"
+
+  ePrefix := "TestIntAry_DivideThisBy_02"
+
+  originalDividendNumberStr := "48"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 21
-  ePrecision := 0
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                       1         2         3
+  //                            0.123456789012345678901234567890
+  expectedQuotientNumberStr := "2"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_03(t *testing.T) {
-  dividend := "24"
-  divisor := "24"
-  eQuotient := "1"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_03"
+
+  originalDividendNumberStr := "24"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 21
-  ePrecision := 0
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                       1         2         3
+  //                            0.123456789012345678901234567890
+  expectedQuotientNumberStr := "1"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_04(t *testing.T) {
-  dividend := "0.05"
-  divisor := "24"
-  eQuotient := "0.00208333333333333333333333333333"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_04"
+
+  originalDividendNumberStr := "0.05"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 32
-  ePrecision := 32
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                       1         2         3
+  //                            0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "0.00208333333333333333333333333333"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(32)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_05(t *testing.T) {
-  dividend := "0"
-  divisor := "24"
-  eQuotient := "0"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_05"
+
+  originalDividendNumberStr := "0"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 7
-  ePrecision := 0
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                       1         2         3
+  //                            0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "0"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_06(t *testing.T) {
-  dividend := "48"
-  divisor := "0"
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  ePrefix := "TestIntAry_DivideThisBy_06"
 
-  _, err := ia1.DivideThisBy(&ia2, 0, 15)
+  originalDividendNumberStr := "48"
 
-  if err == nil {
-    t.Error("Expected an error from Divideby zero. No Error Received!")
+  originalDivisorNumberStr := "0"
+
+  maxPrecision := 15
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
+  }
+
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
+  }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  _, err = intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected a Divide by Zero Error, BUT NO ERROR WAS RETURNED!\n"+
+      "intAryDivisor= 0\n"+
+      "Division by zero should produce an error.\n\n", ePrefix)
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_07(t *testing.T) {
-  dividend := "-9360"
-  divisor := "24.48"
-  eQuotient := "-382.35294117647058823529411764706"
-  eSignVal := -1
+
+  ePrefix := "TestIntAry_DivideThisBy_07"
+
+  originalDividendNumberStr := "-9360"
+
+  originalDivisorNumberStr := "24.48"
+
   maxPrecision := 29
-  ePrecision := 29
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                          1         2         3
+  //                               0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "-382.35294117647058823529411764706"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(29)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_08(t *testing.T) {
-  dividend := "-9360"
-  divisor := "-24.48"
-  eQuotient := "382.35294117647058823529411764706"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_08"
+
+  originalDividendNumberStr := "-9360"
+
+  originalDivisorNumberStr := "-24.48"
+
   maxPrecision := 29
-  ePrecision := 29
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                         1         2         3
+  //                              0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "382.35294117647058823529411764706"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(29)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_09(t *testing.T) {
-  dividend := "9360"
-  divisor := "-24.48"
-  eQuotient := "-382.35294117647058823529411764706"
-  eSignVal := -1
+
+  ePrefix := "TestIntAry_DivideThisBy_09"
+
+  originalDividendNumberStr := "9360"
+
+  originalDivisorNumberStr := "-24.48"
+
   maxPrecision := 29
-  ePrecision := 29
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                          1         2         3
+  //                               0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "-382.35294117647058823529411764706"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(29)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_10(t *testing.T) {
-  dividend := "-19260.549"
-  divisor := "-246.483"
-  eQuotient := "78.141490488187826340964691276883"
-  eSignVal := 1
+
+  ePrefix := "TestIntAry_DivideThisBy_10"
+
+  originalDividendNumberStr := "-19260.549"
+
+  originalDivisorNumberStr := "-246.483"
+
   maxPrecision := 30
-  ePrecision := 30
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  //                                        1         2         3
+  //                             0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "78.141490488187826340964691276883"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(30)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_11(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_11"
+
   // Testing condition where maxPrecision is
   // less than significant result.
-  dividend := "1"
-  divisor := "25"
-  // actual result is "0.04"
-  eQuotient := "0.0"
-  eSignVal := 1
+
+  originalDividendNumberStr := "1"
+
+  originalDivisorNumberStr := "25"
+
   maxPrecision := 1
-  ePrecision := 1
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  // actual result is "0.04"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  //                                       1         2         3
+  //                            0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "0.0"
+
+  expectedPrecisionUint := uint(1)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_12(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_12"
+
   // Testing condition where maxPrecision is
-  // greater than than significant result.
-  dividend := "1"
-  divisor := "25"
-  // actual result is "0.04"
-  eQuotient := "0.04"
-  eSignVal := 1
+  // greater than significant result.
+
+  originalDividendNumberStr := "1"
+
+  originalDivisorNumberStr := "25"
+
   maxPrecision := 10 // maxPrecision exceeds actual result
-  ePrecision := 2
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  // actual result is "0.04"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  //                                       1         2         3
+  //                            0.12345678901234567890123456789012
+  expectedQuotientNumberStr := "0.04"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_13(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_13"
+
   // Testing condition where maxPrecision is
   // set equal to -1.
-  dividend := "1"
-  divisor := "26"
-  eQuotient := "0.0384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615385"
-  eSignVal := 1
+
+  originalDividendNumberStr := "1"
+
+  originalDivisorNumberStr := "26"
+
   maxPrecision := -1 // maxPrecision exceeds actual result
-  ePrecision := 4096
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  expectedQuotientNumberStr := "0.0384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615385"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(4096)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_14(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_14"
+
   // Testing condition where maxPrecision is
   // invalid
-  dividend := "1"
-  divisor := "25"
+
+  originalDividendNumberStr := "1"
+
+  originalDivisorNumberStr := "25"
+
   maxPrecision := -10 // maxPrecision exceeds actual result
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
-  _, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
-
-  if err == nil {
-    t.Error("Expected error to result from invalid 'maxPrecision' value of -10. Instead, no such error was triggered")
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
+  }
+
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
+  }
+
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  _, err = intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Function Call:\n"+
+      " _, err = intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "maxPrecision= %v\n"+
+      "'maxPrecision' IS INVALID!\n"+
+      "Invalid 'maxPrecision' should produce an error.\n\n", ePrefix, maxPrecision)
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_15(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_15"
+
   // Test Condition were actual decimal places are
   // 21+ and maxPrecision is set to zero
-  dividend := "56234369384300"
-  divisor := "24"
-  // actual eQuotient := "2343098724345.833333333333333333333"
-  eQuotient := "2343098724346"
-  eSignVal := 1
+
+  originalDividendNumberStr := "56234369384300"
+
+  originalDivisorNumberStr := "24"
+
   maxPrecision := 0
-  ePrecision := 0
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  // actual eQuotient := "2343098724345.833333333333333333333"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedQuotientNumberStr := "2343098724346"
+
+  expectedPrecisionUint := uint(0)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_DivideThisBy_16(t *testing.T) {
+
+  ePrefix := "TestIntAry_DivideThisBy_16"
+
   // Test Condition were actual decimal places are
   // 21+ and maxPrecision is set to zero
-  dividend := "1"
-  divisor := "5132188731375616"
-  eQuotient := "0.0000000000000001948486410654588479586365019367735312710807776562419879994613957690782179395268844976594976574190856910462423734806284591100904041759223999872534562498706764291924041486253101558649510819197172143928398136686955522152677536556303208645361801676397426605377561320278442021917586553676450097223493264453235937316338207393368423631288419620924881566999933402357520007410670136732435322811808257677794240393475046309703702321880635871858096536620946259448966209463978714360724504546027791919182097769678551824119271867445986093109132873712847086353082760161728835291168886244778340678734742887929927691392086547229915192975721487525948779793899832544746398668414935327086017026715079825557839286764777130808629545941416744923613139031065794055208370453857117267343145382178198213289314418222458170836304178717692361810139999277887517350389701068636718076181550016169308117583049414576551610275225085122626807472053468620691915924510100661007669795710586291378217910587138791895083422555361272265231787002422046566"
-  eSignVal := 1
+
+  originalDividendNumberStr := "1"
+
+  originalDivisorNumberStr := "5132188731375616"
+
   maxPrecision := 1024
-  ePrecision := 1024
 
-  ia1 := IntAry{}.New()
-  ia1.SetIntAryWithNumStr(dividend)
-  ia2 := IntAry{}.New()
-  ia2.SetIntAryWithNumStr(divisor)
+  expectedQuotientNumberStr := "0.0000000000000001948486410654588479586365019367735312710807776562419879994613957690782179395268844976594976574190856910462423734806284591100904041759223999872534562498706764291924041486253101558649510819197172143928398136686955522152677536556303208645361801676397426605377561320278442021917586553676450097223493264453235937316338207393368423631288419620924881566999933402357520007410670136732435322811808257677794240393475046309703702321880635871858096536620946259448966209463978714360724504546027791919182097769678551824119271867445986093109132873712847086353082760161728835291168886244778340678734742887929927691392086547229915192975721487525948779793899832544746398668414935327086017026715079825557839286764777130808629545941416744923613139031065794055208370453857117267343145382178198213289314418222458170836304178717692361810139999277887517350389701068636718076181550016169308117583049414576551610275225085122626807472053468620691915924510100661007669795710586291378217910587138791895083422555361272265231787002422046566"
 
-  quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
+  expectedPrecisionUint := uint(1024)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryDividend, err := new(IntAry).NewNumStr(originalDividendNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDividend, err := new(IntAry).\n"+
+      "  NewNumStr(originalDividendNumberStr)\n"+
+      "originalDividendNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDividendNumberStr, err.Error())
+    return
   }
 
-  if eQuotient != quotient.GetNumStr() {
-    t.Errorf("Expected quotient.GetNumStr()= '%v' .  Instead, quotient.GetNumStr()= '%v'  .", eQuotient, quotient.GetNumStr())
+  intAryDividendNumberStr, err := intAryDividend.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != quotient.GetPrecision() {
-    t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
+  if originalDividendNumberStr != intAryDividendNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Dividend Number String Values ARE NOT Equal\n"+
+      "Because originalDividendNumberStr != intAryDividendNumberStr\n"+
+      "Expected intAryDividendNumberStr = '%v'\n"+
+      "  Actual intAryDividendNumberStr = '%v'\n\n",
+      ePrefix, originalDividendNumberStr, intAryDividendNumberStr)
+
+    return
   }
 
-  if eSignVal != quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, quotient.GetSign())
+  intAryDivisor, err := new(IntAry).NewNumStr(originalDivisorNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryDivisor, err := new(IntAry).\n"+
+      "  NewNumStr(originalDivisorNumberStr)\n"+
+      "originalDivisorNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, err.Error())
+    return
   }
 
+  err = intAryDivisor.IsValid("Validating initial intAryDivisor")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryDivisor.IsValid('Validating initial intAryDivisor')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryDivisorNumberStr, err := intAryDivisor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalDivisorNumberStr != intAryDivisorNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Divisor Number String Values ARE NOT Equal\n"+
+      "Because originalDivisorNumberStr != intAryDivisorNumberStr\n"+
+      "Expected intAryDivisorNumberStr = '%v'\n"+
+      "  Actual intAryDivisorNumberStr = '%v'\n\n",
+      ePrefix, originalDivisorNumberStr, intAryDivisorNumberStr)
+
+    return
+  }
+
+  intAryQuotient, err := intAryDividend.DivideThisBy(&intAryDivisor, 0, maxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotient, err := intAryDividend.DivideThisBy(\n"+
+      "  &intAryDivisor, 0, maxPrecision)\n"+
+      "intAryDividend= '%v'\n"+
+      "intAryDivisor= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryDividendNumberStr,
+      intAryDivisorNumberStr,
+      maxPrecision,
+      err.Error())
+
+    return
+  }
+
+  err = intAryQuotient.IsValid("Validating intAryQuotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryQuotient.IsValid('Validating intAryQuotient')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumberStr, err := intAryQuotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryQuotientPrecisionUint, err := intAryQuotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientPrecisionUint, err :=\n"+
+      "  intAryQuotient.GetPrecisionUint()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientSignValue, err := intAryQuotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientSignValue, err := intAryQuotient.GetSign()\n"+
+      "intAryQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryQuotientNumSeps, err := intAryQuotient.GetNumericSeparatorsDto()\n"+
+      "intAryQuotient= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryQuotientNumberStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumberStr != intAryQuotientNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedQuotientNumberStr != intAryQuotientNumberStr \n"+
+      "Expected intAryQuotientNumberStr = '%v'\n"+
+      "  Actual intAryQuotientNumberStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumberStr, intAryQuotientNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryQuotientPrecisionUint\n"+
+      "Expected intAryQuotientPrecisionUint = '%v'\n"+
+      "  Actual intAryQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryQuotient Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryQuotientSignValue\n"+
+      "Expected intAryQuotientSignValue = '%v'\n"+
+      "  Actual intAryQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryQuotientNumSeps \n"+
+      "Expected intAryQuotientNumSeps = '%v'\n"+
+      "  Actual intAryQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
