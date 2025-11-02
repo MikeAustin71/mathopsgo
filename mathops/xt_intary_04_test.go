@@ -1,1519 +1,2143 @@
 package mathops
 
 import (
-	"math/big"
-	"testing"
+  "math/big"
+  "testing"
 )
 
 func TestIntAry_GetAbsoluteValue_01(t *testing.T) {
-	numStr := "-927.351"
-	eNumStr := "927.351"
 
-	ia1, _ := IntAry{}.NewNumStr(numStr)
+  ePrefix := "TestIntAry_GetAbsoluteValue_01"
 
-	if numStr != ia1.GetNumStr() {
-		t.Errorf("Error. Expected initialized NumStr= %v .  Instead, NumStr= %v", numStr, ia1.GetNumStr())
-	}
+  originalNumberStr := "-927.351"
 
-	ia2 := ia1.GetAbsoluteValue()
+  //                                 1         2         3
+  //                      0.123456789012345678901234567890
+  expectedNumberStr := "927.351"
 
-	if eNumStr != ia2.GetNumStr() {
-		t.Errorf("Error. Expected absolute value NumStr= %v .  Instead, NumStr= %v", eNumStr, ia2.GetAbsoluteValue())
-	}
+  expectedPrecisionUint := uint(3)
 
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry1, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1, err := new(IntAry).NewNumStr(\n"+
+      "  originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry1.IsValid("Validating initial intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating initial intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "intAry1 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2, err := intAry1.GetAbsoluteValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2, err := intAry1.GetAbsoluteValue()\n"+
+      "intAry1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry1NumberStr, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2PrecisionUint, err := intAry2.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2PrecisionUint, err :=\n"+
+      "  intAry2.GetPrecisionUint()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry2NumberStr, err.Error())
+    return
+  }
+
+  intAry2SignValue, err := intAry2.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2SignValue, err := intAry2.GetSign()\n"+
+      "intAry2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAry2NumberStr, err.Error())
+    return
+  }
+
+  intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumSeps, err := intAry2.GetNumericSeparatorsDto()\n"+
+      "intAry2= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAry2NumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAry2NumberStr \n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAry2NumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAry2PrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAry2PrecisionUint\n"+
+      "Expected intAry2PrecisionUint = '%v'\n"+
+      "  Actual intAry2PrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAry2PrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAry2SignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry2 Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAry2SignValue\n"+
+      "Expected intAry2SignValue = '%v'\n"+
+      "  Actual intAry2SignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAry2SignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAry2NumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAry2NumSeps \n"+
+      "Expected intAry2NumSeps = '%v'\n"+
+      "  Actual intAry2NumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAry2NumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetBigIntNum_01(t *testing.T) {
 
-	bigI := big.NewInt(int64(123456123456))
-	precision := 6
+  ePrefix := "TestIntAry_GetBigIntNum_01"
 
-	exStr := "123456.123456"
+  originalBigInt := big.NewInt(int64(123456123456))
 
-	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, uint(precision))
+  originalPrecisionUint := uint(6)
 
-	intAry, err := IntAry{}.NewBigInt(bigI, precision)
+  originalPrecisionInt := 6
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). "+
-			"Error='%v' ", err.Error())
-	}
+  //                                    1         2         3
+  //                         0.123456789012345678901234567890
+  expectedNumberStr := "123456.123456"
 
-	bigINum, err := intAry.GetBigIntNum()
+  expectedPrecisionUint := uint(6)
 
-	if err != nil {
-		t.Errorf("Error returned by intAry.GetBigIntNum(). "+
-			"Error='%v' ", err.Error())
-	}
+  expectedScaleFactor := big.NewInt(1000000)
 
-	if !expectedBigIntNum.Equal(bigINum) {
-		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
-			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
-			expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
-			bigINum.bigInt.Text(10), bigINum.precision)
-	}
+  expectedSignValue := 1
 
-	actualNumStr := bigINum.GetNumStr()
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	if exStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
-			exStr, actualNumStr)
-	}
+  expectedBigIntNum, err := new(BigIntNum).NewBigInt(originalBigInt, originalPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " expectedBigIntNum, err := new(BigIntNum).NewBigInt(\n"+
+      "  originalBigInt, originalPrecisionUint)\n"+
+      "originalBigInt= '%v'\n"+
+      "originalPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBigInt.Text(10),
+      originalPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = expectedBigIntNum.IsValid("Validating expectedBigIntNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigIntNum.IsValid('Validating expectedBigIntNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigIntNumNumberStr, err := expectedBigIntNum.GetNumStr()
+
+  if err != nil {
+
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumNumberStr, err := expectedBigIntNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if expectedNumberStr != expectedBigIntNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected & expected bInt Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != expectedBigIntNumNumberStr\n"+
+      "Expected expectedBigIntNumNumberStr = '%v'\n"+
+      "  Actual expectedBigIntNumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, expectedBigIntNumNumberStr)
+
+    return
+  }
+
+  intAry, err := new(IntAry).NewBigInt(originalBigInt, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewBigInt(\n"+
+      "  originalBigInt, originalPrecisionInt)\n"+
+      "multiplierStr= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalBigInt.Text(10),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINum, err := intAry.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINum, err := intAry.GetBigIntNum()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  err = bigINum.IsValid("Validating bigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bigINum.IsValid('Validating bigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumberStr, err := bigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumberStr, err := bigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumPrecisionUint, err := bigINum.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumPrecisionUint, err := bigINum.GetPrecisionUint()\n"+
+      "bigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigINumNumberStr, err.Error())
+    return
+  }
+
+  bigINumSignValue, err := bigINum.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumSignValue, err := bigINum.GetSign()\n"+
+      "bigINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigINumNumberStr, err.Error())
+    return
+  }
+
+  bigINumScaleFactor, err := bigINum.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumScaleFactor, err := bigINum.GetScaleFactor()\n"+
+      "bigINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigINumNumberStr, err.Error())
+    return
+  }
+
+  bigINumBigInt, err := bigINum.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumBigInt, err := bigINum.GetBigInt()\n"+
+      "bigINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigINumNumberStr, err.Error())
+    return
+  }
+
+  bigINumSeps, err := bigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumSeps, err := bigINum.GetNumericSeparatorsDto()\n"+
+      "bigINum= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != bigINumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected & bINum Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != bigINumNumberStr\n"+
+      "Expected bigINumNumberStr = '%v'\n"+
+      "  Actual bigINumNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, bigINumNumberStr)
+
+    return
+  }
+
+  expectedBigIntNumEqualsBigINum, err := expectedBigIntNum.Equal(bigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigIntNumEqualsBigINum, err :=\n"+
+      "  expectedBigIntNum.Equal(bigINum)\n"+
+      "expectedBigIntNum= '%v'\n"+
+      "bigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      expectedBigIntNumNumberStr,
+      bigINumNumberStr,
+      err.Error())
+
+    return
+  }
+
+  if !expectedBigIntNumEqualsBigINum {
+    t.Errorf("%v\n"+
+      "Error: expectedBigIntNumEqualsBigINum == 'false'!\n"+
+      "Because expectedBigIntNum != bigINum\n"+
+      "Expected bigINum = '%v'\n"+
+      "  Actual bigINum = '%v'\n\n",
+      ePrefix, expectedBigIntNumNumberStr, bigINumNumberStr)
+
+    return
+  }
+
+  if originalBigInt.Cmp(bigINumBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected/bigINum Big Int Values ARE NOT EQUAL!\n"+
+      "Because originalBigInt.Cmp(bigINumBigInt) != 0\n"+
+      "Expected bigINumBigInt = '%v'\n"+
+      "  Actual bigINumBigInt = '%v'\n\n",
+      ePrefix, originalBigInt.Text(10), bigINumBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionUint != bigINumPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != bigINumPrecisionUint\n"+
+      "Expected bigINumPrecisionUint = '%v'\n"+
+      "  Actual bigINumPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigINumPrecisionUint)
+
+    return
+  }
+
+  if expectedScaleFactor.Cmp(bigINumScaleFactor) != 0 {
+    t.Errorf("%v\n"+
+      "Error: expected & bINum Scale Factors ARE NOT EQUAL!\n"+
+      "Because expectedScaleFactor.Cmp(bigINumScaleFactor) != 0\n"+
+      "Expected bigINumScaleFactor = '%v'\n"+
+      "  Actual bigINumScaleFactor = '%v'\n\n",
+      ePrefix, expectedScaleFactor.Text(10), bigINumScaleFactor.Text(10))
+
+    return
+  }
+
+  if expectedSignValue != bigINumSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & bigINum Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != bigINumSignValue\n"+
+      "Expected bigINumSignValue = '%v'\n"+
+      "  Actual bigINumSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigINumSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigINumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Number Sign Values NOT Equal\n"+
+      "Because expectedNumSeps != bigINumSeps \n"+
+      "Expected bigINumSeps = '%v'\n"+
+      "  Actual bigINumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigINumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetCurrencySymbol_01(t *testing.T) {
 
-	ia := IntAry{}.New()
-	curSymbol := ia.GetCurrencySymbol()
-	if '$' != curSymbol {
-		t.Errorf("Error: Expected Currency Symbol= '$'. Instead, received Currency Symbol= '%v'", curSymbol)
-	}
+  ePrefix := "TestIntAry_GetCurrencySymbol_01"
 
+  expectedCurrencyRune := '$'
+
+  intAry := new(IntAry).New()
+
+  curSymbol := intAry.GetCurrencySymbol()
+
+  if expectedCurrencyRune != curSymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency SymbolS ARE NOT EQUAL!\n"+
+      "Because expectedCurrencyRune != curSymbol\n"+
+      "Expected curSymbol = '%v'\n"+
+      "  Actual curSymbol = '%v'\n\n",
+      ePrefix, expectedCurrencyRune, curSymbol)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetCurrencySymbol_03(t *testing.T) {
 
-	ia, _ := IntAry{}.NewNumStr("50.37")
+  ePrefix := "TestIntAry_GetCurrencySymbol_03"
 
-	curSymbol := ia.GetCurrencySymbol()
+  expectedCurrencyRune := '$'
 
-	if '$' != curSymbol {
-		t.Errorf("Error: Expected Currency Symbol= '$'. Instead, received Currency Symbol= '%v'", curSymbol)
-	}
+  originalNumberStr := "50.37"
 
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  curSymbol := intAry.GetCurrencySymbol()
+
+  if expectedCurrencyRune != curSymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency SymbolS ARE NOT EQUAL!\n"+
+      "Because expectedCurrencyRune != curSymbol\n"+
+      "Expected curSymbol = '%v'\n"+
+      "  Actual curSymbol = '%v'\n\n",
+      ePrefix, expectedCurrencyRune, curSymbol)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetCurrencySymbol_04(t *testing.T) {
-	ia := IntAry{}.NewInt64(int64(5034), 2)
 
-	curSymbol := ia.GetCurrencySymbol()
+  ePrefix := "TestIntAry_GetCurrencySymbol_04"
 
-	if '$' != curSymbol {
-		t.Errorf("Error: Expected Currency Symbol= '$'. Instead, received Currency Symbol= '%v'", curSymbol)
-	}
+  expectedNumberStr := "50.34"
 
+  expectedCurrencyRune := '$'
+
+  originalInt64 := int64(5034)
+
+  originalPrecisionUint := uint(2)
+
+  intAry, err := new(IntAry).NewInt64(originalInt64, originalPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewInt64(\n"+
+      "  originalInt64, originalPrecisionUint)\n"+
+      "originalInt64= '%v'\n"+
+      "originalPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalInt64,
+      originalPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  curSymbol := intAry.GetCurrencySymbol()
+
+  if expectedCurrencyRune != curSymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency SymbolS ARE NOT EQUAL!\n"+
+      "Because expectedCurrencyRune != curSymbol\n"+
+      "Expected curSymbol = '%v'\n"+
+      "  Actual curSymbol = '%v'\n\n",
+      ePrefix, expectedCurrencyRune, curSymbol)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetCurrencySymbol_05(t *testing.T) {
 
-	ia, _ := IntAry{}.NewNumStr("50.37")
+  ePrefix := "TestIntAry_GetCurrencySymbol_04"
 
-	var poundSym rune
+  expectedNumberStr := "50.37"
 
-	poundSym = '\U000000a3'
+  var expectedCurrencyRune rune
 
-	ia.SetCurrencySymbol(poundSym)
+  expectedCurrencyRune = '\U000000a3'
 
-	curSymbol := ia.GetCurrencySymbol()
+  intAry, err := new(IntAry).NewNumStr(expectedNumberStr)
 
-	if poundSym != curSymbol {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", poundSym, curSymbol)
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(expectedNumberStr)\n"+
+      "expectedNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumberStr, err.Error())
+    return
+  }
 
+  err = intAry.IsValid("Validating intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  err = intAry.SetCurrencySymbol(expectedCurrencyRune)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.SetCurrencySymbol(expectedCurrencyRune)\n"+
+      "intAry= '%v'\n"+
+      "expectedCurrencyRune= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      expectedCurrencyRune,
+      err.Error())
+
+    return
+  }
+
+  curSymbol := intAry.GetCurrencySymbol()
+
+  if expectedCurrencyRune != curSymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency SymbolS ARE NOT EQUAL!\n"+
+      "Because expectedCurrencyRune != curSymbol\n"+
+      "Expected curSymbol = '%v'\n"+
+      "  Actual curSymbol = '%v'\n\n",
+      ePrefix, expectedCurrencyRune, curSymbol)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetDecimal_01(t *testing.T) {
-	numStr := "198649257.12345678"
+  numStr := "198649257.12345678"
 
-	controlDecimal, err := Decimal{}.NewNumStr(numStr)
+  controlDecimal, err := Decimal{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). "+
-			"numStr='%v' Error='%v'",
-			numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). "+
+      "numStr='%v' Error='%v'",
+      numStr, err.Error())
+  }
 
-	ia, err := IntAry{}.NewNumStr(numStr)
+  ia, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia = IntAry{}.NewNumStr(numStr). "+
-			"numStr='%v' Error='%v'",
-			numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia = IntAry{}.NewNumStr(numStr). "+
+      "numStr='%v' Error='%v'",
+      numStr, err.Error())
+  }
 
-	decActual, err := ia.GetDecimal()
+  decActual, err := ia.GetDecimal()
 
-	if err != nil {
-		t.Errorf("Error returned by decActual = ia.GetDecimal(). "+
-			"Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by decActual = ia.GetDecimal(). "+
+      "Error='%v'", err.Error())
+  }
 
-	if numStr != decActual.GetNumStr() {
-		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, "+
-			"decActual.GetNumStr()='%v'.",
-			numStr, decActual.GetNumStr())
-	}
+  if numStr != decActual.GetNumStr() {
+    t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, "+
+      "decActual.GetNumStr()='%v'.",
+      numStr, decActual.GetNumStr())
+  }
 
-	if !controlDecimal.Equal(decActual) {
-		t.Errorf("Error: controlDecimal NOT EQUAL to decActual! "+
-			"controlDecimal='%v' decActual='%v'",
-			controlDecimal.GetNumStr(), decActual.GetNumStr())
-	}
+  if !controlDecimal.Equal(decActual) {
+    t.Errorf("Error: controlDecimal NOT EQUAL to decActual! "+
+      "controlDecimal='%v' decActual='%v'",
+      controlDecimal.GetNumStr(), decActual.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetDecimalSeparator_01(t *testing.T) {
-	ia := IntAry{}.New()
+  ia := IntAry{}.New()
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if '.' != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
-	}
+  if '.' != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetDecimalSeparator_02(t *testing.T) {
-	ia, _ := IntAry{}.NewNumStr("50.37")
+  ia, _ := IntAry{}.NewNumStr("50.37")
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if '.' != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
-	}
+  if '.' != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetDecimalSeparator_03(t *testing.T) {
 
-	ia := IntAry{}.NewInt(5064, 2)
+  ia := IntAry{}.NewInt(5064, 2)
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if '.' != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
-	}
+  if '.' != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '.'. Instead, received Currency Symbol= '%v'", decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetDecimalSeparator_04(t *testing.T) {
-	ia := IntAry{}.New()
+  ia := IntAry{}.New()
 
-	var frenchDecSeparator rune
+  var frenchDecSeparator rune
 
-	frenchDecSeparator = ','
+  frenchDecSeparator = ','
 
-	var frenchThousandsSeparator rune
+  var frenchThousandsSeparator rune
 
-	frenchThousandsSeparator = ' '
+  frenchThousandsSeparator = ' '
 
-	ia.SetDecimalSeparator(frenchDecSeparator)
-	ia.SetThousandsSeparator(frenchThousandsSeparator)
+  ia.SetDecimalSeparator(frenchDecSeparator)
+  ia.SetThousandsSeparator(frenchThousandsSeparator)
 
-	ia.SetIntAryWithNumStr("450 123 647,1234")
+  ia.SetIntAryWithNumStr("450 123 647,1234")
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if frenchDecSeparator != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
-	}
+  if frenchDecSeparator != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
+  }
 
-	numStr := ia.GetNumStr()
+  numStr := ia.GetNumStr()
 
-	expectedNumStr := "450123647,1234"
+  expectedNumStr := "450123647,1234"
 
-	if expectedNumStr != numStr {
-		t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
-	}
+  if expectedNumStr != numStr {
+    t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
+  }
 
 }
 
 func TestIntAry_GetInt_01(t *testing.T) {
 
-	nStr1 := "50"
-	expected := int(50)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "50"
+  expected := int(50)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt()
+  result, err := ia.GetInt()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt_02(t *testing.T) {
 
-	nStr1 := "-50"
-	expected := int(-50)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-50"
+  expected := int(-50)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt()
+  result, err := ia.GetInt()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt_03(t *testing.T) {
 
-	nStr1 := "2147483647"
-	expected := int(2147483647)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "2147483647"
+  expected := int(2147483647)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt()
+  result, err := ia.GetInt()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt()= %v .  Instead ia.GetInt()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt_04(t *testing.T) {
 
-	nStr1 := "2147483648"
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "2147483648"
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	_, err := ia.GetInt()
+  _, err := ia.GetInt()
 
-	if err == nil {
-		t.Error("Input Value Exceeded maximum allowable value for a 32-bit Int. This should have thrown an error. However, no error was thrown! ")
-	}
+  if err == nil {
+    t.Error("Input Value Exceeded maximum allowable value for a 32-bit Int. This should have thrown an error. However, no error was thrown! ")
+  }
 
 }
 
 func TestIntAry_GetInt_05(t *testing.T) {
 
-	nStr1 := "-2147483649"
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-2147483649"
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	_, err := ia.GetInt()
+  _, err := ia.GetInt()
 
-	if err == nil {
-		t.Error("Input Value was less than the minimum allowable value for a 32-big Int. This should have thrown an error. However, no error was thrown! ")
-	}
+  if err == nil {
+    t.Error("Input Value was less than the minimum allowable value for a 32-big Int. This should have thrown an error. However, no error was thrown! ")
+  }
 
 }
 
 func TestIntAry_GetIntAry_01(t *testing.T) {
 
-	expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
+  expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
-	ia, _ := IntAry{}.NewNumStr("12345694829")
+  ia, _ := IntAry{}.NewNumStr("12345694829")
 
-	iAry, iAryLen := ia.GetIntAryElements()
+  iAry, iAryLen := ia.GetIntAryElements()
 
-	expectedLen := 11
+  expectedLen := 11
 
-	if expectedLen != iAryLen {
-		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
-	}
+  if expectedLen != iAryLen {
+    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  }
 
-	for i := 0; i < iAryLen; i++ {
-		if expectedAry[i] != iAry[i] {
-			t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
-		}
-	}
+  for i := 0; i < iAryLen; i++ {
+    if expectedAry[i] != iAry[i] {
+      t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
+    }
+  }
 
 }
 
 func TestIntAry_GetIntAry_02(t *testing.T) {
 
-	ia, _ := IntAry{}.NewNumStr("12345694829")
+  ia, _ := IntAry{}.NewNumStr("12345694829")
 
-	iAry, iAryLen := ia.GetIntAryElements()
+  iAry, iAryLen := ia.GetIntAryElements()
 
-	iAry[4] = 9
+  iAry[4] = 9
 
-	expectedLen := 11
+  expectedLen := 11
 
-	if expectedLen != iAryLen {
-		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
-	}
+  if expectedLen != iAryLen {
+    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  }
 
-	iAry2, _ := ia.GetIntAryElements()
+  iAry2, _ := ia.GetIntAryElements()
 
-	// GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
-	if iAry[4] != iAry2[4] {
-		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value remained unchanged. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
-	}
+  // GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
+  if iAry[4] != iAry2[4] {
+    t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value remained unchanged. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
+  }
 
 }
 
 func TestIntAry_GetIntAryDeepCopy(t *testing.T) {
 
-	expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
+  expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
-	ia, _ := IntAry{}.NewNumStr("12345694829")
+  ia, _ := IntAry{}.NewNumStr("12345694829")
 
-	iAry, iAryLen := ia.GetIntAryDeepCopy()
+  iAry, iAryLen := ia.GetIntAryDeepCopy()
 
-	expectedLen := 11
+  expectedLen := 11
 
-	if expectedLen != iAryLen {
-		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
-	}
+  if expectedLen != iAryLen {
+    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  }
 
-	for i := 0; i < iAryLen; i++ {
-		if expectedAry[i] != iAry[i] {
-			t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
-		}
-	}
+  for i := 0; i < iAryLen; i++ {
+    if expectedAry[i] != iAry[i] {
+      t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
+    }
+  }
 
 }
 
 func TestIntAry_GetIntAryDeepCopy_02(t *testing.T) {
 
-	ia, _ := IntAry{}.NewNumStr("12345694829")
+  ia, _ := IntAry{}.NewNumStr("12345694829")
 
-	iAry, iAryLen := ia.GetIntAryDeepCopy()
+  iAry, iAryLen := ia.GetIntAryDeepCopy()
 
-	iAry[4] = 9
+  iAry[4] = 9
 
-	expectedLen := 11
+  expectedLen := 11
 
-	if expectedLen != iAryLen {
-		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
-	}
+  if expectedLen != iAryLen {
+    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  }
 
-	iAry2, _ := ia.GetIntAryDeepCopy()
+  iAry2, _ := ia.GetIntAryDeepCopy()
 
-	// GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
-	if iAry[4] == iAry2[4] {
-		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value was also changed. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
-	}
+  // GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
+  if iAry[4] == iAry2[4] {
+    t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value was also changed. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
+  }
 
 }
 
 func TestIntAry_GetInt64_01(t *testing.T) {
 
-	nStr1 := "50"
-	expected := int64(50)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "50"
+  expected := int64(50)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt64()
+  result, err := ia.GetInt64()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt64_02(t *testing.T) {
 
-	nStr1 := "-50"
-	expected := int64(-50)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-50"
+  expected := int64(-50)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt64()
+  result, err := ia.GetInt64()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt64_03(t *testing.T) {
 
-	nStr1 := "9223372036854775807"
-	expected := int64(9223372036854775807)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "9223372036854775807"
+  expected := int64(9223372036854775807)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt64()
+  result, err := ia.GetInt64()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetInt64_04(t *testing.T) {
 
-	nStr1 := "9223372036854775808"
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "9223372036854775808"
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	_, err := ia.GetInt64()
+  _, err := ia.GetInt64()
 
-	if err == nil {
-		t.Error("Input Value Exceeded maximum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
-	}
+  if err == nil {
+    t.Error("Input Value Exceeded maximum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
+  }
 
 }
 
 func TestIntAry_GetInt64_05(t *testing.T) {
 
-	nStr1 := "-9223372036854775809"
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-9223372036854775809"
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	_, err := ia.GetInt64()
+  _, err := ia.GetInt64()
 
-	if err == nil {
-		t.Error("Input Value was less than the minimum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
-	}
+  if err == nil {
+    t.Error("Input Value was less than the minimum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
+  }
 }
 
 func TestIntAry_GetInt64_06(t *testing.T) {
 
-	nStr1 := "-9223372036854775808"
-	expected := int64(-9223372036854775808)
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-9223372036854775808"
+  expected := int64(-9223372036854775808)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	result, err := ia.GetInt64()
+  result, err := ia.GetInt64()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+  }
 
-	if expected != result {
-		t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
-	}
+  if expected != result {
+    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  }
 
 }
 
 func TestIntAry_GetFractionalDigits_01(t *testing.T) {
 
-	nStr1 := "2.7894"
-	expected := "0.7894"
-	precision := 4
-	signVal := 1
+  nStr1 := "2.7894"
+  expected := "0.7894"
+  precision := 4
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetFractionalDigits()
+  iAry2, err := ia.GetFractionalDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
-	}
+  if false != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetFractionalDigits_02(t *testing.T) {
 
-	nStr1 := "2"
-	expected := "0"
-	precision := 0
-	signVal := 1
+  nStr1 := "2"
+  expected := "0"
+  precision := 0
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetFractionalDigits()
+  iAry2, err := ia.GetFractionalDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
-	}
+  if true != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetFractionalDigits_03(t *testing.T) {
 
-	nStr1 := "2.00"
-	expected := "0.00"
-	precision := 2
-	signVal := 1
+  nStr1 := "2.00"
+  expected := "0.00"
+  precision := 2
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetFractionalDigits()
+  iAry2, err := ia.GetFractionalDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
-	}
+  if true != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetFractionalDigits_04(t *testing.T) {
 
-	nStr1 := "-2.978562154907"
-	expected := "0.978562154907"
-	precision := 12
-	signVal := 1
+  nStr1 := "-2.978562154907"
+  expected := "0.978562154907"
+  precision := 12
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetFractionalDigits()
+  iAry2, err := ia.GetFractionalDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
-	}
+  if false != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetIntegerDigits_01(t *testing.T) {
 
-	nStr1 := "997562.4692"
-	expected := "997562"
-	precision := 0
-	signVal := 1
+  nStr1 := "997562.4692"
+  expected := "997562"
+  precision := 0
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetIntegerDigits()
+  iAry2, err := ia.GetIntegerDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
-	}
+  if false != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetIntegerDigits_02(t *testing.T) {
 
-	nStr1 := "0.4692"
-	expected := "0"
-	precision := 0
-	signVal := 1
+  nStr1 := "0.4692"
+  expected := "0"
+  precision := 0
+  signVal := 1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetIntegerDigits()
+  iAry2, err := ia.GetIntegerDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
-	}
+  if true != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetIntegerDigits_03(t *testing.T) {
 
-	nStr1 := "-987.4692"
-	expected := "-987"
-	precision := 0
-	signVal := -1
+  nStr1 := "-987.4692"
+  expected := "-987"
+  precision := 0
+  signVal := -1
 
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	iAry2, err := ia.GetIntegerDigits()
+  iAry2, err := ia.GetIntegerDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
-	}
+  if false != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'\n", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 
-	nStr1 := "-0.4692"
-	expected := "0"
-	precision := 0
-	signVal := 1
+  nStr1 := "-0.4692"
+  expected := "0"
+  precision := 0
+  signVal := 1
 
-	ia := IntAry{}.New()
-	err := ia.SetIntAryWithNumStr(nStr1)
+  ia := IntAry{}.New()
+  err := ia.SetIntAryWithNumStr(nStr1)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"nStr1='%v' Error='%v' ", nStr1, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "nStr1='%v' Error='%v' ", nStr1, err.Error())
+  }
 
-	iAry2, err := ia.GetIntegerDigits()
+  iAry2, err := ia.GetIntegerDigits()
 
-	if err != nil {
-		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+  }
 
-	iAry2Stats := iAry2.GetIntAryStats()
+  iAry2Stats := iAry2.GetIntAryStats()
 
-	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got IsZero='%v'", true, iAry2Stats.IsZeroValue)
-	}
+  if true != iAry2Stats.IsZeroValue {
+    t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got IsZero='%v'", true, iAry2Stats.IsZeroValue)
+  }
 
-	s := iAry2.GetNumStr()
-	if expected != s {
-		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'", expected, s)
-	}
+  s := iAry2.GetNumStr()
+  if expected != s {
+    t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'", expected, s)
+  }
 
-	if iAry2.GetPrecision() != precision {
-		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'", precision, iAry2.GetPrecision())
-	}
+  if iAry2.GetPrecision() != precision {
+    t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'", precision, iAry2.GetPrecision())
+  }
 
-	if signVal != iAry2.GetSign() {
-		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'", signVal, iAry2.GetSign())
-	}
+  if signVal != iAry2.GetSign() {
+    t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'", signVal, iAry2.GetSign())
+  }
 
 }
 
 func TestIntAry_GetMagnitude_01(t *testing.T) {
 
-	numStr := "98327123"
-	expectedMagnitude := 7
+  numStr := "98327123"
+  expectedMagnitude := 7
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	actualMagnitude, err := iaNum.GetMagnitude()
+  actualMagnitude, err := iaNum.GetMagnitude()
 
-	if err != nil {
-		t.Errorf("Error returned by iaNum.GetMagnitude() "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by iaNum.GetMagnitude() "+
+      "Error='%v' ", err.Error())
+  }
 
-	if expectedMagnitude != actualMagnitude {
-		t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
-			expectedMagnitude, actualMagnitude)
-	}
+  if expectedMagnitude != actualMagnitude {
+    t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
+      expectedMagnitude, actualMagnitude)
+  }
 
 }
 
 func TestIntAry_GetMagnitude_02(t *testing.T) {
 
-	numStr := "98327123.1234"
-	expectedMagnitude := 7
+  numStr := "98327123.1234"
+  expectedMagnitude := 7
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	actualMagnitude, err := iaNum.GetMagnitude()
+  actualMagnitude, err := iaNum.GetMagnitude()
 
-	if err != nil {
-		t.Errorf("Error returned by iaNum.GetMagnitude() "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by iaNum.GetMagnitude() "+
+      "Error='%v' ", err.Error())
+  }
 
-	if expectedMagnitude != actualMagnitude {
-		t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
-			expectedMagnitude, actualMagnitude)
-	}
+  if expectedMagnitude != actualMagnitude {
+    t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
+      expectedMagnitude, actualMagnitude)
+  }
 
 }
 
 func TestIntAry_GetMagnitude_03(t *testing.T) {
 
-	numStr := "-98327123"
+  numStr := "-98327123"
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	_, err = iaNum.GetMagnitude()
+  _, err = iaNum.GetMagnitude()
 
-	if err == nil {
-		t.Error("Error: Expected error return from iaNum.GetMagnitude(). NO ERROR RETURNED! ")
-	}
+  if err == nil {
+    t.Error("Error: Expected error return from iaNum.GetMagnitude(). NO ERROR RETURNED! ")
+  }
 
 }
 
 func TestIntAry_GetMagnitudeDigits_01(t *testing.T) {
 
-	numStr := "98327123"
-	expectedMagnitude := 8
+  numStr := "98327123"
+  expectedMagnitude := 8
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	actualMagnitude := iaNum.GetMagnitudeDigits()
+  actualMagnitude := iaNum.GetMagnitudeDigits()
 
-	if expectedMagnitude != actualMagnitude {
-		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
-			expectedMagnitude, actualMagnitude)
-	}
+  if expectedMagnitude != actualMagnitude {
+    t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+      expectedMagnitude, actualMagnitude)
+  }
 
 }
 
 func TestIntAry_GetMagnitudeDigits_02(t *testing.T) {
 
-	numStr := "-98327123"
-	expectedMagnitude := 8
+  numStr := "-98327123"
+  expectedMagnitude := 8
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	actualMagnitude := iaNum.GetMagnitudeDigits()
+  actualMagnitude := iaNum.GetMagnitudeDigits()
 
-	if expectedMagnitude != actualMagnitude {
-		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
-			expectedMagnitude, actualMagnitude)
-	}
+  if expectedMagnitude != actualMagnitude {
+    t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+      expectedMagnitude, actualMagnitude)
+  }
 
 }
 
 func TestIntAry_GetMagnitudeDigits_03(t *testing.T) {
 
-	numStr := "98327123.123"
-	expectedMagnitude := 8
+  numStr := "98327123.123"
+  expectedMagnitude := 8
 
-	iaNum, err := IntAry{}.NewNumStr(numStr)
+  iaNum, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
+      "numStr='%v' Error='%v' ", numStr, err.Error())
+  }
 
-	actualMagnitude := iaNum.GetMagnitudeDigits()
+  actualMagnitude := iaNum.GetMagnitudeDigits()
 
-	if expectedMagnitude != actualMagnitude {
-		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
-			expectedMagnitude, actualMagnitude)
-	}
+  if expectedMagnitude != actualMagnitude {
+    t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+      expectedMagnitude, actualMagnitude)
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_01(t *testing.T) {
-	numStr1 := "125"
-	nthRoot := 5
-	maxPrecision := 14
-	expected := "2.62652780440377"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  numStr1 := "125"
+  nthRoot := 5
+  maxPrecision := 14
+  expected := "2.62652780440377"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - Error= %v", err)
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 
-	numStr1 := "5604423"
-	nthRoot := 6
-	maxPrecision := 13
-	expected := "13.3276982415963"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  numStr1 := "5604423"
+  nthRoot := 6
+  maxPrecision := 13
+  expected := "13.3276982415963"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from nRt.GetNthRootOfThis(..) Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from nRt.GetNthRootOfThis(..) Error='%v'", err.Error())
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 
-	numStr1 := "5604423.924"
-	nthRoot := 6
-	maxPrecision := 13
-	expected := "13.3276986078187"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
+  numStr1 := "5604423.924"
+  nthRoot := 6
+  maxPrecision := 13
+  expected := "13.3276986078187"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
 
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from iaResult.GetNthRootOfThis(...) Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from iaResult.GetNthRootOfThis(...) Error='%v'", err.Error())
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 
-	numStr1 := "-27"
-	nthRoot := 3
-	maxPrecision := 2
-	expected := "-3.00"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
+  numStr1 := "-27"
+  nthRoot := 3
+  maxPrecision := 2
+  expected := "-3.00"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
 
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from iaResult.GetNthRootOfThis(...). Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from iaResult.GetNthRootOfThis(...). Error='%v'", err.Error())
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
-	ia := IntAry{}.New()
-	numStr1 := "-27"
-	nthRoot := 4
-	maxPrecision := 2
-	ia.SetIntAryWithNumStr(numStr1)
-	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  ia := IntAry{}.New()
+  numStr1 := "-27"
+  nthRoot := 4
+  maxPrecision := 2
+  ia.SetIntAryWithNumStr(numStr1)
+  _, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err == nil {
-		t.Error("Expected Error from iaResult.GetNthRootOfThis(...) for negative number " +
-			"with even nthRoot. No Error triggered")
-	}
+  if err == nil {
+    t.Error("Expected Error from iaResult.GetNthRootOfThis(...) for negative number " +
+      "with even nthRoot. No Error triggered")
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
-	numStr1 := "-5604423.924"
-	nthRoot := 5
-	maxPrecision := 13
-	expected := "-22.3720713464898"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
+  numStr1 := "-5604423.924"
+  nthRoot := 5
+  maxPrecision := 13
+  expected := "-22.3720713464898"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
 
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from nRt.GetNthRootOfThis(...). Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned from nRt.GetNthRootOfThis(...). Error='%v'", err.Error())
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_07(t *testing.T) {
 
-	numStr1 := "5604423.924"
-	nthRoot := 0
-	maxPrecision := 1
-	expected := "1.0"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
+  numStr1 := "5604423.924"
+  nthRoot := 0
+  maxPrecision := 1
+  expected := "1.0"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
 
-	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - %v", err)
+  }
 
-	if expected != iaResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
-	}
+  if expected != iaResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetNthRootOfThis_08(t *testing.T) {
-	numStr1 := "27"
-	ia, _ := IntAry{}.NewNumStr(numStr1)
-	nthRoot := 1
-	maxPrecision := 2
-	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
-	if err == nil {
-		t.Error("Expected Error from ia.GetNthRootOfThis(nthRoot, maxPrecision) for nthRoot == 1. No Error triggered")
-	}
+  numStr1 := "27"
+  ia, _ := IntAry{}.NewNumStr(numStr1)
+  nthRoot := 1
+  maxPrecision := 2
+  _, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  if err == nil {
+    t.Error("Expected Error from ia.GetNthRootOfThis(nthRoot, maxPrecision) for nthRoot == 1. No Error triggered")
+  }
 
 }
 
 func TestIntAry_GetNumStrDto_01(t *testing.T) {
 
-	numStr := "589627.123456"
+  numStr := "589627.123456"
 
-	controlNDto, err := NumStrDto{}.NewNumStr(numStr)
+  controlNDto, err := NumStrDto{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). "+
-			"numStr='%v'  Error='%v'", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). "+
+      "numStr='%v'  Error='%v'", numStr, err.Error())
+  }
 
-	ia, err := IntAry{}.NewNumStr(numStr)
+  ia, err := IntAry{}.NewNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
-			"numStr='%v'  Error='%v'", numStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
+      "numStr='%v'  Error='%v'", numStr, err.Error())
+  }
 
-	nDto, err := ia.GetNumStrDto()
+  nDto, err := ia.GetNumStrDto()
 
-	if err != nil {
-		t.Errorf("Error returned by ia.GetNumStrDto(). "+
-			"ia.GetNumStr()='%v'  Error='%v'", ia.GetNumStr(), err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by ia.GetNumStrDto(). "+
+      "ia.GetNumStr()='%v'  Error='%v'", ia.GetNumStr(), err.Error())
+  }
 
-	if ia.GetNumStr() != nDto.GetNumStr() {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-			ia.GetNumStr(), nDto.GetNumStr())
-	}
+  if ia.GetNumStr() != nDto.GetNumStr() {
+    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+      ia.GetNumStr(), nDto.GetNumStr())
+  }
 
-	if !controlNDto.Equal(nDto) {
-		t.Errorf("Error: controlNDto NOT EQUAL to actual nDto! "+
-			"controlNDto='%v' nDto='%v'",
-			controlNDto.GetNumStr(), nDto.GetNumStr())
-	}
+  if !controlNDto.Equal(nDto) {
+    t.Errorf("Error: controlNDto NOT EQUAL to actual nDto! "+
+      "controlNDto='%v' nDto='%v'",
+      controlNDto.GetNumStr(), nDto.GetNumStr())
+  }
 
 }
 
 func TestIntAry_GetScaleFactor_01(t *testing.T) {
-	numSr1 := "2686.12345"
-	exScale := big.NewInt(100000)
+  numSr1 := "2686.12345"
+  exScale := big.NewInt(100000)
 
-	ia, _ := IntAry{}.NewNumStr(numSr1)
+  ia, _ := IntAry{}.NewNumStr(numSr1)
 
-	iaScaleFac, err := ia.GetScaleFactor()
+  iaScaleFac, err := ia.GetScaleFactor()
 
-	if err != nil {
-		t.Errorf("Error returned from ia.GetScaleFactor() - Error: %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ia.GetScaleFactor() - Error: %v", err)
+  }
 
-	if iaScaleFac.Cmp(exScale) != 0 {
-		t.Errorf("Expected scale factor of %v  .   Instead, actual scale factor = %v", exScale, iaScaleFac.String())
-	}
+  if iaScaleFac.Cmp(exScale) != 0 {
+    t.Errorf("Expected scale factor of %v  .   Instead, actual scale factor = %v", exScale, iaScaleFac.String())
+  }
 
 }
 
 func TestIntAry_GetSquareRootInt_01(t *testing.T) {
 
-	numSr1 := "2686.5"
-	maxPrecision := 30
-	expected := "51.831457629512986714934518985668"
-	ai, _ := IntAry{}.NewNumStr(numSr1)
+  numSr1 := "2686.5"
+  maxPrecision := 30
+  expected := "51.831457629512986714934518985668"
+  ai, _ := IntAry{}.NewNumStr(numSr1)
 
-	aiResult, err := ai.GetSquareRootOfThis(maxPrecision)
+  aiResult, err := ai.GetSquareRootOfThis(maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error returned from ai.GetSquareRootOfThis(30) - Error: %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error returned from ai.GetSquareRootOfThis(30) - Error: %v", err)
+  }
 
-	if expected != aiResult.GetNumStr() {
-		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, aiResult.GetNumStr())
-	}
+  if expected != aiResult.GetNumStr() {
+    t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, aiResult.GetNumStr())
+  }
 
-	if int(maxPrecision) != aiResult.GetPrecision() {
-		t.Errorf("Expected precision= %v .  Instead precision= %v .", maxPrecision, aiResult.GetPrecision())
-	}
+  if int(maxPrecision) != aiResult.GetPrecision() {
+    t.Errorf("Expected precision= %v .  Instead precision= %v .", maxPrecision, aiResult.GetPrecision())
+  }
 
 }
 
 func TestIntAry_GetThousandsSeparator_01(t *testing.T) {
-	ia := IntAry{}.New()
+  ia := IntAry{}.New()
 
-	var expectedDecimalSeparator rune
+  var expectedDecimalSeparator rune
 
-	expectedDecimalSeparator = '.'
+  expectedDecimalSeparator = '.'
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if expectedDecimalSeparator != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
-	}
+  if expectedDecimalSeparator != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetThousandsSeparator_02(t *testing.T) {
-	ia, _ := IntAry{}.NewNumStr("50.47")
+  ia, _ := IntAry{}.NewNumStr("50.47")
 
-	var expectedDecimalSeparator rune
+  var expectedDecimalSeparator rune
 
-	expectedDecimalSeparator = '.'
+  expectedDecimalSeparator = '.'
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if expectedDecimalSeparator != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
-	}
+  if expectedDecimalSeparator != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetThousandsSeparator_03(t *testing.T) {
-	ia, _ := IntAry{}.NewFloat64(float64(50.47), 2)
+  ia, _ := IntAry{}.NewFloat64(float64(50.47), 2)
 
-	var expectedDecimalSeparator rune
+  var expectedDecimalSeparator rune
 
-	expectedDecimalSeparator = '.'
+  expectedDecimalSeparator = '.'
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if expectedDecimalSeparator != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
-	}
+  if expectedDecimalSeparator != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  }
 
 }
 
 func TestIntAry_GetThousandsSeparator_04(t *testing.T) {
-	ia := IntAry{}.New()
+  ia := IntAry{}.New()
 
-	var frenchDecSeparator rune
+  var frenchDecSeparator rune
 
-	frenchDecSeparator = ','
+  frenchDecSeparator = ','
 
-	var frenchThousandsSeparator rune
+  var frenchThousandsSeparator rune
 
-	frenchThousandsSeparator = ' '
+  frenchThousandsSeparator = ' '
 
-	ia.SetDecimalSeparator(frenchDecSeparator)
-	ia.SetThousandsSeparator(frenchThousandsSeparator)
+  ia.SetDecimalSeparator(frenchDecSeparator)
+  ia.SetThousandsSeparator(frenchThousandsSeparator)
 
-	ia.SetIntAryWithNumStr("450 123 647,1234")
+  ia.SetIntAryWithNumStr("450 123 647,1234")
 
-	decimalSeparator := ia.GetDecimalSeparator()
+  decimalSeparator := ia.GetDecimalSeparator()
 
-	if frenchDecSeparator != decimalSeparator {
-		t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
-	}
+  if frenchDecSeparator != decimalSeparator {
+    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
+  }
 
-	numStr := ia.GetNumStr()
+  numStr := ia.GetNumStr()
 
-	expectedNumStr := "450123647,1234"
+  expectedNumStr := "450123647,1234"
 
-	if expectedNumStr != numStr {
-		t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
-	}
+  if expectedNumStr != numStr {
+    t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
+  }
 
 }
 
 func TestIntAry_IncrementIntegerOne_01(t *testing.T) {
-	expected := "100.123"
-	nStr1 := "-100.123"
-	cycles := 200
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  expected := "100.123"
+  nStr1 := "-100.123"
+  cycles := 200
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	for i := 0; i < cycles; i++ {
-		ia.IncrementIntegerOne()
-	}
+  for i := 0; i < cycles; i++ {
+    ia.IncrementIntegerOne()
+  }
 
-	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
-	}
+  if expected != ia.GetNumStr() {
+    t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
+  }
 
 }
 
 func TestIntAry_IncrementIntegerOne_02(t *testing.T) {
-	nStr1 := "-2000"
-	expected := "2000"
-	cycles := 4000
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-2000"
+  expected := "2000"
+  cycles := 4000
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	for i := 0; i < cycles; i++ {
-		ia.IncrementIntegerOne()
-	}
+  for i := 0; i < cycles; i++ {
+    ia.IncrementIntegerOne()
+  }
 
-	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
-	}
+  if expected != ia.GetNumStr() {
+    t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
+  }
 
 }
 
 func TestIntAry_IncrementIntegerOne_03(t *testing.T) {
-	nStr1 := "-2000.123"
-	expected := "2000.123"
-	cycles := 4000
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "-2000.123"
+  expected := "2000.123"
+  cycles := 4000
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	for i := 0; i < cycles; i++ {
-		ia.IncrementIntegerOne()
-	}
+  for i := 0; i < cycles; i++ {
+    ia.IncrementIntegerOne()
+  }
 
-	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
-	}
+  if expected != ia.GetNumStr() {
+    t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
+  }
 
 }
 
 func TestIntAry_IncrementIntegerOne_04(t *testing.T) {
-	nStr1 := "0"
-	expected := "40"
-	cycles := 40
-	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+  nStr1 := "0"
+  expected := "40"
+  cycles := 40
+  ia := IntAry{}.New()
+  ia.SetIntAryWithNumStr(nStr1)
 
-	for i := 0; i < cycles; i++ {
-		ia.IncrementIntegerOne()
-	}
+  for i := 0; i < cycles; i++ {
+    ia.IncrementIntegerOne()
+  }
 
-	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
-	}
+  if expected != ia.GetNumStr() {
+    t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
+  }
 
 }
 
 func TestIntAry_Inverse_01(t *testing.T) {
-	nStr := "25"
-	eNumStr := "0.04"
-	iaBase, _ := IntAry{}.NewNumStr(nStr)
-	maxPrecision := 2
-	signVal := 1
+  nStr := "25"
+  eNumStr := "0.04"
+  iaBase, _ := IntAry{}.NewNumStr(nStr)
+  maxPrecision := 2
+  signVal := 1
 
-	iaInverse, err := iaBase.Inverse(maxPrecision)
+  iaInverse, err := iaBase.Inverse(maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
+  }
 
-	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
-	}
+  if eNumStr != iaInverse.GetNumStr() {
+    t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
+  }
 
-	if maxPrecision != iaInverse.GetPrecision() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if maxPrecision != iaInverse.GetPrecision() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 
-	if signVal != iaInverse.GetSign() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if signVal != iaInverse.GetSign() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 
 }
 
 func TestIntAry_Inverse_02(t *testing.T) {
-	nStr := "30517578125"
-	eNumStr := "0.000000000032768"
-	iaBase, _ := IntAry{}.NewNumStr(nStr)
-	maxPrecision := 15
-	signVal := 1
+  nStr := "30517578125"
+  eNumStr := "0.000000000032768"
+  iaBase, _ := IntAry{}.NewNumStr(nStr)
+  maxPrecision := 15
+  signVal := 1
 
-	iaInverse, err := iaBase.Inverse(maxPrecision)
+  iaInverse, err := iaBase.Inverse(maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
+  }
 
-	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
-	}
+  if eNumStr != iaInverse.GetNumStr() {
+    t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
+  }
 
-	if maxPrecision != iaInverse.GetPrecision() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if maxPrecision != iaInverse.GetPrecision() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 
-	if signVal != iaInverse.GetSign() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if signVal != iaInverse.GetSign() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 
 }
 
 func TestIntAry_Inverse_03(t *testing.T) {
-	nStr := "25"
-	eNumStr := "0.04"
-	iaBase, _ := IntAry{}.NewNumStr(nStr)
-	maxPrecision := 2
-	signVal := 1
+  nStr := "25"
+  eNumStr := "0.04"
+  iaBase, _ := IntAry{}.NewNumStr(nStr)
+  maxPrecision := 2
+  signVal := 1
 
-	iaInverse, err := iaBase.Inverse(maxPrecision)
+  iaInverse, err := iaBase.Inverse(maxPrecision)
 
-	if err != nil {
-		t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("Error received from iaBase.Inverse(3) - Error= %v", err)
+  }
 
-	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
-	}
+  if eNumStr != iaInverse.GetNumStr() {
+    t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
+  }
 
-	if maxPrecision != iaInverse.GetPrecision() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if maxPrecision != iaInverse.GetPrecision() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 
-	if signVal != iaInverse.GetSign() {
-		t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
-	}
+  if signVal != iaInverse.GetSign() {
+    t.Errorf("Expected precision= %v .  Instead, precision= %v .", maxPrecision, iaInverse.GetPrecision())
+  }
 }
 
 func TestIntAry_IsEvenNumber_01(t *testing.T) {
-	nStr := "24"
-	expectedIsEven := true
+  nStr := "24"
+  expectedIsEven := true
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_02(t *testing.T) {
-	nStr := "25"
-	expectedIsEven := false
+  nStr := "25"
+  expectedIsEven := false
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_03(t *testing.T) {
-	nStr := "4.44"
-	expectedIsEven := false
+  nStr := "4.44"
+  expectedIsEven := false
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_04(t *testing.T) {
-	nStr := "0"
-	expectedIsEven := true
+  nStr := "0"
+  expectedIsEven := true
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_05(t *testing.T) {
-	nStr := "-24"
-	expectedIsEven := true
+  nStr := "-24"
+  expectedIsEven := true
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_06(t *testing.T) {
-	nStr := "-25"
-	expectedIsEven := false
+  nStr := "-25"
+  expectedIsEven := false
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
 
 func TestIntAry_IsEvenNumber_07(t *testing.T) {
-	nStr := "-4.44"
-	expectedIsEven := false
+  nStr := "-4.44"
+  expectedIsEven := false
 
-	ia, err := IntAry{}.NewNumStr(nStr)
+  ia, err := IntAry{}.NewNumStr(nStr)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
-			"nStr='%v' Error='%v' ", nStr, err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+      "nStr='%v' Error='%v' ", nStr, err.Error())
+  }
 
-	isEven := ia.IsEvenNumber()
+  isEven := ia.IsEvenNumber()
 
-	if expectedIsEven != isEven {
-		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
-			expectedIsEven, isEven)
-	}
+  if expectedIsEven != isEven {
+    t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+      expectedIsEven, isEven)
+  }
 
 }
