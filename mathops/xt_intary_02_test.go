@@ -10402,7 +10402,7 @@ func TestIntAry_Ceiling_02(t *testing.T) {
 
 	if expectedNumberStr != intAry2NumberStr {
 		t.Errorf("%v\n"+
-			"Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+			"Error: Expected and IntAry2 Number String Values ARE NOT Equal\n"+
 			"Because expectedNumberStr != intAry2NumberStr \n"+
 			"Expected intAry2NumberStr = '%v'\n"+
 			"  Actual intAry2NumberStr = '%v'\n\n",
