@@ -1943,195 +1943,857 @@ func TestIntAry_GetInt_05(t *testing.T) {
 
 func TestIntAry_GetIntAry_01(t *testing.T) {
 
+  ePrefix := "TestIntAry_GetIntAry_01"
+
+  originalNumberStr := "12345694829"
+
+  expectedNumberStr := "12345694829"
+
   expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
-  ia, _ := IntAry{}.NewNumStr("12345694829")
+  expectedArrayLen := len(expectedAry) // 11
 
-  iAry, iAryLen := ia.GetIntAryElements()
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
-  expectedLen := 11
-
-  if expectedLen != iAryLen {
-    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  for i := 0; i < iAryLen; i++ {
-    if expectedAry[i] != iAry[i] {
-      t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intArrayElements, intArrayElementsLen, err := intAry.GetIntAryElements()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayElements, intArrayElementsLen, err := intAry.GetIntAryElements()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedArrayLen != intArrayElementsLen {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Array Lengths ARE NOT EQUAL!\n"+
+      "Because expectedArrayLen != intArrayElementsLen\n"+
+      "Expected intArrayElementsLen = '%v'\n"+
+      "  Actual intArrayElementsLen = '%v'\n\n",
+      ePrefix, expectedArrayLen, intArrayElementsLen)
+
+    return
+  }
+
+  for i := 0; i < intArrayElementsLen; i++ {
+
+    if expectedAry[i] != intArrayElements[i] {
+      t.Errorf("%v\n"+
+        "Error: Expected and Actual Array Elements Don't Match!\n"+
+        "Because expectedAry[%v] != intArrayElements[%v]\n"+
+        "Expected intArrayElements[%v] = '%v'\n"+
+        "  Actual intArrayElements[%v] = '%v'\n"+
+        "Expected Number String = '%v'\n"+
+        "IntAry Number String   = '%v'\n",
+        ePrefix, i, i, i, expectedAry[i], i, expectedAry[i],
+        expectedNumberStr, intAryNumberStr)
+
+      return
     }
+
   }
 
+  return
 }
 
 func TestIntAry_GetIntAry_02(t *testing.T) {
 
-  ia, _ := IntAry{}.NewNumStr("12345694829")
+  ePrefix := "TestIntAry_GetIntAry_02"
 
-  iAry, iAryLen := ia.GetIntAryElements()
+  originalNumberStr := "987654321888629"
 
-  iAry[4] = 9
+  expectedNumberStr := "987654321888629"
 
-  expectedLen := 11
+  expectedAry := []uint8{9, 8, 7, 6, 5, 4, 3, 2, 1, 8, 8, 8, 6, 2, 9}
 
-  if expectedLen != iAryLen {
-    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  expectedArrayLen := len(expectedAry) // 15
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  iAry2, _ := ia.GetIntAryElements()
+  err = intAry.IsValid("Validating final intAry")
 
-  // GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
-  if iAry[4] != iAry2[4] {
-    t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value remained unchanged. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intArrayElements, intArrayElementsLen, err := intAry.GetIntAryElements()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayElements, intArrayElementsLen, err := intAry.GetIntAryElements()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedArrayLen != intArrayElementsLen {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Array Lengths ARE NOT EQUAL!\n"+
+      "Because expectedArrayLen != intArrayElementsLen\n"+
+      "Expected intArrayElementsLen = '%v'\n"+
+      "  Actual intArrayElementsLen = '%v'\n\n",
+      ePrefix, expectedArrayLen, intArrayElementsLen)
+
+    return
+  }
+
+  for i := 0; i < intArrayElementsLen; i++ {
+
+    if expectedAry[i] != intArrayElements[i] {
+      t.Errorf("%v\n"+
+        "Error: Expected and Actual Array Elements Don't Match!\n"+
+        "Because expectedAry[%v] != intArrayElements[%v]\n"+
+        "Expected intArrayElements[%v] = '%v'\n"+
+        "  Actual intArrayElements[%v] = '%v'\n"+
+        "Expected Number String = '%v'\n"+
+        "IntAry Number String   = '%v'\n",
+        ePrefix, i, i, i, expectedAry[i], i, expectedAry[i],
+        expectedNumberStr, intAryNumberStr)
+
+      return
+    }
+
+  }
+
+  return
 
 }
 
 func TestIntAry_GetIntAryDeepCopy(t *testing.T) {
 
+  ePrefix := "TestIntAry_GetIntAryDeepCopy"
+
+  originalNumberStr := "12345694829"
+
+  expectedNumberStr := "12345694829"
+
   expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
-  ia, _ := IntAry{}.NewNumStr("12345694829")
+  expectedArrayLen := len(expectedAry) // 11
 
-  iAry, iAryLen := ia.GetIntAryDeepCopy()
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
-  expectedLen := 11
-
-  if expectedLen != iAryLen {
-    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  for i := 0; i < iAryLen; i++ {
-    if expectedAry[i] != iAry[i] {
-      t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intArrayElements, intArrayElementsLen, err := intAry.GetIntAryDeepCopy()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayElements, intArrayElementsLen, err :=\n"+
+      "  intAry.GetIntAryDeepCopy()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedArrayLen != intArrayElementsLen {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Array Lengths ARE NOT EQUAL!\n"+
+      "Because expectedArrayLen != intArrayElementsLen\n"+
+      "Expected intArrayElementsLen = '%v'\n"+
+      "  Actual intArrayElementsLen = '%v'\n\n",
+      ePrefix, expectedArrayLen, intArrayElementsLen)
+
+    return
+  }
+
+  for i := 0; i < intArrayElementsLen; i++ {
+
+    if expectedAry[i] != intArrayElements[i] {
+      t.Errorf("%v\n"+
+        "Error: Expected and Actual Array Elements Don't Match!\n"+
+        "Because expectedAry[%v] != intArrayElements[%v]\n"+
+        "Expected intArrayElements[%v] = '%v'\n"+
+        "  Actual intArrayElements[%v] = '%v'\n"+
+        "Expected Number String = '%v'\n"+
+        "IntAry Number String   = '%v'\n",
+        ePrefix, i, i, i, expectedAry[i], i, expectedAry[i],
+        expectedNumberStr, intAryNumberStr)
+
+      return
     }
+
   }
 
+  return
 }
 
 func TestIntAry_GetIntAryDeepCopy_02(t *testing.T) {
 
-  ia, _ := IntAry{}.NewNumStr("12345694829")
+  ePrefix := "TestIntAry_GetIntAryDeepCopy"
 
-  iAry, iAryLen := ia.GetIntAryDeepCopy()
+  originalNumberStr := "12345690888632"
 
-  iAry[4] = 9
+  expectedNumberStr := "12345690888632"
 
-  expectedLen := 11
+  expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 0, 0, 8, 8, 8, 6, 3, 2}
 
-  if expectedLen != iAryLen {
-    t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
+  expectedArrayLen := len(expectedAry) // 15
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  iAry2, _ := ia.GetIntAryDeepCopy()
+  err = intAry.IsValid("Validating final intAry")
 
-  // GetIntAryElements() returns a reference to the internal array because we are using 'slices'. Be careful!!!
-  if iAry[4] == iAry2[4] {
-    t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value was also changed. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intArrayElements, intArrayElementsLen, err := intAry.GetIntAryDeepCopy()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArrayElements, intArrayElementsLen, err :=\n"+
+      "  intAry.GetIntAryDeepCopy()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedArrayLen != intArrayElementsLen {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Array Lengths ARE NOT EQUAL!\n"+
+      "Because expectedArrayLen != intArrayElementsLen\n"+
+      "Expected intArrayElementsLen = '%v'\n"+
+      "  Actual intArrayElementsLen = '%v'\n\n",
+      ePrefix, expectedArrayLen, intArrayElementsLen)
+
+    return
+  }
+
+  for i := 0; i < intArrayElementsLen; i++ {
+
+    if expectedAry[i] != intArrayElements[i] {
+      t.Errorf("%v\n"+
+        "Error: Expected and Actual Array Elements Don't Match!\n"+
+        "Because expectedAry[%v] != intArrayElements[%v]\n"+
+        "Expected intArrayElements[%v] = '%v'\n"+
+        "  Actual intArrayElements[%v] = '%v'\n"+
+        "Expected Number String = '%v'\n"+
+        "IntAry Number String   = '%v'\n",
+        ePrefix, i, i, i, expectedAry[i], i, expectedAry[i],
+        expectedNumberStr, intAryNumberStr)
+
+      return
+    }
+
+  }
+
+  return
 }
 
 func TestIntAry_GetInt64_01(t *testing.T) {
 
-  nStr1 := "50"
-  expected := int64(50)
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_01"
 
-  result, err := ia.GetInt64()
+  originalNumberStr := "50"
+
+  expectedNumberInt64 := int64(50)
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != result {
-    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  resultNumberInt64, err := intAry.GetInt64()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumberInt64, err := intAry.GetInt64()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberInt64 != resultNumberInt64 {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Int64 Values ARE NOT EQUAL!\n"+
+      "Because expectedNumberInt64 != resultNumberInt64\n"+
+      "Expected resultNumberInt64 = '%v'\n"+
+      "  Actual resultNumberInt64 = '%v'\n\n",
+      ePrefix, expectedNumberInt64, resultNumberInt64)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetInt64_02(t *testing.T) {
 
-  nStr1 := "-50"
-  expected := int64(-50)
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_02"
 
-  result, err := ia.GetInt64()
+  originalNumberStr := "-50"
+
+  expectedNumberInt64 := int64(-50)
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != result {
-    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  resultNumberInt64, err := intAry.GetInt64()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumberInt64, err := intAry.GetInt64()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberInt64 != resultNumberInt64 {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Int64 Values ARE NOT EQUAL!\n"+
+      "Because expectedNumberInt64 != resultNumberInt64\n"+
+      "Expected resultNumberInt64 = '%v'\n"+
+      "  Actual resultNumberInt64 = '%v'\n\n",
+      ePrefix, expectedNumberInt64, resultNumberInt64)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetInt64_03(t *testing.T) {
 
-  nStr1 := "9223372036854775807"
-  expected := int64(9223372036854775807)
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_03"
 
-  result, err := ia.GetInt64()
+  originalNumberStr := "9223372036854775807"
+
+  expectedNumberInt64 := int64(9223372036854775807)
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != result {
-    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  resultNumberInt64, err := intAry.GetInt64()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumberInt64, err := intAry.GetInt64()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberInt64 != resultNumberInt64 {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Int64 Values ARE NOT EQUAL!\n"+
+      "Because expectedNumberInt64 != resultNumberInt64\n"+
+      "Expected resultNumberInt64 = '%v'\n"+
+      "  Actual resultNumberInt64 = '%v'\n\n",
+      ePrefix, expectedNumberInt64, resultNumberInt64)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetInt64_04(t *testing.T) {
 
-  nStr1 := "9223372036854775808"
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_04"
 
-  _, err := ia.GetInt64()
+  originalNumberStr := "9223372036854775808"
 
-  if err == nil {
-    t.Error("Input Value Exceeded maximum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  _, err = intAry.GetInt64()
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Function Call: _, err = intAry.GetInt64()\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "originalNumberStr= %v\n"+
+      "originalNumberStr exceeds Int64 max value and should produce an error.\n\n",
+      ePrefix, originalNumberStr)
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetInt64_05(t *testing.T) {
 
-  nStr1 := "-9223372036854775809"
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_05"
 
-  _, err := ia.GetInt64()
+  originalNumberStr := "-9223372036854775809"
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  _, err = intAry.GetInt64()
 
   if err == nil {
-    t.Error("Input Value was less than the minimum allowable value for an Int64. This should have thrown an error. However, no error was thrown! ")
+    t.Errorf("%v\n"+
+      "Function Call: _, err = intAry.GetInt64()\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "originalNumberStr= %v\n"+
+      "originalNumberStr is less than Int64 minimum value and should produce an error.\n\n",
+      ePrefix, originalNumberStr)
+    return
   }
+
+  return
 }
 
 func TestIntAry_GetInt64_06(t *testing.T) {
 
-  nStr1 := "-9223372036854775808"
-  expected := int64(-9223372036854775808)
-  ia := IntAry{}.New()
-  ia.SetIntAryWithNumStr(nStr1)
+  ePrefix := "TestIntAry_GetInt64_06"
 
-  result, err := ia.GetInt64()
+  originalNumberStr := "-9223372036854775808"
+
+  expectedNumberInt64 := int64(-9223372036854775808)
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetInt64(). nStr= '%v' .  Error= %v", nStr1, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != result {
-    t.Errorf("Error Expected ia.GetInt64()= %v .  Instead ia.GetInt64()= %v .", expected, result)
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  resultNumberInt64, err := intAry.GetInt64()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumberInt64, err := intAry.GetInt64()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberInt64 != resultNumberInt64 {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Int64 Values ARE NOT EQUAL!\n"+
+      "Because expectedNumberInt64 != resultNumberInt64\n"+
+      "Expected resultNumberInt64 = '%v'\n"+
+      "  Actual resultNumberInt64 = '%v'\n\n",
+      ePrefix, expectedNumberInt64, resultNumberInt64)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetFractionalDigits_01(t *testing.T) {
