@@ -4682,146 +4682,1279 @@ func TestIntAry_GetMagnitudeDigits_03(t *testing.T) {
 }
 
 func TestIntAry_GetNthRootOfThis_01(t *testing.T) {
-  numStr1 := "125"
-  nthRoot := 5
-  maxPrecision := 14
-  expected := "2.62652780440377"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+
+  ePrefix := "TestIntAry_GetNthRootOfThis_01"
+
+  radicandNumberStr := "125"
+
+  nthRootInt := 5
+
+  maxPrecisionInt := 14
+
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "2.62652780440377"
+
+  expectedPrecisionUint := uint(14)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 
-  numStr1 := "5604423"
-  nthRoot := 6
-  maxPrecision := 13
-  expected := "13.3276982415963"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  ePrefix := "TestIntAry_GetNthRootOfThis_02"
+
+  radicandNumberStr := "5604423"
+
+  nthRootInt := 6
+
+  maxPrecisionInt := 13
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "13.3276982415963"
+
+  expectedPrecisionUint := uint(13)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from nRt.GetNthRootOfThis(..) Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 
-  numStr1 := "5604423.924"
-  nthRoot := 6
-  maxPrecision := 13
-  expected := "13.3276986078187"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
+  ePrefix := "TestIntAry_GetNthRootOfThis_03"
 
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  radicandNumberStr := "5604423.924"
+
+  nthRootInt := 6
+
+  maxPrecisionInt := 13
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "13.3276986078187"
+
+  expectedPrecisionUint := uint(13)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from iaResult.GetNthRootOfThis(...) Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 
-  numStr1 := "-27"
-  nthRoot := 3
-  maxPrecision := 2
-  expected := "-3.00"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
+  ePrefix := "TestIntAry_GetNthRootOfThis_04"
 
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  radicandNumberStr := "-27"
+
+  nthRootInt := 3
+
+  maxPrecisionInt := 2
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "-3.00"
+
+  expectedPrecisionUint := uint(2)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from iaResult.GetNthRootOfThis(...). Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
-  ia := IntAry{}.New()
-  numStr1 := "-27"
-  nthRoot := 4
-  maxPrecision := 2
-  ia.SetIntAryWithNumStr(numStr1)
-  _, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
-  if err == nil {
-    t.Error("Expected Error from iaResult.GetNthRootOfThis(...) for negative number " +
-      "with even nthRoot. No Error triggered")
+  ePrefix := "TestIntAry_GetNthRootOfThis_05"
+
+  radicandNumberStr := "-27"
+
+  nthRootInt := 4
+
+  maxPrecisionInt := 2
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  _, err = intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "  _, err = intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "radicand= %v; nthRootInt= %v\n"+
+      "A negative 'radicand' value with an even nthRoot should produce an error.\n\n",
+      ePrefix, radicandNumberStr, nthRootInt)
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
-  numStr1 := "-5604423.924"
-  nthRoot := 5
-  maxPrecision := 13
-  expected := "-22.3720713464898"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
 
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  ePrefix := "TestIntAry_GetNthRootOfThis_06"
+
+  radicandNumberStr := "-5604423.924"
+
+  nthRootInt := 5
+
+  maxPrecisionInt := 13
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  expectedNumberStr := "-22.3720713464898"
+
+  expectedPrecisionUint := uint(13)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from nRt.GetNthRootOfThis(...). Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_07(t *testing.T) {
 
-  numStr1 := "5604423.924"
-  nthRoot := 0
-  maxPrecision := 1
-  expected := "1.0"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
+  ePrefix := "TestIntAry_GetNthRootOfThis_07"
 
-  iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
+  radicandNumberStr := "5604423.924"
+
+  nthRootInt := 0
+
+  maxPrecisionInt := 1
+
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "1.0"
+
+  expectedPrecisionUint := uint(1)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from ia.GetNthRootOfThis(nthRoot, maxPrecision) - %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
-  if expected != iaResult.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead iaResult.GetNumStr()= %v .", expected, iaResult.GetNumStr())
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  intAryResult, err := intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResult, err := intAry.\n"+
+      "  GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "intAry= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumberStr,
+      nthRootInt,
+      maxPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryResult.IsValid("Validating final intAryResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryResult.IsValid('Validating final intAryResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultNumberStr, err := intAryResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumberStr, err := intAryResult.GetNumStr()\n"+
+      "intAryResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryResultPrecisionUint, err := intAryResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultPrecisionUint, err :=\n"+
+      "  intAryResult.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultSignValue, err := intAryResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultSignValue, err := intAryResult.GetSign()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryResultNumSeps, err := intAryResult.GetNumericSeparatorsDto()\n"+
+      "intAryResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryResultNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and Decimal Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryResultNumberStr \n"+
+      "Expected intAryResultNumberStr = '%v'\n"+
+      "  Actual intAryResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
+      "Expected intAryResultPrecisionUint = '%v'\n"+
+      "  Actual intAryResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryResultSignValue\n"+
+      "Expected intAryResultSignValue = '%v'\n"+
+      "  Actual intAryResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryResultNumSeps \n"+
+      "Expected intAryResultNumSeps = '%v'\n"+
+      "  Actual intAryResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNthRootOfThis_08(t *testing.T) {
-  numStr1 := "27"
-  ia, _ := IntAry{}.NewNumStr(numStr1)
-  nthRoot := 1
-  maxPrecision := 2
-  _, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
-  if err == nil {
-    t.Error("Expected Error from ia.GetNthRootOfThis(nthRoot, maxPrecision) for nthRoot == 1. No Error triggered")
+
+  ePrefix := "TestIntAry_GetNthRootOfThis_08"
+
+  radicandNumberStr := "27"
+
+  nthRootInt := 1
+
+  maxPrecisionInt := 2
+
+  intAry, err := new(IntAry).NewNumStr(radicandNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(radicandNumberStr)\n"+
+      "radicandNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, radicandNumberStr, err.Error())
+    return
   }
 
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if radicandNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and IntAry Number String Values ARE NOT Equal\n"+
+      "Because radicandNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, radicandNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  _, err = intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "  _, err = intAry.GetNthRootOfThis(nthRootInt, maxPrecisionInt)\n"+
+      "nthRootInt= %v\n"+
+      "nthRoot == 1 should produce an error.\n\n",
+      ePrefix, nthRootInt)
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetNumStrDto_01(t *testing.T) {
