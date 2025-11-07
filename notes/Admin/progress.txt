@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_GetSquareRootInt_01; xt_intary_04_test.go
+TestIntAry_GetThousandsSeparator_04; xt_intary_04_test.go
 
 git add -A
 git commit -m"Modified README"

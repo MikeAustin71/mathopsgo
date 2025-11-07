@@ -1,7 +1,9 @@
 package mathops
 
 import (
+  "fmt"
   "math/big"
+  "strconv"
   "testing"
 )
 
@@ -6411,80 +6413,251 @@ func TestIntAry_GetSquareRootInt_01(t *testing.T) {
 }
 
 func TestIntAry_GetThousandsSeparator_01(t *testing.T) {
-  ia := IntAry{}.New()
+
+  ePrefix := "TestIntAry_GetThousandsSeparator_01"
 
   var expectedDecimalSeparator rune
 
   expectedDecimalSeparator = '.'
 
-  decimalSeparator := ia.GetDecimalSeparator()
+  intAry := new(IntAry).New()
 
-  if expectedDecimalSeparator != decimalSeparator {
-    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  actualDecimalSeparator := intAry.GetDecimalSeparator()
+
+  if expectedDecimalSeparator != actualDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separators ARE NOT EQUAL!\n"+
+      "Because expectedDecimalSeparator != actualDecimalSeparator\n"+
+      "Expected actualDecimalSeparator = '%v'\n"+
+      "  Actual actualDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, actualDecimalSeparator)
+
+    return
   }
 
+  return
 }
 
 func TestIntAry_GetThousandsSeparator_02(t *testing.T) {
-  ia, _ := IntAry{}.NewNumStr("50.47")
+
+  ePrefix := "TestIntAry_GetThousandsSeparator_01"
+
+  originalNumberStr := "50.47"
 
   var expectedDecimalSeparator rune
 
   expectedDecimalSeparator = '.'
 
-  decimalSeparator := ia.GetDecimalSeparator()
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
 
-  if expectedDecimalSeparator != decimalSeparator {
-    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Original and intAry Number String Values ARE NOT Equal\n"+
+      "Because originalNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  actualDecimalSeparator := intAry.GetDecimalSeparator()
+
+  if expectedDecimalSeparator != actualDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separators ARE NOT EQUAL!\n"+
+      "Because expectedDecimalSeparator != actualDecimalSeparator\n"+
+      "Expected actualDecimalSeparator = '%v'\n"+
+      "  Actual actualDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, actualDecimalSeparator)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetThousandsSeparator_03(t *testing.T) {
-  ia, _ := IntAry{}.NewFloat64(float64(50.47), 2)
+
+  ePrefix := "TestIntAry_GetThousandsSeparator_03"
+
+  originalFloat64 := 50.47
+
+  originalPrecisionInt := 2
 
   var expectedDecimalSeparator rune
 
   expectedDecimalSeparator = '.'
 
-  decimalSeparator := ia.GetDecimalSeparator()
+  intAry, err := new(IntAry).NewFloat64(originalFloat64, originalPrecisionInt)
 
-  if expectedDecimalSeparator != decimalSeparator {
-    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", expectedDecimalSeparator, decimalSeparator)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloat64(originalFloat64, originalPrecisionInt)\n"+
+      "originalFloat64= '%v'\n"+
+      "originalPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      strconv.FormatFloat(originalFloat64, 'f', originalPrecisionInt, 64),
+      originalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  actualDecimalSeparator := intAry.GetDecimalSeparator()
+
+  if expectedDecimalSeparator != actualDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separators ARE NOT EQUAL!\n"+
+      "Because expectedDecimalSeparator != actualDecimalSeparator\n"+
+      "Expected actualDecimalSeparator = '%v'\n"+
+      "  Actual actualDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, actualDecimalSeparator)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_GetThousandsSeparator_04(t *testing.T) {
-  ia := IntAry{}.New()
 
-  var frenchDecSeparator rune
+  ePrefix := "TestIntAry_GetThousandsSeparator_04"
 
-  frenchDecSeparator = ','
+  originalNumberStr := "450 123 647,1234"
+
+  var frenchDecimalSeparator rune
+
+  frenchDecimalSeparator = ','
+
+  expectedDecimalSeparator := frenchDecimalSeparator
 
   var frenchThousandsSeparator rune
 
   frenchThousandsSeparator = ' '
 
-  ia.SetDecimalSeparator(frenchDecSeparator)
-  ia.SetThousandsSeparator(frenchThousandsSeparator)
+  expectedNumberStr := "450123647,1234"
 
-  ia.SetIntAryWithNumStr("450 123 647,1234")
+  intAry := new(IntAry).New()
 
-  decimalSeparator := ia.GetDecimalSeparator()
+  err := intAry.SetDecimalSeparator(frenchDecimalSeparator)
 
-  if frenchDecSeparator != decimalSeparator {
-    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAry.SetDecimalSeparator(frenchDecimalSeparator)\n"+
+      "frenchDecimalSeparator= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, frenchDecimalSeparator, err.Error())
+
+    return
   }
 
-  numStr := ia.GetNumStr()
+  err = intAry.SetThousandsSeparator(frenchThousandsSeparator)
 
-  expectedNumStr := "450123647,1234"
-
-  if expectedNumStr != numStr {
-    t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.SetThousandsSeparator(frenchThousandsSeparator)n"+
+      "frenchThousandsSeparator= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, frenchThousandsSeparator, err.Error())
+    return
   }
 
+  err = intAry.SetIntAryWithNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.SetIntAryWithNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry.IsValid("Validating final intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating final intAry')\n"+
+      "Validating Final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualDecimalSeparator := intAry.GetDecimalSeparator()
+
+  if expectedDecimalSeparator != actualDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separators ARE NOT EQUAL!\n"+
+      "Because expectedDecimalSeparator != actualDecimalSeparator\n"+
+      "Expected actualDecimalSeparator = '%v'\n"+
+      "  Actual actualDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, actualDecimalSeparator)
+
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr set to final IntAry value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumberStr != intAryNumberStr\n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_IncrementIntegerOne_01(t *testing.T) {
