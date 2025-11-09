@@ -1218,6 +1218,16 @@ func TestIntAry_GetDecimalSeparator_04(t *testing.T) {
     return
   }
 
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
   intAryNumberStr, err := intAry.GetNumStr()
 
   if err != nil {
@@ -1239,16 +1249,6 @@ func TestIntAry_GetDecimalSeparator_04(t *testing.T) {
       "intAry= '%v'\n"+
       "Error= '%v'\n\n",
       ePrefix, intAryNumberStr, err.Error())
-    return
-  }
-
-  err = intAry.IsValid("Validating initial intAry")
-
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = intAry.IsValid('Validating initial intAry')\n"+
-      "Error= '%v'\n\n", ePrefix, err.Error())
     return
   }
 
