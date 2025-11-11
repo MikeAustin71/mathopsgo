@@ -148,7 +148,7 @@ func TestIntAry_GetAbsoluteValue_01(t *testing.T) {
 
   if expectedPrecisionUint != intAry2PrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAry2PrecisionUint\n"+
       "Expected intAry2PrecisionUint = '%v'\n"+
       "  Actual intAry2PrecisionUint = '%v'\n\n",
@@ -921,7 +921,7 @@ func TestIntAry_GetDecimal_01(t *testing.T) {
 
   if expectedPrecisionUint != decActualPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & decActual Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != decActualPrecisionUint\n"+
       "Expected decActualPrecisionUint = '%v'\n"+
       "  Actual decActualPrecisionUint = '%v'\n\n",
@@ -1301,7 +1301,7 @@ func TestIntAry_GetDecimalSeparator_04(t *testing.T) {
 
   if expectedPrecisionUint != intAryPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryPrecisionUint\n"+
       "Expected intAryPrecisionUint = '%v'\n"+
       "  Actual intAryPrecisionUint = '%v'\n\n",
@@ -1458,7 +1458,7 @@ func TestIntAry_GetInt_01(t *testing.T) {
 
   if expectedPrecisionUint != intAryPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryPrecisionUint\n"+
       "Expected intAryPrecisionUint = '%v'\n"+
       "  Actual intAryPrecisionUint = '%v'\n\n",
@@ -1615,7 +1615,7 @@ func TestIntAry_GetInt_02(t *testing.T) {
 
   if expectedPrecisionUint != intAryPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryPrecisionUint\n"+
       "Expected intAryPrecisionUint = '%v'\n"+
       "  Actual intAryPrecisionUint = '%v'\n\n",
@@ -1772,7 +1772,7 @@ func TestIntAry_GetInt_03(t *testing.T) {
 
   if expectedPrecisionUint != intAryPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryPrecisionUint\n"+
       "Expected intAryPrecisionUint = '%v'\n"+
       "  Actual intAryPrecisionUint = '%v'\n\n",
@@ -2927,7 +2927,7 @@ func TestIntAry_GetFractionalDigits_01(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -3106,7 +3106,7 @@ func TestIntAry_GetFractionalDigits_02(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -3285,7 +3285,7 @@ func TestIntAry_GetFractionalDigits_03(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -3464,7 +3464,7 @@ func TestIntAry_GetFractionalDigits_04(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -3643,7 +3643,7 @@ func TestIntAry_GetIntegerDigits_01(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -3822,7 +3822,7 @@ func TestIntAry_GetIntegerDigits_02(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -4001,7 +4001,7 @@ func TestIntAry_GetIntegerDigits_03(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -4180,7 +4180,7 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 
   if expectedPrecisionInt != intAry2PrecisionInt {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAry2 Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionInt != intAry2PrecisionInt\n"+
       "Expected intAry2PrecisionInt = '%v'\n"+
       "  Actual intAry2PrecisionInt = '%v'\n\n",
@@ -5026,7 +5026,7 @@ func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -5215,7 +5215,7 @@ func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -5404,7 +5404,7 @@ func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -5664,7 +5664,7 @@ func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -5853,7 +5853,7 @@ func TestIntAry_GetNthRootOfThis_07(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -6112,7 +6112,7 @@ func TestIntAry_GetNumStrDto_01(t *testing.T) {
 
   if expectedPrecisionUint != actualNumStrDtoPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & Actual Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != actualNumStrDtoPrecisionUint\n"+
       "Expected actualNumStrDtoPrecisionUint = '%v'\n"+
       "  Actual actualNumStrDtoPrecisionUint = '%v'\n\n",
@@ -6377,7 +6377,7 @@ func TestIntAry_GetSquareRootInt_01(t *testing.T) {
 
   if expectedPrecisionUint != intAryResultPrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryResult Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryResultPrecisionUint\n"+
       "Expected intAryResultPrecisionUint = '%v'\n"+
       "  Actual intAryResultPrecisionUint = '%v'\n\n",
@@ -7213,7 +7213,7 @@ func TestIntAry_Inverse_01(t *testing.T) {
 
   if expectedPrecisionUint != intAryInversePrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryInverse Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryInversePrecisionUint\n"+
       "Expected intAryInversePrecisionUint = '%v'\n"+
       "  Actual intAryInversePrecisionUint = '%v'\n\n",
@@ -7395,7 +7395,7 @@ func TestIntAry_Inverse_02(t *testing.T) {
 
   if expectedPrecisionUint != intAryInversePrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryInverse Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryInversePrecisionUint\n"+
       "Expected intAryInversePrecisionUint = '%v'\n"+
       "  Actual intAryInversePrecisionUint = '%v'\n\n",
@@ -7575,7 +7575,7 @@ func TestIntAry_Inverse_03(t *testing.T) {
 
   if expectedPrecisionUint != intAryInversePrecisionUint {
     t.Errorf("%v\n"+
-      "Error: expected/dec Precision Values ARE NOT EQUAL!\n"+
+      "Error: expected & intAryInverse Precision Values ARE NOT EQUAL!\n"+
       "Because expectedPrecisionUint != intAryInversePrecisionUint\n"+
       "Expected intAryInversePrecisionUint = '%v'\n"+
       "  Actual intAryInversePrecisionUint = '%v'\n\n",
