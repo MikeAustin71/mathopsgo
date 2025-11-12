@@ -2,7 +2,8 @@ package mathops
 
 import (
 	"math/big"
-	"testing"
+  "strconv"
+  "testing"
 )
 
 func TestIntAry_MultiplyByTenToPower_01(t *testing.T) {
@@ -4029,60 +4030,263 @@ func TestIntAry_MultiplyThisBy_09(t *testing.T) {
 }
 
 func TestIntAry_NewNumStr_01(t *testing.T) {
-	nStr1 := "579.123456000"
-	ePrecision := 9
-	eSignVal := 1
 
-	ia, err := new(IntAry).NewNumStr(nStr1)
+  ePrefix := "TestIntAry_NewNumStr_01"
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
-	}
 
-	if nStr1 != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
-	}
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  originalNumberStr := "579.123456000"
 
-	if ePrecision != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", ePrecision, ia.GetPrecision())
-	}
+  expectedNumberStr := originalNumberStr
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+	expectedPrecisionInt := 9
 
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewNumStr_02(t *testing.T) {
-	nStr1 := "-579.123456000"
-	ePrecision := 9
-	eSignVal := -1
 
-	ia, err := new(IntAry).NewNumStr(nStr1)
+  ePrefix := "TestIntAry_NewNumStr_02"
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
-	}
 
-	if nStr1 != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
-	}
+  //                                  1         2         3
+  //                       0.1234567890123456789012345678901234567
+  originalNumberStr := "-579.123456000"
 
-	if ePrecision != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", ePrecision, ia.GetPrecision())
-	}
+  expectedNumberStr := originalNumberStr
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedPrecisionInt := 9
 
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewNumStr(originalNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewNumStrWithNumSeps_01(t *testing.T) {
 
-	nStr1 := "579,123456000"
-	ePrecision := 9
-	eSignVal := 1
+  ePrefix := "TestIntAry_NewNumStrWithNumSeps_01"
+
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  originalNumberStr := "579,123456000"
+
+  expectedNumberStr := originalNumberStr
+
+  expectedPrecisionInt := 9
+
+  expectedSignValue := 1
 
 	expectedNumSeps := NumericSeparatorDto{}
 	frenchDecSeparator := ','
@@ -4093,38 +4297,131 @@ func TestIntAry_NewNumStrWithNumSeps_01(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
 	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+  intAry, err := new(IntAry).NewNumStrWithNumSeps(originalNumberStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+      "  originalNumberStr, expectedNumSeps)\n"+
+      "originalNumberStr= '%v'\n" +
+      "expectedNumSeps= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if nStr1 != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
-	}
+    return
+  }
 
-	if ePrecision != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", ePrecision, ia.GetPrecision())
-	}
+  err = intAry.IsValid("Validating initial intAry")
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	actualNumSeps := ia.GetNumericSeparatorsDto()
+  intAryNumberStr, err := intAry.GetNumStr()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewNumStrWithNumSeps_02(t *testing.T) {
 
-	nStr1 := "579.123456000"
-	ePrecision := 9
-	eSignVal := 1
+  ePrefix := "TestIntAry_NewNumStrWithNumSeps_02"
+
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  originalNumberStr := "579.123456000"
+
+  expectedNumberStr := originalNumberStr
+
+  expectedPrecisionInt := 9
+
+  expectedSignValue := 1
 
 	expectedNumSeps := NumericSeparatorDto{}
 
@@ -4132,266 +4429,1265 @@ func TestIntAry_NewNumStrWithNumSeps_02(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = ','
 	expectedNumSeps.CurrencySymbol = '$'
 
-	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+  intAry, err := new(IntAry).NewNumStrWithNumSeps(originalNumberStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+      "  originalNumberStr, expectedNumSeps)\n"+
+      "originalNumberStr= '%v'\n" +
+      "expectedNumSeps= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if nStr1 != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
-	}
+    return
+  }
 
-	if ePrecision != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", ePrecision, ia.GetPrecision())
-	}
+  err = intAry.IsValid("Validating initial intAry")
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	actualNumSeps := ia.GetNumericSeparatorsDto()
+  intAryNumberStr, err := intAry.GetNumStr()
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewNumStrWithNumSeps_03(t *testing.T) {
 
-	nStr1 := "579.123456000"
-	ePrecision := 9
-	eSignVal := 1
+  ePrefix := "TestIntAry_NewNumStrWithNumSeps_03"
+
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  originalNumberStr := "579.123456000"
+
+  expectedNumberStr := originalNumberStr
+
+  expectedPrecisionInt := 9
+
+  expectedSignValue := 1
 
 	expectedNumSeps := NumericSeparatorDto{}
 
-	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+  intAry, err := new(IntAry).NewNumStrWithNumSeps(originalNumberStr, expectedNumSeps)
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
-	}
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+      "  originalNumberStr, expectedNumSeps)\n"+
+      "originalNumberStr= '%v'\n" +
+      "expectedNumSeps= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberStr,
+      expectedNumSeps.String(),
+      err.Error())
 
-	if nStr1 != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
-	}
+    return
+  }
 
-	if ePrecision != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", ePrecision, ia.GetPrecision())
-	}
+  err = intAry.IsValid("Validating initial intAry")
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	expectedNumSeps.SetDefaultsIfEmpty()
+  intAryNumberStr, err := intAry.GetNumStr()
 
-	actualNumSeps := ia.GetNumericSeparatorsDto()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
+  intAryPrecisionInt := intAry.GetPrecision()
 
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewBigInt_01(t *testing.T) {
-	num := big.NewInt(123456)
-	precision := 3
-	ia, err := new(IntAry).NewBigInt(num, precision)
-	eStr := "123.456"
-	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewBigInt(num, precision). num= %v  precision= %v  Error= %v", num, precision, err)
-	}
+  ePrefix := "TestIntAry_NewBigInt_01"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+	originalNumberBigInt := big.NewInt(123456)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+	originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "123.456"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewBigInt(originalNumberBigInt, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewBigInt(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigInt.Text(10),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewBigInt_02(t *testing.T) {
-	num := big.NewInt(-123456)
-	precision := 3
-	ia, err := new(IntAry).NewBigInt(num, precision)
-	eStr := "-123.456"
-	eSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewBigInt(num, precision). num= %v  precision= %v Error= %v", num, precision, err)
-	}
+  ePrefix := "TestIntAry_NewBigInt_02"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  originalNumberBigInt := big.NewInt(-123456)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "-123.456"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewBigInt(originalNumberBigInt, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewBigInt(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigInt.Text(10),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloatBig_01(t *testing.T) {
-	num := big.NewFloat(123.456)
-	precision := 3
-	ia, err := new(IntAry).NewFloatBig(num, 3)
-	eStr := "123.456"
-	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloatBig(num). num= %v Error= %v", num, err)
-	}
+  ePrefix := "TestIntAry_NewFloatBig_01"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  originalNumberBigFloat := big.NewFloat(123.456)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "123.456"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloatBig(originalNumberBigFloat, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloatBig(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigFloat.Text('f', originalPrecisionInt),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloatBig_02(t *testing.T) {
-	num := big.NewFloat(-123.456)
-	precision := 3
-	ia, err := new(IntAry).NewFloatBig(num, precision)
-	eStr := "-123.456"
-	eSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloatBig(num). num= %v Error= %v", num, err)
-	}
+  ePrefix := "TestIntAry_NewFloatBig_02"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  originalNumberBigFloat := big.NewFloat(-123.456)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "-123.456"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloatBig(originalNumberBigFloat, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloatBig(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigFloat.Text('f', originalPrecisionInt),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloatBig_03(t *testing.T) {
-	num := big.NewFloat(123.456000)
-	precision := 3
-	ia, err := new(IntAry).NewFloatBig(num, -1)
-	eStr := "123.456"
-	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloatBig(num). num= %v Error= %v", num, err)
-	}
+  ePrefix := "TestIntAry_NewFloatBig_03"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  originalNumberBigFloat := big.NewFloat(123.456000)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "123.456"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloatBig(originalNumberBigFloat, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloatBig(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigFloat.Text('f', originalPrecisionInt),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloatBig_04(t *testing.T) {
-	num := big.NewFloat(123.456700)
-	precision := 3
-	ia, err := new(IntAry).NewFloatBig(num, 3)
-	eStr := "123.457"
-	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloatBig(num). num= %v Error= %v", num, err)
-	}
+  ePrefix := "TestIntAry_NewFloatBig_04"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  originalNumberBigFloat := big.NewFloat(123.456700)
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalPrecisionInt := 3
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  expectedNumberStr := "123.457"
 
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloatBig(originalNumberBigFloat, originalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloatBig(\n" +
+      "  originalNumberBigInt, originalPrecisionInt)\n"+
+      "originalNumberBigInt= '%v'\n" +
+      "originalPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      originalNumberBigFloat.Text('f', originalPrecisionInt),
+      originalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloat64_01(t *testing.T) {
-	num := float64(123.456111)
-	precision := 3
-	ia, err := new(IntAry).NewFloat64(num, precision)
-	eStr := "123.456"
-	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloat64(num, precision). num= %v precision= %v  Error= %v", num, precision, err)
-	}
+  ePrefix := "TestIntAry_NewFloat64_01"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  // Defaults to float64 Type
+  originalNumberFloat64 := 123.456111
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalNumberPrecisionRaw := 6
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  originalInputPrecisionInt := 3
+
+  expectedNumberStr := "123.456"
+
+  expectedPrecisionInt := 3
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloat64(originalNumberFloat64, originalInputPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloat64(\n" +
+      "  originalNumberFloat64, originalInputPrecisionInt)\n"+
+      "originalNumberFloat64= '%v'\n" +
+      "originalInputPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      strconv.FormatFloat(originalNumberFloat64, 'f', originalNumberPrecisionRaw, 64),
+      originalInputPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloat64_02(t *testing.T) {
-	num := float64(-123.456111)
-	precision := 3
-	ia, err := new(IntAry).NewFloat64(num, precision)
-	eStr := "-123.456"
-	eSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewFloat64(num, precision). num= %v precision= %v  Error= %v", num, precision, err)
-	}
+  ePrefix := "TestIntAry_NewFloat64_01"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
-	}
+  // Defaults to float64 Type
+  originalNumberFloat64 := -123.456111
 
-	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
-	}
+  originalNumberPrecisionRaw := 6
 
-	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
-	}
+  originalInputPrecisionInt := 3
+
+  expectedNumberStr := "-123.456"
+
+  expectedPrecisionInt := 3
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAry, err := new(IntAry).NewFloat64(originalNumberFloat64, originalInputPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n" +
+      "Error returned by:\n"+
+      "intAry, err := new(IntAry).NewFloat64(\n" +
+      "  originalNumberFloat64, originalInputPrecisionInt)\n"+
+      "originalNumberFloat64= '%v'\n" +
+      "originalInputPrecisionInt= '%v'\n" +
+      "Error= '%v'\n\n",
+      ePrefix,
+      strconv.FormatFloat(originalNumberFloat64, 'f', originalNumberPrecisionRaw, 64),
+      originalInputPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAry.IsValid("Validating initial intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.IsValid('Validating initial intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryNumSeps, err := intAry.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumSeps, err := intAry.GetNumericSeparatorsDto()\n"+
+      "intAry= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryNumSeps \n"+
+      "Expected intAryNumSeps = '%v'\n"+
+      "  Actual intAryNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_NewFloat32_01(t *testing.T) {

@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_MultiplyThisBy_09; xt_intary_05_test.go
+TestIntAry_NewFloat64_02; xt_intary_05_test.go
 
 git add -A
 git commit -m"Modified README"
