@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_NewUint32Exponent_06; xt_intary_05_test.go
+TestIntAry_RoundToPrecision_10; xt_intary_06_test.go
 
 git add -A
 git commit -m"Modified README"
