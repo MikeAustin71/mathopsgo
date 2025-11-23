@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_SetIntAryWithInt64_01; xt_intary_07_test.go
+TestIntAry_SetSignificantDigitIdxs_06; xt_intary_08_test.go
 
 git add -A
 git commit -m"Modified README"
