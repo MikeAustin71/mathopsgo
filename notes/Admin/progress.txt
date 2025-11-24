@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_SetThousandsSeparator_01; xt_intary_08_test.go
+TestIntAry_ShiftPrecisionRight_07; xt_intary_08_test.go
 
 git add -A
 git commit -m"Modified README"
