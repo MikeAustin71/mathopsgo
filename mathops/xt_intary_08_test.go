@@ -1541,35 +1541,159 @@ func TestIntAry_SetSignificantDigitIdxs_06(t *testing.T) {
 }
 
 func TestIntAry_SetThousandsSeparator_01(t *testing.T) {
-  ia := IntAry{}.New()
 
-  var frenchDecSeparator rune
+  ePrefix := "TestIntAry_SetThousandsSeparator_01"
 
-  frenchDecSeparator = ','
+  expectedNumberStr := "450123647,1234"
 
-  var frenchThousandsSeparator rune
+  expectedPrecisionInt := 0
 
-  frenchThousandsSeparator = ' '
+  expectedPrecisionUint := uint(expectedPrecisionInt)
 
-  ia.SetDecimalSeparator(frenchDecSeparator)
-  ia.SetThousandsSeparator(frenchThousandsSeparator)
+  expectedSignValue := 1
 
-  ia.SetIntAryWithNumStr("450 123 647,1234")
+  var expectedFrenchDecSeparator rune
 
-  decimalSeparator := ia.GetDecimalSeparator()
+  expectedFrenchDecSeparator = ','
 
-  if frenchDecSeparator != decimalSeparator {
-    t.Errorf("Error: Expected Currency Symbol= '%v'. Instead, received Currency Symbol= '%v'", frenchDecSeparator, decimalSeparator)
+  var expectedFrenchThousandsSeparator rune
+
+  expectedFrenchThousandsSeparator = ' '
+
+  intAry := new(IntAry).New()
+
+  err := intAry.SetDecimalSeparator(expectedFrenchDecSeparator)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAry.SetDecimalSeparator(expectedFrenchDecSeparator)\n"+
+      "expectedFrenchDecSeparator= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedFrenchDecSeparator, err.Error())
+    return
   }
 
-  numStr := ia.GetNumStr()
+  err = intAry.SetThousandsSeparator(expectedFrenchThousandsSeparator)
 
-  expectedNumStr := "450123647,1234"
-
-  if expectedNumStr != numStr {
-    t.Errorf("Error: Expected French Decimal separated NumStr= '%v'. Instead received NumStr= '%v'", expectedNumStr, numStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry.SetThousandsSeparator(expectedFrenchThousandsSeparator)\n"+
+      "expectedFrenchThousandsSeparator= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedFrenchThousandsSeparator, err.Error())
+    return
   }
 
+  err = intAry.SetIntAryWithNumStr("450 123 647,1234")
+
+  err = intAry.IsValid("Validating intAry")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAry.IsValid('Validating intAry')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumberStr, err := intAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAry set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryPrecisionInt := intAry.GetPrecision()
+
+  intAryPrecisionUint, err := intAry.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryPrecisionUint, err :=\n"+
+      "  intAry.GetPrecisionUint()\n"+
+      "intAryResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intArySignValue, err := intAry.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intArySignValue, err := intAry.GetSign()\n"+
+      "intAry= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryNumberStr, err.Error())
+    return
+  }
+
+  intAryDecimalSeparator := intAry.GetDecimalSeparator()
+
+  if expectedFrenchDecSeparator != intAryDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separators ARE NOT EQUAL!\n"+
+      "Because expectedFrenchDecSeparator != intAryDecimalSeparator\n"+
+      "Expected intAryDecimalSeparator = '%v'\n"+
+      "  Actual intAryDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedFrenchDecSeparator, intAryDecimalSeparator)
+
+    return
+  }
+
+  if expectedNumberStr != intAryNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryNumberStr \n"+
+      "Expected intAryNumberStr = '%v'\n"+
+      "  Actual intAryNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryPrecisionInt\n"+
+      "Expected intAryPrecisionInt = '%v'\n"+
+      "  Actual intAryPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAry Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryPrecisionUint\n"+
+      "Expected intAryPrecisionUint = '%v'\n"+
+      "  Actual intAryPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intArySignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAry Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intArySignValue\n"+
+      "Expected intArySignValue = '%v'\n"+
+      "  Actual intArySignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intArySignValue)
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_ShiftPrecisionLeft_01(t *testing.T) {
