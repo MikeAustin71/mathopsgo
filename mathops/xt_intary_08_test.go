@@ -8891,121 +8891,1159 @@ func TestIntAry_SubtractFromThis_19(t *testing.T) {
 }
 
 func TestIntAry_SubtractMultipleFromThis_01(t *testing.T) {
-  nStrBase := "197.452"
-  nStr1 := "1.122"
-  nStr2 := "4.5"
-  nStr3 := "32.148"
-  nStr4 := "10.0"
-  eNumStr := "149.682"
-  ePrecision := 3
-  eSignVal := 1
 
-  iaBase := IntAry{}.New()
-  ia1 := IntAry{}.New()
-  ia2 := IntAry{}.New()
-  ia3 := IntAry{}.New()
-  ia4 := IntAry{}.New()
-  iaBase.SetIntAryWithNumStr(nStrBase)
-  ia1.SetIntAryWithNumStr(nStr1)
-  ia2.SetIntAryWithNumStr(nStr2)
-  ia3.SetIntAryWithNumStr(nStr3)
-  ia4.SetIntAryWithNumStr(nStr4)
-  err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
+  ePrefix := "TestIntAry_SubtractMultipleFromThis_01"
+
+  originalBaseNumberStr := "197.452"
+
+  originalNumberStr1 := "1.122"
+
+  originalNumberStr2 := "4.5"
+
+  originalNumberStr3 := "32.148"
+
+  originalNumberStr4 := "10.0"
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  expectedNumberStr := "149.682"
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
+    return
   }
 
-  if eNumStr != iaBase.GetNumStr() {
-    t.Errorf("Error - Expected iaBase.GetNumStr()= '%v' .  Instead, iaBase.GetNumStr()= '%v' .", eNumStr, iaBase.GetNumStr())
+  err = intAryBase.IsValid("Validating initial intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != iaBase.GetPrecision() {
-    t.Errorf("Error - Expected iaBase.GetPrecisionInt()= '%v' .  Instead, iaBase.GetPrecisionInt()= '%v' .", ePrecision, iaBase.GetPrecision())
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != iaBase.GetSign() {
-    t.Errorf("Error - Expected iaBase.GetSign()= '%v' .  Instead, iaBase.GetSign()= '%v' .", eSignVal, iaBase.GetSign())
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
   }
 
+  intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
+  }
+
+  err = intAry1.IsValid("Validating intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "intAry2 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)\n"+
+      "originalNumberStr3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr3, err.Error())
+    return
+  }
+
+  err = intAry3.IsValid("Validating intAry3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry3.IsValid('Validating intAry3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry3NumberStr, err := intAry3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3NumberStr, err := intAry3.GetNumStr()\n"+
+      "intAry3 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr3 != intAry3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr3 != intAry3NumberStr\n"+
+      "Expected intAry3NumberStr = '%v'\n"+
+      "  Actual intAry3NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr3, intAry3NumberStr)
+
+    return
+  }
+
+  intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)\n"+
+      "originalNumberStr4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr4, err.Error())
+    return
+  }
+
+  err = intAry4.IsValid("Validating intAry4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry4.IsValid('Validating intAry4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry4NumberStr, err := intAry4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4NumberStr, err := intAry4.GetNumStr()\n"+
+      "intAry4 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr4 != intAry4NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr4 != intAry4NumberStr\n"+
+      "Expected intAry4NumberStr = '%v'\n"+
+      "  Actual intAry4NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr4, intAry4NumberStr)
+
+    return
+  }
+
+  err = intAryBase.SubtractMultipleFromThis(&intAry1, &intAry2, &intAry3, &intAry4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.SubtractMultipleFromThis(\n"+
+      "  &intAry1, &intAry2, &intAry3, &intAry4)\n"+
+      "intAryBase= '%v'\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "intAry3= '%v'\n"+
+      "intAry4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      intAry3NumberStr,
+      intAry4NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_SubtractMultipleFromThis_02(t *testing.T) {
-  nStrBase := "197.452"
-  nStr1 := "1.122"
-  nStr2 := "4.5"
-  nStr3 := "-32.148"
-  nStr4 := "10.0"
-  eNumStr := "213.978"
-  ePrecision := 3
-  eSignVal := 1
 
-  iaBase := IntAry{}.New()
-  ia1 := IntAry{}.New()
-  ia2 := IntAry{}.New()
-  ia3 := IntAry{}.New()
-  ia4 := IntAry{}.New()
-  iaBase.SetIntAryWithNumStr(nStrBase)
-  ia1.SetIntAryWithNumStr(nStr1)
-  ia2.SetIntAryWithNumStr(nStr2)
-  ia3.SetIntAryWithNumStr(nStr3)
-  ia4.SetIntAryWithNumStr(nStr4)
-  err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
+  ePrefix := "TestIntAry_SubtractMultipleFromThis_02"
+
+  originalBaseNumberStr := "197.452"
+
+  originalNumberStr1 := "1.122"
+
+  originalNumberStr2 := "4.5"
+
+  originalNumberStr3 := "-32.148"
+
+  originalNumberStr4 := "10.0"
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  expectedNumberStr := "213.978"
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
+    return
   }
 
-  if eNumStr != iaBase.GetNumStr() {
-    t.Errorf("Error - Expected iaBase.GetNumStr()= '%v' .  Instead, iaBase.GetNumStr()= '%v' .", eNumStr, iaBase.GetNumStr())
+  err = intAryBase.IsValid("Validating initial intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != iaBase.GetPrecision() {
-    t.Errorf("Error - Expected iaBase.GetPrecisionInt()= '%v' .  Instead, iaBase.GetPrecisionInt()= '%v' .", ePrecision, iaBase.GetPrecision())
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != iaBase.GetSign() {
-    t.Errorf("Error - Expected iaBase.GetSign()= '%v' .  Instead, iaBase.GetSign()= '%v' .", eSignVal, iaBase.GetSign())
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
   }
 
+  intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
+  }
+
+  err = intAry1.IsValid("Validating intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "intAry2 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)\n"+
+      "originalNumberStr3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr3, err.Error())
+    return
+  }
+
+  err = intAry3.IsValid("Validating intAry3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry3.IsValid('Validating intAry3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry3NumberStr, err := intAry3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3NumberStr, err := intAry3.GetNumStr()\n"+
+      "intAry3 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr3 != intAry3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr3 != intAry3NumberStr\n"+
+      "Expected intAry3NumberStr = '%v'\n"+
+      "  Actual intAry3NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr3, intAry3NumberStr)
+
+    return
+  }
+
+  intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)\n"+
+      "originalNumberStr4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr4, err.Error())
+    return
+  }
+
+  err = intAry4.IsValid("Validating intAry4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry4.IsValid('Validating intAry4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry4NumberStr, err := intAry4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4NumberStr, err := intAry4.GetNumStr()\n"+
+      "intAry4 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr4 != intAry4NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr4 != intAry4NumberStr\n"+
+      "Expected intAry4NumberStr = '%v'\n"+
+      "  Actual intAry4NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr4, intAry4NumberStr)
+
+    return
+  }
+
+  err = intAryBase.SubtractMultipleFromThis(&intAry1, &intAry2, &intAry3, &intAry4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.SubtractMultipleFromThis(\n"+
+      "  &intAry1, &intAry2, &intAry3, &intAry4)\n"+
+      "intAryBase= '%v'\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "intAry3= '%v'\n"+
+      "intAry4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      intAry3NumberStr,
+      intAry4NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAry_SubtractMultipleFromThis_03(t *testing.T) {
-  nStrBase := "197.452"
-  nStr1 := "1.122"
-  nStr2 := "4.5"
-  nStr3 := "932.148"
-  nStr4 := "10.0"
-  eNumStr := "-750.318"
-  ePrecision := 3
-  eSignVal := -1
 
-  iaBase := IntAry{}.New()
-  ia1 := IntAry{}.New()
-  ia2 := IntAry{}.New()
-  ia3 := IntAry{}.New()
-  ia4 := IntAry{}.New()
-  iaBase.SetIntAryWithNumStr(nStrBase)
-  ia1.SetIntAryWithNumStr(nStr1)
-  ia2.SetIntAryWithNumStr(nStr2)
-  ia3.SetIntAryWithNumStr(nStr3)
-  ia4.SetIntAryWithNumStr(nStr4)
-  err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
+  ePrefix := "TestIntAry_SubtractMultipleFromThis_03"
+
+  originalBaseNumberStr := "197.452"
+
+  originalNumberStr1 := "1.122"
+
+  originalNumberStr2 := "4.5"
+
+  originalNumberStr3 := "932.148"
+
+  originalNumberStr4 := "10.0"
+
+  //                                  1         2         3
+  //                       0.1234567890123456789012345678901234567
+  expectedNumberStr := "-750.318"
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
+    return
   }
 
-  if eNumStr != iaBase.GetNumStr() {
-    t.Errorf("Error - Expected iaBase.GetNumStr()= '%v' .  Instead, iaBase.GetNumStr()= '%v' .", eNumStr, iaBase.GetNumStr())
+  err = intAryBase.IsValid("Validating initial intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if ePrecision != iaBase.GetPrecision() {
-    t.Errorf("Error - Expected iaBase.GetPrecisionInt()= '%v' .  Instead, iaBase.GetPrecisionInt()= '%v' .", ePrecision, iaBase.GetPrecision())
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if eSignVal != iaBase.GetSign() {
-    t.Errorf("Error - Expected iaBase.GetSign()= '%v' .  Instead, iaBase.GetSign()= '%v' .", eSignVal, iaBase.GetSign())
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
   }
 
+  intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1, err := new(IntAry).NewNumStr(originalNumberStr1)\n"+
+      "originalNumberStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr1, err.Error())
+    return
+  }
+
+  err = intAry1.IsValid("Validating intAry1")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry1.IsValid('Validating intAry1')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry1NumberStr, err := intAry1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry1NumberStr, err := intAry1.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr1 != intAry1NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr1 != intAry1NumberStr\n"+
+      "Expected intAry1NumberStr = '%v'\n"+
+      "  Actual intAry1NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr1, intAry1NumberStr)
+
+    return
+  }
+
+  intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2, err := new(IntAry).NewNumStr(originalNumberStr2)\n"+
+      "originalNumberStr2= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr2, err.Error())
+    return
+  }
+
+  err = intAry2.IsValid("Validating intAry2")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry2.IsValid('Validating intAry2')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry2NumberStr, err := intAry2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry2NumberStr, err := intAry2.GetNumStr()\n"+
+      "intAry2 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr2 != intAry2NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr2 != intAry2NumberStr\n"+
+      "Expected intAry2NumberStr = '%v'\n"+
+      "  Actual intAry2NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr2, intAry2NumberStr)
+
+    return
+  }
+
+  intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3, err := new(IntAry).NewNumStr(originalNumberStr3)\n"+
+      "originalNumberStr3= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr3, err.Error())
+    return
+  }
+
+  err = intAry3.IsValid("Validating intAry3")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry3.IsValid('Validating intAry3')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry3NumberStr, err := intAry3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry3NumberStr, err := intAry3.GetNumStr()\n"+
+      "intAry3 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr3 != intAry3NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr3 != intAry3NumberStr\n"+
+      "Expected intAry3NumberStr = '%v'\n"+
+      "  Actual intAry3NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr3, intAry3NumberStr)
+
+    return
+  }
+
+  intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4, err := new(IntAry).NewNumStr(originalNumberStr4)\n"+
+      "originalNumberStr4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr4, err.Error())
+    return
+  }
+
+  err = intAry4.IsValid("Validating intAry4")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAry4.IsValid('Validating intAry4')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAry4NumberStr, err := intAry4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAry4NumberStr, err := intAry4.GetNumStr()\n"+
+      "intAry4 set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr4 != intAry4NumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalNumberStr4 != intAry4NumberStr\n"+
+      "Expected intAry4NumberStr = '%v'\n"+
+      "  Actual intAry4NumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr4, intAry4NumberStr)
+
+    return
+  }
+
+  err = intAryBase.SubtractMultipleFromThis(&intAry1, &intAry2, &intAry3, &intAry4)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.SubtractMultipleFromThis(\n"+
+      "  &intAry1, &intAry2, &intAry3, &intAry4)\n"+
+      "intAryBase= '%v'\n"+
+      "intAry1= '%v'\n"+
+      "intAry2= '%v'\n"+
+      "intAry3= '%v'\n"+
+      "intAry4= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAry1NumberStr,
+      intAry2NumberStr,
+      intAry3NumberStr,
+      intAry4NumberStr,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
