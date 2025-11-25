@@ -3390,7 +3390,7 @@ func TestIntAry_ShiftPrecisionRight_03(t *testing.T) {
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "intAryNumberStr, err := intAry.GetNumStr()\n"+
+      "intAryNumberStr, err = intAry.GetNumStr()\n"+
       "intAry Number String set to final value\n"+
       "Error= '%v'\n\n", ePrefix, err.Error())
     return

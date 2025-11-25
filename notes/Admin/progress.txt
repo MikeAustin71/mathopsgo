@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAry_SubtractMultipleFromThis_03; xt_intary_08_test.go
+TestIntAryMathAdd_Add_07; xt_intarymathadd_01_test.go
 
 git add -A
 git commit -m"Modified README"
