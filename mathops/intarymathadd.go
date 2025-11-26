@@ -1,13 +1,14 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
+  "fmt"
+
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type IntAryMathAdd struct {
-	Input  IntAryPair
-	Result IntAry
+  Input  IntAryPair
+  Result IntAry
 }
 
 // AddManyArray
@@ -28,39 +29,39 @@ type IntAryMathAdd struct {
 //		separator and currency symbol.
 func (iaAdd *IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) error {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathAdd.AddManyArray()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathAdd.AddManyArray()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	lAry := len(iaMany)
+  lAry := len(iaMany)
 
-	iaAddMech := new(intAryMathAddMechanics)
+  iaAddMech := new(intAryMathAddMechanics)
 
-	for i := 0; i < lAry; i++ {
+  for i := 0; i < lAry; i++ {
 
-		err = iaAddMech.runTotal(total, false, &iaMany[i], false, ePrefix)
+    err = iaAddMech.runTotal(total, false, &iaMany[i], false, ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: fmt.Sprintf("err = iaAddMech.runTotal(total, false, &iaMany[%d], false, ePrefix)", i),
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: fmt.Sprintf("err = iaAddMech.runTotal(total, false, &iaMany[%d], false, ePrefix)", i),
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // AddMany
@@ -81,37 +82,37 @@ func (iaAdd *IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) error {
 //	 separator and currency symbol.
 func (iaAdd *IntAryMathAdd) AddMany(total *IntAry, iaMany ...*IntAry) error {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathAdd.AddMany()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathAdd.AddMany()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	iaAddMech := new(intAryMathAddMechanics)
+  iaAddMech := new(intAryMathAddMechanics)
 
-	for idx, iAry := range iaMany {
+  for idx, iAry := range iaMany {
 
-		err = iaAddMech.runTotal(total, false, iAry, false, ePrefix)
+    err = iaAddMech.runTotal(total, false, iAry, false, ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = iaAddMech.runTotal(total, false, iAry, false, ePrefix)",
-				ErrContext: fmt.Sprintf("'iaMany' series Cycle Index= '%d'", idx),
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = iaAddMech.runTotal(total, false, iAry, false, ePrefix)",
+        ErrContext: fmt.Sprintf("'iaMany' series Cycle Index= '%d'", idx),
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // Add
@@ -124,53 +125,53 @@ func (iaAdd *IntAryMathAdd) AddMany(total *IntAry, iaMany ...*IntAry) error {
 //	copied from input parameter 'ia1'.
 func (iaAdd *IntAryMathAdd) Add(ia1 *IntAry, ia2 *IntAry) (IntAry, error) {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathAdd.AddMany()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathAdd.AddMany()",
+    "")
 
-	if err != nil {
-		return IntAry{}, err
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ia3, err := ia1.CopyOut()
+  ia3, err := ia1.CopyOut()
 
-	if err != nil {
+  if err != nil {
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "ia3, err := ia1.CopyOut()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "ia3, err := ia1.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = new(intAryMathAddMechanics).
-		runTotal(&ia3, false, ia2, false, ePrefix)
+  err = new(intAryMathAddMechanics).
+    runTotal(&ia3, false, ia2, false, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryMathAddMechanics).\n" +
-					"  runTotal(&ia3, false, ia2, false, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryMathAddMechanics).\n" +
+          "  runTotal(&ia3, false, ia2, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return ia3, nil
+  return ia3, nil
 }
 
 // RunTotal
 //
-//	Adds to IntAry input parameters and returns the results in the
+//	Adds two IntAry input parameters and returns the results in the
 //	first parameter, 'ia'.
 //
 //	Validation Testing
@@ -188,19 +189,19 @@ func (iaAdd *IntAryMathAdd) Add(ia1 *IntAry, ia2 *IntAry) (IntAry, error) {
 //	words, the 'ia' numeric separators will remain unchanged.
 func (iaAdd *IntAryMathAdd) RunTotal(ia, ia2 *IntAry) error {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathAdd.RunTotal()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathAdd.RunTotal()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	return new(intAryMathAddMechanics).runTotal(
-		ia, false, ia2, false, ePrefix)
+  return new(intAryMathAddMechanics).runTotal(
+    ia, false, ia2, false, ePrefix)
 }
