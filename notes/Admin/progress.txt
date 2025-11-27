@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAryMathDivide_Divide_01; xt_intarymathdivide_01_test.go
+TestIntAryMathMultiply_MultiplyInPlace_01; xt_intarymathmultipy_01_test.go
 
 git add -A
 git commit -m"Modified README"
