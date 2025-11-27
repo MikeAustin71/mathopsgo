@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAryMathAdd_RunTotal_03; xt_intarymathadd_01_test.go
+TestIntAryMathDivide_Divide_01; xt_intarymathdivide_01_test.go
 
 git add -A
 git commit -m"Modified README"
