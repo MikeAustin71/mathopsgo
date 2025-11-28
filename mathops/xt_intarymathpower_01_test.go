@@ -760,562 +760,3038 @@ func TestIntAryMathPower_MinimumRequiredPrecision_05(t *testing.T) {
 
 func TestIntAryMathPower_Pwr_01(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
-  baseStr := "2"
-  exponentStr := "4"
-  expectedNumStr := "16"
-  maxPrecision := 17
-  minPrecision := 0
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  ePrefix := "TestIntAryMathPower_Pwr_01"
+
+  originalBaseNumberStr := "2"
+
+  originalExponentNumberStr := "4"
+
+  maximumPrecisionInt := 17
+
+  minimumPrecisionInt := 0
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "16"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+    return
   }
 
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_02(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
-  baseStr := "2"
-  exponentStr := "-4"
-  expectedNumStr := "0.0625"
-  maxPrecision := 17
-  minPrecision := 0
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  ePrefix := "TestIntAryMathPower_Pwr_02"
+
+  originalBaseNumberStr := "2"
+
+  originalExponentNumberStr := "-4"
+
+  maximumPrecisionInt := 17
+
+  minimumPrecisionInt := 0
+
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "0.0625"
+
+  expectedPrecisionInt := 4
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+    return
   }
 
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_03(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
-  baseStr := "37.241"
-  exponentStr := "8"
-  expectedNumStr := "3699735472699.4101912057680101525"
-  maxPrecision := 19
-  minPrecision := 0
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  ePrefix := "TestIntAryMathPower_Pwr_03"
+
+  originalBaseNumberStr := "37.241"
+
+  originalExponentNumberStr := "8"
+
+  maximumPrecisionInt := 19
+
+  minimumPrecisionInt := 0
+
+  //                                           1         2         3
+  //                                0.1234567890123456789012345678901234567
+  expectedNumberStr := "3699735472699.4101912057680101525"
+
+  expectedPrecisionInt := 19
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+    return
   }
 
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_04(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 2-Milliseconds 998-Microseconds 700-Nanoseconds
-  baseStr := "37"
-  exponentStr := "3.25"
-  expectedNumStr := "124926.79641959048051506133768818"
-  maxPrecision := 26
-  minPrecision := 0
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  ePrefix := "TestIntAryMathPower_Pwr_04"
+
+  originalBaseNumberStr := "37"
+
+  originalExponentNumberStr := "3.25"
+
+  maximumPrecisionInt := 26
+
+  minimumPrecisionInt := 0
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedNumberStr := "124926.79641959048051506133768818"
+
+  expectedPrecisionInt := 26
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
   if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+    return
   }
 
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_05(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 3-Milliseconds 997-Microseconds 400-Nanosecond
 
-  baseStr := "37"
-  exponentStr := "-3.25"
-  expectedNumStr := "0.0000080046877744411952288377104402677"
-  maxPrecision := 37
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_05"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "37"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "-3.25"
 
-  }
+  maximumPrecisionInt := 37
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "0.0000080046877744411952288377104402677"
 
-  }
+  expectedPrecisionInt := 37
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_06(t *testing.T) {
 
-  // Time
+  // Elapseded Time
   // 1-Milliseconds 998-Microseconds 300-Nanoseconds
 
-  baseStr := "-37"
-  exponentStr := "-3"
-  expectedNumStr := "-0.000019742167295125658894833474818866"
-  maxPrecision := 36
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_06"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "-37"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "-3"
 
-  }
+  maximumPrecisionInt := 36
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "-0.000019742167295125658894833474818866"
 
-  }
+  expectedPrecisionInt := 36
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_07(t *testing.T) {
 
-  // Time
+  // Elapseded Time
   // 3-Milliseconds 997-Microseconds 500-Nanoseconds
 
-  baseStr := "32"
-  exponentStr := "-3.6"
-  expectedNumStr := "0.000003814697265625"
-  maxPrecision := 18
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_07"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "32"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "-3.6"
 
-  }
+  maximumPrecisionInt := 18
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "0.000003814697265625"
 
-  }
+  expectedPrecisionInt := 18
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_08(t *testing.T) {
 
-  // Time
+  // Elapseded Time
   // 2-Milliseconds 999-Microseconds 300-Nanoseconds
 
-  baseStr := "-32"
-  exponentStr := "-3.6"
-  expectedNumStr := "0.000003814697265625"
-  maxPrecision := 18
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_08"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "-32"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "-3.6"
 
-  }
+  maximumPrecisionInt := 18
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "0.000003814697265625"
 
-  }
+  expectedPrecisionInt := 18
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_09(t *testing.T) {
 
-  // Time
+  // Elapseded Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
 
-  baseStr := "5"
-  exponentStr := "-3"
-  expectedNumStr := "0.008"
-  maxPrecision := 3
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_09"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "5"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "-3"
 
-  }
+  maximumPrecisionInt := 3
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "0.008"
 
-  }
+  expectedPrecisionInt := 3
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_10(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
 
-  baseStr := "-5"
-  exponentStr := "4"
-  expectedNumStr := "625"
-  maxPrecision := 0
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_10"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "-5"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "4"
 
-  }
+  maximumPrecisionInt := 0
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  expectedNumberStr := "625"
 
-  }
+  expectedPrecisionInt := 0
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_11(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 0-Milliseconds 0-Microseconds 0-Nanoseconds
 
-  baseStr := "-5"
-  exponentStr := "5"
-  expectedNumStr := "-3125"
-  maxPrecision := 0
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_11"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "-5"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "5"
 
-  }
+  maximumPrecisionInt := 0
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                                   1         2         3
+  //                        0.1234567890123456789012345678901234567
+  expectedNumberStr := "-3125"
 
-  }
+  expectedPrecisionInt := 0
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_12(t *testing.T) {
 
-  // Time
+  // Elapsed Time
   // 1-Milliseconds 998-Microseconds 900-Nanoseconds
 
-  baseStr := "4"
-  exponentStr := "0.25"
-  expectedNumStr := "1.4142135623730950488016887242097"
-  maxPrecision := 31
-  minPrecision := 0
+  ePrefix := "TestIntAryMathPower_Pwr_12"
 
-  iaBase, err := IntAry{}.NewNumStr(baseStr)
+  originalBaseNumberStr := "4"
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
-      "baseStr='%v' Error='%v' \n", baseStr, err.Error())
-    return
+  originalExponentNumberStr := "0.25"
 
-  }
+  maximumPrecisionInt := 31
 
-  iaExponent, err := IntAry{}.NewNumStr(exponentStr)
+  minimumPrecisionInt := 0
 
-  if err != nil {
-    t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
-      "exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-    return
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "1.4142135623730950488016887242097"
 
-  }
+  expectedPrecisionInt := 31
 
-  err = IntAryMathPower{}.Pwr(&iaBase, &iaExponent, minPrecision, maxPrecision)
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
-      "Error='%v' \n", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBase, err := new(IntAry).NewNumStr(originalBaseNumberStr)\n"+
+      "originalBaseNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalBaseNumberStr, err.Error())
     return
-
   }
 
-  actualResultStr := iaBase.GetNumStr()
+  err = intAryBase.IsValid("Validating initial intAryBase")
 
-  if expectedNumStr != actualResultStr {
-    t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-      expectedNumStr, actualResultStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating initial intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryBaseNumberStr, err := intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBaseNumberStr set to initial intAryBase value.\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalBaseNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalBaseNumberStr != intAryBaseNumberStr\n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, originalBaseNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponent, err := new(IntAry).NewNumStr(originalExponentNumberStr)\n"+
+      "originalExponentNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalExponentNumberStr, err.Error())
+    return
+  }
+
+  err = intAryExponent.IsValid("Validating intAryExponent")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryExponent.IsValid('Validating intAryExponent')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryExponentNumberStr, err := intAryExponent.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryExponentNumberStr, err := intAryExponent.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalExponentNumberStr != intAryExponentNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExponentNumberStr != intAryExponentNumberStr\n"+
+      "Expected intAryExponentNumberStr = '%v'\n"+
+      "  Actual intAryExponentNumberStr = '%v'\n\n",
+      ePrefix, originalExponentNumberStr, intAryExponentNumberStr)
+
+    return
+  }
+
+  err = new(IntAryMathPower).Pwr(&intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = new(IntAryMathPower).Pwr(\n"+
+      "  &intAryBase, &intAryExponent, minimumPrecisionInt, maximumPrecisionInt)\n"+
+      "intAryBase= '%v'\n"+
+      "intAryExponent= '%v'\n"+
+      "minimumPrecisionInt= '%v'\n"+
+      "maximumPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryBaseNumberStr,
+      intAryExponentNumberStr,
+      minimumPrecisionInt,
+      maximumPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = intAryBase.IsValid("Validating final intAryBase")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryBase.IsValid('Validating final intAryBase')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBaseNumberStr, err = intAryBase.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumberStr, err := intAryBase.GetNumStr()\n"+
+      "intAryBase Number String set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryBasePrecisionInt := intAryBase.GetPrecision()
+
+  intAryBasePrecisionUint, err := intAryBase.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBasePrecisionUint, err :=\n"+
+      "  intAryBase.GetPrecisionUint()\n"+
+      "intAryBaseResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseSignValue, err := intAryBase.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseSignValue, err := intAryBase.GetSign()\n"+
+      "intAryBase= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryBaseNumSeps, err := intAryBase.GetNumericSeparatorsDto()\n"+
+      "intAryBase= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, intAryBaseNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumberStr != intAryBaseNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and IntAry Number String Values ARE NOT Equal\n"+
+      "Because expectedNumberStr != intAryBaseNumberStr \n"+
+      "Expected intAryBaseNumberStr = '%v'\n"+
+      "  Actual intAryBaseNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, intAryBaseNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != intAryBasePrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != intAryBasePrecisionInt\n"+
+      "Expected intAryBasePrecisionInt = '%v'\n"+
+      "  Actual intAryBasePrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, intAryBasePrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != intAryBasePrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & intAryBase Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != intAryBasePrecisionUint\n"+
+      "Expected intAryBasePrecisionUint = '%v'\n"+
+      "  Actual intAryBasePrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, intAryBasePrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != intAryBaseSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & intAryBase Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != intAryBaseSignValue\n"+
+      "Expected intAryBaseSignValue = '%v'\n"+
+      "  Actual intAryBaseSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, intAryBaseSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(intAryBaseNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != intAryBaseNumSeps \n"+
+      "Expected intAryBaseNumSeps = '%v'\n"+
+      "  Actual intAryBaseNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), intAryBaseNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestIntAryMathPower_Pwr_13(t *testing.T) {
