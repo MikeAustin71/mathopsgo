@@ -528,54 +528,57 @@ func (nFac NFactorial) CalcFactorialValueUint64(nFactorial, lowerLimit uint64) (
 	return nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
 }
 
-// CalcFactorialValueBigInt - Calculates the value of n factorial using an upper and lower limit.
-// Both the upper limit, 'nFacUpperLimit', and the lower limit, 'nFacLowerLimit', are passed as
-// *big.Int types.
+// CalcFactorialValueBigInt
 //
-// The resulting value of the n factorial calculation is returned as a 'BigIntNum' type.
+//		 Calculates the value of n factorial using an upper and lower limit.
+//		 Both the upper limit, 'nFacUpperLimit', and the lower limit, 'nFacLowerLimit', are passed as
+//		 *big.Int types.
 //
-// Input Parameters:
-// =================
+//		 The resulting value of the n factorial calculation is returned as a 'BigIntNum' type.
 //
-// nFacUpperLimit	*big.Int	- This *big.Int type represents the upper limit or starting value
+//		 Input Parameters:
+//		 =================
 //
-//	of the n-factorial calculation.
+//		 nFacUpperLimit	*big.Int
+//		  This *big.Int type represents the upper limit or starting value
+//			 of the n-factorial calculation.
 //
-// nFacLowerLimit	*big.Int	- This *big.Int type  represents the lower limit of the n-factorial
+//		 nFacLowerLimit	*big.Int
+//		  This *big.Int type  represents the lower limit of the n-factorial
+//		  calculation.  This value is NOT multiplied by the previous
+//		  n-factorial value and is therefore NOT included in the
+//		  calculation results. It's sole purpose is to signal the end
+//		  of n-factorial calculations.
 //
-//																calculation.  This value is NOT multiplied by the previous
-//	                             n-factorial value and is therefore NOT included in the
-//																calculation results. It's sole purpose is to signal the end
-//																of n-factorial calculations.
+//	   If nFacLowerLimit is less than '1', an error will be returned.
 //
-// Return Values
-// =============
+//		 Return Values
+//		 =============
 //
-// BigIntNum type						  - The value of the n-factorial calculation is returned as
+//		 BigIntNum
+//		   The value of the n-factorial calculation is returned as
+//		   a type BigIntNum. The returned BigIntNum type will always
+//		   be a positive integer value.
 //
-//	a type BigIntNum. The returned BigIntNum type will always
-//	be a positive integer value.
+//		 error
+//		   For a successful calculation, 'nFacUpperLimit' must be greater
+//		   than 'nFacLowerLimit'. If these conditions are not met, an
+//		   error will be returned.
 //
-// error											- For a successful calculation, 'nFacUpperLimit' must be greater
+//		 Examples:
+//		 =========
 //
-//	than 'nFacLowerLimit'. If these conditions are not met, an
-//	error will be returned.
+//		 1. nFacUpperLimit = 7  and nFacLowerLimit = 3
+//		    The input parameter 'nFacLowerLimit' specifies the lower boundary
+//		    for the calculation. Values of 'nFacUpperLimit' = 7 and
+//		    'nFacLowerLimit' = 3  will yield a calculation of:
+//		    7x6x5x4 = 840
 //
-// Examples:
-// =========
+//		 2. 'nFacUpperLimit' = 7 and 'nFacLowerLimit' = 7
+//		    Equivalent of 0! and 0! = 1
 //
-//  1. nFacUpperLimit = 7  and nFacLowerLimit = 3
-//
-//     The input parameter 'nFacLowerLimit' specifies the lower boundary
-//     for the calculation. Values of 'nFacUpperLimit' = 7 and
-//     'nFacLowerLimit' = 3  will yield a calculation of:
-//     7x6x5x4 = 840
-//
-//  2. 'nFacUpperLimit' = 7 and 'nFacLowerLimit' = 7
-//     Equivalent of 0! and 0! = 1
-//
-//  3. nFacUpperLimit = 7 and nFacLowerLimit = 1
-//     7x6x5x4x3x2 = 5040
+//		 3. nFacUpperLimit = 7 and nFacLowerLimit = 1
+//		    7x6x5x4x3x2 = 5040
 func (nFac NFactorial) CalcFactorialValueBigInt(
 	nFacUpperLimit, nFacLowerLimit *big.Int) (result BigIntNum, err error) {
 

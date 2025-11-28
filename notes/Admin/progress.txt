@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAryMathPower_PwrByMultiplication_01; xt_intarymathpower_02_test.go
+TestNFactorial_CalcFactorialValueBigInt_10; xt_nfactorial_01_test.go
 
 git add -A
 git commit -m"Modified README"
