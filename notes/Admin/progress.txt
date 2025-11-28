@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestIntAryMathPower_Pwr_12; xt_intarymathpower_01_test.go
+TestIntAryMathPower_PwrByMultiplication_01; xt_intarymathpower_02_test.go
 
 git add -A
 git commit -m"Modified README"

@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+
 	ePref "github.com/MikeAustin71/errpref"
 )
 
@@ -422,50 +423,50 @@ func (iaPwr *IntAryMathPower) Pwr(
 
 // PwrByMultiplication
 //
-//		Raises base to the power of exponent using repetitive
-//		multiplication. This method may be slower than the method
-//		IntAryMathPower.Pwr(); however, this method is capable of
-//		handling very large exponents.
+//	Raises base to the power of exponent using repetitive
+//	multiplication. This method may be slower than the method
+//	IntAryMathPower.Pwr(); however, this method is capable of
+//	handling very large exponents.
 //
-//		Effectively, input parameter 'base' is raised to the power
-//		of exponent.
+//	Effectively, input parameter 'base' is raised to the power
+//	of exponent.
 //
 //		    result = base^exponent
 //
-//	 'power' Operation Result
-//	 ========================
+//	'power' Operation Result
+//	========================
 //
-//		The result of this operation is returned as pointer to an
-//		IntAry instance.
+//	The result of this operation is returned as pointer to an
+//	IntAry instance.
 //
-//	 Numeric Separators
-//	 ==================
+//	Numeric Separators
+//	==================
 //
-//		The IntAry instance returned by this method will contain
-//		numeric separators (decimal separator, thousands separator and
-//		currency symbol) copied from input parameter 'base'.
+//	The IntAry instance returned by this method will contain
+//	numeric separators (decimal separator, thousands separator and
+//	currency symbol) copied from input parameter 'base'.
 //
-//		maxResultPrecision
-//		==================
+//	maxResultPrecision
+//	==================
 //
-//		Input parameter 'maxResultPrecision' will round the result to
-//		this number of decimal places after the decimal point if the
-//		result is greater than 'maxResultPrecision'.
+//	Input parameter 'maxResultPrecision' will round the result to
+//	this number of decimal places after the decimal point if the
+//	result is greater than 'maxResultPrecision'.
 //
-//		If the value of 'maxResultPrecision' is less than zero, it will
-//		be automatically reset to a value of '4096'.
+//	If the value of 'maxResultPrecision' is less than zero, it will
+//	be automatically reset to a value of '4096'.
 //
-//		minResultPrecision
-//		==================
+//	minResultPrecision
+//	==================
 //
-//		Input parameter 'minResultPrecision' signals that if the result
-//		precision is less than 'minResultPrecision', zeros will be
-//		added to the right of the decimal place in order to implement
-//		the 'minResultPrecision' specification.
+//	Input parameter 'minResultPrecision' signals that if the result
+//	precision is less than 'minResultPrecision', zeros will be
+//	added to the right of the decimal place in order to implement
+//	the 'minResultPrecision' specification.
 //
-//		If the value of 'minResultPrecision' is less than zero,
-//		'minResultPrecision' will be automatically reset to a value of
-//		zero.
+//	If the value of 'minResultPrecision' is less than zero,
+//	'minResultPrecision' will be automatically reset to a value of
+//	zero.
 func (iaPwr *IntAryMathPower) PwrByMultiplication(
 	base *IntAry,
 	exponent *IntAry,
