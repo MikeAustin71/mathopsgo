@@ -4,93 +4,144 @@ import "testing"
 
 func TestNegativeValueFmtMode_String_01(t *testing.T) {
 
-	r := LEADMINUSNEGVALFMTMODE
+  ePrefix := "TestNegativeValueFmtMode_String_01"
 
-	expectedStr := "LeadingMinusSign"
+  r := LEADMINUSNEGVALFMTMODE
 
-	s := r.String()
+  expectedStr := "LeadingMinusSign"
 
-	if expectedStr != s {
-		t.Errorf("Expected LEADMINUSNEGVALFMTMODE string='%v'. Instead, string='%v' ",
-			expectedStr, s)
-	}
+  s := r.String()
 
+  if expectedStr != s {
+    t.Errorf("%v\n"+
+      "Expected LEADMINUSNEGVALFMTMODE string='%v'.\n"+
+      "Instead, string='%v'\n\n",
+      ePrefix, expectedStr, s)
+
+    return
+  }
+
+  return
 }
 
 func TestNegativeValueFmtMode_String_02(t *testing.T) {
 
-	r := PARENTHESESNEGVALFMTMODE
+  ePrefix := "TestNegativeValueFmtMode_String_02"
 
-	expectedStr := "SurroundingParentheses"
+  r := PARENTHESESNEGVALFMTMODE
 
-	s := r.String()
+  expectedStr := "SurroundingParentheses"
 
-	if expectedStr != s {
-		t.Errorf("Expected PARENTHESESNEGVALFMTMODE string='%v'. Instead, string='%v' ",
-			expectedStr, s)
-	}
+  s := r.String()
 
+  if expectedStr != s {
+
+    t.Errorf("%v\n"+
+      "Expected PARENTHESESNEGVALFMTMODE string='%v'.\n"+
+      "Instead, string='%v'\n\n",
+      ePrefix, expectedStr, s)
+
+    return
+  }
+
+  return
 }
 
 func TestNegativeValueFmtMode_String_03(t *testing.T) {
 
-	r := ABSOLUTEPURENUMSTRFMTMODE
+  ePrefix := "TestNegativeValueFmtMode_String_03"
 
-	expectedStr := "AbsolutePureNumberString"
+  r := ABSOLUTEPURENUMSTRFMTMODE
 
-	s := r.String()
+  expectedStr := "AbsolutePureNumberString"
 
-	if expectedStr != s {
-		t.Errorf("Expected ABSOLUTEPURENUMSTRFMTMODE string='%v'. Instead, string='%v' ",
-			expectedStr, s)
-	}
+  s := r.String()
 
+  if expectedStr != s {
+
+    t.Errorf("%v\n"+
+      "Expected ABSOLUTEPURENUMSTRFMTMODE string='%v'.\n"+
+      "Instead, string='%v'\n\n",
+      ePrefix, expectedStr, s)
+
+    return
+  }
+
+  return
 }
 
 func TestNegativeValueFmtMode_Value_01(t *testing.T) {
 
-	var r NegativeValueFmtMode
+  ePrefix := "TestNegativeValueFmtMode_Value_01"
 
-	var i int
+  var r NegativeValueFmtMode
 
-	r = LEADMINUSNEGVALFMTMODE
+  var i int
 
-	i = int(r)
+  r = LEADMINUSNEGVALFMTMODE
 
-	if i != 0 {
-		t.Errorf("Expected 'LEADMINUSNEGVALFMTMODE' value = 0. Instead, got %v", i)
-	}
+  i = int(r)
 
+  if i != 0 {
+
+    t.Errorf("%v\n"+
+      "Expected 'LEADMINUSNEGVALFMTMODE' value = 0.\n"+
+      "Instead, value = %v\n\n",
+      ePrefix, i)
+
+    return
+  }
+
+  return
 }
 
 func TestNegativeValueFmtMode_Value_02(t *testing.T) {
 
-	var r NegativeValueFmtMode
+  ePrefix := "TestNegativeValueFmtMode_Value_02"
 
-	var i int
+  var r NegativeValueFmtMode
 
-	r = PARENTHESESNEGVALFMTMODE
+  var i int
 
-	i = int(r)
+  r = PARENTHESESNEGVALFMTMODE
 
-	if i != 1 {
-		t.Errorf("Expected 'PARENTHESESNEGVALFMTMODE' value = 1. Instead, got %v", i)
-	}
+  i = int(r)
 
+  if i != 1 {
+
+    t.Errorf("%v\n"+
+      "Expected 'PARENTHESESNEGVALFMTMODE' value = 1.\n"+
+      "Instead, value = %v\n\n",
+      ePrefix, i)
+
+    return
+  }
+
+  return
 }
 
 func TestNegativeValueFmtMode_Value_03(t *testing.T) {
 
-	var r NegativeValueFmtMode
+  ePrefix := "TestNegativeValueFmtMode_Value_03"
 
-	var i int
+  var r NegativeValueFmtMode
 
-	r = ABSOLUTEPURENUMSTRFMTMODE
+  var i int
 
-	i = int(r)
+  r = ABSOLUTEPURENUMSTRFMTMODE
 
-	if i != 2 {
-		t.Errorf("Expected 'ABSOLUTEPURENUMSTRFMTMODE' value = 2. Instead, got %v", i)
-	}
+  i = int(r)
 
+  if i != 2 {
+
+    t.Errorf("%v\n"+
+      "Expected 'ABSOLUTEPURENUMSTRFMTMODE' value = 2.\n"+
+      "Instead, got %v\n\n",
+      ePrefix, i)
+
+    return
+
+  }
+
+  return
 }
