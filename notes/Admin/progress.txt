@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestNFactorial_CalcFactorialValueBigInt_10; xt_nfactorial_01_test.go
+TestNFactorial_CalcFactorialValueInt64_07; xt_nfactorial_01_test.go
 
 git add -A
 git commit -m"Modified README"
