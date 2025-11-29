@@ -199,34 +199,42 @@ func (nFac NFactorial) CalcFactorialValueInt64(nFactorial, lowerLimit int64) (Bi
   return nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
 }
 
-// CalcNFactorialValue - Computes the value of n factorial as expressed by the upper
-// and lower limits of the input parameter, 'nFactorial'. 'nFactorial' is of type
-// 'FactorialDto'. The result of the n factorial calculation is returned as a BigIntNum
-// type.
+// CalcNFactorialValue
 //
-// Input Parameters:
-// =================
+//	Computes the value of n factorial as expressed by the upper
+//	and lower limits of the input parameter, 'nFactorial'.
 //
-// nFactorial	FactorialDto		- This structure contains a value of 'UpperLimit' or initial starting value
+//	'nFactorial' is of type 'FactorialDto'. The result of the
+//	n factorial calculation is returned as a BigIntNum type.
 //
-//	of the factorial calculation. In addition, the structure contains a
-//	data field, 'LowerLimit', which specifies the lower boundary for the factorial
-//	calculation. Both 'UpperLimit' and 'LowerLimit' are uint64 types.
+//	Input Parameters:
+//	=================
 //
-// Examples:
-// =========
+//	nFactorial	FactorialDto
+//	  This structure contains a value of 'UpperLimit' or initial
+//	  starting value
 //
-//  1. nFactorial.UpperLimit = 7  and nFactorial.LowerLimit = 3
+//		of the factorial calculation. In addition, the structure
+//		contains a data field, 'LowerLimit', which specifies the
+//	 	lower boundary for the factorial calculation. Both
+//	 	'UpperLimit' and 'LowerLimit' are uint64 types.
 //
-//     The input parameter 'LowerLimit' specifies the lower boundary for the calculation.
-//     'UpperLimit' = 7 and 'LowerLimit' = 3  will yield a calculation of:
-//     7x6x5x4 = 840
+//	Examples:
+//	=========
 //
-//  2. 'UpperLimit' = 7 and 'LowerLimit' = 7
-//     Equivalent of 0! and 0! = 1
+//	1. nFactorial.UpperLimit = 7  and nFactorial.LowerLimit = 3
 //
-//  3. nFactorial = 7 and lowerLimit = 1
-//     7x6x5x4x3x2 = 5040
+//	   The input parameter 'LowerLimit' specifies the lower boundary
+//	   for the calculation.
+//
+//	   'UpperLimit' = 7 and 'LowerLimit' = 3  will yield a calculation
+//	   of: 7x6x5x4 = 840
+//
+//	2. 'UpperLimit' = 7 and 'LowerLimit' = 7
+//	   Equivalent of 0! and 0! = 1
+//
+//	3. nFactorial = 7 and lowerLimit = 1
+//	   7x6x5x4x3x2 = 5040
 func (nFac NFactorial) CalcNFactorialValue(nFactorial FactorialDto) (BigIntNum, error) {
 
   ePrefix := "NFactorial.CalcNFactorialValue() "
