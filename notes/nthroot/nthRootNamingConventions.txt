@@ -1,0 +1,4 @@
+
+
+radicand is the name of the number under the division sign
+The 'nthRoot' value is placed above and to the left!
