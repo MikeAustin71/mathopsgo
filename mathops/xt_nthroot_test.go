@@ -9166,7 +9166,7 @@ func TestNthRootOp_GetSquareRootInt_01(t *testing.T) {
 
   ePrefix := "TestNthRootOp_GetSquareRootInt_01"
 
-  originalNumInt := int(26865)
+  originalNumInt := 26865
 
   originalNumPrecisionInt := 1
 
@@ -9985,71 +9985,477 @@ func TestNthRootOp_GetSquareRootIntAry_01(t *testing.T) {
 
 func TestNthRootOp_SetNthRootIntAry_01(t *testing.T) {
 
-  nRt := NthRootOp{}
-  originalNum := IntAry{}.New()
-  numStr1 := "125"
+  ePrefix := "TestNthRootOp_SetNthRootIntAry_01"
 
-  nthRoot := IntAry{}.NewInt(5, 0)
+  originalNumberStr := "125"
 
-  maxPrecision := 14
-  expected := "2.62652780440377"
-  originalNum.SetIntAryWithNumStr(numStr1)
+  nthRootNumberInt := 5
 
-  err := nRt.SetNthRootIntAry(&originalNum, &nthRoot, maxPrecision)
+  nthRootPrecisionUint := uint(0)
+
+  nthRootNumberStr := "5"
+
+  calcMaxPrecision := 14
+
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumberStr := "2.62652780440377"
+
+  intAryOriginalNum := new(IntAry).New()
+
+  err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from nRt.SetNthRootIntAry() - %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != nRt.ResultAry.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, nRt.ResultAry.GetNumStr())
+  err = intAryOriginalNum.IsValid("Validating intAryOriginalNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryOriginalNum.IsValid('Validating intAryOriginalNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()\n"+
+      "intAryOriginalNum set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryOriginalNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because originalNumberStr != intAryOriginalNumNumberStr\n"+
+      "Expected intAryOriginalNumNumberStr = '%v'\n"+
+      "  Actual intAryOriginalNumNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryOriginalNumNumberStr)
+
+    return
+  }
+
+  intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)\n"+
+      "nthRootNumberInt= '%v'\n"+
+      "nthRootPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      nthRootNumberInt,
+      nthRootPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNthRoot.IsValid("Validating intAryNthRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryNthRoot.IsValid('Validating intAryNthRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()\n"+
+      "intAryNthRoot set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if nthRootNumberStr != intAryNthRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because nthRootNumberStr != intAryNthRootNumberStr\n"+
+      "Expected intAryNthRootNumberStr = '%v'\n"+
+      "  Actual intAryNthRootNumberStr = '%v'\n\n",
+      ePrefix, nthRootNumberStr, intAryNthRootNumberStr)
+
+    return
+  }
+
+  nthRootOp := NthRootOp{}
+
+  err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)\n"+
+      "intAryOriginalNum= '%v'\n"+
+      "intAryNthRoot= '%v'\n"+
+      "calcMaxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryOriginalNumNumberStr,
+      intAryNthRootNumberStr,
+      calcMaxPrecision,
+      err.Error())
+
+    return
+  }
+
+  actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()\n"+
+      "Error= '%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != actualNthRootValueStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != actualNthRootValueStr\n"+
+      "Expected actualNthRootValueStr = '%v'\n"+
+      "  Actual actualNthRootValueStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, actualNthRootValueStr)
+
+    return
+  }
+
+  return
 }
 
 func TestNthRootOp_SetNthRootIntAry_02(t *testing.T) {
 
-  nRt := NthRootOp{}
-  originalNum := IntAry{}.New()
-  numStr1 := "5604423"
+  ePrefix := "TestNthRootOp_SetNthRootIntAry_02"
 
-  nthRoot := IntAry{}.NewInt(6, 0)
+  originalNumberStr := "5604423"
 
-  maxPrecision := 13
-  expected := "13.3276982415963"
-  originalNum.SetIntAryWithNumStr(numStr1)
+  nthRootNumberInt := 6
 
-  err := nRt.SetNthRootIntAry(&originalNum, &nthRoot, maxPrecision)
+  nthRootPrecisionUint := uint(0)
+
+  nthRootNumberStr := "6"
+
+  calcMaxPrecision := 13
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "13.3276982415963"
+
+  intAryOriginalNum := new(IntAry).New()
+
+  err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from nRt.SetNthRootIntAry() - %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != nRt.ResultAry.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, nRt.ResultAry.GetNumStr())
+  err = intAryOriginalNum.IsValid("Validating intAryOriginalNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryOriginalNum.IsValid('Validating intAryOriginalNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()\n"+
+      "intAryOriginalNum set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryOriginalNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because originalNumberStr != intAryOriginalNumNumberStr\n"+
+      "Expected intAryOriginalNumNumberStr = '%v'\n"+
+      "  Actual intAryOriginalNumNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryOriginalNumNumberStr)
+
+    return
+  }
+
+  intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)\n"+
+      "nthRootNumberInt= '%v'\n"+
+      "nthRootPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      nthRootNumberInt,
+      nthRootPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNthRoot.IsValid("Validating intAryNthRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryNthRoot.IsValid('Validating intAryNthRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()\n"+
+      "intAryNthRoot set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if nthRootNumberStr != intAryNthRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because nthRootNumberStr != intAryNthRootNumberStr\n"+
+      "Expected intAryNthRootNumberStr = '%v'\n"+
+      "  Actual intAryNthRootNumberStr = '%v'\n\n",
+      ePrefix, nthRootNumberStr, intAryNthRootNumberStr)
+
+    return
+  }
+
+  nthRootOp := NthRootOp{}
+
+  err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)\n"+
+      "intAryOriginalNum= '%v'\n"+
+      "intAryNthRoot= '%v'\n"+
+      "calcMaxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryOriginalNumNumberStr,
+      intAryNthRootNumberStr,
+      calcMaxPrecision,
+      err.Error())
+
+    return
+  }
+
+  actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()\n"+
+      "Error= '%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != actualNthRootValueStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != actualNthRootValueStr\n"+
+      "Expected actualNthRootValueStr = '%v'\n"+
+      "  Actual actualNthRootValueStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, actualNthRootValueStr)
+
+    return
+  }
+
+  return
 }
 
 func TestNthRootOp_SetNthRootIntAry_03(t *testing.T) {
 
-  nRt := NthRootOp{}
-  originalNum := IntAry{}.New()
-  numStr1 := "5604423.924"
+  ePrefix := "TestNthRootOp_SetNthRootIntAry_02"
 
-  nthRoot := IntAry{}.NewInt(6, 0)
+  originalNumberStr := "5604423.924"
 
-  maxPrecision := 13
-  expected := "13.3276986078187"
-  originalNum.SetIntAryWithNumStr(numStr1)
-  err := nRt.SetNthRootIntAry(&originalNum, &nthRoot, maxPrecision)
+  nthRootNumberInt := 6
+
+  nthRootPrecisionUint := uint(0)
+
+  nthRootNumberStr := "6"
+
+  calcMaxPrecision := 13
+
+  //                                1         2         3
+  //                     0.1234567890123456789012345678901234567
+  expectedNumberStr := "13.3276986078187"
+
+  intAryOriginalNum := new(IntAry).New()
+
+  err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned from nRt.SetNthRootIntAry() - %v", err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryOriginalNum.SetIntAryWithNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, originalNumberStr, err.Error())
+    return
   }
 
-  if expected != nRt.ResultAry.GetNumStr() {
-    t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, nRt.ResultAry.GetNumStr())
+  err = intAryOriginalNum.IsValid("Validating intAryOriginalNum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryOriginalNum.IsValid('Validating intAryOriginalNum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryOriginalNumNumberStr, err := intAryOriginalNum.GetNumStr()\n"+
+      "intAryOriginalNum set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if originalNumberStr != intAryOriginalNumNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because originalNumberStr != intAryOriginalNumNumberStr\n"+
+      "Expected intAryOriginalNumNumberStr = '%v'\n"+
+      "  Actual intAryOriginalNumNumberStr = '%v'\n\n",
+      ePrefix, originalNumberStr, intAryOriginalNumNumberStr)
+
+    return
+  }
+
+  intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRoot, err := new(IntAry).NewInt(nthRootNumberInt, nthRootPrecisionUint)\n"+
+      "nthRootNumberInt= '%v'\n"+
+      "nthRootPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      nthRootNumberInt,
+      nthRootPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNthRoot.IsValid("Validating intAryNthRoot")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = intAryNthRoot.IsValid('Validating intAryNthRoot')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNthRootNumberStr, err := intAryNthRoot.GetNumStr()\n"+
+      "intAryNthRoot set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if nthRootNumberStr != intAryNthRootNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Number Strings DO NOT MATCH!\n"+
+      "Because nthRootNumberStr != intAryNthRootNumberStr\n"+
+      "Expected intAryNthRootNumberStr = '%v'\n"+
+      "  Actual intAryNthRootNumberStr = '%v'\n\n",
+      ePrefix, nthRootNumberStr, intAryNthRootNumberStr)
+
+    return
+  }
+
+  nthRootOp := NthRootOp{}
+
+  err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = nthRootOp.SetNthRootIntAry(&intAryOriginalNum, &intAryNthRoot, calcMaxPrecision)\n"+
+      "intAryOriginalNum= '%v'\n"+
+      "intAryNthRoot= '%v'\n"+
+      "calcMaxPrecision= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryOriginalNumNumberStr,
+      intAryNthRootNumberStr,
+      calcMaxPrecision,
+      err.Error())
+
+    return
+  }
+
+  actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNthRootValueStr, err := nthRootOp.ResultAry.GetNumStr()\n"+
+      "Error= '%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumberStr != actualNthRootValueStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Number Strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != actualNthRootValueStr\n"+
+      "Expected actualNthRootValueStr = '%v'\n"+
+      "  Actual actualNthRootValueStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, actualNthRootValueStr)
+
+    return
+  }
+
+  return
 }

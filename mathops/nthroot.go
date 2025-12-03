@@ -1101,27 +1101,38 @@ func (nthrt *NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) 
 	return resultIntAry, nil
 }
 
-// SetNthRootIntAry  - Calculates the Nth Root of a number ('radicand') passed to the
-// method as a pointer to type intAry.  In addition, the caller must supply input
-// parameters for 'nthRoot' and 'maxPrecision'.
+// SetNthRootIntAry
 //
-// The difference between this method, 'SetNthRootIntAry' and 'OriginalNthRoot' is in
-// the return value.  This method, 'SetNthRootIntAry' does not return the result. Instead,
-// the calculation result is stored in the NthRootOp intAry Object, NthRootOp.ResultAry.
-// This method is primarily for use by other low level routines seeking to improve performance
-// by avoiding the return of a new intAry object.
+//	Calculates the Nth Root of a number ('radicand') passed to the
+//	method as a pointer to type intAry.  In addition, the caller
+//	must supply input parameters for 'nthRoot' and 'maxPrecision'.
 //
-// Nth root specifies the root which will be calculated for parameter, 'radicand'. Example,
-// square root, cube root, 4th root, 9th root etc.
+//	The difference between this method, 'SetNthRootIntAry' and
+//	'OriginalNthRoot' is in the return value.  This method,
+//	'SetNthRootIntAry' does not return the result. Instead,
+//	the calculation result is stored in the NthRootOp intAry
+//	Object, NthRootOp.ResultAry.
 //
-// 'maxPrecision' specifies the number of decimals to the right of the decimal place to
-// which the Nth root will be calculated.
+//	This method is primarily for use by other low level routines
+//	seeking to improve performance by avoiding the return of a
+//	new intAry object.
 //
-// The calculation result is stored in the NthRootOp field, 'NthRootOp.ResultAry'.
-// 'NthRootOp.ResultAry' is an intAry Object.
+//	Nth root specifies the root which will be calculated for
+//	parameter, 'radicand'. Example, square root, cube root,
+//	4th root, 9th root etc.
 //
-// Note: A negative 'radicand' value with an even nthRoot will generate an error.
-func (nthrt *NthRootOp) SetNthRootIntAry(radicand, nthRoot *IntAry, maxPrecision int) error {
+//	'maxPrecision' specifies the number of decimals to the right
+//	of the decimal place to which the Nth root will be calculated.
+//
+//	The calculation result is stored in the NthRootOp field,
+//	'NthRootOp.ResultAry'. 'NthRootOp.ResultAry' is an intAry Object.
+//
+//	IMPORTANT
+//	=========
+//
+//	A negative 'radicand' value with an even nthRoot will generate
+//	an error.
+func (nthrt *NthRootOp) SetNthRootIntAry(radicand *IntAry, nthRoot *IntAry, maxPrecision int) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
