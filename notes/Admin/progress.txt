@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestNthRootOp_GetSquareRootIntAry_01; xt_nthroot_test.go
+TestNumStrDto_AddNumStrs_01; xt_numstrdto_01_test.go
 
 git add -A
 git commit -m"Modified README"
