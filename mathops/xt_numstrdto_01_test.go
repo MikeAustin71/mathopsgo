@@ -334,7 +334,7 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -675,7 +675,7 @@ func TestNumStrDto_AddNumStrs_02(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -1016,7 +1016,7 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -1357,7 +1357,7 @@ func TestNumStrDto_AddNumStrs_04(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -1698,7 +1698,7 @@ func TestNumStrDto_AddNumStrs_05(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -2039,7 +2039,7 @@ func TestNumStrDto_AddNumStrs_06(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -2380,7 +2380,7 @@ func TestNumStrDto_AddNumStrs_07(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -2721,7 +2721,7 @@ func TestNumStrDto_AddNumStrs_08(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -3062,7 +3062,7 @@ func TestNumStrDto_AddNumStrs_09(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -3403,7 +3403,7 @@ func TestNumStrDto_AddNumStrs_10(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)
@@ -3744,7 +3744,7 @@ func TestNumStrDto_AddNumStrs_11(t *testing.T) {
 	if expectedResultAbsFracStr != resultNumStrDtoAbsFracStr {
 		t.Errorf("%v\n"+
 			"Error: Expected and Actual Absolute Frac Strings ARE NOT EQUAL!\n"+
-			"Because!!!!\n"+
+			"Because expectedResultAbsFracStr != resultNumStrDtoAbsFracStr\n"+
 			"Expected resultNumStrDtoAbsFracStr = '%v'\n"+
 			"  Actual resultNumStrDtoAbsFracStr = '%v'\n\n",
 			ePrefix, expectedResultAbsFracStr, resultNumStrDtoAbsFracStr)

@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -422,6 +423,9 @@ func (nDto *NumStrDto) CopyOutPtr() (*NumStrDto, error) {
 //
 //	Divides the current NumStrDto by input parameter 'n2Dto'.
 //
+//	  dividend/divisor = quotient
+//	  nDto / n2Dto = quotient
+//
 //	Maximum precision of the division result is controlled by the
 //	input parameter, 'maximumPrecision'.
 //
@@ -437,7 +441,7 @@ func (nDto *NumStrDto) CopyOutPtr() (*NumStrDto, error) {
 //	'minimumPrecision' specifies the minimum precision of the final
 //	result. If 'minimumPrecision' is less than zero, an error will
 //	be returned.
-func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecision int) error {
+func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision int, maximumPrecision int) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
