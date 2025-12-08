@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestNumStrDto_CompareSignedVals_08; xt_numstrdto_02_test.go
+TestNumStrDto_GetCurrencyStr_01; xt_numstrdto_03_test.go
 
 git add -A
 git commit -m"Modified README"
