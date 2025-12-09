@@ -1,6 +1,6 @@
 
 Start Test clean-up here:
-TestNumStrDto_GetCurrencyStr_01; xt_numstrdto_03_test.go
+TestNumStrDto_GetCurrencyParen_01; xt_numstrdto_03_test.go
 
 git add -A
 git commit -m"Modified README"

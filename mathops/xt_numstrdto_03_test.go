@@ -798,434 +798,3528 @@ func TestNumStrDto_GetBigIntNum_01(t *testing.T) {
 
 func TestNumStrDto_GetCurrencyStr_01(t *testing.T) {
 
-  nStr := "123456.97"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$123,456.97"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_01"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "123456.97"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "123456.97"
+
+  expectedCurrencyStr := "$123,456.97"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_02(t *testing.T) {
 
-  nStr := "123.45"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$123.45"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_02"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "123.45"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "123.45"
+
+  expectedCurrencyStr := "$123.45"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_03(t *testing.T) {
 
-  nStr := "12345.29"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$12,345.29"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_03"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "12345.29"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "12345.29"
+
+  expectedCurrencyStr := "$12,345.29"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_04(t *testing.T) {
 
-  nStr := "12345"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$12,345"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_04"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "12345"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "12345"
+
+  expectedCurrencyStr := "$12,345"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_05(t *testing.T) {
 
-  nStr := "12345.1234"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$12,345.1234"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_05"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "12345.1234"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "12345.1234"
+
+  expectedCurrencyStr := "$12,345.1234"
+
+  expectedPrecisionInt := 4
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_06(t *testing.T) {
 
-  nStr := "-12345.29"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "-$12,345.29"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_06"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "-12345.29"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "12345.1234"
+
+  expectedCurrencyStr := "-$12,345.29"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_07(t *testing.T) {
 
-  nStr := "-12345"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "-$12,345"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_07"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "-12345"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "-12345"
+
+  expectedCurrencyStr := "-$12,345"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_08(t *testing.T) {
 
-  nStr := "-12345"
-  // '\U000020ac', // Euro €
-  currencySymbol := '€'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "-€12,345"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_08"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "-12345"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "-12345"
+
+  expectedCurrencyStr := "-€12,345"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetCurrencySymbol('\U000020ac')
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyStr_09(t *testing.T) {
 
-  nStr := "12345.12"
-  // '\U000020ac', // Euro €
-  currencySymbol := '€'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "€12,345.12"
+  ePrefix := "TestNumStrDto_GetCurrencyStr_09"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "12345.12"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "-12345"
+
+  expectedCurrencyStr := "€12,345.12"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetCurrencySymbol('\U000020ac')
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
+}
+
+func TestNumStrDto_GetCurrencyStr_10(t *testing.T) {
+
+  ePrefix := "TestNumStrDto_GetCurrencyStr_10"
+
+  inputNumberStr := "-12345"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := ','
+
+  expectedThousandsSeparator := ' '
+
+  expectedNumberStr := "-12345"
+
+  expectedCurrencyStr := "-€12 345"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
+}
+
+func TestNumStrDto_GetCurrencyStr_11(t *testing.T) {
+
+  ePrefix := "TestNumStrDto_GetCurrencyStr_11"
+
+  inputNumberStr := "-12345.35"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := ','
+
+  expectedThousandsSeparator := ' '
+
+  expectedNumberStr := "-12345,35"
+
+  expectedCurrencyStr := "-€12 345,35"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
+}
+
+func TestNumStrDto_GetCurrencyStr_12(t *testing.T) {
+
+  ePrefix := "TestNumStrDto_GetCurrencyStr_12"
+
+  inputNumberStr := "12345.35"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := ','
+
+  expectedThousandsSeparator := ' '
+
+  expectedNumberStr := "12345,35"
+
+  expectedCurrencyStr := "€12 345,35"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
+}
+
+func TestNumStrDto_GetCurrencyStr_14(t *testing.T) {
+
+  ePrefix := "TestNumStrDto_GetCurrencyStr_14"
+
+  inputNumberStr := "12345"
+
+  // '\U000020ac', // Euro €
+  // currencySymbol := '€'
+  expectedCurrencySymbol := '\U000020ac'
+
+  expectedDecimalSeparator := ','
+
+  expectedThousandsSeparator := ' '
+
+  expectedNumberStr := "12345"
+
+  expectedCurrencyStr := "€12 345"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyStr, err := numStrDtoResult.GetCurrencyStr()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyStr != numStrDtoCurrencyStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyStr, numStrDtoCurrencyStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyParen_01(t *testing.T) {
 
-  nStr := "123456.97"
-  currencySymbol := '$'
-  decimalSeparator := '.'
-  thousandsSeparator := ','
-  expectedStr := "$123,456.97"
+  ePrefix := "TestNumStrDto_GetCurrencyParen_01"
 
-  nDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumberStr := "123456.97"
+
+  expectedCurrencySymbol := '$'
+
+  expectedDecimalSeparator := '.'
+
+  expectedThousandsSeparator := ','
+
+  expectedNumberStr := "123456.97"
+
+  expectedCurrencyParenStr := "$123,456.97"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := NumericSeparatorDto{}
+
+  expectedNumSeps.DecimalSeparator = expectedDecimalSeparator
+
+  expectedNumSeps.ThousandsSeparator = expectedThousandsSeparator
+
+  expectedNumSeps.CurrencySymbol = expectedCurrencySymbol
+
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) "+
-      "nStr='%v' Error='%v'", nStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumberStr)\n"+
+      "inputNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumberStr, err.Error())
+    return
   }
 
-  nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
 
-  if currencySymbol != nDto.GetCurrencySymbol() {
-    t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
-      currencySymbol, nDto.GetCurrencySymbol())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if decimalSeparator != nDto.GetDecimalSeparator() {
-    t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
-      decimalSeparator, nDto.GetDecimalSeparator())
+  numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumberStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if thousandsSeparator != nDto.GetThousandsSeparator() {
-    t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
-      thousandsSeparator, nDto.GetThousandsSeparator())
+  err = numStrDtoResult.SetNumericSeparators(expectedDecimalSeparator, expectedThousandsSeparator, expectedCurrencySymbol)
 
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetNumericSeparators(\n"+
+      "  decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+      "decimalSeparator= '%v'\n"+
+      "thousandsSeparator= '%v'\n"+
+      "currencySymbol= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      string(expectedDecimalSeparator),
+      string(expectedThousandsSeparator),
+      string(expectedCurrencySymbol),
+      err.Error())
+
+    return
   }
 
-  actualStr := nDto.GetCurrencyStr()
+  err = numStrDtoResult.IsValid("Validating final numStrDtoResult")
 
-  if expectedStr != actualStr {
-    t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
-      expectedStr, actualStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.IsValid('Validating final numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoCurrencyParenStr, err := numStrDtoResult.GetCurrencyParen()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoCurrencyParenStr, err := numStrDtoResult.GetCurrencyParen()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumberStr, err.Error())
+    return
+  }
+
+  numStrDtoResultCurrencySymbol := numStrDtoResult.GetCurrencySymbol()
+
+  numStrDtoResultDecimalSeparator := numStrDtoResult.GetDecimalSeparator()
+
+  numStrDtoResultThousandsSeparator := numStrDtoResult.GetThousandsSeparator()
+
+  if expectedCurrencySymbol != numStrDtoResultCurrencySymbol {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Symbols Don't MATCH!\n"+
+      "Because currencySymbol != numStrDtoResultCurrencySymbol\n"+
+      "Expected numStrDtoResultCurrencySymbol = '%v'\n"+
+      "  Actual numStrDtoResultCurrencySymbol = '%v'\n\n",
+      ePrefix, expectedCurrencySymbol, numStrDtoResultCurrencySymbol)
+
+    return
+  }
+
+  if expectedDecimalSeparator != numStrDtoResultDecimalSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Decimal Separator Symbols Don't MATCH!\n"+
+      "Because expectedDecimalSeparator != numStrDtoResultDecimalSeparator\n"+
+      "Expected numStrDtoResultDecimalSeparator = '%v'\n"+
+      "  Actual numStrDtoResultDecimalSeparator = '%v'\n\n",
+      ePrefix, expectedDecimalSeparator, numStrDtoResultDecimalSeparator)
+
+    return
+  }
+
+  if expectedThousandsSeparator != numStrDtoResultThousandsSeparator {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Thousands Separator Symbols Don't MATCH!\n"+
+      "Because expectedThousandsSeparator != numStrDtoResultThousandsSeparator\n"+
+      "Expected numStrDtoResultThousandsSeparator = '%v'\n"+
+      "  Actual numStrDtoResultThousandsSeparator = '%v'\n\n",
+      ePrefix, expectedThousandsSeparator, numStrDtoResultThousandsSeparator)
+
+    return
+  }
+
+  if expectedCurrencyParenStr != numStrDtoCurrencyParenStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Currency Strings Don't MATCH!\n"+
+      "Because!!!!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "  Actual fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedCurrencyParenStr, numStrDtoCurrencyParenStr)
+
+    return
+  }
+
+  if expectedNumberStr != numStrDtoResultNumberStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual number strings DO NOT MATCH!\n"+
+      "Because expectedNumberStr != numStrDtoResultNumberStr\n"+
+      "Expected numStrDtoResultNumberStr = '%v'\n"+
+      "  Actual numStrDtoResultNumberStr = '%v'\n\n",
+      ePrefix, expectedNumberStr, numStrDtoResultNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_GetCurrencyParen_02(t *testing.T) {

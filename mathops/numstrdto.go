@@ -1480,7 +1480,7 @@ func (nDto *NumStrDto) GetCurrencySymbol() rune {
 //
 //	Note:  If the current NumStrDto is invalid, this method
 //	       returns an empty string.
-func (nDto *NumStrDto) GetCurrencyParen() string {
+func (nDto *NumStrDto) GetCurrencyParen() (string, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -1492,17 +1492,32 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 		"")
 
 	if err != nil {
-		return ""
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  "NumStrDto.GetCurrencyParen()",
+				ReturnFunc: "ePrefix, err = ePref.ErrPrefixDto{}.NewIEmpty(...)",
+				ErrContext: "'ePrefix' setup Failed!",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	outStr, err := new(numStrDtoMechanics).formatCurrencyStr(
 		nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
-		return ""
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err := new(numStrDtoMechanics).formatCurrencyStr(\n" +
+					"nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)",
+				ErrContext: "Formatting Currency Str failed with error.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return outStr
+	return outStr, nil
 }
 
 // GetCurrencyStr
@@ -1529,7 +1544,7 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 //
 //	Note:  If the current NumStrDto is invalid, this method
 //	       returns an empty string.
-func (nDto *NumStrDto) GetCurrencyStr() string {
+func (nDto *NumStrDto) GetCurrencyStr() (string, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -1541,17 +1556,32 @@ func (nDto *NumStrDto) GetCurrencyStr() string {
 		"")
 
 	if err != nil {
-		return ""
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  "NumStrDto.GetCurrencyParen()",
+				ReturnFunc: "ePrefix, err = ePref.ErrPrefixDto{}.NewIEmpty(...)",
+				ErrContext: "'ePrefix' setup Failed!",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	outStr, err := new(numStrDtoMechanics).formatCurrencyStr(
 		nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
-		return ""
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err := new(numStrDtoMechanics).formatCurrencyStr(\n" +
+					"nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)",
+				ErrContext: "Formatting Currency Str failed with error.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return outStr
+	return outStr, nil
 }
 
 // GetDecimalSeparator
