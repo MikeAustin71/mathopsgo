@@ -1,11 +1,11 @@
 package mathops
 
 import (
-  "sync"
+	"sync"
 )
 
 type UtilityMathExponents struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // Int64ExponentByLoop
@@ -14,19 +14,19 @@ type UtilityMathExponents struct {
 //	The calculation uses a loop to perform multiple multiplications
 //	necessary to compute the result.
 func (utilMathExpo *UtilityMathExponents) Int64ExponentByLoop(
-  base int64, exponent int64) (result int64) {
+	base int64, exponent int64) (result int64) {
 
-  result = 1
+	result = 1
 
-  if exponent == 0 || base == 1 {
-    return result
-  }
+	if exponent == 0 || base == 1 {
+		return result
+	}
 
-  for i := int64(0); i < exponent; i++ {
-    result *= base
-  }
+	for i := int64(0); i < exponent; i++ {
+		result *= base
+	}
 
-  return result
+	return result
 }
 
 // Int64ExponentBySquare
@@ -35,21 +35,21 @@ func (utilMathExpo *UtilityMathExponents) Int64ExponentByLoop(
 //	The calculation uses a 'square' technique to compute the
 //	result.
 func (utilMathExpo *UtilityMathExponents) Int64ExponentBySquare(
-  base int64, exponent int64) (result int64) {
+	base int64, exponent int64) (result int64) {
 
-  result = int64(1)
+	result = int64(1)
 
-  if exponent == 0 || base == 1 {
-    return result
-  }
+	if exponent == 0 || base == 1 {
+		return result
+	}
 
-  for exponent > 0 {
-    if exponent%2 == 1 {
-      result *= base
-    }
-    base *= base
-    exponent /= 2
-  }
+	for exponent > 0 {
+		if exponent%2 == 1 {
+			result *= base
+		}
+		base *= base
+		exponent /= 2
+	}
 
-  return result
+	return result
 }

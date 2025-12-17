@@ -1,8 +1,8 @@
 
-Start Test clean-up here:
-TestNumStrDto_NewBigIntNum_01; xt_numstrdto_06_test.go
+Start Test cleanup here:
+TestNumStrDto_NewIntExponent_06; xt_numstrdto_06_test.go
 
 git add -A
-git commit -m"Modified README"
+git commit -m "Modified README"
 git status
 git push origin dev
