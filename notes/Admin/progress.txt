@@ -1,7 +1,8 @@
 
 Start Test cleanup here:
-TestNumStrDto_NewIntExponent_06; xt_numstrdto_06_test.go
+TestNumStrDto_NewInt64_05; xt_numstrdto_06_test.go
 
+xt_numstrdto_07_test.go
 git add -A
 git commit -m "Modified README"
 git status
