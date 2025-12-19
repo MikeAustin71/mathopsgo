@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-TestNumStrDto_NewNumStr_05; xt_numstrdto_07_test.go
+TestNumStrDto_NewUint_05; xt_numstrdto_07_test.go
 
 xt_numstrdto_07_test.go
 git add -A
