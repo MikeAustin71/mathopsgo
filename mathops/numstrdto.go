@@ -3172,19 +3172,70 @@ func (nDto *NumStrDto) NewFloat64NumSeps(
 //	          precision := 3
 //	          nDto := new(NumStrDto).NewInt(intNum, precision)
 //	                nDto is now equal to 123.456
-func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
+func (nDto *NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 
-	var numSeps NumericSeparatorDto
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	numSeps.ThousandsSeparator = nDto.thousandsSeparator
-	numSeps.DecimalSeparator = nDto.decimalSeparator
-	numSeps.CurrencySymbol = nDto.currencySymbol
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewInt64",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	numSeps.SetDefaultsIfEmpty()
 
-	n2 := new(numStrDtoMechanics).newIntNumStrDto(numSeps, intNum, precision)
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	return n2
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+					"Numeric Separators from 'nDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numStrDtoFinal, err := new(numStrDtoMechanics).newIntNumStrDto(numSeps, intNum, precision)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numStrDtoFinal, err := new(numStrDtoMechanics).\n" +
+					"  newIntNumStrDto(numSeps, intNum, precision)",
+				ErrContext: fmt.Sprintf("numSeps= '%v'\n"+
+					"intNum= '%v'\n"+
+					"precision='%v'",
+					numSeps.String(), intNum, precision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return numStrDtoFinal, nil
 }
 
 // NewIntNumSeps
@@ -3662,6 +3713,8 @@ func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 				ErrMessage: err.Error(),
 			}
 	}
+
+	numSeps.SetDefaultsIfEmpty()
 
 	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
@@ -5972,10 +6025,9 @@ func (nDto *NumStrDto) SetNumStr(
 //
 //	roundResult              bool
 //	  If the 'precision' value is less than the current number of
-//	  places to the right of the decimal point, this method will
-//	  truncate the existing fractional digits. If 'roundResult' is
-//	  set to true, this truncation operation will include rounding
-//	  the last digit.
+//	  places to the right of the decimal point, fractional digits
+//	  will be truncated. If 'roundResult' is set to true, this
+//	  truncation operation will include rounding the last digit.
 //
 //	Return Values
 //	=============

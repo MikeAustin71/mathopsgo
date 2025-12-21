@@ -1,9 +1,16 @@
 
 Start Test cleanup here:
-TestNumStrDto_NewUint64Exponent_06; xt_numstrdto_07_test.go
+TestNumStrDto_ScaleNumStr_01; xt_numstrdto_08_test.go
 
-xt_numstrdto_07_test.go
 git add -A
 git commit -m "Modified README"
 git status
 git push origin dev
+
+--------------------------------
+Fix new(NumStrDto).NewInt
+in xt_numstrdto_06_test.go
+
+add error return
+--------------------------------
+
