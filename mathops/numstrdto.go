@@ -1150,7 +1150,7 @@ func (nDto *NumStrDto) GetAbsIntRunes() ([]rune, error) {
 //
 //	 123.45      12345            2             1
 //	 12345       12345            0             1
-//	-123.45      11245            2            -1
+//	-123.45      12345            2            -1
 //
 //	IMPORTANT
 //	=========

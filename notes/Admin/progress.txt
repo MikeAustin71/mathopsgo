@@ -14,4 +14,3 @@ in xt_numstrdto_06_test.go
 add error return
 --------------------------------
 
-Eliminate SetPrecision in xt_numstrdto_08_test.go
