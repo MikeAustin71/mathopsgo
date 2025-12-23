@@ -4,6 +4,8 @@ import "testing"
 
 func TestNumStrFmtMode_String_01(t *testing.T) {
 
+	ePrefix := "TestNumStrFmtMode_String_01"
+
 	r := PUREINTEGERFMT
 
 	expectedStr := "PureIntegerString"
@@ -11,13 +13,18 @@ func TestNumStrFmtMode_String_01(t *testing.T) {
 	s := r.String()
 
 	if expectedStr != s {
-		t.Errorf("Expected PUREINTEGERFMT string='%v'. Instead, string='%v' ",
-			expectedStr, s)
+		t.Errorf("%v\n"+
+			"Expected PUREINTEGERFMT string='%v'.\n"+
+			"Instead, string='%v'\n",
+			ePrefix, expectedStr, s)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_String_02(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_String_02"
 
 	r := INTSTRDECIMALFMT
 
@@ -26,13 +33,18 @@ func TestNumStrFmtMode_String_02(t *testing.T) {
 	s := r.String()
 
 	if expectedStr != s {
-		t.Errorf("Expected INTSTRDECIMALFMT string='%v'. Instead, string='%v' ",
-			expectedStr, s)
+		t.Errorf("%v\n"+
+			"Expected INTSTRDECIMALFMT string='%v'.\n"+
+			"Instead, string='%v'\n",
+			ePrefix, expectedStr, s)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_String_03(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_String_03"
 
 	r := THOUSANDSNUMSTRFMT
 
@@ -41,13 +53,18 @@ func TestNumStrFmtMode_String_03(t *testing.T) {
 	s := r.String()
 
 	if expectedStr != s {
-		t.Errorf("Expected THOUSANDSNUMSTRFMT string='%v'. Instead, string='%v' ",
-			expectedStr, s)
+		t.Errorf("%v\n"+
+			"Expected THOUSANDSNUMSTRFMT string='%v'.\n"+
+			"Instead, string='%v'\n",
+			ePrefix, expectedStr, s)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_String_04(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_String_04"
 
 	r := CURRENCYNUMSTRFMT
 
@@ -56,13 +73,18 @@ func TestNumStrFmtMode_String_04(t *testing.T) {
 	s := r.String()
 
 	if expectedStr != s {
-		t.Errorf("Expected THOUSANDSNUMSTRFMT string='%v'. Instead, string='%v' ",
-			expectedStr, s)
+		t.Errorf("%v\n"+
+			"Expected THOUSANDSNUMSTRFMT string='%v'.\n"+
+			"Instead, string='%v'\n",
+			ePrefix, expectedStr, s)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_Value_01(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_Value_01"
 
 	var r NumStrFmtMode
 
@@ -73,12 +95,18 @@ func TestNumStrFmtMode_Value_01(t *testing.T) {
 	i = int(r)
 
 	if i != 0 {
-		t.Errorf("Expected 'PUREINTEGERFMT' value = 0. Instead, got %v", i)
+		t.Errorf("%v\n"+
+			"Expected 'PUREINTEGERFMT' value = 0.\n"+
+			"Instead, received value= %v",
+			ePrefix, i)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_Value_02(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_Value_02"
 
 	var r NumStrFmtMode
 
@@ -89,12 +117,18 @@ func TestNumStrFmtMode_Value_02(t *testing.T) {
 	i = int(r)
 
 	if i != 1 {
-		t.Errorf("Expected 'INTSTRDECIMALFMT' value = 1. Instead, got %v", i)
+		t.Errorf("%v\n"+
+			"Expected 'INTSTRDECIMALFMT' value = 1.\n"+
+			"Instead, received value= %v",
+			ePrefix, i)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_Value_03(t *testing.T) {
+
+	ePrefix := "TestNumStrDto_SubtractNumStrs_06"
 
 	var r NumStrFmtMode
 
@@ -105,12 +139,17 @@ func TestNumStrFmtMode_Value_03(t *testing.T) {
 	i = int(r)
 
 	if i != 2 {
-		t.Errorf("Expected 'THOUSANDSNUMSTRFMT' value = 2. Instead, got %v", i)
+		t.Errorf("%v\n"+
+			"Expected 'THOUSANDSNUMSTRFMT' value = 2.\n"+
+			"Instead, got %v", ePrefix, i)
 	}
 
+	return
 }
 
 func TestNumStrFmtMode_Value_04(t *testing.T) {
+
+	ePrefix := "TestNumStrFmtMode_Value_04"
 
 	var r NumStrFmtMode
 
@@ -121,7 +160,10 @@ func TestNumStrFmtMode_Value_04(t *testing.T) {
 	i = int(r)
 
 	if i != 3 {
-		t.Errorf("Expected 'CURRENCYNUMSTRFMT' value = 3. Instead, got %v", i)
+		t.Errorf("%v\nExpected 'CURRENCYNUMSTRFMT' value = 3.\n"+
+			"Instead, got %v",
+			ePrefix, i)
 	}
 
+	return
 }
