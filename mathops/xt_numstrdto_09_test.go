@@ -8234,706 +8234,5709 @@ func TestNumStrDto_SetPrecision_19(t *testing.T) {
 
 func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 
-  nStr := "123456789"
-  initialPrecision := uint(0)
-  precision := uint(3)
-  roundResult := true
-  outPrecision := uint(3)
-  expected := "123456789.000"
-  signVal := 1
-  absIntRuneStr := "123456789"
-  absFracRuneStr := "000"
+  ePrefix := "TestNumStrDto_SetThisPrecision_01"
 
-  nsDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumStr := "123456789"
+
+  inputInitialPrecisionUint := uint(0)
+
+  inputSetPrecisionUint := uint(3)
+
+  var inputRoundResult bool
+
+  inputRoundResult = true
+
+  expectedNumStr := "123456789.000"
+
+  expectedBigInt := big.NewInt(123456789000)
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123456789"
+
+  expectedNumAbsFracStr := "000"
+
+  expectedAbsAllRunesNumStr := "1234570"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). "+
-      "Err='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if initialPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Error: Expected Initial precision='%v'. Actual Initial precision='%v' ",
-      initialPrecision, nsDto.GetPrecisionUint())
-  }
-
-  nsDto.SetThisPrecision(precision, roundResult)
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). "+
-      "precision= '%v'. Error= %v", precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
+
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  NewNumStr(inputNumStr)\n"+
+      "** Initial Value **\n"+
+      "inputNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr, err.Error())
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  err = numStrDtoResult.IsValid("Validating initial numStrDtoResult")
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating initial numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "** Initial Precision Value **\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  if inputNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResult Number String NOT EQUAL TO Initial Value!\n"+
+      "Because inputNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, inputNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if inputInitialPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Initial numStrDtoResult Precision Value is INVALID!\n"+
+      "Because inputInitialPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, inputInitialPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  err = numStrDtoResult.SetThisPrecision(inputSetPrecisionUint, inputRoundResult)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetThisPrecision(\n"+
+      "  inputSetPrecisionUint, inputRoundResult)\n"+
+      "numStrDtoResult= '%v'\n"+
+      "inputSetPrecisionUint= '%v'\n"+
+      "inputRoundResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoResultNumStr,
+      inputSetPrecisionUint,
+      inputRoundResult,
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err = numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err = numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err = numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err =\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 
-  nStr := "123456.789"
-  initialPrecision := uint(3)
-  precision := uint(2)
-  roundResult := true
-  outPrecision := uint(2)
-  expected := "123456.79"
-  signVal := 1
-  absIntRuneStr := "123456"
-  absFracRuneStr := "79"
+  ePrefix := "TestNumStrDto_SetThisPrecision_02"
 
-  nsDto, err := NumStrDto{}.NewNumStr(nStr)
+  inputNumStr := "123456.789"
+
+  inputInitialPrecisionUint := uint(3)
+
+  inputSetPrecisionUint := uint(2)
+
+  var inputRoundResult bool
+
+  inputRoundResult = true
+
+  expectedNumStr := "123456.79"
+
+  expectedBigInt := big.NewInt(12345679)
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123456"
+
+  expectedNumAbsFracStr := "79"
+
+  expectedAbsAllRunesNumStr := "12345679"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). "+
-      "Err='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if initialPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Error: Expected Initial precision='%v'. Actual Initial precision='%v' ",
-      initialPrecision, nsDto.GetPrecisionUint())
-  }
-
-  nsDto.SetThisPrecision(precision, roundResult)
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). "+
-      "precision= '%v'. Error= %v", precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
+
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  numStrDtoResult, err := new(NumStrDto).NewNumStr(inputNumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  NewNumStr(inputNumStr)\n"+
+      "** Initial Value **\n"+
+      "inputNumStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr, err.Error())
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  err = numStrDtoResult.IsValid("Validating initial numStrDtoResult")
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating initial numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to initial value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "** Initial Precision Value **\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  if inputNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResult Number String NOT EQUAL TO Initial Value!\n"+
+      "Because inputNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, inputNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if inputInitialPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Initial numStrDtoResult Precision Value is INVALID!\n"+
+      "Because inputInitialPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, inputInitialPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  err = numStrDtoResult.SetThisPrecision(inputSetPrecisionUint, inputRoundResult)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResult.SetThisPrecision(\n"+
+      "  inputSetPrecisionUint, inputRoundResult)\n"+
+      "numStrDtoResult= '%v'\n"+
+      "inputSetPrecisionUint= '%v'\n"+
+      "inputRoundResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoResultNumStr,
+      inputSetPrecisionUint,
+      inputRoundResult,
+      err.Error())
+
+    return
+  }
+
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err = numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err = numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err = numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err =\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_01(t *testing.T) {
 
-  nStr := "123456.789"
-  precision := uint(3)
-  outPrecision := uint(6)
-  expected := "123.456789"
-  signVal := 1
-  absIntRuneStr := "123"
-  absFracRuneStr := "456789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_01"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123456.789"
+
+  inputPrecisionUint := uint(3)
+
+  expectedNumStr := "123.456789"
+
+  expectedBigInt := big.NewInt(123456789)
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123"
+
+  expectedNumAbsFracStr := "456789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).NewPtr().ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewPtr().\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_02(t *testing.T) {
 
-  nStr := "123456.789"
-  precision := uint(2)
-  outPrecision := uint(5)
-  expected := "1234.56789"
-  signVal := 1
-  absIntRuneStr := "1234"
-  absFracRuneStr := "56789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_02"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123456.789"
+
+  inputPrecisionUint := uint(2)
+
+  expectedNumStr := "1234.56789"
+
+  expectedBigInt := big.NewInt(123456789)
+
+  expectedPrecisionInt := 5
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "1234"
+
+  expectedNumAbsFracStr := "56789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).NewPtr().ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewPtr().\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_03(t *testing.T) {
 
-  nStr := "123456.789"
-  precision := uint(6)
-  outPrecision := uint(9)
-  expected := "0.123456789"
-  signVal := 1
-  absIntRuneStr := "0"
-  absFracRuneStr := "123456789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_03"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123456.789"
+
+  inputPrecisionUint := uint(6)
+
+  expectedNumStr := "0.123456789"
+
+  expectedBigInt := big.NewInt(123456789)
+
+  expectedPrecisionInt := 9
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "0"
+
+  expectedNumAbsFracStr := "123456789"
+
+  expectedAbsAllRunesNumStr := "0123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).NewPtr().ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewPtr().\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_04(t *testing.T) {
 
-  nStr := "123456789"
-  precision := uint(6)
-  outPrecision := uint(6)
-  expected := "123.456789"
-  signVal := 1
-  absIntRuneStr := "123"
-  absFracRuneStr := "456789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_04"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123456789"
+
+  inputPrecisionUint := uint(6)
+
+  expectedNumStr := "123.456789"
+
+  expectedBigInt := big.NewInt(123456789)
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123"
+
+  expectedNumAbsFracStr := "456789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).NewPtr().ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewPtr().\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 
-  nStr := "123"
-  precision := uint(5)
-  outPrecision := uint(5)
-  expected := "0.00123"
-  signVal := 1
-  absIntRuneStr := "0"
-  absFracRuneStr := "00123"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_05"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123"
+
+  inputPrecisionUint := uint(5)
+
+  expectedNumStr := "0.00123"
+
+  expectedBigInt := big.NewInt(123)
+
+  expectedPrecisionInt := 5
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "0"
+
+  expectedNumAbsFracStr := "00123"
+
+  expectedAbsAllRunesNumStr := "000123"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).NewPtr().ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).NewPtr().\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 
-  nStr := "0"
-  precision := uint(3)
-  outPrecision := uint(3)
-  expected := "0.000"
-  signVal := 1
-  absIntRuneStr := "0"
-  absFracRuneStr := "000"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_06"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "0"
+
+  inputPrecisionUint := uint(3)
+
+  expectedNumStr := "0.000"
+
+  expectedBigInt := big.NewInt(0)
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "0"
+
+  expectedNumAbsFracStr := "000"
+
+  expectedAbsAllRunesNumStr := "0000"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_07(t *testing.T) {
 
-  nStr := "0.000"
-  precision := uint(2)
-  outPrecision := uint(5)
-  expected := "0.00000"
-  signVal := 1
-  absIntRuneStr := "0"
-  absFracRuneStr := "00000"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_07"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "0.000"
+
+  inputPrecisionUint := uint(2)
+
+  expectedNumStr := "0.00000"
+
+  expectedBigInt := big.NewInt(0)
+
+  expectedPrecisionInt := 5
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "0"
+
+  expectedNumAbsFracStr := "00000"
+
+  expectedAbsAllRunesNumStr := "000000"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_08(t *testing.T) {
 
-  nStr := "123456.789"
-  precision := uint(0)
-  outPrecision := uint(3)
-  expected := "123456.789"
-  signVal := 1
-  absIntRuneStr := "123456"
-  absFracRuneStr := "789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_08"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "123456.789"
+
+  inputPrecisionUint := uint(0)
+
+  expectedNumStr := "123456.789"
+
+  expectedBigInt := big.NewInt(123456789)
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123456"
+
+  expectedNumAbsFracStr := "789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_09(t *testing.T) {
 
-  nStr := "-123456.789"
-  precision := uint(0)
-  outPrecision := uint(3)
-  expected := "-123456.789"
-  signVal := -1
-  absIntRuneStr := "123456"
-  absFracRuneStr := "789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_09"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "-123456.789"
+
+  inputPrecisionUint := uint(0)
+
+  expectedNumStr := "-123456.789"
+
+  expectedBigInt := big.NewInt(-123456789)
+
+  expectedPrecisionInt := 3
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123456"
+
+  expectedNumAbsFracStr := "789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_10(t *testing.T) {
 
-  nStr := "-123456.789"
-  precision := uint(3)
-  outPrecision := uint(6)
-  expected := "-123.456789"
-  signVal := -1
-  absIntRuneStr := "123"
-  absFracRuneStr := "456789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_10"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "-123456.789"
+
+  inputPrecisionUint := uint(3)
+
+  expectedNumStr := "-123.456789"
+
+  expectedBigInt := big.NewInt(-123456789)
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123"
+
+  expectedNumAbsFracStr := "456789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 
-  nStr := "-123456789"
-  precision := uint(6)
-  outPrecision := uint(6)
-  expected := "-123.456789"
-  signVal := -1
-  absIntRuneStr := "123"
-  absFracRuneStr := "456789"
+  ePrefix := "TestNumStrDto_ShiftPrecisionLeft_10"
 
-  nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(nStr, precision)
+  inputNumStr := "-123456789"
+
+  inputPrecisionUint := uint(6)
+
+  expectedNumStr := "-123.456789"
+
+  expectedBigInt := big.NewInt(-123456789)
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  var expectedNumHasNumericDigits, expectedNumIsFractionalValue bool
+
+  expectedNumHasNumericDigits = true
+
+  expectedNumIsFractionalValue = true
+
+  expectedNumAbsIntStr := "123"
+
+  expectedNumAbsFracStr := "456789"
+
+  expectedAbsAllRunesNumStr := "123456789"
+
+  expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
 
   if err != nil {
-    t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(BigIntNum).NewNumStr(originalNumberStr)\n"+
+      "originalNumberStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedNumStr, err.Error())
+    return
   }
 
-  if nsDto.GetNumStr() != expected {
-    t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
-  }
-
-  if outPrecision != nsDto.GetPrecisionUint() {
-    t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
-  }
-
-  if signVal != nsDto.GetSign() {
-    t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
-  }
-
-  err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+  err = expectedBigINum.IsValid("Validating expectedBigINum")
 
   if err != nil {
-    t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if !nsDto.HasNumericDigits() {
-    t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+  expectedBigINumStr, err := expectedBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  s := string(nsDto.GetAbsIntRunes())
+  if expectedNumStr != expectedBigINumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected Number String Values NOT Equal\n"+
+      "Because expectedNumStr != expectedBigINumStr \n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedBigINumStr)
 
-  if s != absIntRuneStr {
-    t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+    return
   }
 
-  s = string(nsDto.GetAbsFracRunes())
+  numStrDtoResult, err := new(NumStrDto).ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)
 
-  if s != absFracRuneStr {
-    t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResult, err := new(NumStrDto).\n"+
+      "  ShiftPrecisionLeft(inputNumStr, inputPrecisionUint)\n"+
+      "inputNumStr= '%v'\n"+
+      "inputPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputNumStr,
+      inputPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = numStrDtoResult.IsValid("Validating numStrDtoResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoResult.IsValid('Validating numStrDtoResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumStr, err := numStrDtoResult.GetNumStr()\n"+
+      "numStrDtoResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultPrecisionInt := numStrDtoResult.GetPrecision()
+
+  numStrDtoResultPrecisionUint, err := numStrDtoResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultPrecisionUint, err :=\n"+
+      "  numStrDtoResult.GetPrecisionUint()\n"+
+      "numStrDtoResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultSignValue, err := numStrDtoResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultSignValue, err := numStrDtoResult.GetSign()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultNumSeps, err := numStrDtoResult.GetNumericSeparatorsDto()\n"+
+      "numStrDtoResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultScaleFactorBigInt, err := numStrDtoResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultScaleFactorBigInt, err :=\n"+
+      "  numStrDtoResult.GetScaleFactor()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultHasNumericDigits := numStrDtoResult.HasNumericDigits()
+
+  numStrDtoResultIsFractionalValue := numStrDtoResult.IsFractionalValue()
+
+  numStrDtoResultAbsIntRunes, err := numStrDtoResult.GetAbsIntRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsIntRunes, err := \n"+
+      "  numStrDtoResult.GetAbsIntRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsIntStr := string(numStrDtoResultAbsIntRunes)
+
+  numStrDtoResultAbsFracRunes, err := numStrDtoResult.GetAbsFracRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsFracRunes, err :=\n"+
+      "  numStrDtoResult.GetAbsFracRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultAbsAllRunes, err := numStrDtoResult.GetAbsAllNumRunes()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultAbsAllRunesNumStr := string(numStrDtoResultAbsAllRunes)
+
+  numStrDtoResultAbsFracStr := string(numStrDtoResultAbsFracRunes)
+
+  numStrDtoBigInt, err := numStrDtoResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoBigInt, err :=\n"+
+      "  numStrDtoResult.GetBigInt()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINum, err := numStrDtoResult.GetBigIntNum()\n"+
+      "numStrDtoResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStrDtoResultNumStr, err.Error())
+    return
+  }
+
+  err = numStrDtoResultBigINum.IsValid("Validating numStrDtoResultBigINum")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = numStrDtoResultBigINum.IsValid('Validating numStrDtoResultBigINum')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoResultBigINumNumberStr, err := numStrDtoResultBigINum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoResultBigINumNumberStr, err :=\n"+
+      "  numStrDtoResultBigINum.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(numStrDtoResultBigINum)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedAndResultBigINumsAreEqual, err :=\n"+
+      "  expectedBigINum.Equal(numStrDtoResultBigINum)\n"+
+      "expectedBigINum= '%v'\n"+
+      "numStrDtoResultBigINum= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != numStrDtoResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and numStrDtoResult Number Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumStr != numStrDtoResultNumStr\n"+
+      "Expected numStrDtoResultNumStr = '%v'\n"+
+      "  Actual numStrDtoResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, numStrDtoResultNumStr)
+
+    return
+  }
+
+  if expectedAndResultBigINumsAreEqual == false {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoResultBigINum is INVALID!\n"+
+      "Because expectedAndResultBigINumsAreEqual == false\n"+
+      "Expected numStrDtoResultBigINum = '%v'\n"+
+      "  Actual numStrDtoResultBigINum = '%v'\n\n",
+      ePrefix, expectedBigINumStr, numStrDtoResultBigINumNumberStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != numStrDtoResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionInt != numStrDtoResultPrecisionInt\n"+
+      "Expected numStrDtoResultPrecisionInt = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, numStrDtoResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != numStrDtoResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected & numStrDtoResult Precision Values ARE NOT EQUAL!\n"+
+      "Because expectedPrecisionUint != numStrDtoResultPrecisionUint\n"+
+      "Expected numStrDtoResultPrecisionUint = '%v'\n"+
+      "  Actual numStrDtoResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, numStrDtoResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != numStrDtoResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: expected & numStrDtoResult Sign Values ARE NOT EQUAL!\n"+
+      "Because expectedSignValue != numStrDtoResultSignValue\n"+
+      "Expected numStrDtoResultSignValue = '%v'\n"+
+      "  Actual numStrDtoResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, numStrDtoResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(numStrDtoResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Numeric Separator Values ARE NOT Equal!\n"+
+      "Because expectedNumSeps != numStrDtoResultNumSeps \n"+
+      "Expected numStrDtoResultNumSeps = '%v'\n"+
+      "  Actual numStrDtoResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), numStrDtoResultNumSeps.String())
+
+    return
+  }
+
+  if expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits {
+    t.Errorf("%v\n"+
+      "Error: Numeric Digits Flag is Invalid!\n"+
+      "Because expectedNumHasNumericDigits != numStrDtoResultHasNumericDigits\n"+
+      "Expected numStrDtoResultHasNumericDigits = '%v'\n"+
+      "  Actual numStrDtoResultHasNumericDigits = '%v'\n\n",
+      ePrefix, expectedNumHasNumericDigits, numStrDtoResultHasNumericDigits)
+
+    return
+  }
+
+  if expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue {
+    t.Errorf("%v\n"+
+      "Error: IsFractionalValue Flag Invalid!\n"+
+      "Because expectedNumIsFractionalValue != numStrDtoResultIsFractionalValue\n"+
+      "Expected numStrDtoResultIsFractionalValue = '%v'\n"+
+      "  Actual numStrDtoResultIsFractionalValue = '%v'\n\n",
+      ePrefix, expectedNumIsFractionalValue, numStrDtoResultIsFractionalValue)
+
+    return
+  }
+
+  if expectedNumAbsIntStr != numStrDtoResultAbsIntStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Integer Strings ARE NOT EQUAL!\n"+
+      "Because expectedNumAbsIntStr != numStrDtoResultAbsIntStr\n"+
+      "Expected numStrDtoResultAbsIntStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsIntStr = '%v'\n\n",
+      ePrefix, expectedNumAbsIntStr, numStrDtoResultAbsIntStr)
+
+    return
+  }
+
+  if expectedNumAbsFracStr != numStrDtoResultAbsFracStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because!!!!\n"+
+      "Expected numStrDtoResultAbsFracStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsFracStr = '%v'\n\n",
+      ePrefix, expectedNumAbsFracStr, numStrDtoResultAbsFracStr)
+
+    return
+  }
+
+  if expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected and Actual Absolute Runes Num Strings ARE NOT EQUAL!\n"+
+      "Because expectedAbsAllRunesNumStr != numStrDtoResultAbsAllRunesNumStr\n"+
+      "Expected numStrDtoResultAbsAllRunesNumStr = '%v'\n"+
+      "  Actual numStrDtoResultAbsAllRunesNumStr = '%v'\n\n",
+      ePrefix, expectedAbsAllRunesNumStr, numStrDtoResultAbsAllRunesNumStr)
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(numStrDtoResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Scale Factor INVALID!\n"+
+      "Because expectedScaleFactorBigInt!=numStrDtoResultScaleFactorBigInt\n"+
+      "Expected numStrDtoResultScaleFactorBigInt = '%v'\n"+
+      "  Actual numStrDtoResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      numStrDtoResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(numStrDtoBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: BigInt Values ARE NOT EQUAL!\n"+
+      "Because expectedBigInt.Cmp(numStrDtoBigInt) != 0\n"+
+      "Expected numStrDtoBigInt = '%v'\n"+
+      "  Actual numStrDtoBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), numStrDtoBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
