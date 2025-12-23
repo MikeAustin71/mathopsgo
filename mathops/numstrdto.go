@@ -5235,6 +5235,8 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			}
 	}
 
+	numSeps.SetDefaultsIfEmpty()
+
 	return new(numStrDtoQuark).parseNumStr(
 		numSeps,
 		str,

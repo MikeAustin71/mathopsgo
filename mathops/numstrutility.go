@@ -596,9 +596,18 @@ func (ns *NumStrUtility) ConvertInt64ToIntegerFloat64Value(i64 int64) (float64, 
 
 }
 
-// ConvertInt64ToFractionalValue - Converts an int64 value to a float64 with
-// all digits to the right of the decimal place.
-func (ns *NumStrUtility) ConvertInt64ToFractionalValue(i64 int64) (float64, error) {
+// ConvertInt64ToFloat64Value
+//
+//	Converts an int64 value to a float64 with all digits to the right
+//	of the decimal place.
+//
+//	Example
+//	=======
+//
+//	i64 := int64(123456)
+//	f64, err := ns.ConvertInt64ToFloat64Value(i64)
+//	f64 is now equal to 0.123456
+func (ns *NumStrUtility) ConvertInt64ToFloat64Value(i64 int64) (float64, error) {
 
 	ex := 1
 	f64 := float64(i64)

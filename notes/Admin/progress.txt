@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-TestNumStrDto_ShiftPrecisionRight_01; xt_numstrdto_10_test.go
+; xt_numstrutil_01_test.go
 
 git add -A
 git commit -m "Modified README"
