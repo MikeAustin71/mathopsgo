@@ -1,111 +1,111 @@
 package mathops
 
 import (
-  "testing"
+	"testing"
 )
 
 func TestPrecisionScaleMode_String_01(t *testing.T) {
 
-  ePrefix := "TestPrecisionScaleMode_String_01"
+	ePrefix := "TestPrecisionScaleMode_String_01"
 
-  actualConstantParam := SCALEPRECISIONRIGHT
+	actualConstantParam := SCALEPRECISIONRIGHT
 
-  expectedStr := "ScalePrecisionRight"
+	expectedStr := "ScalePrecisionRight"
 
-  resultConstantParamStr := actualConstantParam.String()
+	resultConstantParamStr := actualConstantParam.String()
 
-  if expectedStr != resultConstantParamStr {
-    t.Errorf("%v\n"+
-      "Error: Expected vs Actual Parameter Strings DON'T MATCH!\n"+
-      "Because expectedStr != resultConstantParamStr\n"+
-      "Expected resultConstantParamStr = '%v'\n"+
-      "  Actual resultConstantParamStr = '%v'\n\n",
-      ePrefix, expectedStr, resultConstantParamStr)
+	if expectedStr != resultConstantParamStr {
+		t.Errorf("%v\n"+
+			"Error: Expected vs Actual Parameter Strings DON'T MATCH!\n"+
+			"Because expectedStr != resultConstantParamStr\n"+
+			"Expected resultConstantParamStr = '%v'\n"+
+			"  Actual resultConstantParamStr = '%v'\n\n",
+			ePrefix, expectedStr, resultConstantParamStr)
 
-    return
-  }
+		return
+	}
 
-  return
+	return
 }
 
 func TestPrecisionScaleMode_String_02(t *testing.T) {
 
-  ePrefix := "TestPrecisionScaleMode_String_02"
+	ePrefix := "TestPrecisionScaleMode_String_02"
 
-  actualConstantParam := SCALEPRECISIONLEFT
+	actualConstantParam := SCALEPRECISIONLEFT
 
-  expectedStr := "ScalePrecisionLeft"
+	expectedStr := "ScalePrecisionLeft"
 
-  resultConstantParamStr := actualConstantParam.String()
+	resultConstantParamStr := actualConstantParam.String()
 
-  if expectedStr != resultConstantParamStr {
-    t.Errorf("%v\n"+
-      "Error: Expected vs Actual Parameter Strings DON'T MATCH!\n"+
-      "Because expectedStr != resultConstantParamStr\n"+
-      "Expected resultConstantParamStr = '%v'\n"+
-      "  Actual resultConstantParamStr = '%v'\n\n",
-      ePrefix, expectedStr, resultConstantParamStr)
+	if expectedStr != resultConstantParamStr {
+		t.Errorf("%v\n"+
+			"Error: Expected vs Actual Parameter Strings DON'T MATCH!\n"+
+			"Because expectedStr != resultConstantParamStr\n"+
+			"Expected resultConstantParamStr = '%v'\n"+
+			"  Actual resultConstantParamStr = '%v'\n\n",
+			ePrefix, expectedStr, resultConstantParamStr)
 
-    return
-  }
+		return
+	}
 
-  return
+	return
 }
 
 func TestPrecisionScaleMode_Value_01(t *testing.T) {
 
-  ePrefix := "TestPrecisionScaleMode_Value_01"
+	ePrefix := "TestPrecisionScaleMode_Value_01"
 
-  expectedConstantInt := 0
+	expectedConstantInt := 0
 
-  var precisionScaleModeFromConstant PrecisionScaleMode
+	var precisionScaleModeFromConstant PrecisionScaleMode
 
-  var resultConstantInt int
+	var resultConstantInt int
 
-  precisionScaleModeFromConstant = SCALEPRECISIONRIGHT
+	precisionScaleModeFromConstant = SCALEPRECISIONRIGHT
 
-  resultConstantInt = int(precisionScaleModeFromConstant)
+	resultConstantInt = int(precisionScaleModeFromConstant)
 
-  if expectedConstantInt != resultConstantInt {
-    t.Errorf("%v\n"+
-      "Error: Expected vs Actual Constant Integer Values DON'T MATCH!\n"+
-      "Because expectedConstantInt != resultConstantInt\n"+
-      "SCALEPRECISIONRIGHT Value is Wrong!\n"+
-      "Expected resultConstantInt = '%v'\n"+
-      "  Actual resultConstantInt = '%v'\n\n",
-      ePrefix, expectedConstantInt, resultConstantInt)
+	if expectedConstantInt != resultConstantInt {
+		t.Errorf("%v\n"+
+			"Error: Expected vs Actual Constant Integer Values DON'T MATCH!\n"+
+			"Because expectedConstantInt != resultConstantInt\n"+
+			"SCALEPRECISIONRIGHT Value is Wrong!\n"+
+			"Expected resultConstantInt = '%v'\n"+
+			"  Actual resultConstantInt = '%v'\n\n",
+			ePrefix, expectedConstantInt, resultConstantInt)
 
-    return
-  }
+		return
+	}
 
-  return
+	return
 }
 
 func TestPrecisionScaleMode_Value_02(t *testing.T) {
 
-  ePrefix := "TestPrecisionScaleMode_Value_02"
+	ePrefix := "TestPrecisionScaleMode_Value_02"
 
-  expectedConstantInt := 1
+	expectedConstantInt := 1
 
-  var precisionScaleModeFromConstant PrecisionScaleMode
+	var precisionScaleModeFromConstant PrecisionScaleMode
 
-  var resultConstantInt int
+	var resultConstantInt int
 
-  precisionScaleModeFromConstant = SCALEPRECISIONLEFT
+	precisionScaleModeFromConstant = SCALEPRECISIONLEFT
 
-  resultConstantInt = int(precisionScaleModeFromConstant)
+	resultConstantInt = int(precisionScaleModeFromConstant)
 
-  if expectedConstantInt != resultConstantInt {
-    t.Errorf("%v\n"+
-      "Error: Expected vs Actual Constant Integer Values DON'T MATCH!\n"+
-      "Because expectedConstantInt != resultConstantInt\n"+
-      "SCALEPRECISIONLEFT Value is Wrong!\n"+
-      "Expected resultConstantInt = '%v'\n"+
-      "  Actual resultConstantInt = '%v'\n\n",
-      ePrefix, expectedConstantInt, resultConstantInt)
+	if expectedConstantInt != resultConstantInt {
+		t.Errorf("%v\n"+
+			"Error: Expected vs Actual Constant Integer Values DON'T MATCH!\n"+
+			"Because expectedConstantInt != resultConstantInt\n"+
+			"SCALEPRECISIONLEFT Value is Wrong!\n"+
+			"Expected resultConstantInt = '%v'\n"+
+			"  Actual resultConstantInt = '%v'\n\n",
+			ePrefix, expectedConstantInt, resultConstantInt)
 
-    return
-  }
+		return
+	}
 
-  return
+	return
 }

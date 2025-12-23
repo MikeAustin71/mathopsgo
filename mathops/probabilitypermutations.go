@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -120,7 +121,7 @@ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked
 //	                     8!
 //
 //	Note: 0! = 1
-func (prob Probability) PermutationsNoRepsBigInt(
+func (prob *Probability) PermutationsNoRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -313,7 +314,7 @@ func (prob Probability) PermutationsNoRepsBigInt(
 //	(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
 //
 //	      10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
-func (prob Probability) PermutationsWithRepsBigInt(
+func (prob *Probability) PermutationsWithRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -466,7 +467,7 @@ func (prob Probability) PermutationsWithRepsBigInt(
 //
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
 //	'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-func (prob Probability) PermutationsBigIntNum(
+func (prob *Probability) PermutationsBigIntNum(
 	numOfItems, numOfItemsPicked BigIntNum,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -647,10 +648,10 @@ func (prob Probability) PermutationsBigIntNum(
 	}
 
 	if !allowRepetitions {
-		return Probability{}.PermutationsNoRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
+		return new(Probability).PermutationsNoRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
 	}
 
-	return Probability{}.PermutationsWithRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
+	return new(Probability).PermutationsWithRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
 }
 
 // PermutationsDecimal
@@ -707,7 +708,7 @@ func (prob Probability) PermutationsBigIntNum(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsDecimal(
+func (prob *Probability) PermutationsDecimal(
 	numOfItems, numOfItemsPicked Decimal,
 	allowRepetitions bool) (Decimal, error) {
 
@@ -934,7 +935,7 @@ func (prob Probability) PermutationsDecimal(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.PermutationsNoRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -950,7 +951,7 @@ func (prob Probability) PermutationsDecimal(
 
 	} else {
 
-		result, err = Probability{}.PermutationsWithRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1037,7 +1038,7 @@ func (prob Probability) PermutationsDecimal(
 //	 When 'allowRepetitions' = true, 'numOfItemsPicked' must be a
 //	 positive integer number. 'numOfItemsPicked' can be greater than,
 //	 equal to or less than 'numOfItems'.
-func (prob Probability) PermutationsIntAry(
+func (prob *Probability) PermutationsIntAry(
 	numOfItems, numOfItemsPicked IntAry,
 	allowRepetitions bool) (IntAry, error) {
 
@@ -1264,7 +1265,7 @@ func (prob Probability) PermutationsIntAry(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.PermutationsNoRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1279,7 +1280,7 @@ func (prob Probability) PermutationsIntAry(
 
 	} else {
 
-		result, err = Probability{}.PermutationsWithRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1364,7 +1365,7 @@ func (prob Probability) PermutationsIntAry(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsINumMgr(
+func (prob *Probability) PermutationsINumMgr(
 	numOfItems, numOfItemsPicked INumMgr,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -1587,7 +1588,7 @@ func (prob Probability) PermutationsINumMgr(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.PermutationsNoRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1603,7 +1604,7 @@ func (prob Probability) PermutationsINumMgr(
 
 	} else {
 
-		result, err = Probability{}.PermutationsWithRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1675,7 +1676,7 @@ func (prob Probability) PermutationsINumMgr(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsInt(
+func (prob *Probability) PermutationsInt(
 	numOfItems, numOfItemsPicked int,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -1742,10 +1743,10 @@ func (prob Probability) PermutationsInt(
 	r := big.NewInt(int64(numOfItemsPicked))
 
 	if !allowRepetitions {
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }
 
 // PermutationsInt32
@@ -1803,7 +1804,7 @@ func (prob Probability) PermutationsInt(
 //	 When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	 integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	 less than 'numOfItems'.
-func (prob Probability) PermutationsInt32(
+func (prob *Probability) PermutationsInt32(
 	numOfItems, numOfItemsPicked int32,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -1881,10 +1882,10 @@ func (prob Probability) PermutationsInt32(
 	r := big.NewInt(int64(numOfItemsPicked))
 
 	if !allowRepetitions {
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }
 
 // PermutationsInt64 - Calculates the number of permutations associated with a collection of
@@ -1936,7 +1937,7 @@ func (prob Probability) PermutationsInt32(
 //	 When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	 integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	 less than 'numOfItems'.
-func (prob Probability) PermutationsInt64(
+func (prob *Probability) PermutationsInt64(
 	numOfItems, numOfItemsPicked int64,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -2003,10 +2004,10 @@ func (prob Probability) PermutationsInt64(
 	r := big.NewInt(numOfItemsPicked)
 
 	if !allowRepetitions {
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }
 
 // PermutationsNumStrDto
@@ -2064,7 +2065,7 @@ func (prob Probability) PermutationsInt64(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsNumStrDto(
+func (prob *Probability) PermutationsNumStrDto(
 	numOfItems, numOfItemsPicked NumStrDto,
 	allowRepetitions bool) (NumStrDto, error) {
 
@@ -2289,7 +2290,7 @@ func (prob Probability) PermutationsNumStrDto(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.PermutationsNoRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2305,7 +2306,7 @@ func (prob Probability) PermutationsNumStrDto(
 
 	} else {
 
-		result, err = Probability{}.PermutationsWithRepsBigInt(n, r)
+		result, err = new(Probability).PermutationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2398,7 +2399,7 @@ func (prob Probability) PermutationsNumStrDto(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsNumberStr(
+func (prob *Probability) PermutationsNumberStr(
 	numOfItems, numOfItemsPicked string,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -2643,7 +2644,7 @@ func (prob Probability) PermutationsNumberStr(
 
 	if !allowRepetitions {
 
-		resultBINum, err = Probability{}.PermutationsNoRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
+		resultBINum, err = new(Probability).PermutationsNoRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
 
 		if err != nil {
 
@@ -2659,7 +2660,7 @@ func (prob Probability) PermutationsNumberStr(
 
 	} else {
 
-		resultBINum, err = Probability{}.PermutationsWithRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
+		resultBINum, err = new(Probability).PermutationsWithRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
 
 		if err != nil {
 
@@ -2732,7 +2733,7 @@ func (prob Probability) PermutationsNumberStr(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsUint(
+func (prob *Probability) PermutationsUint(
 	numOfItems, numOfItemsPicked uint,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -2791,11 +2792,11 @@ func (prob Probability) PermutationsUint(
 
 	if !allowRepetitions {
 
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
 	// allowRepetitions = 'true'
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }
 
 // PermutationsUint32
@@ -2852,7 +2853,7 @@ func (prob Probability) PermutationsUint(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsUint32(
+func (prob *Probability) PermutationsUint32(
 	numOfItems, numOfItemsPicked uint32,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -2911,11 +2912,11 @@ func (prob Probability) PermutationsUint32(
 
 	if !allowRepetitions {
 
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
 	// allowRepetitions = 'true'
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }
 
 // PermutationsUint64
@@ -2973,7 +2974,7 @@ func (prob Probability) PermutationsUint32(
 //	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
 //	integer number. 'numOfItemsPicked' can be greater than, equal to or
 //	less than 'numOfItems'.
-func (prob Probability) PermutationsUint64(
+func (prob *Probability) PermutationsUint64(
 	numOfItems, numOfItemsPicked uint64,
 	allowRepetitions bool) (BigIntNum, error) {
 
@@ -3031,9 +3032,9 @@ func (prob Probability) PermutationsUint64(
 	r := big.NewInt(int64(numOfItemsPicked))
 
 	if !allowRepetitions {
-		return Probability{}.PermutationsNoRepsBigInt(n, r)
+		return new(Probability).PermutationsNoRepsBigInt(n, r)
 	}
 
 	// allowRepetitions = 'true'
-	return Probability{}.PermutationsWithRepsBigInt(n, r)
+	return new(Probability).PermutationsWithRepsBigInt(n, r)
 }

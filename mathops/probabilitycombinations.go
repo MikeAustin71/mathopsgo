@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -11,7 +12,7 @@ import (
 This file contains Probability source code for 'Combinations'.
 
 For 'Permutations' see source code file:
-	MikeAustin71\mathopsgo\mathops\probability_02.go
+	MikeAustin71\mathopsgo\mathops\probabilitypermutations.go
 
 
                                 Combinations
@@ -141,7 +142,7 @@ type Probability struct {
 //	           (16-3)! x 3!             3 x 2
 //
 //	 Note:  0! = 1
-func (prob Probability) CombinationsNoRepsBigInt(
+func (prob *Probability) CombinationsNoRepsBigInt(
 	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -432,7 +433,7 @@ func (prob Probability) CombinationsNoRepsBigInt(
 //	nCr = (n==5 r==3) = 5C3 = Answer: 35
 //
 //	Note: 0! = 1
-func (prob Probability) CombinationsWithRepsBigInt(
+func (prob *Probability) CombinationsWithRepsBigInt(
 	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -678,7 +679,7 @@ func (prob Probability) CombinationsWithRepsBigInt(
 //	'numOfItemsChosen' must both be positive integer numbers.
 //	'numOfItems' can be greater than, equal to or less than
 //	'numOfItemsChosen'.
-func (prob Probability) CombinationsBigIntNum(
+func (prob *Probability) CombinationsBigIntNum(
 	numOfItems, numOfItemsChosen BigIntNum, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -861,10 +862,10 @@ func (prob Probability) CombinationsBigIntNum(
 
 	if !allowRepetitions {
 
-		return Probability{}.CombinationsNoRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
+		return new(Probability).CombinationsNoRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
 	}
 
-	return Probability{}.CombinationsWithRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
+	return new(Probability).CombinationsWithRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
 }
 
 // CombinationsDecimal
@@ -943,7 +944,7 @@ func (prob Probability) CombinationsBigIntNum(
 //	'numOfItemsChosen' must both be positive integer numbers.
 //	'numOfItems' can be greater than, equal to or less than
 //	'numOfItemsChosen'.
-func (prob Probability) CombinationsDecimal(
+func (prob *Probability) CombinationsDecimal(
 	numOfItems, numOfItemsChosen Decimal, allowRepetitions bool) (Decimal, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -1173,7 +1174,7 @@ func (prob Probability) CombinationsDecimal(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1189,7 +1190,7 @@ func (prob Probability) CombinationsDecimal(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1292,7 +1293,7 @@ func (prob Probability) CombinationsDecimal(
 //	'numOfItemsChosen' must both be positive integer numbers.
 //	'numOfItems' can be greater than, equal to or less than
 //	'numOfItemsChosen'.
-func (prob Probability) CombinationsIntAry(
+func (prob *Probability) CombinationsIntAry(
 	numOfItems, numOfItemsChosen IntAry, allowRepetitions bool) (IntAry, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -1520,7 +1521,7 @@ func (prob Probability) CombinationsIntAry(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1535,7 +1536,7 @@ func (prob Probability) CombinationsIntAry(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1636,7 +1637,7 @@ func (prob Probability) CombinationsIntAry(
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsINumMgr(
+func (prob *Probability) CombinationsINumMgr(
 	numOfItems, numOfItemsChosen INumMgr, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -1864,7 +1865,7 @@ func (prob Probability) CombinationsINumMgr(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1880,7 +1881,7 @@ func (prob Probability) CombinationsINumMgr(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -1970,7 +1971,7 @@ func (prob Probability) CombinationsINumMgr(
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsInt(
+func (prob *Probability) CombinationsInt(
 	numOfItems, numOfItemsChosen int, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2050,7 +2051,7 @@ func (prob Probability) CombinationsInt(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2066,7 +2067,7 @@ func (prob Probability) CombinationsInt(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2158,7 +2159,7 @@ func (prob Probability) CombinationsInt(
 //	'numOfItemsChosen' must both be positive integer numbers.
 //	'numOfItems' can be greater than, equal to or less than
 //	'numOfItemsChosen'.
-func (prob Probability) CombinationsInt32(
+func (prob *Probability) CombinationsInt32(
 	numOfItems, numOfItemsChosen int32, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2238,7 +2239,7 @@ func (prob Probability) CombinationsInt32(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2254,7 +2255,7 @@ func (prob Probability) CombinationsInt32(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2343,7 +2344,7 @@ func (prob Probability) CombinationsInt32(
 //	'numOfItemsChosen' must both be positive integer numbers.
 //	'numOfItems' can be greater than, equal to or less than
 //	'numOfItemsChosen'.
-func (prob Probability) CombinationsInt64(
+func (prob *Probability) CombinationsInt64(
 	numOfItems, numOfItemsChosen int64, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2423,7 +2424,7 @@ func (prob Probability) CombinationsInt64(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2439,7 +2440,7 @@ func (prob Probability) CombinationsInt64(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2524,7 +2525,7 @@ func (prob Probability) CombinationsInt64(
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsNumStrDto(
+func (prob *Probability) CombinationsNumStrDto(
 	numOfItems, numOfItemsChosen NumStrDto, allowRepetitions bool) (NumStrDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2754,7 +2755,7 @@ func (prob Probability) CombinationsNumStrDto(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2770,7 +2771,7 @@ func (prob Probability) CombinationsNumStrDto(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -2879,7 +2880,7 @@ func (prob Probability) CombinationsNumStrDto(
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsNumberStr(
+func (prob *Probability) CombinationsNumberStr(
 	numOfItems, numOfItemsChosen string, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3113,10 +3114,10 @@ func (prob Probability) CombinationsNumberStr(
 
 	if !allowRepetitions {
 
-		return Probability{}.CombinationsNoRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
+		return new(Probability).CombinationsNoRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
 	}
 
-	return Probability{}.CombinationsWithRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
+	return new(Probability).CombinationsWithRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
 }
 
 // CombinationsUint
@@ -3189,7 +3190,7 @@ func (prob Probability) CombinationsNumberStr(
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
 //	must both be integer numbers. 'numOfItems' can be greater than,
 //	equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsUint(
+func (prob *Probability) CombinationsUint(
 	numOfItems, numOfItemsChosen uint, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3247,7 +3248,7 @@ func (prob Probability) CombinationsUint(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -3263,7 +3264,7 @@ func (prob Probability) CombinationsUint(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -3351,7 +3352,7 @@ func (prob Probability) CombinationsUint(
 //	When 'allowRepetitions' = true, 'numOfItems' and
 //	'numOfItemsChosen' must both be integer numbers. 'numOfItems' can
 //	be greater than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsUint32(
+func (prob *Probability) CombinationsUint32(
 	numOfItems, numOfItemsChosen uint32, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3409,7 +3410,7 @@ func (prob Probability) CombinationsUint32(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -3425,7 +3426,7 @@ func (prob Probability) CombinationsUint32(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -3513,7 +3514,7 @@ func (prob Probability) CombinationsUint32(
 //	When 'allowRepetitions' = true, 'numOfItems' and
 //	'numOfItemsChosen' must both be integer numbers. 'numOfItems' can
 //	be greater than, equal to or less than 'numOfItemsChosen'.
-func (prob Probability) CombinationsUint64(
+func (prob *Probability) CombinationsUint64(
 	numOfItems, numOfItemsChosen uint64, allowRepetitions bool) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3571,7 +3572,7 @@ func (prob Probability) CombinationsUint64(
 
 	if !allowRepetitions {
 
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
 
@@ -3587,7 +3588,7 @@ func (prob Probability) CombinationsUint64(
 
 	} else {
 
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = new(Probability).CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
 
