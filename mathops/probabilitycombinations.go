@@ -98,8 +98,8 @@ type Probability struct {
 //	contain a copy of the Numeric Separators currently configured
 //	for this instance of type Probability (Probability.NumSeps). If
 //	Probability.NumSeps is unconfigured or empty, it will be
-//	automatically set to USA default values (decimal separator ('.'),
-//	thousands separator (','), currency symbol ('$')). If other
+//	automatically set to USA default values: decimal separator ('.'),
+//	thousands separator (','), currency symbol ('$'). If other
 //	Numeric Separators are required, set this instance of type
 //	Probability using method Probability.SetNumSeps().
 //
