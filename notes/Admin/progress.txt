@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestProbability_CombinationsNoRepsBigInt_04; xt_numstrutil_01_test.go
+ TestProbability_CombinationsNoRepsBigInt_04; xt_probability_01_test.go
 
 git add -A
 git commit -m "Modified README"
