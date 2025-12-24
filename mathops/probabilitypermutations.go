@@ -122,7 +122,7 @@ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked
 //
 //	Note: 0! = 1
 func (prob *Probability) PermutationsNoRepsBigInt(
-	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
+	numOfItems *big.Int, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -136,129 +136,28 @@ func (prob *Probability) PermutationsNoRepsBigInt(
 	if err != nil {
 		return BigIntNum{}, err
 	}
-	bigZero := big.NewInt(0)
 
-	if numOfItems.Cmp(bigZero) == 0 {
+	prob.NumSeps.SetDefaultsIfEmpty()
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
-			}
-	}
-
-	if numOfItemsPicked.Cmp(bigZero) == 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is ZERO!",
-			}
-	}
-
-	if numOfItems.Cmp(bigZero) < 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-			}
-	}
-
-	if numOfItemsPicked.Cmp(bigZero) < 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
-			}
-	}
-
-	if numOfItemsPicked.Cmp(numOfItems) == 1 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'!",
-			}
-	}
-
-	bigOne := big.NewInt(1)
-
-	if numOfItemsPicked.Cmp(bigOne) == 0 {
-
-		bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return bINumOne, nil
-	}
-
-	// Numerator
-
-	nUpperLimit := big.NewInt(0).Set(numOfItems)
-	nLowerLimit := big.NewInt(0).Set(bigOne)
-
-	if numOfItems.Cmp(numOfItemsPicked) == 0 {
-		//                             n!
-		// This is equivalent to   ------------
-		//                             1
-
-		result, err := NFactorial{}.CalcFactorialValueBigInt(nUpperLimit, nLowerLimit)
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "",
-					ErrContext: fmt.Sprintf("upperLimit='%v' lowerLimit= '%v'", numOfItems, 1),
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return result, nil
-
-	}
-
-	// numOfItems MUST BE GREATER THAN numOfItemsPicked
-
-	nLowerLimit = big.NewInt(0).Sub(nUpperLimit, numOfItemsPicked)
-
-	result, err := NFactorial{}.CalcFactorialValueBigInt(nUpperLimit, nLowerLimit)
+	numSeps, err := prob.NumSeps.CopyOut(true)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("upperLimit='%v' lowerLimit= '%v'",
-					nUpperLimit.Text(10), nLowerLimit.Text(10)),
+				ReturnFunc: "numSeps, err := prob.NumSeps.CopyOut(true)",
+				ErrContext: "Probability.NumSeps Copy Out FAILED!",
 				ErrMessage: err.Error(),
 			}
+
 	}
 
-	return result, nil
+	return new(probabilityPermutsMechanics).permutationsNoRepsBigInt(
+		numOfItems,
+		numOfItemsPicked,
+		numSeps,
+		ePrefix)
 }
 
 // PermutationsWithRepsBigInt
@@ -315,7 +214,7 @@ func (prob *Probability) PermutationsNoRepsBigInt(
 //
 //	      10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
 func (prob *Probability) PermutationsWithRepsBigInt(
-	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
+	numOfItems *big.Int, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -330,87 +229,27 @@ func (prob *Probability) PermutationsWithRepsBigInt(
 		return BigIntNum{}, err
 	}
 
-	bigZero := big.NewInt(0)
+	prob.NumSeps.SetDefaultsIfEmpty()
 
-	if numOfItems.Cmp(bigZero) == 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
-			}
-	}
-
-	if numOfItemsPicked.Cmp(bigZero) == 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is ZERO!",
-			}
-	}
-
-	if numOfItems.Cmp(bigZero) < 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-			}
-	}
-
-	if numOfItemsPicked.Cmp(bigZero) < 0 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
-			}
-	}
-
-	bigOne := big.NewInt(1)
-
-	if numOfItemsPicked.Cmp(bigOne) == 0 {
-
-		bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)
-
-		if err != nil {
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return bINumOne, nil
-	}
-
-	resultBigInt := big.NewInt(0).Exp(numOfItems, numOfItemsPicked, nil)
-
-	result, err := new(BigIntNum).NewBigInt(resultBigInt, 0)
+	numSeps, err := prob.NumSeps.CopyOut(true)
 
 	if err != nil {
+
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "result, err := new(BigIntNum).NewBigInt(resultBigInt, 0)",
-				ErrContext: fmt.Sprintf("resultBigInt= '%v'",
-					resultBigInt.Text(10)),
+				ReturnFunc: "numSeps, err := prob.NumSeps.CopyOut(true)",
+				ErrContext: "Probability.NumSeps Copy Out FAILED!",
 				ErrMessage: err.Error(),
 			}
+
 	}
 
-	return result, nil
+	return new(probabilityPermutsMechanics).permutationsWithRepsBigInt(
+		numOfItems,
+		numOfItemsPicked,
+		numSeps,
+		ePrefix)
 }
 
 // PermutationsBigIntNum
@@ -647,11 +486,37 @@ func (prob *Probability) PermutationsBigIntNum(
 			}
 	}
 
-	if !allowRepetitions {
-		return new(Probability).PermutationsNoRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
+	prob.NumSeps.SetDefaultsIfEmpty()
+
+	numSeps, err := prob.NumSeps.CopyOut(true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := prob.NumSeps.CopyOut(true)",
+				ErrContext: "Probability.NumSeps Copy Out FAILED!",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
-	return new(Probability).PermutationsWithRepsBigInt(numOfItems.bigInt, numOfItemsPicked.bigInt)
+	if !allowRepetitions {
+
+		return new(probabilityPermutsMechanics).permutationsNoRepsBigInt(
+			numOfItems.bigInt,
+			numOfItemsPicked.bigInt,
+			numSeps,
+			ePrefix)
+
+	}
+
+	return new(probabilityPermutsMechanics).permutationsWithRepsBigInt(
+		numOfItems.bigInt,
+		numOfItemsPicked.bigInt,
+		numSeps,
+		ePrefix)
 }
 
 // PermutationsDecimal

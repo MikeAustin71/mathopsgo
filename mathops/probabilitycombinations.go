@@ -163,7 +163,7 @@ type Probability struct {
 //
 //	Note:  0! = 1
 func (prob *Probability) CombinationsNoRepsBigInt(
-	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
+	numOfItems *big.Int, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -273,7 +273,7 @@ func (prob *Probability) CombinationsNoRepsBigInt(
 //
 //	Note: 0! = 1
 func (prob *Probability) CombinationsWithRepsBigInt(
-	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
+	numOfItems *big.Int, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
