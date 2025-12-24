@@ -12,7 +12,7 @@ import (
 This file contains Probability source code for 'Permutations'.
 
 For 'Combinations' see source code file:
-		MikeAustin71\mathopsgo\mathops\probability_01.go
+		MikeAustin71\mathopsgo\mathops\probabilitycombinations.go
 
 														Permutations
   													============
