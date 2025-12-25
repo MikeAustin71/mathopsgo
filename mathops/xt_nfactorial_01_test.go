@@ -3048,7 +3048,19 @@ func TestNFactorial_CalcFactorialValueBigIntNum_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+			"expectedNumStr= '%v'\n"+
+			"Error: isOk == false\n\n",
+			ePrefix,
+			expectedResultNumStr)
+
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -4535,7 +4547,19 @@ func TestNFactorial_CalcFactorialValueInt_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+			"expectedNumStr= '%v'\n"+
+			"Error: isOk == false\n\n",
+			ePrefix,
+			expectedResultNumStr)
+
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -5923,7 +5947,18 @@ func TestNFactorial_CalcFactorialValueInt32_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -7311,7 +7346,18 @@ func TestNFactorial_CalcFactorialValueInt64_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -8711,7 +8757,18 @@ func TestNFactorial_CalcNFactorialValue_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -10099,8 +10156,18 @@ func TestNFactorial_CalcFactorialValueUint_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
 
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 	expectedResultPrecisionInt := 0
 
 	expectedResultPrecisionUint := uint(expectedResultPrecisionInt)
@@ -11487,7 +11554,18 @@ func TestNFactorial_CalcFactorialValueUint32_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 
@@ -12875,7 +12953,18 @@ func TestNFactorial_CalcFactorialValueUint64_07(t *testing.T) {
 
 	expectedResultNumStr := "25852016738884976640000"
 
-	expectedResultBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedResultBigInt, isOk := big.NewInt(0).SetString(expectedResultNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultBigInt, isOk := big.NewInt(0).\n"+
+			"SetString(expectedResultNumStr, 10)\n"+
+			"expectedResultNumStr= '%v'\n"+
+			"Error: isOk= 'false'\n\n",
+			ePrefix, expectedResultNumStr)
+		return
+	}
 
 	expectedResultPrecisionInt := 0
 

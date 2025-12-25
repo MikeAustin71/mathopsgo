@@ -223,6 +223,7 @@ Test Expected Error == nil
       " x, err := SomeFunction()\n" +
       "radicand= -78123456; nthRoot= 4\n"+
       "Even nthRoot and negative radicand should produce an error.\n\n", ePrefix)
+
     return
   }
 
@@ -290,6 +291,26 @@ Test Expected Error == nil
     return
   }
 
+
+ *******************************************************
+  Convert Number String to Big Int
+ *******************************************************
+
+	expectedNumStr := "705432"
+
+	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+			"expectedNumStr= '%v'\n" +
+			"Error: isOk == false\n\n",
+			ePrefix,
+			expectedNumStr)
+
+		return
+	}
 
 
  *******************************************************
