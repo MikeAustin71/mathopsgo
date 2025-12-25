@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestProbability_CombinationsDecimal_31; xt_probability_02_test.go
+ TestProbability_CombinationsIntAry_10; xt_probability_02_test.go
 
 git add -A
 git commit -m "Modified README"
@@ -13,4 +13,15 @@ in xt_numstrdto_06_test.go
 
 add error return
 --------------------------------
+
+
+--------------------------------
+IntAry
+
+Add Get Methods for
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+--------------------------------
+
 
