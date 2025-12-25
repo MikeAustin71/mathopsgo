@@ -822,7 +822,19 @@ func TestNFactorial_CalcFactorialValueBigInt_07(t *testing.T) {
 
 	expectedNumberStr := "25852016738884976640000"
 
-	expectedBigInt := big.NewInt(int64(25852016738884976640000))
+	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumberStr, 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+			"expectedNumStr= '%v'\n"+
+			"Error: isOk == false\n\n",
+			ePrefix,
+			expectedNumberStr)
+
+		return
+	}
 
 	expectedPrecisionInt := 0
 

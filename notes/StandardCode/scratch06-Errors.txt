@@ -294,6 +294,9 @@ Test Expected Error == nil
 
  *******************************************************
   Convert Number String to Big Int
+  May have to search for:
+    expectedResultBigInt := big.NewInt(int64(
+    expectedBigInt := big.NewInt(int64(
  *******************************************************
 
 	expectedNumStr := "705432"
