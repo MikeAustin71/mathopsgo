@@ -2,10 +2,11 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntNumProton struct {
@@ -1296,13 +1297,18 @@ func (bIntNumProton *bigIntNumProton) bigIntNumFloor(
 	return bNum5, nil
 }
 
-// bigIntNumGetAbsoluteNumStr - Returns the absolute integer value (positive value)
-// of the *big.Int value encapsulated by this BigIntNum. No decimal place is included.
+// bigIntNumGetAbsoluteNumStr
+//
+//	Returns the absolute integer value (positive value) of the
+//	*big.Int value encapsulated by this BigIntNum.
+//
+//	No decimal place is included.
 //
 //	NOTE:
+//	=====
 //
-// This method does NOT test the validity of 'bNum'
-// BigIntNum instance. The calling method must do this!
+//	This method does NOT test the validity of 'bNum' BigIntNum
+//	instance. The calling method must do this!
 func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (string, error) {
@@ -1345,7 +1351,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 	var bigINumUtility = new(bigIntNumUtility)
 
 	if bNum.sign == 1 {
-
+		// bNum is positive
 		numStr, err := bigINumMolecule.formatBigIntNumStr(
 			bNum,
 			LEADMINUSNEGVALFMTMODE,
@@ -1359,6 +1365,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 		return numStr, nil
 	}
 
+	// bNum is negative
 	biNum, err := bigINumUtility.bigIntNumCopyOut(
 		bNum,
 		ePrefix)
@@ -1392,14 +1399,16 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 	return numStr, err
 }
 
-// bigIntNumGetAbsoluteBigIntNumValue - Returns the absolute numeric
-// value of this BigIntNum instance as a new BigIntNum Type.
+// bigIntNumGetAbsoluteBigIntNumValue
 //
-// If the current BigIntNum value is'-123.456', this method will
-// return '123.456'.
+//	Returns the absolute numeric value of this BigIntNum instance
+//	as a new BigIntNum Type.
 //
-// If the current BigIntNum value is'123.456', this method will
-// return '123.456'.
+//	If the current BigIntNum value is'-123.456', this method will
+//	return '123.456'.
+//
+//	If the current BigIntNum value is'123.456', this method will
+//	return '123.456'.
 func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteBigIntNumValue(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
