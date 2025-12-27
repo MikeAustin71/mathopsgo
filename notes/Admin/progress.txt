@@ -2,6 +2,9 @@
 Start Test cleanup here:
  TestProbability_CombinationsINumMgr_31; xt_probability_03_test.go
 
+-------------------------------
+git protocol
+-------------------------------
 git add -A
 git commit -m "Modified README"
 git status
