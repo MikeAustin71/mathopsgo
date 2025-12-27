@@ -3,7 +3,7 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsNumStrDto_02"
+	ePrefix := "TestProbability_CombinationsNumStrDto_16"
 *************************************************
 
 	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
@@ -12,7 +12,7 @@ Clipboard Main
 
 	var allowRepetitions bool
 
-	allowRepetitions = false
+	allowRepetitions = true
 ****************************************************
 expectedNumStr
 ****************************************************
@@ -330,7 +330,7 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsNumStrDto_11"
+	ePrefix := "TestProbability_CombinationsNumStrDto_28"
 *************************************************
 
 	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
@@ -339,7 +339,7 @@ Clipboard err = nil
 
 	var allowRepetitions bool
 
-	allowRepetitions = false
+	allowRepetitions = true
 
 	numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
 
