@@ -1,5970 +1,10730 @@
 package mathops
 
 import (
-	"math/big"
-	"strconv"
-	"testing"
+  "math/big"
+  "strconv"
+  "testing"
 )
 
 func TestProbability_CombinationsINumMgr_01(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_01"
+  ePrefix := "TestProbability_CombinationsINumMgr_01"
 
-	numOfItemsInt := 16
+  numOfItemsInt := 16
 
-	numOfItemsChosenInt := 3
+  numOfItemsChosenInt := 3
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "560"
+  expectedNumStr := "560"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItems, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
-			"decimalNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != decimalNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
-			"Expected decimalNumOfItemsNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
-
-		return
-	}
-
-	bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
-			"bigINumNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
-			"Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
-			"decimalNumOfItems= '%v'\n"+
-			"bigINumNumOfItemsChosen= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			decimalNumOfItemsNumStr,
-			bigINumNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_02(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_02"
+  ePrefix := "TestProbability_CombinationsINumMgr_02"
 
-	numOfItemsInt := 16
+  numOfItemsInt := 16
 
-	numOfItemsChosenInt := 12
+  numOfItemsChosenInt := 12
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "1820"
+  expectedNumStr := "1820"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItems, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
-			"intAryNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != intAryNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
-			"Expected intAryNumOfItemsNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
-
-		return
-	}
-
-	bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
-			"bigINumNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
-			"Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
-			"intAryNumOfItems= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			intAryNumOfItemsNumStr,
-			bigINumNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_03(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_03"
+  ePrefix := "TestProbability_CombinationsINumMgr_03"
 
-	numOfItemsInt := 52
+  numOfItemsInt := 52
 
-	numOfItemsChosenInt := 5
+  numOfItemsChosenInt := 5
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "2598960"
+  expectedNumStr := "2598960"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItems, err := new(NumStrDto).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
-			"numStrDtoNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: numStrDtoNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
-			"Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
-			"  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
-
-		return
-	}
-
-	bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
-			"bigINumNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
-			"Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsBigIntNum(\n"+
-			"  &numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
-			"numStrDtoNumOfItems= '%v'\n"+
-			"bigINumNumOfItemsChosen= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			numStrDtoNumOfItemsNumStr,
-			bigINumNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsBigIntNum(\n"+
+      "  &numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_04(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_04"
+  ePrefix := "TestProbability_CombinationsINumMgr_04"
 
-	numOfItemsInt := 52
+  numOfItemsInt := 52
 
-	numOfItemsChosenInt := 26
+  numOfItemsChosenInt := 26
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "495918532948104"
+  expectedNumStr := "495918532948104"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItems, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
-			"bigINumNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != bigINumNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
-			"Expected bigINumNumOfItemsNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
-
-		return
-	}
-
-	decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsChosen, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
-			"decimalNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
-			"Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
-			"bigINumNumOfItems= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			bigINumNumOfItemsNumStr,
-			decimalNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_05(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_05"
+  ePrefix := "TestProbability_CombinationsINumMgr_05"
 
-	numOfItemsInt := 18
+  numOfItemsInt := 18
 
-	numOfItemsChosenInt := 7
+  numOfItemsChosenInt := 7
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "31824"
+  expectedNumStr := "31824"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItems, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
-			"decimalNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != decimalNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
-			"Expected decimalNumOfItemsNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
-
-		return
-	}
-
-	numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
-			"numStrDtoNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
-			"Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
-			"bigINumNumOfItems= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			decimalNumOfItemsNumStr,
-			numStrDtoNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_06(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_06"
+  ePrefix := "TestProbability_CombinationsINumMgr_06"
 
-	numOfItemsInt := 22
+  numOfItemsInt := 22
 
-	numOfItemsChosenInt := 5
+  numOfItemsChosenInt := 5
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "26334"
+  expectedNumStr := "26334"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItems, err := new(NumStrDto).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
-			"numStrDtoNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: numStrDtoNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
-			"Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
-			"  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
-
-		return
-	}
-
-	numStrDtoNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsChosen, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
-			"numStrDtoNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
-			"Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
-			"numStrDtoNumOfItems= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			numStrDtoNumOfItemsNumStr,
-			numStrDtoNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_07(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_07"
+  ePrefix := "TestProbability_CombinationsINumMgr_07"
 
-	numOfItemsInt := 56
+  numOfItemsInt := 56
 
-	numOfItemsChosenInt := 5
+  numOfItemsChosenInt := 5
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "3819816"
+  expectedNumStr := "3819816"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItems, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
-			"decimalNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != decimalNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
-			"Expected decimalNumOfItemsNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
-
-		return
-	}
-
-	intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosen, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
-			"intAryNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
-			"Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
-			"decimalNumOfItems= '%v'\n"+
-			"intAryNumOfItemsChosen= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			decimalNumOfItemsNumStr,
-			intAryNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_08(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_08"
+  ePrefix := "TestProbability_CombinationsINumMgr_08"
 
-	numOfItemsInt := 56
+  numOfItemsInt := 56
 
-	numOfItemsChosenInt := 5
+  numOfItemsChosenInt := 5
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "3819816"
+  expectedNumStr := "3819816"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItems, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
-			"bigINumNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != bigINumNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
-			"Expected bigINumNumOfItemsNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
-
-		return
-	}
-
-	bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
-			"bigINumNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
-			"Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
-			"bigINumNumOfItems= '%v'\n"+
-			"bigINumNumOfItemsChosen= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			bigINumNumOfItemsNumStr,
-			bigINumNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_09(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_09"
+  ePrefix := "TestProbability_CombinationsINumMgr_09"
 
-	numOfItemsInt := 25
+  numOfItemsInt := 25
 
-	numOfItemsChosenInt := 25
+  numOfItemsChosenInt := 25
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "1"
+  expectedNumStr := "1"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItems, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
-			"decimalNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != decimalNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
-			"Expected decimalNumOfItemsNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
-
-		return
-	}
-
-	decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsChosen, err := new(Decimal).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
-			"decimalNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
-			"Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
-			"bigINumNumOfItems= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			decimalNumOfItemsNumStr,
-			decimalNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_10(t *testing.T) {
 
-	ePrefix := "TestProbability_CombinationsINumMgr_10"
+  ePrefix := "TestProbability_CombinationsINumMgr_10"
 
-	numOfItemsInt := 25
+  numOfItemsInt := 25
 
-	numOfItemsChosenInt := 1
+  numOfItemsChosenInt := 1
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
 
-	var allowRepetitions bool
+  var allowRepetitions bool
 
-	allowRepetitions = false
+  allowRepetitions = false
 
-	expectedNumStr := "25"
+  expectedNumStr := "25"
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
 
-		return
-	}
-
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItems, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"precision= '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsIntStr, err.Error())
-		return
-	}
-
-	err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
-			"intAryNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != intAryNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
-			"Expected intAryNumOfItemsNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
-
-		return
-	}
-
-	intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosen, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt = '%v'\n"+
-			"precision = '0'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, err.Error())
-		return
-	}
-
-	err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
-			"intAryNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
-			"Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
-			"  &intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
-			"decimalNumOfItems= '%v'\n"+
-			"intAryNumOfItemsChosen= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			intAryNumOfItemsNumStr,
-			intAryNumOfItemsChosenNumStr,
-			strconv.FormatBool(allowRepetitions),
-			err.Error())
-
-		return
-	}
-
-	err = bigIntNumResult.IsValid("Validating bigIntNumResult")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
-			"bigIntNumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionInt, err :=\n"+
-			"  bigIntNumResult.GetPrecisionInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultPrecisionUint, err :=\n"+
-			"  bigIntNumResult.GetPrecisionUint()\n"+
-			"bigIntNumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
-			"bigIntNumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultScaleFactorBigInt, err :=\n"+
-			"  bigIntNumResult.GetScaleFactor()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigIntNumResultBigInt, err :=\n"+
-			"  bigIntNumResult.GetBigInt()\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigIntNumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigIntNumResultNumStr\n"+
-			"Expected bigIntNumResultNumStr = '%v'\n"+
-			"  Actual bigIntNumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigIntNumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
-			"Expected bigIntNumResultPrecisionInt = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigIntNumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
-			"Expected bigIntNumResultPrecisionUint = '%v'\n"+
-			"  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigIntNumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigIntNumResultSignValue\n"+
-			"Expected bigIntNumResultSignValue = '%v'\n"+
-			"  Actual bigIntNumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigIntNumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigIntNumResultNumSeps \n"+
-			"Expected bigIntNumResultNumSeps = '%v'\n"+
-			"  Actual bigIntNumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
-			"Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
-			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigIntNumResultScaleFactorBigInt.Text(10))
-
-		return
-	}
-
-	if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
-			"Expected bigIntNumResultBigInt = '%v'\n"+
-			"  Actual bigIntNumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
-
-		return
-	}
-
-	return
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_11(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 52
-	allowRepetitions := false
 
-	numOfItems := NumStrDto{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := NumStrDto{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_11"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 26
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 52
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: numStrDtoNumOfItems < numStrDtoNumOfItemsChosen\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_12(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 0
-	allowRepetitions := false
 
-	numOfItems := NumStrDto{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_12"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 52
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 0
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: bigINumNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_13(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := IntAry{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_13"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 0
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 26
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_14(t *testing.T) {
-	numOfItemsInt := -52
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
 
-	numOfItems := IntAry{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_14"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := -52
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 26
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_15(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := -26
-	allowRepetitions := false
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_15"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 52
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := -26
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: bigINumNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_16(t *testing.T) {
-	numOfItemsInt := 5
-	numOfItemsChosenInt := 3
-	expectedResultStr := "35"
-	allowRepetitions := true
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_16"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 5
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 3
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "35"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_17(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 11
-	expectedResultStr := "705432"
-	allowRepetitions := true
 
-	numOfItems := IntAry{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_17"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 12
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 11
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "705432"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      bigINumNumOfItemsChosen,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_18(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 2
-	expectedResultStr := "351"
-	allowRepetitions := true
 
-	numOfItems := BigIntNum{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_18"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 26
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 2
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "351"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_19(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 24
-	expectedResultStr := "63205303218876"
-	allowRepetitions := true
 
-	numOfItems := NumStrDto{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_19"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 26
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 24
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "63205303218876"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_20(t *testing.T) {
-	numOfItemsInt := 10
-	numOfItemsChosenInt := 14
-	expectedResultStr := "817190"
-	allowRepetitions := true
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := NumStrDto{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_20"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 10
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 14
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "817190"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_21(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 15
-	expectedResultStr := "7726160"
-	allowRepetitions := true
 
-	numOfItems := BigIntNum{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_21"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 12
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 15
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "7726160"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      bigINumNumOfItemsChosen,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_22(t *testing.T) {
-	numOfItemsInt := 7
-	numOfItemsChosenInt := 3
-	expectedResultStr := "84"
-	allowRepetitions := true
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_22"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 7
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 3
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "84"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_23(t *testing.T) {
-	numOfItemsInt := 3
-	numOfItemsChosenInt := 7
-	expectedResultStr := "36"
-	allowRepetitions := true
 
-	numOfItems := IntAry{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := IntAry{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_23"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 3
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 7
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "36"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_24(t *testing.T) {
-	numOfItemsInt := 62
-	numOfItemsChosenInt := 5
-	expectedResultStr := "8936928"
-	allowRepetitions := true
 
-	numOfItems := NumStrDto{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := NumStrDto{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_24"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 62
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 5
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "8936928"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &numStrDtoNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_25(t *testing.T) {
-	numOfItemsInt := 97
-	numOfItemsChosenInt := 5
-	expectedResultStr := "79208745"
-	allowRepetitions := true
 
-	numOfItems := NumStrDto{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_25"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 97
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 5
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "79208745"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&numStrDtoNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "numStrDtoNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numStrDtoNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_26(t *testing.T) {
-	numOfItemsInt := 15
-	numOfItemsChosenInt := 15
-	expectedResultStr := "77558760"
-	allowRepetitions := true
 
-	numOfItems := BigIntNum{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_26"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 15
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 15
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "77558760"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_27(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 1
-	expectedResultStr := "12"
-	allowRepetitions := true
 
-	numOfItems := IntAry{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_27"
 
-	result, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 12
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsINumMgr("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  numOfItemsChosenInt := 1
 
-	actualResultStr := result.GetNumStr()
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "12"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  bigIntNumResult, err := new(Probability).CombinationsINumMgr(&intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResult, err := new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = bigIntNumResult.IsValid("Validating bigIntNumResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigIntNumResult.IsValid('Validating bigIntNumResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumStr, err := bigIntNumResult.GetNumStr()\n"+
+      "bigIntNumResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionInt, err := bigIntNumResult.GetPrecisionInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionInt, err :=\n"+
+      "  bigIntNumResult.GetPrecisionInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultPrecisionUint, err := bigIntNumResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultPrecisionUint, err :=\n"+
+      "  bigIntNumResult.GetPrecisionUint()\n"+
+      "bigIntNumResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultSignValue, err := bigIntNumResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultSignValue, err := bigIntNumResult.GetSign()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultNumSeps, err := bigIntNumResult.GetNumericSeparatorsDto()\n"+
+      "bigIntNumResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultScaleFactorBigInt, err := bigIntNumResult.GetScaleFactor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultScaleFactorBigInt, err :=\n"+
+      "  bigIntNumResult.GetScaleFactor()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  bigIntNumResultBigInt, err := bigIntNumResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNumResultBigInt, err :=\n"+
+      "  bigIntNumResult.GetBigInt()\n"+
+      "bigIntNumResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, bigIntNumResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != bigIntNumResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != bigIntNumResultNumStr\n"+
+      "Expected bigIntNumResultNumStr = '%v'\n"+
+      "  Actual bigIntNumResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, bigIntNumResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != bigIntNumResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != bigIntNumResultPrecisionInt\n"+
+      "Expected bigIntNumResultPrecisionInt = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, bigIntNumResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != bigIntNumResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != bigIntNumResultPrecisionUint\n"+
+      "Expected bigIntNumResultPrecisionUint = '%v'\n"+
+      "  Actual bigIntNumResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, bigIntNumResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != bigIntNumResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != bigIntNumResultSignValue\n"+
+      "Expected bigIntNumResultSignValue = '%v'\n"+
+      "  Actual bigIntNumResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, bigIntNumResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(bigIntNumResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != bigIntNumResultNumSeps \n"+
+      "Expected bigIntNumResultNumSeps = '%v'\n"+
+      "  Actual bigIntNumResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), bigIntNumResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(bigIntNumResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=bigIntNumResultScaleFactorBigInt\n"+
+      "Expected bigIntNumResultScaleFactorBigInt = '%v'\n"+
+      "  Actual bigIntNumResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      bigIntNumResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedBigInt.Cmp(bigIntNumResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual bigIntNumResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(bigIntNumResultBigInt) != 0\n"+
+      "Expected bigIntNumResultBigInt = '%v'\n"+
+      "  Actual bigIntNumResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), bigIntNumResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_28(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 15
-	allowRepetitions := true
 
-	numOfItems := BigIntNum{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := Decimal{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_28"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 0
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 15
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: bigINumNumOfItems <= 0\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
+
 }
 
 func TestProbability_CombinationsINumMgr_29(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 0
-	allowRepetitions := true
 
-	numOfItems := BigIntNum{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := BigIntNum{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_29"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 12
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 0
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItems, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+      "bigINumNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+      "Expected bigINumNumOfItemsNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+    return
+  }
+
+  bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+      "bigINumNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+      "Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &bigINumNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+      "bigINumNumOfItems= '%v'\n"+
+      "bigINumNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: bigINumNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      bigINumNumOfItemsNumStr,
+      bigINumNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_30(t *testing.T) {
-	numOfItemsInt := -12
-	numOfItemsChosenInt := 6
-	allowRepetitions := true
 
-	numOfItems := IntAry{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := NumStrDto{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_30"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := -12
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := 6
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&intAryNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &intAryNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: numStrDtoNumOfItems <= 0 \n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsINumMgr_31(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := -6
-	allowRepetitions := true
 
-	numOfItems := Decimal{}.NewInt(numOfItemsInt, 0)
-	numOfItemsChosen := NumStrDto{}.NewInt(numOfItemsChosenInt, 0)
+  ePrefix := "TestProbability_CombinationsINumMgr_31"
 
-	_, err := Probability{}.CombinationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+  numOfItemsInt := 12
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  numOfItemsChosenInt := -6
+
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "precision= '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsIntStr, err.Error())
+    return
+  }
+
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, 0)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "precision = '0'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).CombinationsINumMgr(&decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
+      "Function Call:\n"+
+      "_, err = new(Probability).CombinationsINumMgr(\n"+
+      "  &decimalNumOfItems, &numStrDtoNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "numStrDtoNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: numStrDtoNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      numStrDtoNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_CombinationsInt_01(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 3
-	expectedResultStr := "560"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 3
+  expectedResultStr := "560"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_02(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 12
-	expectedResultStr := "1820"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 12
+  expectedResultStr := "1820"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_03(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 5
-	expectedResultStr := "2598960"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 5
+  expectedResultStr := "2598960"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_04(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 26
-	expectedResultStr := "495918532948104"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 26
+  expectedResultStr := "495918532948104"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_05(t *testing.T) {
 
-	numOfItemsInt := 18
-	numOfItemsChosenInt := 7
-	expectedResultStr := "31824"
-	allowRepetitions := false
+  numOfItemsInt := 18
+  numOfItemsChosenInt := 7
+  expectedResultStr := "31824"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_06(t *testing.T) {
 
-	numOfItemsInt := 22
-	numOfItemsChosenInt := 5
-	expectedResultStr := "26334"
-	allowRepetitions := false
+  numOfItemsInt := 22
+  numOfItemsChosenInt := 5
+  expectedResultStr := "26334"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_07(t *testing.T) {
 
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_08(t *testing.T) {
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_09(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 25
-	expectedResultStr := "1"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 25
+  expectedResultStr := "1"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_10(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 1
-	expectedResultStr := "25"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 1
+  expectedResultStr := "25"
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_11(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 52
-	allowRepetitions := false
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 52
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_12(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 0
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 0
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_13(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_14(t *testing.T) {
-	numOfItemsInt := -52
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := -52
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_15(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := -26
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := -26
+  allowRepetitions := false
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_16(t *testing.T) {
-	numOfItemsInt := 5
-	numOfItemsChosenInt := 3
-	expectedResultStr := "35"
-	allowRepetitions := true
+  numOfItemsInt := 5
+  numOfItemsChosenInt := 3
+  expectedResultStr := "35"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_17(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 11
-	expectedResultStr := "705432"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 11
+  expectedResultStr := "705432"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_18(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 2
-	expectedResultStr := "351"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 2
+  expectedResultStr := "351"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_19(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 24
-	expectedResultStr := "63205303218876"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 24
+  expectedResultStr := "63205303218876"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_20(t *testing.T) {
-	numOfItemsInt := 10
-	numOfItemsChosenInt := 14
-	expectedResultStr := "817190"
-	allowRepetitions := true
+  numOfItemsInt := 10
+  numOfItemsChosenInt := 14
+  expectedResultStr := "817190"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_21(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 15
-	expectedResultStr := "7726160"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 15
+  expectedResultStr := "7726160"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_22(t *testing.T) {
-	numOfItemsInt := 7
-	numOfItemsChosenInt := 3
-	expectedResultStr := "84"
-	allowRepetitions := true
+  numOfItemsInt := 7
+  numOfItemsChosenInt := 3
+  expectedResultStr := "84"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_23(t *testing.T) {
-	numOfItemsInt := 3
-	numOfItemsChosenInt := 7
-	expectedResultStr := "36"
-	allowRepetitions := true
+  numOfItemsInt := 3
+  numOfItemsChosenInt := 7
+  expectedResultStr := "36"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_24(t *testing.T) {
-	numOfItemsInt := 62
-	numOfItemsChosenInt := 5
-	expectedResultStr := "8936928"
-	allowRepetitions := true
+  numOfItemsInt := 62
+  numOfItemsChosenInt := 5
+  expectedResultStr := "8936928"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_25(t *testing.T) {
-	numOfItemsInt := 97
-	numOfItemsChosenInt := 5
-	expectedResultStr := "79208745"
-	allowRepetitions := true
+  numOfItemsInt := 97
+  numOfItemsChosenInt := 5
+  expectedResultStr := "79208745"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_26(t *testing.T) {
-	numOfItemsInt := 15
-	numOfItemsChosenInt := 15
-	expectedResultStr := "77558760"
-	allowRepetitions := true
+  numOfItemsInt := 15
+  numOfItemsChosenInt := 15
+  expectedResultStr := "77558760"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_27(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 1
-	expectedResultStr := "12"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 1
+  expectedResultStr := "12"
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt_28(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 15
-	allowRepetitions := true
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 15
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_29(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 0
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 0
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_30(t *testing.T) {
-	numOfItemsInt := -12
-	numOfItemsChosenInt := 6
-	allowRepetitions := true
+  numOfItemsInt := -12
+  numOfItemsChosenInt := 6
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt_31(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := -6
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := -6
+  allowRepetitions := true
 
-	numOfItems := int(numOfItemsInt)
-	numOfItemsChosen := int(numOfItemsChosenInt)
+  numOfItems := int(numOfItemsInt)
+  numOfItemsChosen := int(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_01(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 3
-	expectedResultStr := "560"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 3
+  expectedResultStr := "560"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_02(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 12
-	expectedResultStr := "1820"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 12
+  expectedResultStr := "1820"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_03(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 5
-	expectedResultStr := "2598960"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 5
+  expectedResultStr := "2598960"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_04(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 26
-	expectedResultStr := "495918532948104"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 26
+  expectedResultStr := "495918532948104"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_05(t *testing.T) {
 
-	numOfItemsInt := 18
-	numOfItemsChosenInt := 7
-	expectedResultStr := "31824"
-	allowRepetitions := false
+  numOfItemsInt := 18
+  numOfItemsChosenInt := 7
+  expectedResultStr := "31824"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_06(t *testing.T) {
 
-	numOfItemsInt := 22
-	numOfItemsChosenInt := 5
-	expectedResultStr := "26334"
-	allowRepetitions := false
+  numOfItemsInt := 22
+  numOfItemsChosenInt := 5
+  expectedResultStr := "26334"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_07(t *testing.T) {
 
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_08(t *testing.T) {
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_09(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 25
-	expectedResultStr := "1"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 25
+  expectedResultStr := "1"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_10(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 1
-	expectedResultStr := "25"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 1
+  expectedResultStr := "25"
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_11(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 52
-	allowRepetitions := false
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 52
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_12(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 0
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 0
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_13(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_14(t *testing.T) {
-	numOfItemsInt := -52
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := -52
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_15(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := -26
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := -26
+  allowRepetitions := false
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_16(t *testing.T) {
-	numOfItemsInt := 5
-	numOfItemsChosenInt := 3
-	expectedResultStr := "35"
-	allowRepetitions := true
+  numOfItemsInt := 5
+  numOfItemsChosenInt := 3
+  expectedResultStr := "35"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_17(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 11
-	expectedResultStr := "705432"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 11
+  expectedResultStr := "705432"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_18(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 2
-	expectedResultStr := "351"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 2
+  expectedResultStr := "351"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_19(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 24
-	expectedResultStr := "63205303218876"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 24
+  expectedResultStr := "63205303218876"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_20(t *testing.T) {
-	numOfItemsInt := 10
-	numOfItemsChosenInt := 14
-	expectedResultStr := "817190"
-	allowRepetitions := true
+  numOfItemsInt := 10
+  numOfItemsChosenInt := 14
+  expectedResultStr := "817190"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_21(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 15
-	expectedResultStr := "7726160"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 15
+  expectedResultStr := "7726160"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_22(t *testing.T) {
-	numOfItemsInt := 7
-	numOfItemsChosenInt := 3
-	expectedResultStr := "84"
-	allowRepetitions := true
+  numOfItemsInt := 7
+  numOfItemsChosenInt := 3
+  expectedResultStr := "84"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_23(t *testing.T) {
-	numOfItemsInt := 3
-	numOfItemsChosenInt := 7
-	expectedResultStr := "36"
-	allowRepetitions := true
+  numOfItemsInt := 3
+  numOfItemsChosenInt := 7
+  expectedResultStr := "36"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_24(t *testing.T) {
-	numOfItemsInt := 62
-	numOfItemsChosenInt := 5
-	expectedResultStr := "8936928"
-	allowRepetitions := true
+  numOfItemsInt := 62
+  numOfItemsChosenInt := 5
+  expectedResultStr := "8936928"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_25(t *testing.T) {
-	numOfItemsInt := 97
-	numOfItemsChosenInt := 5
-	expectedResultStr := "79208745"
-	allowRepetitions := true
+  numOfItemsInt := 97
+  numOfItemsChosenInt := 5
+  expectedResultStr := "79208745"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_26(t *testing.T) {
-	numOfItemsInt := 15
-	numOfItemsChosenInt := 15
-	expectedResultStr := "77558760"
-	allowRepetitions := true
+  numOfItemsInt := 15
+  numOfItemsChosenInt := 15
+  expectedResultStr := "77558760"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_27(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 1
-	expectedResultStr := "12"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 1
+  expectedResultStr := "12"
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt32("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt32("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt32_28(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 15
-	allowRepetitions := true
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 15
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_29(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 0
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 0
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_30(t *testing.T) {
-	numOfItemsInt := -12
-	numOfItemsChosenInt := 6
-	allowRepetitions := true
+  numOfItemsInt := -12
+  numOfItemsChosenInt := 6
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt32_31(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := -6
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := -6
+  allowRepetitions := true
 
-	numOfItems := int32(numOfItemsInt)
-	numOfItemsChosen := int32(numOfItemsChosenInt)
+  numOfItems := int32(numOfItemsInt)
+  numOfItemsChosen := int32(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt32(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_01(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 3
-	expectedResultStr := "560"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 3
+  expectedResultStr := "560"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_02(t *testing.T) {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 12
-	expectedResultStr := "1820"
-	allowRepetitions := false
+  numOfItemsInt := 16
+  numOfItemsChosenInt := 12
+  expectedResultStr := "1820"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_03(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 5
-	expectedResultStr := "2598960"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 5
+  expectedResultStr := "2598960"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_04(t *testing.T) {
 
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 26
-	expectedResultStr := "495918532948104"
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 26
+  expectedResultStr := "495918532948104"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_05(t *testing.T) {
 
-	numOfItemsInt := 18
-	numOfItemsChosenInt := 7
-	expectedResultStr := "31824"
-	allowRepetitions := false
+  numOfItemsInt := 18
+  numOfItemsChosenInt := 7
+  expectedResultStr := "31824"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_06(t *testing.T) {
 
-	numOfItemsInt := 22
-	numOfItemsChosenInt := 5
-	expectedResultStr := "26334"
-	allowRepetitions := false
+  numOfItemsInt := 22
+  numOfItemsChosenInt := 5
+  expectedResultStr := "26334"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_07(t *testing.T) {
 
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_08(t *testing.T) {
-	numOfItemsInt := 56
-	numOfItemsChosenInt := 5
-	expectedResultStr := "3819816"
-	allowRepetitions := false
+  numOfItemsInt := 56
+  numOfItemsChosenInt := 5
+  expectedResultStr := "3819816"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_09(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 25
-	expectedResultStr := "1"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 25
+  expectedResultStr := "1"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_10(t *testing.T) {
-	numOfItemsInt := 25
-	numOfItemsChosenInt := 1
-	expectedResultStr := "25"
-	allowRepetitions := false
+  numOfItemsInt := 25
+  numOfItemsChosenInt := 1
+  expectedResultStr := "25"
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_11(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 52
-	allowRepetitions := false
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 52
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_12(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := 0
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := 0
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_13(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_14(t *testing.T) {
-	numOfItemsInt := -52
-	numOfItemsChosenInt := 26
-	allowRepetitions := false
+  numOfItemsInt := -52
+  numOfItemsChosenInt := 26
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_15(t *testing.T) {
-	numOfItemsInt := 52
-	numOfItemsChosenInt := -26
-	allowRepetitions := false
+  numOfItemsInt := 52
+  numOfItemsChosenInt := -26
+  allowRepetitions := false
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
-			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
-			"allowRepetitions='%v'",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
+      "numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v' "+
+      "allowRepetitions='%v'",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_16(t *testing.T) {
-	numOfItemsInt := 5
-	numOfItemsChosenInt := 3
-	expectedResultStr := "35"
-	allowRepetitions := true
+  numOfItemsInt := 5
+  numOfItemsChosenInt := 3
+  expectedResultStr := "35"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_17(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 11
-	expectedResultStr := "705432"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 11
+  expectedResultStr := "705432"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_18(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 2
-	expectedResultStr := "351"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 2
+  expectedResultStr := "351"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_19(t *testing.T) {
-	numOfItemsInt := 26
-	numOfItemsChosenInt := 24
-	expectedResultStr := "63205303218876"
-	allowRepetitions := true
+  numOfItemsInt := 26
+  numOfItemsChosenInt := 24
+  expectedResultStr := "63205303218876"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_20(t *testing.T) {
-	numOfItemsInt := 10
-	numOfItemsChosenInt := 14
-	expectedResultStr := "817190"
-	allowRepetitions := true
+  numOfItemsInt := 10
+  numOfItemsChosenInt := 14
+  expectedResultStr := "817190"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_21(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 15
-	expectedResultStr := "7726160"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 15
+  expectedResultStr := "7726160"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_22(t *testing.T) {
-	numOfItemsInt := 7
-	numOfItemsChosenInt := 3
-	expectedResultStr := "84"
-	allowRepetitions := true
+  numOfItemsInt := 7
+  numOfItemsChosenInt := 3
+  expectedResultStr := "84"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_23(t *testing.T) {
-	numOfItemsInt := 3
-	numOfItemsChosenInt := 7
-	expectedResultStr := "36"
-	allowRepetitions := true
+  numOfItemsInt := 3
+  numOfItemsChosenInt := 7
+  expectedResultStr := "36"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_24(t *testing.T) {
-	numOfItemsInt := 62
-	numOfItemsChosenInt := 5
-	expectedResultStr := "8936928"
-	allowRepetitions := true
+  numOfItemsInt := 62
+  numOfItemsChosenInt := 5
+  expectedResultStr := "8936928"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_25(t *testing.T) {
-	numOfItemsInt := 97
-	numOfItemsChosenInt := 5
-	expectedResultStr := "79208745"
-	allowRepetitions := true
+  numOfItemsInt := 97
+  numOfItemsChosenInt := 5
+  expectedResultStr := "79208745"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_26(t *testing.T) {
-	numOfItemsInt := 15
-	numOfItemsChosenInt := 15
-	expectedResultStr := "77558760"
-	allowRepetitions := true
+  numOfItemsInt := 15
+  numOfItemsChosenInt := 15
+  expectedResultStr := "77558760"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_27(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 1
-	expectedResultStr := "12"
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 1
+  expectedResultStr := "12"
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  result, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsInt64("+
-			"numOfItems, numOfItemsChosen, allowRepetitions). "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    t.Errorf("Error returned by Probability{}.CombinationsInt64("+
+      "numOfItems, numOfItemsChosen, allowRepetitions). "+
+      "Error='%v' ", err.Error())
+  }
 
-	actualResultStr := result.GetNumStr()
+  actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-	}
+  if expectedResultStr != actualResultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+      expectedResultStr, actualResultStr)
+  }
 }
 
 func TestProbability_CombinationsInt64_28(t *testing.T) {
-	numOfItemsInt := 0
-	numOfItemsChosenInt := 15
-	allowRepetitions := true
+  numOfItemsInt := 0
+  numOfItemsChosenInt := 15
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_29(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := 0
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := 0
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_30(t *testing.T) {
-	numOfItemsInt := -12
-	numOfItemsChosenInt := 6
-	allowRepetitions := true
+  numOfItemsInt := -12
+  numOfItemsChosenInt := 6
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }
 
 func TestProbability_CombinationsInt64_31(t *testing.T) {
-	numOfItemsInt := 12
-	numOfItemsChosenInt := -6
-	allowRepetitions := true
+  numOfItemsInt := 12
+  numOfItemsChosenInt := -6
+  allowRepetitions := true
 
-	numOfItems := int64(numOfItemsInt)
-	numOfItemsChosen := int64(numOfItemsChosenInt)
+  numOfItems := int64(numOfItemsInt)
+  numOfItemsChosen := int64(numOfItemsChosenInt)
 
-	_, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
+  _, err := Probability{}.CombinationsInt64(numOfItems, numOfItemsChosen, allowRepetitions)
 
-	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
-			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
-			numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
-	}
+  if err == nil {
+    t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
+      "numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v' allowRepetitions='%v' ",
+      numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
+  }
 }

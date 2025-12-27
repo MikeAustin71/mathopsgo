@@ -1,10 +1,10 @@
 package mathops
 
 import (
-  "fmt"
-  "math/big"
+	"fmt"
+	"math/big"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 // BigIntNum
@@ -30,16 +30,16 @@ import (
 //
 //	Local File: bigintnum.go
 type BigIntNum struct {
-  bigInt                 *big.Int
-  absBigInt              *big.Int
-  precision              uint     // Number of digits to the right of the decimal place.
-  scaleFactor            *big.Int // Scale Factor =  10^(precision)
-  numberOfExpectedDigits *big.Int // Number of digits in the 'absBigInt' value
-  sign                   int      // Valid values are -1 or +1. Indicates the sign of the
-  // Numeric Separators
-  decimalSeparator   rune // Character used to separate integer and fractional digits ('.')
-  thousandsSeparator rune // Character used to separate thousands (1,000,000,000
-  currencySymbol     rune // Currency Symbol
+	bigInt                 *big.Int
+	absBigInt              *big.Int
+	precision              uint     // Number of digits to the right of the decimal place.
+	scaleFactor            *big.Int // Scale Factor =  10^(precision)
+	numberOfExpectedDigits *big.Int // Number of digits in the 'absBigInt' value
+	sign                   int      // Valid values are -1 or +1. Indicates the sign of the
+	// Numeric Separators
+	decimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+	thousandsSeparator rune // Character used to separate thousands (1,000,000,000
+	currencySymbol     rune // Currency Symbol
 }
 
 var _ INumMgr = (*BigIntFixedDecimal)(nil)
@@ -74,29 +74,29 @@ var _ INumMgr = (*BigIntFixedDecimal)(nil)
 //		       -2               -2
 func (bNum *BigIntNum) Ceiling() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Ceiling",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumElectron).bigIntNumCeiling(
-    bNum, ePrefix)
+	return new(bigIntNumElectron).bigIntNumCeiling(
+		bNum, ePrefix)
 }
 
 // ChangeSign
@@ -118,30 +118,30 @@ func (bNum *BigIntNum) Ceiling() (BigIntNum, error) {
 //	BigIntNum fails the validity test, an error will be returned.
 func (bNum *BigIntNum) ChangeSign() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.ChangeSign",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ChangeSign",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumUtility).bigIntNumChangeSign(
-    bNum,
-    ePrefix)
+	return new(bigIntNumUtility).bigIntNumChangeSign(
+		bNum,
+		ePrefix)
 }
 
 // Cmp - Performs a comparison of two BigIntNum numeric values
@@ -162,31 +162,31 @@ func (bNum *BigIntNum) ChangeSign() error {
 // bNum < bigIntNum					Return -1
 func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Cmp",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Cmp",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumCmp(
-    bNum,
-    &bigIntNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumCmp(
+		bNum,
+		&bigIntNum,
+		ePrefix)
 }
 
 // CmpBigInt - Compares the value of the *big.Int integer to that
@@ -200,92 +200,92 @@ func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) (int, error) {
 // bNum < bigIntNum					Return -1
 func (bNum *BigIntNum) CmpBigInt(bigIntNum BigIntNum) (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.CmpBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.CmpBigInt",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).cmpBigInt(
-    bNum,
-    &bigIntNum,
-    ePrefix)
+	return new(bigIntNumProton).cmpBigInt(
+		bNum,
+		&bigIntNum,
+		ePrefix)
 }
 
 // CopyIn - Receives an incoming BigIntNum type and
 // copies the value into the current BigIntNum instance.
 func (bNum *BigIntNum) CopyIn(bigN *BigIntNum) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.CopyIn",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.CopyIn",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumUtility).bigIntNumCopyIn(
-    bNum,
-    bigN,
-    ePrefix)
+	return new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		bigN,
+		ePrefix)
 }
 
 // CopyOut - Makes a deep copy of the current BigIntNum instance
 // and returns it as a new BigIntNum instance.
 func (bNum *BigIntNum) CopyOut() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.CopyOut",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.CopyOut",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumUtility).bigIntNumCopyOut(
-    bNum,
-    ePrefix)
+	return new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
 }
 
 // Decrement - Subtracts a value of +1 (plus one) from the numeric
@@ -296,30 +296,30 @@ func (bNum *BigIntNum) CopyOut() (BigIntNum, error) {
 // unchanged.
 func (bNum *BigIntNum) Decrement() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Decrement",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Decrement",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumProton).bigIntNumDecrement(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDecrement(
+		bNum,
+		ePrefix)
 }
 
 // Divide - Performs a division operation. The current BigIntNum instance is the 'dividend'
@@ -342,34 +342,34 @@ func (bNum *BigIntNum) Decrement() error {
 // This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) Divide(
-  divisor BigIntNum,
-  maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	divisor BigIntNum,
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Divide",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Divide",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivide(
-    bNum,
-    &divisor,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivide(
+		bNum,
+		&divisor,
+		maxPrecision,
+		ePrefix)
 }
 
 // DivideByFive - Divides the numerical value of the current BigIntNum by five ('5'). The
@@ -390,32 +390,32 @@ func (bNum *BigIntNum) Divide(
 // This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) DivideByFive(
-  maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByFive",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByFive",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByFive(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByFive(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // DivideByTen - Divides the numerical value of the current BigIntNum by ten ('10'). The
@@ -436,32 +436,32 @@ func (bNum *BigIntNum) DivideByFive(
 // This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) DivideByTen(
-  maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByTen",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByTen",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByTen(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByTen(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // DivideByTenToPower - Divides the numerical value of the current BigIntNum
@@ -476,31 +476,31 @@ func (bNum *BigIntNum) DivideByTen(
 // thousands separator and currency symbol).
 func (bNum *BigIntNum) DivideByTenToPower(exponent uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByTenToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByTenToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByTenToPower(
-    bNum,
-    exponent,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByTenToPower(
+		bNum,
+		exponent,
+		ePrefix)
 }
 
 // DivideByThree - Divides the numerical value of the current BigIntNum by three ('3').
@@ -521,32 +521,32 @@ func (bNum *BigIntNum) DivideByTenToPower(exponent uint) error {
 // This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) DivideByThree(
-  maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByThree",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByThree",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByThree(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByThree(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // DivideByTwo - Divides the numerical value of the current BigIntNum by two ('2'). The
@@ -568,34 +568,34 @@ func (bNum *BigIntNum) DivideByThree(
 // right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 func (bNum *BigIntNum) DivideByTwo(
-  maxPrecision uint) (BigIntNum, error) {
+	maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByTwo",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByTwo",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByTwo(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByTwo(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // DivideByTwoQuoMod - Divides the numerical value of the current BigIntNum by two ('2').
@@ -616,39 +616,39 @@ func (bNum *BigIntNum) DivideByTwo(
 // separators (decimal separator, thousands separator and currency symbol) copied from the
 // current BigIntNum instance (bNum).
 func (bNum *BigIntNum) DivideByTwoQuoMod(
-  maxPrecision uint) (intQuotient BigIntNum, modulo BigIntNum, err error) {
+	maxPrecision uint) (intQuotient BigIntNum, modulo BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.DivideByTwoQuoMod",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.DivideByTwoQuoMod",
+		"")
 
-  if err != nil {
-    return intQuotient, modulo, err
-  }
+	if err != nil {
+		return intQuotient, modulo, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return intQuotient, modulo, err
-  }
+	if err != nil {
+		return intQuotient, modulo, err
+	}
 
-  return new(bigIntNumProton).bigIntNumDivideByTwoQuoMod(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumDivideByTwoQuoMod(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // Empty - Resets the BigIntNum data fields to their
 // uninitialized or zero state.
 func (bNum *BigIntNum) Empty() {
 
-  new(bigIntNumElectron).empty(bNum)
+	new(bigIntNumElectron).empty(bNum)
 
 }
 
@@ -663,31 +663,31 @@ func (bNum *BigIntNum) Empty() {
 // If they are not Equal, the method returns 'false'.
 func (bNum *BigIntNum) Equal(b2 BigIntNum) (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Equal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Equal",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntNumElectron).bigIntNumEqual(
-    bNum,
-    &b2,
-    ePrefix)
+	return new(bigIntNumElectron).bigIntNumEqual(
+		bNum,
+		&b2,
+		ePrefix)
 }
 
 // EqualValue - Compares the values of the current BigIntNum instance
@@ -695,31 +695,31 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) (bool, error) {
 // are equal, this method returns 'true'.
 func (bNum *BigIntNum) EqualValue(b2 BigIntNum) (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.EqualValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.EqualValue",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntNumElectron).bigIntNumEqualValue(
-    bNum,
-    &b2,
-    ePrefix)
+	return new(bigIntNumElectron).bigIntNumEqualValue(
+		bNum,
+		&b2,
+		ePrefix)
 }
 
 // ExtendPrecision - Extends the current precision.
@@ -735,31 +735,31 @@ func (bNum *BigIntNum) EqualValue(b2 BigIntNum) (bool, error) {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.ExtendPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ExtendPrecision",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumProton).bigIntNumExtendPrecision(
-    bNum,
-    deltaPrecision,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumExtendPrecision(
+		bNum,
+		deltaPrecision,
+		ePrefix)
 }
 
 // Floor - returns the greatest integer less than or equal to
@@ -779,30 +779,30 @@ func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) error {
 //						 -2					 	 -2
 func (bNum *BigIntNum) Floor() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Floor",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Floor",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumFloor(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumFloor(
+		bNum,
+		ePrefix)
 }
 
 // FormatCurrencyStr
@@ -841,34 +841,34 @@ func (bNum *BigIntNum) Floor() (BigIntNum, error) {
 //															and no decimal place separator.
 //															Example: ($12,345,678)
 func (bNum *BigIntNum) FormatCurrencyStr(
-  negValMode NegativeValueFmtMode) (string, error) {
+	negValMode NegativeValueFmtMode) (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.FormatCurrencyStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.FormatCurrencyStr()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix)
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  return new(bigIntNumMolecule).formatCurrencyStr(
-    bNum,
-    negValMode,
-    ePrefix)
+	return new(bigIntNumMolecule).formatCurrencyStr(
+		bNum,
+		negValMode,
+		ePrefix)
 }
 
 // FormatNumStr
@@ -905,34 +905,34 @@ func (bNum *BigIntNum) FormatCurrencyStr(
 //	                               and no decimal place separator.
 //	                               Example: (12345678)
 func (bNum *BigIntNum) FormatNumStr(
-  negValMode NegativeValueFmtMode) (string, error) {
+	negValMode NegativeValueFmtMode) (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.FormatNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.FormatNumStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing Validity of 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing Validity of 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  return new(bigIntNumMolecule).formatBigIntNumStr(
-    bNum,
-    negValMode,
-    ePrefix)
+	return new(bigIntNumMolecule).formatBigIntNumStr(
+		bNum,
+		negValMode,
+		ePrefix)
 }
 
 // FormatThousandsStr - Returns the number string delimited with the
@@ -975,34 +975,34 @@ func (bNum *BigIntNum) FormatNumStr(
 //															and no decimal place separator.
 //															Example: (12,345,678)
 func (bNum *BigIntNum) FormatThousandsStr(
-  negValMode NegativeValueFmtMode) (string, error) {
+	negValMode NegativeValueFmtMode) (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.FormatThousandsStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.FormatThousandsStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix)
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  return new(bigIntNumMolecule).formatThousandsStr(
-    bNum,
-    negValMode,
-    ePrefix)
+	return new(bigIntNumMolecule).formatThousandsStr(
+		bNum,
+		negValMode,
+		ePrefix)
 
 }
 
@@ -1030,34 +1030,34 @@ func (bNum *BigIntNum) FormatThousandsStr(
 //	  1,234,567.800                8
 //	          5                    1
 func (bNum *BigIntNum) GetActualNumberOfDigits() (
-  numberOfDigits *big.Int, isZeroValue bool, err error) {
+	numberOfDigits *big.Int, isZeroValue bool, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetActualNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetActualNumberOfDigits",
+		"")
 
-  numberOfDigits = big.NewInt(0)
+	numberOfDigits = big.NewInt(0)
 
-  if err != nil {
-    return numberOfDigits, false, err
-  }
+	if err != nil {
+		return numberOfDigits, false, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing Validity of 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing Validity of 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return numberOfDigits, false, err
-  }
+		return numberOfDigits, false, err
+	}
 
-  return new(bigIntNumMolecule).getActualNumberOfDigits(
-    bNum,
-    ePrefix)
+	return new(bigIntNumMolecule).getActualNumberOfDigits(
+		bNum,
+		ePrefix)
 }
 
 // GetAbsoluteNumStr
@@ -1081,29 +1081,29 @@ func (bNum *BigIntNum) GetActualNumberOfDigits() (
 //	If an error is encountered, an empty string is returned.
 func (bNum *BigIntNum) GetAbsoluteNumStr() (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetAbsoluteNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetAbsoluteNumStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetAbsoluteNumStr(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetAbsoluteNumStr(
+		bNum, ePrefix)
 }
 
 // GetAbsoluteBigIntNumValue - Returns the absolute numeric value
@@ -1116,119 +1116,119 @@ func (bNum *BigIntNum) GetAbsoluteNumStr() (string, error) {
 // return '123.456'.
 func (bNum *BigIntNum) GetAbsoluteBigIntNumValue() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetAbsoluteBigIntNumValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetAbsoluteBigIntNumValue",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetAbsoluteBigIntNumValue(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetAbsoluteBigIntNumValue(
+		bNum,
+		ePrefix)
 }
 
 // GetAbsoluteBigIntValue - returns the absolute value of the
 // *big.Int value encapsulated by the current BigIntNum.
 func (bNum *BigIntNum) GetAbsoluteBigIntValue() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetAbsoluteBigIntNumValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetAbsoluteBigIntNumValue",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetAbsoluteBigIntValue(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetAbsoluteBigIntValue(
+		bNum,
+		ePrefix)
 }
 
 // GetBigFloat - Returns the numeric value of the current
 // BigIntNum as *big.Float type.
 func (bNum *BigIntNum) GetBigFloat() (*big.Float, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetBigFloat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetBigFloat",
+		"")
 
-  if err != nil {
-    return big.NewFloat(0), err
-  }
+	if err != nil {
+		return big.NewFloat(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewFloat(0), err
-  }
+	if err != nil {
+		return big.NewFloat(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetBigFloat(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetBigFloat(
+		bNum, ePrefix)
 }
 
 // GetBigInt - return the numeric value as an integer
 // of type *big.int.
 func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetBigInt(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetBigInt(
+		bNum,
+		ePrefix)
 }
 
 // GetBigIntNum
@@ -1238,89 +1238,89 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 // This method is required by the INumMgr interface
 func (bNum *BigIntNum) GetBigIntNum() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumUtility).bigIntNumCopyOut(
-    bNum,
-    ePrefix)
+	return new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
 }
 
 // GetBigIntFixedDecimal - returns a BigIntFixedDecimal instance
 // which contains a copy of the current BigIntNum values.
 func (bNum *BigIntNum) GetBigIntFixedDecimal() (BigIntFixedDecimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetBigIntFixedDecimal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetBigIntFixedDecimal",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetBigIntFixedDecimal(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetBigIntFixedDecimal(
+		bNum,
+		ePrefix)
 }
 
 // GetBigRat - Returns the numeric value of the current
 // BigIntNum as a *big.Rat type.
 func (bNum *BigIntNum) GetBigRat() (*big.Rat, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetBigRat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetBigRat",
+		"")
 
-  if err != nil {
-    return big.NewRat(1, 1), err
-  }
+	if err != nil {
+		return big.NewRat(1, 1), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewRat(1, 1), err
-  }
+	if err != nil {
+		return big.NewRat(1, 1), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetBigRat(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetBigRat(
+		bNum, ePrefix)
 }
 
 // GetCurrencySymbol - Returns the character currently designated
@@ -1335,33 +1335,33 @@ func (bNum *BigIntNum) GetBigRat() (*big.Rat, error) {
 // USA Example: $123.45
 func (bNum *BigIntNum) GetCurrencySymbol() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetCurrencySymbol",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetCurrencySymbol",
+		"")
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  var nSepSymbol NumSepSymbolCode
+	var nSepSymbol NumSepSymbolCode
 
-  nSepSymbol = CURRENCYSYMBOL
+	nSepSymbol = CURRENCYSYMBOL
 
-  return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
-    bNum, nSepSymbol, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
+		bNum, nSepSymbol, ePrefix)
 
 }
 
@@ -1376,29 +1376,29 @@ func (bNum *BigIntNum) GetCurrencySymbol() (rune, error) {
 // This method performs a validity test on the current BigIntNum instance.
 func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetDecimal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetDecimal",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  return new(bigIntNumProton).decimalGetDecimal(
-    bNum, ePrefix)
+	return new(bigIntNumProton).decimalGetDecimal(
+		bNum, ePrefix)
 }
 
 // GetDecimalSeparator - returns the character designated
@@ -1409,33 +1409,33 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 // Example:		123.456
 func (bNum *BigIntNum) GetDecimalSeparator() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetDecimalSeparator",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetDecimalSeparator",
+		"")
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  var nSepSymbol NumSepSymbolCode
+	var nSepSymbol NumSepSymbolCode
 
-  nSepSymbol = DECIMALSYMBOL
+	nSepSymbol = DECIMALSYMBOL
 
-  return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
-    bNum, nSepSymbol, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
+		bNum, nSepSymbol, ePrefix)
 }
 
 // GetExpectedNumberOfDigits - Returns the number of expected numeric
@@ -1446,28 +1446,28 @@ func (bNum *BigIntNum) GetDecimalSeparator() (rune, error) {
 // This value is useful in tracking leading zeros.
 func (bNum *BigIntNum) GetExpectedNumberOfDigits() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetExpectedNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetExpectedNumberOfDigits",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return bNum.numberOfExpectedDigits, nil
+	return bNum.numberOfExpectedDigits, nil
 }
 
 // GetFractionalPart - Returns the fractional digits of the
@@ -1488,30 +1488,30 @@ func (bNum *BigIntNum) GetExpectedNumberOfDigits() (*big.Int, error) {
 //				 -123								 0
 func (bNum *BigIntNum) GetFractionalPart() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetFractionalPart",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetFractionalPart",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetFractionalPart(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetFractionalPart(
+		bNum,
+		ePrefix)
 }
 
 // GetInt - Returns a type 'int' containing the 32-bit integer
@@ -1526,30 +1526,30 @@ func (bNum *BigIntNum) GetFractionalPart() (BigIntNum, error) {
 // an 'error'.
 func (bNum *BigIntNum) GetInt() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetInt",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetInt(
-    bNum,
-    ePrefix)
+	return new(bigIntNumProton).bigIntNumGetInt(
+		bNum,
+		ePrefix)
 }
 
 // GetIntAry - Converts the current BigIntNum value to an IntAry
@@ -1567,29 +1567,29 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 // This method performs a validity test on the current BigIntNum instance.
 func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetIntAry",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetIntAry",
+		"")
 
-  if err != nil {
-    return IntAry{}, err
-  }
+	if err != nil {
+		return IntAry{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return IntAry{}, err
-  }
+	if err != nil {
+		return IntAry{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetIntAry(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetIntAry(
+		bNum, ePrefix)
 }
 
 // GetIntegerPart - returns a BigIntNum equal to the integer
@@ -1607,30 +1607,30 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 //					 -123								-123
 func (bNum *BigIntNum) GetIntegerPart() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetIntegerPart",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetIntegerPart",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumAtom).getIntegerPart(
-    bNum,
-    ePrefix)
+	return new(bigIntNumAtom).getIntegerPart(
+		bNum,
+		ePrefix)
 }
 
 // GetIntegerValue
@@ -1638,58 +1638,58 @@ func (bNum *BigIntNum) GetIntegerPart() (BigIntNum, error) {
 // BigIntNum instance.
 func (bNum *BigIntNum) GetIntegerValue() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetIntegerValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetIntegerValue",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetIntegerValue(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetIntegerValue(
+		bNum, ePrefix)
 }
 
 // GetInverse - Returns the value of one (1) divided by the current
 // BigIntNum instance as a new BigIntNum Type.
 func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetInverse",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetInverse",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetInverse(
-    bNum, maxPrecision, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetInverse(
+		bNum, maxPrecision, ePrefix)
 }
 
 // GetNumberOfDigits
@@ -1729,31 +1729,31 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 //	numbers.
 func (bNum *BigIntNum) GetNumberOfDigits() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetNumberOfDigits",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing Validity of 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing Validity of 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return 0, err
-  }
+		return 0, err
+	}
 
-  return new(bigIntNumUtility).getBigIntNumOfDigits(
-    bNum,
-    ePrefix)
+	return new(bigIntNumUtility).getBigIntNumOfDigits(
+		bNum,
+		ePrefix)
 }
 
 // GetNumericSeparatorsDto
@@ -1763,31 +1763,31 @@ func (bNum *BigIntNum) GetNumberOfDigits() (int, error) {
 // currency symbol.
 func (bNum *BigIntNum) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetNumericSeparatorsDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetNumericSeparatorsDto",
+		"")
 
-  if err != nil {
-    return NumericSeparatorDto{}, err
-  }
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing Validity of 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing Validity of 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return NumericSeparatorDto{}, err
-  }
+		return NumericSeparatorDto{}, err
+	}
 
-  return new(bigIntNumAtom).getNumericSeparatorsDto(
-    bNum,
-    ePrefix)
+	return new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
 }
 
 // GetNumStr
@@ -1797,30 +1797,30 @@ func (bNum *BigIntNum) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 // they exist.
 func (bNum *BigIntNum) GetNumStr() (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetNumStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  return new(bigIntNumAtom).getBigIntNumStr(
-    bNum,
-    ePrefix)
+	return new(bigIntNumAtom).getBigIntNumStr(
+		bNum,
+		ePrefix)
 }
 
 // GetNumStrDto
@@ -1836,29 +1836,29 @@ func (bNum *BigIntNum) GetNumStr() (string, error) {
 // This method performs a validity test on the current BigIntNum instance.
 func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetNumStrDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetNumStrDto",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetNumStrDto(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetNumStrDto(
+		bNum, ePrefix)
 }
 
 // GetPrecisionInt
@@ -1882,29 +1882,29 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 //		123456								3								123.456
 func (bNum *BigIntNum) GetPrecisionInt() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetPrecisionInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetPrecisionInt",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetPrecision(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetPrecision(
+		bNum, ePrefix)
 }
 
 // GetPrecisionBigInt - Returns the 'precision' of the current
@@ -1923,29 +1923,29 @@ func (bNum *BigIntNum) GetPrecisionInt() (int, error) {
 //	0.12345  		GetPrecisionBigInt() = 5
 func (bNum *BigIntNum) GetPrecisionBigInt() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetPrecisionBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetPrecisionBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetPrecisionBigInt(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetPrecisionBigInt(
+		bNum, ePrefix)
 
 }
 
@@ -1968,29 +1968,29 @@ func (bNum *BigIntNum) GetPrecisionBigInt() (*big.Int, error) {
 //		123456								3								123.456
 func (bNum *BigIntNum) GetPrecisionUint() (uint, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetPrecisionUint",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetPrecisionUint",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetPrecisionUint(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetPrecisionUint(
+		bNum, ePrefix)
 }
 
 // GetScaleFactor
@@ -2008,29 +2008,29 @@ func (bNum *BigIntNum) GetPrecisionUint() (uint, error) {
 // precision = 3    Scale Factor = 10^3			Scale Factor = 1000
 func (bNum *BigIntNum) GetScaleFactor() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetScaleFactor",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetScaleFactor",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetScaleFactor(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetScaleFactor(
+		bNum, ePrefix)
 }
 
 // GetSign - Returns the numeric sign associated
@@ -2044,29 +2044,29 @@ func (bNum *BigIntNum) GetScaleFactor() (*big.Int, error) {
 //	+1 if x > 0.
 func (bNum *BigIntNum) GetSign() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetSign",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetSign",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetSign(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetSign(
+		bNum, ePrefix)
 }
 
 // GetSignedBigInt
@@ -2074,29 +2074,29 @@ func (bNum *BigIntNum) GetSign() (int, error) {
 // as a signed *big.Int Type.
 func (bNum *BigIntNum) GetSignedBigInt() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetSignedBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetSignedBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetSignedBigInt(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetSignedBigInt(
+		bNum, ePrefix)
 }
 
 // GetSciNotationNumber
@@ -2125,29 +2125,29 @@ func (bNum *BigIntNum) GetSignedBigInt() (*big.Int, error) {
 //	 										exponent    = '8'  (10^8)
 func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetSciNotationNumber",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetSciNotationNumber",
+		"")
 
-  if err != nil {
-    return SciNotationNum{}, err
-  }
+	if err != nil {
+		return SciNotationNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return SciNotationNum{}, err
-  }
+	if err != nil {
+		return SciNotationNum{}, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetSciNotationNumber(
-    bNum, mantissaLen, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetSciNotationNumber(
+		bNum, mantissaLen, ePrefix)
 }
 
 // GetSciNotationStr
@@ -2175,29 +2175,29 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 //	 										exponent    = '8'  (10^8)
 func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetSciNotationStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetSciNotationStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  return new(bigIntNumAtom).getSciNotationStr(
-    bNum, mantissaLen, ePrefix)
+	return new(bigIntNumAtom).getSciNotationStr(
+		bNum, mantissaLen, ePrefix)
 }
 
 // GetThousandsSeparator - returns a rune which represents
@@ -2209,33 +2209,33 @@ func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 // Example: 1,000,000,000
 func (bNum *BigIntNum) GetThousandsSeparator() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetThousandsSeparator",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetThousandsSeparator",
+		"")
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return '0', err
-  }
+	if err != nil {
+		return '0', err
+	}
 
-  var nSepSymbol NumSepSymbolCode
+	var nSepSymbol NumSepSymbolCode
 
-  nSepSymbol = THOUSANDSYMBOL
+	nSepSymbol = THOUSANDSYMBOL
 
-  return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
-    bNum, nSepSymbol, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetNumSepSymbol(
+		bNum, nSepSymbol, ePrefix)
 }
 
 // GetUInt
@@ -2252,29 +2252,29 @@ func (bNum *BigIntNum) GetThousandsSeparator() (rune, error) {
 // with an 'error'.
 func (bNum *BigIntNum) GetUInt() (uint, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetUInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetUInt",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetUInt(
-    bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetUInt(
+		bNum, ePrefix)
 }
 
 // GetUInt64
@@ -2285,28 +2285,28 @@ func (bNum *BigIntNum) GetUInt() (uint, error) {
 // is returned.
 func (bNum *BigIntNum) GetUInt64() (uint64, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetUInt64",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetUInt64",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntNumProton).bigIntNumGetUInt64(bNum, ePrefix)
+	return new(bigIntNumProton).bigIntNumGetUInt64(bNum, ePrefix)
 }
 
 // Inverse
@@ -2320,31 +2320,31 @@ func (bNum *BigIntNum) GetUInt64() (uint64, error) {
 // symbol) copied from the original BigIntNum instance.
 func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.GetIntegerValue",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.GetIntegerValue",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).inverseBigIntNum(
-    bNum,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumNeutron).inverseBigIntNum(
+		bNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // IsEvenNumber
@@ -2370,29 +2370,29 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 //	   NOTE: Fractions like '4.6978' do not qualify as 'even' numbers.
 func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.IsEvenNumber",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.IsEvenNumber",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntNumNeutron).isEvenBigIntNumber(
-    bNum, ePrefix)
+	return new(bigIntNumNeutron).isEvenBigIntNumber(
+		bNum, ePrefix)
 }
 
 // Increment
@@ -2405,29 +2405,29 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 // unchanged.
 func (bNum *BigIntNum) Increment() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Increment",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Increment",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumNeutron).incrementBigIntNum(
-    bNum, ePrefix)
+	return new(bigIntNumNeutron).incrementBigIntNum(
+		bNum, ePrefix)
 }
 
 // IsValid - returns an error value signaling whether the current
@@ -2440,58 +2440,58 @@ func (bNum *BigIntNum) Increment() error {
 // 'nil' is returned.
 func (bNum *BigIntNum) IsValid(callingMethodName string) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  if len(callingMethodName) > 0 {
-    callingMethodName = "BigIntNum.IsValid" + "\n" + callingMethodName
-  } else {
-    callingMethodName = "BigIntNum.IsValid"
-  }
+	if len(callingMethodName) > 0 {
+		callingMethodName = "BigIntNum.IsValid" + "\n" + callingMethodName
+	} else {
+		callingMethodName = "BigIntNum.IsValid"
+	}
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    callingMethodName,
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix)
+	return new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
 }
 
 // IsZero - Returns a boolean signaling whether the current
 // BigIntNum value is zero.
 func (bNum *BigIntNum) IsZero() (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.IsZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.IsZero",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  return new(bigIntNumMolecule).isBIntNumZero(
-    bNum,
-    ePrefix)
+	return new(bigIntNumMolecule).isBIntNumZero(
+		bNum,
+		ePrefix)
 }
 
 // Mod
@@ -2519,34 +2519,34 @@ func (bNum *BigIntNum) IsZero() (bool, error) {
 // separators (decimal separator, thousands separator and currency
 // symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) Mod(
-  divisor BigIntNum,
-  maxPrecision uint) (modulo BigIntNum, err error) {
+	divisor BigIntNum,
+	maxPrecision uint) (modulo BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Mod",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Mod",
+		"")
 
-  if err != nil {
-    return modulo, err
-  }
+	if err != nil {
+		return modulo, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return modulo, err
-  }
+	if err != nil {
+		return modulo, err
+	}
 
-  return new(bigIntNumNeutron).modBigIntNum(
-    bNum,
-    &divisor,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumNeutron).modBigIntNum(
+		bNum,
+		&divisor,
+		maxPrecision,
+		ePrefix)
 }
 
 // Multiply
@@ -2563,30 +2563,30 @@ func (bNum *BigIntNum) Mod(
 // copied from the current BigIntNum instance.
 func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Multiply",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Multiply",
+		"")
 
-  if err != nil {
-    return product, err
-  }
+	if err != nil {
+		return product, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return product, err
-  }
+	if err != nil {
+		return product, err
+	}
 
-  return new(bigIntNumNeutron).multiplyBigIntNum(
-    bNum,
-    &multiplicand,
-    ePrefix)
+	return new(bigIntNumNeutron).multiplyBigIntNum(
+		bNum,
+		&multiplicand,
+		ePrefix)
 }
 
 // MultiplyByFive - Multiplies the numerical value of the current BigIntNum
@@ -2599,29 +2599,29 @@ func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum, err 
 // symbol) copied from the original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByFive() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByFive",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByFive",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).multiplyByFiveBigIntNum(
-    bNum, ePrefix)
+	return new(bigIntNumNeutron).multiplyByFiveBigIntNum(
+		bNum, ePrefix)
 }
 
 // MultiplyByTen - Multiplies the numerical value of the current BigIntNum
@@ -2634,28 +2634,28 @@ func (bNum *BigIntNum) MultiplyByFive() (BigIntNum, error) {
 // symbol) copied from the original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByTen() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByTen",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByTen",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).multiplyByTenBigIntNum(bNum, ePrefix)
+	return new(bigIntNumNeutron).multiplyByTenBigIntNum(bNum, ePrefix)
 }
 
 // MultiplyByTenToPower
@@ -2672,29 +2672,29 @@ func (bNum *BigIntNum) MultiplyByTen() (BigIntNum, error) {
 // copied from the original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByTenToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByTenToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumNeutron).multiplyByTenToPowerBigIntNum(
-    bNum, exponent, ePrefix)
+	return new(bigIntNumNeutron).multiplyByTenToPowerBigIntNum(
+		bNum, exponent, ePrefix)
 }
 
 // MultiplyByTenToPowerAdd
@@ -2722,31 +2722,31 @@ func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) error {
 // (decimal separator, thousands separator and currency symbol) copied from the
 // original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByTenToPowerAdd(
-  exponent uint, addend BigIntNum) error {
+	exponent uint, addend BigIntNum) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByTenToPowerAdd",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByTenToPowerAdd",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumNeutron).multiplyByTenToPowerAddBigIntNum(
-    bNum, exponent, &addend, ePrefix)
+	return new(bigIntNumNeutron).multiplyByTenToPowerAddBigIntNum(
+		bNum, exponent, &addend, ePrefix)
 }
 
 // MultiplyByThree
@@ -2761,29 +2761,29 @@ func (bNum *BigIntNum) MultiplyByTenToPowerAdd(
 // symbol) copied from the original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByThree() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByThree",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByThree",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).multiplyByThreeBigIntNum(
-    bNum, ePrefix)
+	return new(bigIntNumNeutron).multiplyByThreeBigIntNum(
+		bNum, ePrefix)
 }
 
 // MultiplyByTwo
@@ -2798,29 +2798,29 @@ func (bNum *BigIntNum) MultiplyByThree() (BigIntNum, error) {
 // symbol) copied from the original BigIntNum instance.
 func (bNum *BigIntNum) MultiplyByTwo() (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.MultiplyByTwo",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.MultiplyByTwo",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).multiplyByTwoBigIntNum(
-    bNum, ePrefix)
+	return new(bigIntNumNeutron).multiplyByTwoBigIntNum(
+		bNum, ePrefix)
 }
 
 // New - returns a new BigIntNum instance initialized to zero.
@@ -2830,7 +2830,7 @@ func (bNum *BigIntNum) MultiplyByTwo() (BigIntNum, error) {
 // and currency symbol).
 func (bNum *BigIntNum) New() BigIntNum {
 
-  return new(bigIntNumMechanics).new()
+	return new(bigIntNumMechanics).new()
 }
 
 // NewWithNumSeps
@@ -2847,22 +2847,22 @@ func (bNum *BigIntNum) New() BigIntNum {
 // separators (decimal separator, thousands separator
 // and currency symbol).
 func (bNum *BigIntNum) NewWithNumSeps(
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewWithNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewWithNumSeps",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNanobot).newWithNumSeps(numSeps, ePrefix)
+	return new(bigIntNumNanobot).newWithNumSeps(numSeps, ePrefix)
 }
 
 // NewBigInt
@@ -2916,37 +2916,37 @@ func (bNum *BigIntNum) NewWithNumSeps(
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewBigInt(
-  bigInt *big.Int,
-  precision uint) (BigIntNum, error) {
+	bigInt *big.Int,
+	precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigInt",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    bigInt,
-    precision,
-    numSepsDto,
-    ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
-      bigInt.Text(10), precision)))
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewBigIntNumSeps
@@ -3008,43 +3008,43 @@ func (bNum *BigIntNum) NewBigInt(
 //	  If no errors are encountered during execution, this method
 //	  will return an error value of 'nil'.
 func (bNum *BigIntNum) NewBigIntNumSeps(
-  bigInt *big.Int,
-  precision uint,
-  numSepsDto NumericSeparatorDto) (BigIntNum, error) {
+	bigInt *big.Int,
+	precision uint,
+	numSepsDto NumericSeparatorDto) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigIntNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntNumSeps",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if bigInt == nil {
+	if bigInt == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bigI'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigI'",
+			}
+	}
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    bigInt,
-    precision,
-    numSepsDto,
-    ePrefix.XCpy(fmt.Sprintf("bigI= '%v'  precision= '%v'",
-      bigInt.Text(10), precision)))
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy(fmt.Sprintf("bigI= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewBigIntBigPrecision
@@ -3100,30 +3100,30 @@ func (bNum *BigIntNum) NewBigIntNumSeps(
 //	USA default numeric separators (decimal separator, thousands
 //	separator and currency symbol).
 func (bNum *BigIntNum) NewBigIntBigPrecision(
-  bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
+	bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigIntBigPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntBigPrecision",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum2 := BigIntNum{}
+	bINum2 := BigIntNum{}
 
-  err = new(bigIntNumUtility).setBigIntBigPrecision(
-    &bINum2,
-    bigInt,
-    precision,
-    ePrefix)
+	err = new(bigIntNumUtility).setBigIntBigPrecision(
+		&bINum2,
+		bigInt,
+		precision,
+		ePrefix)
 
-  return bINum2, err
+	return bINum2, err
 }
 
 // NewBigIntBigPrecisionNumSeps
@@ -3188,34 +3188,34 @@ func (bNum *BigIntNum) NewBigIntBigPrecision(
 //							transmit any processing errors
 //							encountered.
 func (bNum *BigIntNum) NewBigIntBigPrecisionNumSeps(
-  bigInt *big.Int,
-  precision *big.Int,
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigIntBigPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntBigPrecision",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
-    &bNum2,
-    bigInt,
-    precision,
-    numSeps,
-    ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
-      bigInt.Text(10), precision)))
+	err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSeps,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewBigIntExponent
@@ -3255,23 +3255,23 @@ func (bNum *BigIntNum) NewBigIntBigPrecisionNumSeps(
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewBigIntExponent(
-  bigI *big.Int, exponent int) (BigIntNum, error) {
+	bigI *big.Int, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigIntExponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntExponent",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).newBigIntExponent(
-    bigI, exponent, ePrefix)
+	return new(bigIntNumNeutron).newBigIntExponent(
+		bigI, exponent, ePrefix)
 }
 
 // NewBigFloat
@@ -3296,27 +3296,27 @@ func (bNum *BigIntNum) NewBigIntExponent(
 //	will never be greater than 'maxPrecision'; however, actual
 //	precision may be less than 'maxPrecision'.
 func (bNum *BigIntNum) NewBigFloat(
-  bigFloat *big.Float,
-  maxPrecision uint) (BigIntNum, error) {
+	bigFloat *big.Float,
+	maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigFloat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigFloat",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).newBigFloat(
-    bNum,
-    bigFloat,
-    maxPrecision,
-    ePrefix)
+	return new(bigIntNumNeutron).newBigFloat(
+		bNum,
+		bigFloat,
+		maxPrecision,
+		ePrefix)
 }
 
 // NewDecimal
@@ -3328,29 +3328,29 @@ func (bNum *BigIntNum) NewBigFloat(
 // fails these validation tests, an error will be returned.
 func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewDecimal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewDecimal",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).newDecimal(
-    bNum, decNum, ePrefix)
+	return new(bigIntNumNeutron).newDecimal(
+		bNum, decNum, ePrefix)
 }
 
 // NewBigIntFixedDecimal
@@ -3364,23 +3364,23 @@ func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 // If input parameter 'fd' proves invalid, an error
 // will be returned.
 func (bNum *BigIntNum) NewBigIntFixedDecimal(
-  fd BigIntFixedDecimal) (BigIntNum, error) {
+	fd BigIntFixedDecimal) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewBigIntFixedDecimal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntFixedDecimal",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return new(bigIntNumNeutron).newBigIntFixedDecimal(
-    fd, ePrefix)
+	return new(bigIntNumNeutron).newBigIntFixedDecimal(
+		fd, ePrefix)
 }
 
 // NewFromIntFracStrings - Creates a new BigIntNum instance based on a numeric
@@ -3404,42 +3404,42 @@ func (bNum *BigIntNum) NewBigIntFixedDecimal(
 //	thousands separator = ','
 //	currency separator = '$'
 func (bNum *BigIntNum) NewFromIntFracStrings(
-  intStr string, fracStr string, signVal int) (BigIntNum, error) {
+	intStr string, fracStr string, signVal int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewFromIntFracStrings",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewFromIntFracStrings",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  b2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	b2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-    &b2,
-    ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&b2,
+		ePrefix)
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumNeutron).
-    setIntFracStrings(&b2, intStr, fracStr, signVal,
-      ePrefix.XCpy("Setting b2"))
+	err = new(bigIntNumNeutron).
+		setIntFracStrings(&b2, intStr, fracStr, signVal,
+			ePrefix.XCpy("Setting b2"))
 
-  return b2, err
+	return b2, err
 }
 
 // NewFloat32 - Returns a new BigIntNum instance using a float32 floating point
@@ -3468,51 +3468,51 @@ func (bNum *BigIntNum) NewFromIntFracStrings(
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewFloat32(
-  f32 float32, maxPrecision uint) (BigIntNum, error) {
+	f32 float32, maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewFloat32",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewFloat32",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	bINum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  ratNum := big.NewRat(1, 1).
-    SetFloat64(float64(f32))
+	ratNum := big.NewRat(1, 1).
+		SetFloat64(float64(f32))
 
-  err = new(bigIntNumMolecule).setBigRat(
-    &bINum,
-    ratNum,
-    maxPrecision,
-    ePrefix)
+	err = new(bigIntNumMolecule).setBigRat(
+		&bINum,
+		ratNum,
+		maxPrecision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(" +
-          "    &bINum, ratNum, maxPrecision, ePrefix)",
-        ErrContext: fmt.Sprintf("ratNum= '%v' maxPrecision= '%v'", ratNum.String(), maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(" +
+					"    &bINum, ratNum, maxPrecision, ePrefix)",
+				ErrContext: fmt.Sprintf("ratNum= '%v' maxPrecision= '%v'", ratNum.String(), maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINum, nil
+	return bINum, nil
 }
 
 // NewFloat64
@@ -3543,49 +3543,49 @@ func (bNum *BigIntNum) NewFloat32(
 //		and currency symbol)
 func (bNum *BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewFloat64",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewFloat64",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	bINum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  ratNum := big.NewRat(1, 1).
-    SetFloat64(f64)
+	ratNum := big.NewRat(1, 1).
+		SetFloat64(f64)
 
-  err = new(bigIntNumMolecule).setBigRat(
-    &bINum,
-    ratNum,
-    maxPrecision,
-    ePrefix)
+	err = new(bigIntNumMolecule).setBigRat(
+		&bINum,
+		ratNum,
+		maxPrecision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(" +
-          "    &bINum, ratNum, maxPrecision, ePrefix)",
-        ErrContext: fmt.Sprintf("ratNum= '%v' maxPrecision= '%v'", ratNum.String(), maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(" +
+					"    &bINum, ratNum, maxPrecision, ePrefix)",
+				ErrContext: fmt.Sprintf("ratNum= '%v' maxPrecision= '%v'", ratNum.String(), maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINum, nil
+	return bINum, nil
 }
 
 // NewInt
@@ -3625,48 +3625,48 @@ func (bNum *BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, er
 //	and currency symbol)
 func (bNum *BigIntNum) NewInt(intNum int, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewInt",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  b2, err := new(bigIntNumMechanics).newBigInt(
-    big.NewInt(int64(intNum)), precision, ePrefix)
+	b2, err := new(bigIntNumMechanics).newBigInt(
+		big.NewInt(int64(intNum)), precision, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum.NewBigInt()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum.NewBigInt()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-    &b2, ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&b2, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-          "    b2, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    b2, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return b2, nil
+	return b2, nil
 }
 
 // NewIntExponent
@@ -3711,64 +3711,64 @@ func (bNum *BigIntNum) NewInt(intNum int, precision uint) (BigIntNum, error) {
 //	and currency symbol)
 func (bNum *BigIntNum) NewIntExponent(intNum int, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewIntExponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewIntExponent",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bigI := big.NewInt(int64(intNum))
+	bigI := big.NewInt(int64(intNum))
 
-  bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by:\n"+
-        " bIntNum, err := new(BigIntNum).NewZero(0)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by:\n"+
+				" bIntNum, err := new(BigIntNum).NewZero(0)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-    &bIntNum, ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&bIntNum, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-          "    &bIntNum, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    &bIntNum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumMolecule).setBigIntExponent(
-    &bIntNum, bigI, exponent, ePrefix)
+	err = new(bigIntNumMolecule).setBigIntExponent(
+		&bIntNum, bigI, exponent, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by:\n"+
-        " err = b.SetBigIntExponent(bigI, exponent)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by:\n"+
+				" err = b.SetBigIntExponent(bigI, exponent)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewInt32 - Creates a new BigIntNum instance initialized to the value
@@ -3805,34 +3805,34 @@ func (bNum *BigIntNum) NewIntExponent(intNum int, exponent int) (BigIntNum, erro
 //	and currency symbol)
 func (bNum *BigIntNum) NewInt32(int32Num int32, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewInt32",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewInt32",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bIntNum, err := new(bigIntNumMechanics).newBigInt(
-    big.NewInt(int64(int32Num)), precision, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newBigInt(
+		big.NewInt(int64(int32Num)), precision, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{}, &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newBigInt(\n" +
-        "   big.NewInt(int64(int32Num)), precision, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newBigInt(\n" +
+				"   big.NewInt(int64(int32Num)), precision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewInt32Exponent
@@ -3876,48 +3876,48 @@ func (bNum *BigIntNum) NewInt32(int32Num int32, precision uint) (BigIntNum, erro
 //	and currency symbol)
 func (bNum *BigIntNum) NewInt32Exponent(int32Num int32, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewInt32Exponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewInt32Exponent",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bigI := big.NewInt(int64(int32Num))
+	bigI := big.NewInt(int64(int32Num))
 
-  bIntNum, err := new(BigIntNum).NewZero(0)
+	bIntNum, err := new(BigIntNum).NewZero(0)
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bIntNum, err := new(BigIntNum).NewZero(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(BigIntNum).NewZero(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumMolecule).setBigIntExponent(
-    &bIntNum, bigI, exponent, ePrefix)
+	err = new(bigIntNumMolecule).setBigIntExponent(
+		&bIntNum, bigI, exponent, ePrefix)
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setBigIntExponent(\n" +
-          "    &bIntNum, bigI, exponent, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setBigIntExponent(\n" +
+					"    &bIntNum, bigI, exponent, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewInt64
@@ -3957,34 +3957,34 @@ func (bNum *BigIntNum) NewInt32Exponent(int32Num int32, exponent int) (BigIntNum
 //	and currency symbol)
 func (bNum *BigIntNum) NewInt64(int64Num int64, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewInt64",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewInt64",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bIN2, err := new(bigIntNumMechanics).newBigInt(
-    big.NewInt(int64Num), precision, ePrefix)
+	bIN2, err := new(bigIntNumMechanics).newBigInt(
+		big.NewInt(int64Num), precision, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{}, &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "bIN2, err := new(bigIntNumMechanics).newBigInt(\n" +
-        "    big.NewInt(int64Num), precision, ePrefix))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bIN2, err := new(bigIntNumMechanics).newBigInt(\n" +
+				"    big.NewInt(int64Num), precision, ePrefix))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return bIN2, nil
+	return bIN2, nil
 }
 
 // NewInt64Exponent
@@ -4027,54 +4027,54 @@ func (bNum *BigIntNum) NewInt64(int64Num int64, precision uint) (BigIntNum, erro
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewInt64Exponent(
-  int64Num int64,
-  exponent int) (BigIntNum, error) {
+	int64Num int64,
+	exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewInt64Exponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewInt64Exponent",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bigI := big.NewInt(int64Num)
+	bigI := big.NewInt(int64Num)
 
-  bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(\n" +
-          "    0, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(\n" +
+					"    0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumMolecule).setBigIntExponent(
-    &bIntNum, bigI, exponent, ePrefix)
+	err = new(bigIntNumMolecule).setBigIntExponent(
+		&bIntNum, bigI, exponent, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setBigIntExponent(\n" +
-          "    &bIntNum, bigI, exponent, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setBigIntExponent(\n" +
+					"    &bIntNum, bigI, exponent, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewIntAry
@@ -4092,92 +4092,92 @@ func (bNum *BigIntNum) NewInt64Exponent(
 //	and currency symbol)
 func (bNum *BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewIntAry",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewIntAry",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = ia.IsValid(ePrefix.XCpy("Testing ia (IntAry)").String())
+	err = ia.IsValid(ePrefix.XCpy("Testing ia (IntAry)").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = ia.IsValid(ePrefix.XCpy(\n" +
-          "    \"Testing ia (IntAry)\").String())",
-        ErrContext: "'ia' is an input parameter for BigIntNum.NewAry(ia IntAry)",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = ia.IsValid(ePrefix.XCpy(\n" +
+					"    \"Testing ia (IntAry)\").String())",
+				ErrContext: "'ia' is an input parameter for BigIntNum.NewAry(ia IntAry)",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bInt, err := ia.GetBigInt()
+	bInt, err := ia.GetBigInt()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bInt, err := ia.GetBigInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bInt, err := ia.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  precision, err := ia.GetPrecisionUint()
+	precision, err := ia.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "precision, err := ia.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "precision, err := ia.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).\n" +
-          "    newZero(0, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).\n" +
+					"    newZero(0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumNanobot).setBigInt(
-    &bIntNum,
-    bInt,
-    precision,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigInt(
+		&bIntNum,
+		bInt,
+		precision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-          "   &bIntNum, bInt, precision, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+					"   &bIntNum, bInt, precision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewIntFracStr
@@ -4206,54 +4206,54 @@ func (bNum *BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 //	and currency symbol)
 func (bNum *BigIntNum) NewIntFracStr(intStr, fracStr string, signVal int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewIntFracStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewIntFracStr",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bIntNum, err := new(bigIntNumMechanics).newZero(
-    0, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newZero(
+		0, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(\n" +
-          "    0, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(\n" +
+					"    0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumNeutron).setIntFracStrings(
-    &bIntNum,
-    intStr,
-    fracStr,
-    signVal,
-    ePrefix)
+	err = new(bigIntNumNeutron).setIntFracStrings(
+		&bIntNum,
+		intStr,
+		fracStr,
+		signVal,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumNeutron).setIntFracStrings(\n" +
-          "    &bIntNum, intStr, fracStr, signVal, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNeutron).setIntFracStrings(\n" +
+					"    &bIntNum, intStr, fracStr, signVal, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bIntNum, nil
+	return bIntNum, nil
 }
 
 // NewINumMgr
@@ -4291,50 +4291,50 @@ func (bNum *BigIntNum) NewIntFracStr(intStr, fracStr string, signVal int) (BigIn
 //	thousands seprator,	and currency symbol)
 func (bNum *BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewINumMgr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewINumMgr()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	bINum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINum, err := new(bigIntNumMechanics).newZero(0,ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINum, err := new(bigIntNumMechanics).newZero(0,ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumMolecule).setINumMgr(
-    &bINum, numMgr, ePrefix)
+	err = new(bigIntNumMolecule).setINumMgr(
+		&bINum, numMgr, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setINumMgr(\n" +
-          "    &bINum, numMgr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setINumMgr(\n" +
+					"    &bINum, numMgr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINum, nil
+	return bINum, nil
 }
 
 // NewNumStr
@@ -4422,61 +4422,61 @@ func (bNum *BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 //		  If no errors are encountered during method execution, this
 //		  returned error parameter is set to 'nil'.
 func (bNum *BigIntNum) NewNumStr(
-  numStr string) (BigIntNum, error) {
+	numStr string) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStr()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  // Sets numeric separators to USA Defaults
-  bigINum, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	// Sets numeric separators to USA Defaults
+	bigINum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bigINum, err := new(bigIntNumMechanics).newZero(\n" +
-          "0, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bigINum, err := new(bigIntNumMechanics).newZero(\n" +
+					"0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps := NumericSeparatorDto{}
-  numSeps.SetUSADefaults()
+	numSeps := NumericSeparatorDto{}
+	numSeps.SetUSADefaults()
 
-  err = new(bigIntNumMolecule).setNumStr(
-    &bigINum,
-    numStr,
-    &numSeps,
-    &numSeps,
-    ePrefix)
+	err = new(bigIntNumMolecule).setNumStr(
+		&bigINum,
+		numStr,
+		&numSeps,
+		&numSeps,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
-          "    &bigINum, numStr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
+					"    &bigINum, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bigINum, nil
+	return bigINum, nil
 }
 
 // NewNumStrWithNumSeps
@@ -4607,94 +4607,94 @@ func (bNum *BigIntNum) NewNumStr(
 //	  If no errors are encountered during method execution, this
 //	  returned error parameter is set to 'nil'.
 func (bNum *BigIntNum) NewNumStrWithNumSeps(
-  numStr string, numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
+	numStr string, numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrWithNumSeps()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrWithNumSeps()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if numStrNumSeps == nil {
+	if numStrNumSeps == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'numStrNumSeps'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'numStrNumSeps'",
+			}
+	}
 
-  var inputNumSeps, outputNumSeps *NumericSeparatorDto
+	var inputNumSeps, outputNumSeps *NumericSeparatorDto
 
-  inputNumSeps, err = numStrNumSeps.GetInputSeparators()
+	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "inputNumSeps, err = numStrNumSeps.GetInputSeparators()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "inputNumSeps, err = numStrNumSeps.GetInputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
+	outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "outputNumSeps, err = numStrNumSeps.GetOutputSeparators()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "outputNumSeps, err = numStrNumSeps.GetOutputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  bINum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	bINum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bINum2, err := new(bigIntNumMechanics).newZero(\n" +
-          "    0, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bINum2, err := new(bigIntNumMechanics).newZero(\n" +
+					"    0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(bigIntNumMolecule).setNumStr(
-    &bINum2,
-    numStr,
-    inputNumSeps,
-    outputNumSeps,
-    ePrefix)
+	err = new(bigIntNumMolecule).setNumStr(
+		&bINum2,
+		numStr,
+		inputNumSeps,
+		outputNumSeps,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
-          "    &bINum2, numStr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
+					"    &bINum2, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINum2, nil
+	return bINum2, nil
 }
 
 // NewNumStrMaxPrecision
@@ -4813,83 +4813,83 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 //		  will be used to format the numeric value returned as a type
 //		  BigIntNum.
 func (bNum *BigIntNum) NewNumStrMaxPrecision(
-  numStr string,
-  maxPrecision uint,
-  numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
+	numStr string,
+	maxPrecision uint,
+	numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrMaxPrecision()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrMaxPrecision()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix)
+	bINum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
-          "    &bINum2, numStr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
+					"    &bINum2, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  var inputNumSeps, outputNumSeps *NumericSeparatorDto
+	var inputNumSeps, outputNumSeps *NumericSeparatorDto
 
-  inputNumSeps, err = numStrNumSeps.GetInputSeparators()
+	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
 
-  outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
+	outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
 
-  err = new(bigIntNumMolecule).setNumStr(
-    &bINum2,
-    numStr,
-    inputNumSeps,
-    outputNumSeps,
-    ePrefix)
+	err = new(bigIntNumMolecule).setNumStr(
+		&bINum2,
+		numStr,
+		inputNumSeps,
+		outputNumSeps,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
-          "    &bINum2, numStr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(\n" +
+					"    &bINum2, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if bINum2.precision > maxPrecision {
+	if bINum2.precision > maxPrecision {
 
-    err = new(bigIntNumBoson).roundToDecimalPlace(
-      &bINum2, maxPrecision, ePrefix)
+		err = new(bigIntNumBoson).roundToDecimalPlace(
+			&bINum2, maxPrecision, ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = new(bigIntNumBoson).roundToDecimalPlace(\n" +
-            "    &bINum2, maxPrecision, ePrefix)",
-          ErrContext: "if bINum2.precision > maxPrecision {",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(bigIntNumBoson).roundToDecimalPlace(\n" +
+						"    &bINum2, maxPrecision, ePrefix)",
+					ErrContext: "if bINum2.precision > maxPrecision {",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  return bINum2, nil
+	return bINum2, nil
 }
 
 // NewNumStrDto
@@ -4925,33 +4925,33 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 //		  returned error parameter is set to 'nil'.
 func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrDto()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bINum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix.XCpy("Setting bINum2"))
+	bINum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bINum2"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumMolecule).setNumStrDto(
-    &bINum2,
-    nDto,
-    ePrefix.XCpy("Setting 'bINum2' = nDto"))
+	err = new(bigIntNumMolecule).setNumStrDto(
+		&bINum2,
+		nDto,
+		ePrefix.XCpy("Setting 'bINum2' = nDto"))
 
-  return bINum2, err
+	return bINum2, err
 }
 
 // NewOne
@@ -4981,33 +4981,33 @@ func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 //	and currency symbol)
 func (bNum *BigIntNum) NewOne(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewOne()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewOne()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(1),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(1),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewTwo
@@ -5038,33 +5038,33 @@ func (bNum *BigIntNum) NewOne(precision uint) (BigIntNum, error) {
 //	and currency symbol)
 func (bNum *BigIntNum) NewTwo(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewTwo()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewTwo()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(2),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(2),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewThree
@@ -5094,33 +5094,33 @@ func (bNum *BigIntNum) NewTwo(precision uint) (BigIntNum, error) {
 //		and currency symbol)
 func (bNum *BigIntNum) NewThree(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewThree()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewThree()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(3),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(3),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewFive
@@ -5147,33 +5147,33 @@ func (bNum *BigIntNum) NewThree(precision uint) (BigIntNum, error) {
 //		and currency symbol)
 func (bNum *BigIntNum) NewFive(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewFive()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewFive()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(5),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(5),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewTen
@@ -5200,33 +5200,33 @@ func (bNum *BigIntNum) NewFive(precision uint) (BigIntNum, error) {
 //		and currency symbol)
 func (bNum *BigIntNum) NewTen(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewTen()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewTen()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(10),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(10),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewUint
@@ -5266,33 +5266,33 @@ func (bNum *BigIntNum) NewTen(precision uint) (BigIntNum, error) {
 //		and currency symbol)
 func (bNum *BigIntNum) NewUint(uintNum uint, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(0).SetUint64(uint64(uintNum)),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(0).SetUint64(uint64(uintNum)),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewUintExponent
@@ -5336,39 +5336,39 @@ func (bNum *BigIntNum) NewUint(uintNum uint, precision uint) (BigIntNum, error) 
 //		and currency symbol)
 func (bNum *BigIntNum) NewUintExponent(uintNum uint, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  baseBInt := big.NewInt(int64(uintNum))
+	baseBInt := big.NewInt(int64(uintNum))
 
-  // Sets Numeric Separators to default USA format
-  bIntNum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix.XCpy("Setting bIntNum2=0"))
+	// Sets Numeric Separators to default USA format
+	bIntNum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bIntNum2=0"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumMolecule).
-    setBigIntExponent(
-      &bIntNum2,
-      baseBInt,
-      exponent,
-      ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' baseBInt= '%v' exponent= '%v'",
-        baseBInt.Text(10), exponent)))
+	err = new(bigIntNumMolecule).
+		setBigIntExponent(
+			&bIntNum2,
+			baseBInt,
+			exponent,
+			ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' baseBInt= '%v' exponent= '%v'",
+				baseBInt.Text(10), exponent)))
 
-  return bIntNum2, err
+	return bIntNum2, err
 }
 
 // NewUint32
@@ -5408,37 +5408,37 @@ func (bNum *BigIntNum) NewUintExponent(uintNum uint, exponent int) (BigIntNum, e
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewUint32(
-  uint32Num uint32, precision uint) (BigIntNum, error) {
+	uint32Num uint32, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint32()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint32()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bigInt := big.NewInt(0).SetUint64(uint64(uint32Num))
+	bigInt := big.NewInt(0).SetUint64(uint64(uint32Num))
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    bigInt,
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // NewUint32Exponent
@@ -5481,41 +5481,41 @@ func (bNum *BigIntNum) NewUint32(
 //	 USA numeric separators (decimal separator, thousands seprator,
 //	 and currency symbol)
 func (bNum *BigIntNum) NewUint32Exponent(
-  uint32Num uint32, exponent int) (BigIntNum, error) {
+	uint32Num uint32, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint32Exponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint32Exponent",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  baseBInt := big.NewInt(int64(uint32Num))
+	baseBInt := big.NewInt(int64(uint32Num))
 
-  // Sets Numeric Separators to default USA format
-  bIntNum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix.XCpy("Setting bIntNum2=0"))
+	// Sets Numeric Separators to default USA format
+	bIntNum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bIntNum2=0"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumMolecule).
-    setBigIntExponent(
-      &bIntNum2,
-      baseBInt,
-      exponent,
-      ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2'; baseBInt= '%v' exponent= '%v'",
-        baseBInt.Text(10), exponent)))
+	err = new(bigIntNumMolecule).
+		setBigIntExponent(
+			&bIntNum2,
+			baseBInt,
+			exponent,
+			ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2'; baseBInt= '%v' exponent= '%v'",
+				baseBInt.Text(10), exponent)))
 
-  return bIntNum2, err
+	return bIntNum2, err
 }
 
 // NewUint64
@@ -5553,38 +5553,38 @@ func (bNum *BigIntNum) NewUint32Exponent(
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewUint64(
-  uint64Num uint64, precision uint) (BigIntNum, error) {
+	uint64Num uint64, precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint64()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint64()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  newVal := big.NewInt(0).SetUint64(uint64Num)
+	newVal := big.NewInt(0).SetUint64(uint64Num)
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    newVal,
-    precision,
-    numSepsDto,
-    ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' newVal= '%v' precision= '%v'",
-      newVal.Text(10), precision)))
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		newVal,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' newVal= '%v' precision= '%v'",
+			newVal.Text(10), precision)))
 
-  return bNum2, err
+	return bNum2, err
 
 }
 
@@ -5629,38 +5629,38 @@ func (bNum *BigIntNum) NewUint64(
 //	 and currency symbol)
 func (bNum *BigIntNum) NewUint64Exponent(uint64Num uint64, exponent int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewUint64Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewUint64Exponent()",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  baseBInt := big.NewInt(0).SetUint64(uint64Num)
+	baseBInt := big.NewInt(0).SetUint64(uint64Num)
 
-  bIntNum2, err := new(bigIntNumMechanics).newZero(
-    0,
-    ePrefix.XCpy("Setting bIntNum2=0"))
+	bIntNum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bIntNum2=0"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = new(bigIntNumMolecule).
-    setBigIntExponent(
-      &bIntNum2,
-      baseBInt,
-      exponent,
-      ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' baseBInt= '%v' precision= '%v'",
-        baseBInt.Text(10), exponent)))
+	err = new(bigIntNumMolecule).
+		setBigIntExponent(
+			&bIntNum2,
+			baseBInt,
+			exponent,
+			ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' baseBInt= '%v' precision= '%v'",
+				baseBInt.Text(10), exponent)))
 
-  return bIntNum2, err
+	return bIntNum2, err
 }
 
 // NewZero
@@ -5687,33 +5687,33 @@ func (bNum *BigIntNum) NewUint64Exponent(uint64Num uint64, exponent int) (BigInt
 //	and currency symbol).
 func (bNum *BigIntNum) NewZero(precision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewZero",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto := NumericSeparatorDto{}
+	numSepsDto := NumericSeparatorDto{}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumNanobot).setBigIntNumSeps(
-    &bNum2,
-    big.NewInt(0),
-    precision,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(0),
+		precision,
+		numSepsDto,
+		ePrefix)
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // Reset
@@ -5729,21 +5729,21 @@ func (bNum *BigIntNum) NewZero(precision uint) (BigIntNum, error) {
 // to USA Defaults.
 func (bNum *BigIntNum) Reset() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.Reset",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Reset",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumElectron).resetBigIntNum(
-    bNum, ePrefix)
+	return new(bigIntNumElectron).resetBigIntNum(
+		bNum, ePrefix)
 }
 
 // RoundToDecPlace
@@ -5796,29 +5796,29 @@ func (bNum *BigIntNum) Reset() error {
 // altered by this method.
 func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.RoundToDecPlace",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.RoundToDecPlace",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumBoson).roundToDecimalPlace(
-    bNum, precision, ePrefix)
+	return new(bigIntNumBoson).roundToDecimalPlace(
+		bNum, precision, ePrefix)
 }
 
 // SetBigInt
@@ -5855,34 +5855,34 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 //	and currency symbol) remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigInt",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  return new(bigIntNumNanobot).setBigInt(
-    bNum,
-    bigI,
-    precision,
-    ePrefix.XCpy(
-      fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
-        bigI.Text(10), precision)))
+	return new(bigIntNumNanobot).setBigInt(
+		bNum,
+		bigI,
+		precision,
+		ePrefix.XCpy(
+			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
+				bigI.Text(10), precision)))
 }
 
 // SetBigIntNumSeps
@@ -5930,39 +5930,39 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) error {
 //			CurrencySymbol     rune // Currency Symbol
 //		}
 func (bNum *BigIntNum) SetBigIntNumSeps(
-  bigI *big.Int,
-  precision uint,
-  numSeps NumericSeparatorDto) error {
+	bigI *big.Int,
+	precision uint,
+	numSeps NumericSeparatorDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigIntNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigIntNumSeps",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  return new(bigIntNumMolecule).setBigIntNumSeps(
-    bNum,
-    bigI,
-    precision,
-    numSeps,
-    ePrefix.XCpy(
-      fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
-        bigI.Text(10), precision)))
+	return new(bigIntNumMolecule).setBigIntNumSeps(
+		bNum,
+		bigI,
+		precision,
+		numSeps,
+		ePrefix.XCpy(
+			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
+				bigI.Text(10), precision)))
 }
 
 // SetBigIntBigPrecision
@@ -6021,38 +6021,38 @@ func (bNum *BigIntNum) SetBigIntNumSeps(
 //	Numeric Separators are invalid, thy will be automatically
 //	reset to USA default values.
 func (bNum *BigIntNum) SetBigIntBigPrecision(
-  bigInt *big.Int,
-  precision *big.Int) error {
+	bigInt *big.Int,
+	precision *big.Int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigInt",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  numSepsDto := NumericSeparatorDto{
-    DecimalSeparator:   bNum.decimalSeparator,
-    ThousandsSeparator: bNum.thousandsSeparator,
-    CurrencySymbol:     bNum.currencySymbol,
-  }
+	numSepsDto := NumericSeparatorDto{
+		DecimalSeparator:   bNum.decimalSeparator,
+		ThousandsSeparator: bNum.thousandsSeparator,
+		CurrencySymbol:     bNum.currencySymbol,
+	}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  return new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
-    bNum,
-    bigInt,
-    precision,
-    numSepsDto,
-    ePrefix.XCpy(
-      fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
-        bigInt.Text(10), precision)))
+	return new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		bNum,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy(
+			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
+				bigInt.Text(10), precision)))
 }
 
 // SetBigIntBigPrecisionNumSeps
@@ -6113,34 +6113,34 @@ func (bNum *BigIntNum) SetBigIntBigPrecision(
 //	  If no errors are encountered during execution, this method
 //	  will return an error value of 'nil'.
 func (bNum *BigIntNum) SetBigIntBigPrecisionNumSeps(
-  bigInt *big.Int,
-  precision *big.Int,
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigIntBigPrecisionNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigIntBigPrecisionNumSeps",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bNum2 := BigIntNum{}
+	bNum2 := BigIntNum{}
 
-  err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
-    &bNum2,
-    bigInt,
-    precision,
-    numSeps,
-    ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
-      bigInt.Text(10), precision)))
+	err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSeps,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
 
-  return bNum2, err
+	return bNum2, err
 }
 
 // SetBigIntExponent
@@ -6170,35 +6170,35 @@ func (bNum *BigIntNum) SetBigIntBigPrecisionNumSeps(
 // and currency symbol) remain unchanged and are not altered by this
 // method.
 func (bNum *BigIntNum) SetBigIntExponent(
-  bigI *big.Int, exponent int) error {
+	bigI *big.Int, exponent int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigIntExponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigIntExponent()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  return new(bigIntNumMolecule).
-    setBigIntExponent(bNum,
-      bigI,
-      exponent,
-      ePrefix.XCpy(fmt.Sprintf("Setting 'bNum' bigI= '%v' exponent= '%v'",
-        bigI.Text(10), exponent)))
+	return new(bigIntNumMolecule).
+		setBigIntExponent(bNum,
+			bigI,
+			exponent,
+			ePrefix.XCpy(fmt.Sprintf("Setting 'bNum' bigI= '%v' exponent= '%v'",
+				bigI.Text(10), exponent)))
 }
 
 // SetBigFloat
@@ -6243,34 +6243,34 @@ func (bNum *BigIntNum) SetBigIntExponent(
 // and currency symbol) contained in the original BigIntNum ('bNum')
 // will remain unchanged and will not be altered by this method.
 func (bNum *BigIntNum) SetBigFloat(
-  bigFloat *big.Float, maxPrecision uint) error {
+	bigFloat *big.Float, maxPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigFloat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigFloat",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigFloat == nil {
+	if bigFloat == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  return new(bigIntNumNanobot).setBigFloat(
-    bNum,
-    bigFloat,
-    maxPrecision,
-    ePrefix.XCpy("Setting 'bNum'"))
+	return new(bigIntNumNanobot).setBigFloat(
+		bNum,
+		bigFloat,
+		maxPrecision,
+		ePrefix.XCpy("Setting 'bNum'"))
 }
 
 // SetBigRat
@@ -6304,27 +6304,27 @@ func (bNum *BigIntNum) SetBigFloat(
 // and currency symbol) contained in the original BigIntNum ('bNum')
 // will remain unchanged and will not be altered by this method.
 func (bNum *BigIntNum) SetBigRat(
-  ratNum *big.Rat, maxPrecision uint) error {
+	ratNum *big.Rat, maxPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigRat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigRat",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumMolecule).setBigRat(
-    bNum,
-    ratNum,
-    maxPrecision,
-    ePrefix.XCpy(fmt.Sprintf("Setting 'bNum'; ratNum= '%v'  maxPrecision= '%v'",
-      ratNum.String(), maxPrecision)))
+	return new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix.XCpy(fmt.Sprintf("Setting 'bNum'; ratNum= '%v'  maxPrecision= '%v'",
+			ratNum.String(), maxPrecision)))
 }
 
 // SetBigRatNumSeps
@@ -6362,46 +6362,46 @@ func (bNum *BigIntNum) SetBigRat(
 //	     CurrencySymbol     rune // Currency Symbol
 //	   }
 func (bNum *BigIntNum) SetBigRatNumSeps(
-  ratNum *big.Rat,
-  maxPrecision uint,
-  numSeps NumericSeparatorDto) error {
+	ratNum *big.Rat,
+	maxPrecision uint,
+	numSeps NumericSeparatorDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetBigRat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigRat",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumMolecule).setBigRat(
-    bNum,
-    ratNum,
-    maxPrecision,
-    ePrefix)
+	err = new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(\n" +
-        "    bNum, ratNum, maxPrecision, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(\n" +
+				"    bNum, ratNum, maxPrecision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  return new(bigIntNumAtom).setNumericSeparatorsDto(
-    bNum,
-    numSeps,
-    ePrefix.XCpy("Setting 'bNum' Numeric Separators"))
+	return new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		numSeps,
+		ePrefix.XCpy("Setting 'bNum' Numeric Separators"))
 }
 
 // SetCurrencySymbol
@@ -6421,28 +6421,28 @@ func (bNum *BigIntNum) SetBigRatNumSeps(
 // located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 func (bNum *BigIntNum) SetCurrencySymbol(currencySymbol rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetCurrencySymbol",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetCurrencySymbol",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var nSepSymbolCode NumSepSymbolCode
+	var nSepSymbolCode NumSepSymbolCode
 
-  nSepSymbolCode = CURRENCYSYMBOL
+	nSepSymbolCode = CURRENCYSYMBOL
 
-  return new(bigIntNumBoson).setNumSepSymbol(
-    bNum,
-    nSepSymbolCode,
-    currencySymbol,
-    ePrefix.XCpy("Setting 'bNum' currency symbol"))
+	return new(bigIntNumBoson).setNumSepSymbol(
+		bNum,
+		nSepSymbolCode,
+		currencySymbol,
+		ePrefix.XCpy("Setting 'bNum' currency symbol"))
 }
 
 // SetDecimalSeparator
@@ -6460,30 +6460,30 @@ func (bNum *BigIntNum) SetCurrencySymbol(currencySymbol rune) error {
 // Note: If a zero value is submitted for input parameter
 // 'decimalSeparator', an error will be returned.
 func (bNum *BigIntNum) SetDecimalSeparator(
-  decimalSeparator rune) error {
+	decimalSeparator rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetDecimalSeparator",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetDecimalSeparator",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var nSepSymbolCode NumSepSymbolCode
+	var nSepSymbolCode NumSepSymbolCode
 
-  nSepSymbolCode = DECIMALSYMBOL
+	nSepSymbolCode = DECIMALSYMBOL
 
-  return new(bigIntNumBoson).setNumSepSymbol(
-    bNum,
-    nSepSymbolCode,
-    decimalSeparator,
-    ePrefix.XCpy("Setting 'bNum' Decimal Separator"))
+	return new(bigIntNumBoson).setNumSepSymbol(
+		bNum,
+		nSepSymbolCode,
+		decimalSeparator,
+		ePrefix.XCpy("Setting 'bNum' Decimal Separator"))
 }
 
 // SetIntFracStrings
@@ -6506,25 +6506,25 @@ func (bNum *BigIntNum) SetDecimalSeparator(
 // will remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetIntFracStrings",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetIntFracStrings",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumNeutron).setIntFracStrings(
-    bNum,
-    intStr,
-    fracStr,
-    signVal,
-    ePrefix.XCpy("Setting 'bNum'"))
+	return new(bigIntNumNeutron).setIntFracStrings(
+		bNum,
+		intStr,
+		fracStr,
+		signVal,
+		ePrefix.XCpy("Setting 'bNum'"))
 }
 
 // SetFloat32
@@ -6556,27 +6556,27 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 // and currency symbol) configured for the current instance of BigintNum remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetFloat32",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetFloat32",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  ratNum := big.NewRat(1, 1).
-    SetFloat64(float64(f32))
+	ratNum := big.NewRat(1, 1).
+		SetFloat64(float64(f32))
 
-  return new(bigIntNumMolecule).setBigRat(
-    bNum,
-    ratNum,
-    maxPrecision,
-    ePrefix.XCpy("Setting 'bNum'"))
+	return new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix.XCpy("Setting 'bNum'"))
 }
 
 // SetFloat64
@@ -6601,27 +6601,27 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 //		precision may be less than 'maxPrecision'.
 func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetFloat64",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetFloat64",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  ratNum := big.NewRat(1, 1).SetFloat64(f64)
+	ratNum := big.NewRat(1, 1).SetFloat64(f64)
 
-  return new(bigIntNumMolecule).setBigRat(
-    bNum,
-    ratNum,
-    maxPrecision,
-    ePrefix.XCpy(fmt.Sprintf("Setting 'bNum'; ratNum= '%v' maxPrecistion= '%v'",
-      ratNum.String(), maxPrecision)))
+	return new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix.XCpy(fmt.Sprintf("Setting 'bNum'; ratNum= '%v' maxPrecistion= '%v'",
+			ratNum.String(), maxPrecision)))
 }
 
 // SetExpectedNumberOfDigits
@@ -6633,31 +6633,31 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 // Useful in tracking leading zeros.
 func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetExpectedNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetExpectedNumberOfDigits",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumMolecule).setExpectedNumberOfDigits(
-    bNum,
-    numOfDigits,
-    ePrefix)
+	return new(bigIntNumMolecule).setExpectedNumberOfDigits(
+		bNum,
+		numOfDigits,
+		ePrefix)
 }
 
 // SetExpectedToActualNumberOfDigits
@@ -6667,39 +6667,39 @@ func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) error {
 //	value at the time when this method is called.
 func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetExpectedNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetExpectedNumberOfDigits",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  actNumOfDigits, _, err := new(bigIntNumMolecule).
-    getActualNumberOfDigits(
-      bNum,
-      ePrefix.XCpy("bNum Actual Num digits"))
+	actNumOfDigits, _, err := new(bigIntNumMolecule).
+		getActualNumberOfDigits(
+			bNum,
+			ePrefix.XCpy("bNum Actual Num digits"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bNum.numberOfExpectedDigits = big.NewInt(0).Set(actNumOfDigits)
+	bNum.numberOfExpectedDigits = big.NewInt(0).Set(actNumOfDigits)
 
-  return nil
+	return nil
 }
 
 // SetINumMgr
@@ -6744,21 +6744,21 @@ func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() error {
 // fd := new(BigIntFixedDecimal).NewZero()
 func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetINumMgr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetINumMgr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumMolecule).setINumMgr(
-    bNum, numMgr, ePrefix.XCpy("numMgr->bNum"))
+	return new(bigIntNumMolecule).setINumMgr(
+		bNum, numMgr, ePrefix.XCpy("numMgr->bNum"))
 }
 
 // SetPrecision
@@ -6805,50 +6805,50 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 // altered by this method.
 func (bNum *BigIntNum) SetPrecision(newPrecision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetINumMgr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetINumMgr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if newPrecision == bNum.precision {
-    return nil
-  }
+	if newPrecision == bNum.precision {
+		return nil
+	}
 
-  if bNum.precision > newPrecision {
+	if bNum.precision > newPrecision {
 
-    return new(bigIntNumBoson).roundToDecimalPlace(
-      bNum,
-      newPrecision,
-      ePrefix.XCpy(fmt.Sprintf("Rounding 'bNum' to newPrecision= '%v'",
-        newPrecision)))
-  }
+		return new(bigIntNumBoson).roundToDecimalPlace(
+			bNum,
+			newPrecision,
+			ePrefix.XCpy(fmt.Sprintf("Rounding 'bNum' to newPrecision= '%v'",
+				newPrecision)))
+	}
 
-  deltaPrecision := newPrecision - bNum.precision
+	deltaPrecision := newPrecision - bNum.precision
 
-  // bNum.precision must be less than newPrecision
+	// bNum.precision must be less than newPrecision
 
-  return new(bigIntNumProton).bigIntNumExtendPrecision(
-    bNum,
-    deltaPrecision,
-    ePrefix.XCpy(
-      fmt.Sprintf("bNum.precision < newPrecision; deltaPrecision= '%v'",
-        deltaPrecision)))
+	return new(bigIntNumProton).bigIntNumExtendPrecision(
+		bNum,
+		deltaPrecision,
+		ePrefix.XCpy(
+			fmt.Sprintf("bNum.precision < newPrecision; deltaPrecision= '%v'",
+				deltaPrecision)))
 }
 
 // SetNumericSeparators
@@ -6877,29 +6877,29 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) error {
 // Thousands Separator comma (',')    = 1,000,000,000
 // Currency Symbol dollar sign ('$')  = $123
 func (bNum *BigIntNum) SetNumericSeparators(
-  decimalSeparator rune,
-  thousandsSeparator rune,
-  currencySymbol rune) error {
+	decimalSeparator rune,
+	thousandsSeparator rune,
+	currencySymbol rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetNumericSeparators",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumericSeparators",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumAtom).setNumericSeparators(
-    bNum,
-    decimalSeparator,
-    thousandsSeparator,
-    currencySymbol,
-    ePrefix)
+	return new(bigIntNumAtom).setNumericSeparators(
+		bNum,
+		decimalSeparator,
+		thousandsSeparator,
+		currencySymbol,
+		ePrefix)
 
 }
 
@@ -6925,25 +6925,25 @@ func (bNum *BigIntNum) SetNumericSeparators(
 //	 CurrencySymbol     rune // Currency Symbol
 //	}
 func (bNum *BigIntNum) SetNumericSeparatorsDto(
-  customSeparators NumericSeparatorDto) error {
+	customSeparators NumericSeparatorDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetNumericSeparatorsDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumericSeparatorsDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumAtom).setNumericSeparatorsDto(
-    bNum,
-    customSeparators,
-    ePrefix)
+	return new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		customSeparators,
+		ePrefix)
 }
 
 // SetNumericSeparatorsToDefaultIfEmpty
@@ -6962,22 +6962,22 @@ func (bNum *BigIntNum) SetNumericSeparatorsDto(
 // are set to valid values.
 func (bNum *BigIntNum) SetNumericSeparatorsToDefaultIfEmpty() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetNumeSetNumericSeparatorsToDefaultIfEmptyricSeparatorsDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumeSetNumericSeparatorsToDefaultIfEmptyricSeparatorsDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-    bNum,
-    ePrefix.XCpy("Setting 'bNum' default NumSeps"))
+	return new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		bNum,
+		ePrefix.XCpy("Setting 'bNum' default NumSeps"))
 }
 
 // SetNumericSeparatorsToUSADefault
@@ -6999,22 +6999,22 @@ func (bNum *BigIntNum) SetNumericSeparatorsToDefaultIfEmpty() error {
 //	new(BigIntNum).SetCurrencySymbol()
 func (bNum *BigIntNum) SetNumericSeparatorsToUSADefault() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetNumericSeparatorsToUSADefault",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumericSeparatorsToUSADefault",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumAtom).setNumericSeparatorsToUSADefault(
-    bNum,
-    ePrefix.XCpy("Setting 'bNum' to USA NumSeps"))
+	return new(bigIntNumAtom).setNumericSeparatorsToUSADefault(
+		bNum,
+		ePrefix.XCpy("Setting 'bNum' to USA NumSeps"))
 }
 
 // SetNumStr
@@ -7045,34 +7045,34 @@ func (bNum *BigIntNum) SetNumericSeparatorsToUSADefault() error {
 //	The previously configured Numeric Separators for the current
 //	BigIntNum instance will remain unchanged.
 func (bNum *BigIntNum) SetNumStr(
-  numStr string,
-  numStrNumSeps NumericSeparatorDto) error {
+	numStr string,
+	numStrNumSeps NumericSeparatorDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumStr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bNumNumSeps := NumericSeparatorDto{
-    ThousandsSeparator: bNum.thousandsSeparator,
-    DecimalSeparator:   bNum.decimalSeparator,
-    CurrencySymbol:     bNum.currencySymbol,
-  }
+	bNumNumSeps := NumericSeparatorDto{
+		ThousandsSeparator: bNum.thousandsSeparator,
+		DecimalSeparator:   bNum.decimalSeparator,
+		CurrencySymbol:     bNum.currencySymbol,
+	}
 
-  return new(bigIntNumMolecule).setNumStr(
-    bNum,
-    numStr,
-    &numStrNumSeps,
-    &bNumNumSeps,
-    ePrefix)
+	return new(bigIntNumMolecule).setNumStr(
+		bNum,
+		numStr,
+		&numStrNumSeps,
+		&bNumNumSeps,
+		ePrefix)
 
 }
 
@@ -7083,23 +7083,23 @@ func (bNum *BigIntNum) SetNumStr(
 // parameter, 'numStrDto'.
 func (bNum *BigIntNum) SetNumStrDto(numStrDto NumStrDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrDto()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumMolecule).setNumStrDto(
-    bNum,
-    numStrDto,
-    ePrefix.XCpy("Setting 'bNum' == NumStrDto"))
+	return new(bigIntNumMolecule).setNumStrDto(
+		bNum,
+		numStrDto,
+		ePrefix.XCpy("Setting 'bNum' == NumStrDto"))
 }
 
 // SetSignValue - Sets the sign value of the current BigIntNum
@@ -7109,46 +7109,46 @@ func (bNum *BigIntNum) SetNumStrDto(numStrDto NumStrDto) error {
 // parameter 'signVal', an error will be returned.
 func (bNum *BigIntNum) SetSignValue(signVal int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetSignValue()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetSignValue()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if signVal == 1 || signVal == -1 {
+	if signVal == 1 || signVal == -1 {
 
-    if bNum.sign == signVal {
+		if bNum.sign == signVal {
 
-      return nil
-    }
+			return nil
+		}
 
-    return new(bigIntNumUtility).bigIntNumChangeSign(
-      bNum,
-      ePrefix)
-  }
+		return new(bigIntNumUtility).bigIntNumChangeSign(
+			bNum,
+			ePrefix)
+	}
 
-  return &FuncReturnError{
-    ErrPrefix:  ePrefix.String(),
-    ReturnFunc: "",
-    ErrContext: "Error: Input parameter 'signVal' must be +1 or -1.\n" +
-      "signVal='%v'\nInput parameter 'signVal' is INVALID!",
-    ErrMessage: "",
-  }
+	return &FuncReturnError{
+		ErrPrefix:  ePrefix.String(),
+		ReturnFunc: "",
+		ErrContext: "Error: Input parameter 'signVal' must be +1 or -1.\n" +
+			"signVal='%v'\nInput parameter 'signVal' is INVALID!",
+		ErrMessage: "",
+	}
 }
 
 // ShiftPrecisionLeft
@@ -7202,32 +7202,32 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.ShiftPrecisionLeft()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ShiftPrecisionLeft()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumBoson).shiftPrecisionLeft(
-    bNum,
-    shiftLeftPlaces,
-    ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' Left. shiftLeftPlaces= '%v'",
-      shiftLeftPlaces)))
+	return new(bigIntNumBoson).shiftPrecisionLeft(
+		bNum,
+		shiftLeftPlaces,
+		ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' Left. shiftLeftPlaces= '%v'",
+			shiftLeftPlaces)))
 }
 
 // ShiftPrecisionRight
@@ -7284,32 +7284,32 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 // remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.ShiftPrecisionRight()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ShiftPrecisionRight()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumBoson).shiftPrecisionRight(
-    bNum,
-    shiftRightPlaces,
-    ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' right. shiftRightPlaces= '%v'",
-      shiftRightPlaces)))
+	return new(bigIntNumBoson).shiftPrecisionRight(
+		bNum,
+		shiftRightPlaces,
+		ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' right. shiftRightPlaces= '%v'",
+			shiftRightPlaces)))
 }
 
 // SetThousandsSeparator
@@ -7324,30 +7324,30 @@ func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) error {
 // If a zero value is submitted for the input parameter
 // 'thousandsSeparator', an error will be returned.
 func (bNum *BigIntNum) SetThousandsSeparator(
-  thousandsSeparator rune) error {
+	thousandsSeparator rune) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.SetThousandsSeparator",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetThousandsSeparator",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  var nSepSymbolCode NumSepSymbolCode
+	var nSepSymbolCode NumSepSymbolCode
 
-  nSepSymbolCode = THOUSANDSYMBOL
+	nSepSymbolCode = THOUSANDSYMBOL
 
-  return new(bigIntNumBoson).setNumSepSymbol(
-    bNum,
-    nSepSymbolCode,
-    thousandsSeparator,
-    ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
+	return new(bigIntNumBoson).setNumSepSymbol(
+		bNum,
+		nSepSymbolCode,
+		thousandsSeparator,
+		ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
 }
 
 // TrimTrailingFracZeros
@@ -7367,30 +7367,30 @@ func (bNum *BigIntNum) SetThousandsSeparator(
 //	 -456.123000        -456.123
 func (bNum *BigIntNum) TrimTrailingFracZeros() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.TrimTrailingFracZeros()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.TrimTrailingFracZeros()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumBoson).trimTrailingFracZeros(
-    bNum,
-    ePrefix.XCpy("Trimming 'bNum' Trailing Frac Zeros"))
+	return new(bigIntNumBoson).trimTrailingFracZeros(
+		bNum,
+		ePrefix.XCpy("Trimming 'bNum' Trailing Frac Zeros"))
 }
 
 // TruncToDecPlace
@@ -7446,30 +7446,30 @@ func (bNum *BigIntNum) TrimTrailingFracZeros() error {
 // method.
 func (bNum *BigIntNum) TruncToDecPlace(precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.TruncToDecPlace",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.TruncToDecPlace",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Validating 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return new(bigIntNumBoson).truncToDecPlace(
-    bNum,
-    precision,
-    ePrefix.XCpy(fmt.Sprintf("Trunc 'bNum' Dec Places. precision= '%v'",
-      precision)))
+	return new(bigIntNumBoson).truncToDecPlace(
+		bNum,
+		precision,
+		ePrefix.XCpy(fmt.Sprintf("Trunc 'bNum' Dec Places. precision= '%v'",
+			precision)))
 }
