@@ -3,7 +3,7 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsInt64_01"
+	ePrefix := "TestProbability_CombinationsInt64_16"
 *************************************************
 
 	numOfItemsInt64 := int64(
@@ -14,7 +14,7 @@ Clipboard Main
 
 	var allowRepetitions bool
 
-	allowRepetitions = false
+	allowRepetitions = true
 ****************************************************
 expectedNumStr
 ****************************************************
@@ -251,7 +251,7 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsInt64_11"
+	ePrefix := "TestProbability_CombinationsInt64_28"
 *************************************************
 
 	numOfItemsInt64 := int64(
@@ -262,7 +262,7 @@ Clipboard err = nil
 
 	var allowRepetitions bool
 
-	allowRepetitions = false
+	allowRepetitions = true
 
 	_, err := new(Probability).CombinationsInt64(numOfItemsInt64, numOfItemsChosenInt64, allowRepetitions)
 
