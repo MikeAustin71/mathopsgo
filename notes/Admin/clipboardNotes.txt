@@ -3,19 +3,19 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsUint_14"
+	ePrefix := "TestProbability_CombinationsUint32_01"
 
-	numOfItemsUint := uint(
+	numOfItemsUint32 := uint32(
 ****************************************************
 )
 
-	numOfItemsChosenUint := uint(
+	numOfItemsChosenUint32 := uint32(
 ****************************************************
 )
 
-	numOfItemsUintStr := strconv.FormatUint(uint64(numOfItemsUint), 10)
+	numOfItemsUint32Str := strconv.FormatUint(uint64(numOfItemsUint32), 10)
 
-	numOfItemsChosenUintStr := strconv.FormatUint(uint64(numOfItemsChosenUint), 10)
+	numOfItemsChosenUint32Str := strconv.FormatUint(uint64(numOfItemsChosenUint32), 10)
 
 	var allowRepetitions bool
 
@@ -53,63 +53,20 @@ Clipboard Main
 
 	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+	bigIntNumResult, err := new(Probability).CombinationsUint32(numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"bINum, err := new(BigIntNum).NewNumStr(expectedNumStr)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, expectedNumStr, err.Error())
-		return
-	}
-
-	err = expectedBigINum.IsValid("Validating expectedBigINum")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	expectedBigINumStr, err := expectedBigINum.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if expectedNumStr != expectedBigINumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected Number String Values NOT Equal\n"+
-			"Because expectedNumStr != expectedBigINumStr \n"+
-			"Expected expectedBigINumStr = '%v'\n"+
-			"  Actual expectedBigINumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, expectedBigINumStr)
-
-		return
-	}
-
-	bigIntNumResult, err := new(Probability).CombinationsUint(numOfItemsUint, numOfItemsChosenUint, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n" +
-			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsUint(\n" +
-			"  numOfItemsUint, numOfItemsChosenUint, allowRepetitions)\n"+
-			"numOfItemsUint= '%v'\n" +
-			"numOfItemsChosenUint= '%v'\n" +
-			"allowRepetitions= '%v'\n" +
+			"bigIntNumResult, err := new(Probability).CombinationsUint32(\n"+
+			"  numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)\n"+
+			"numOfItemsUint32= '%v'\n"+
+			"numOfItemsChosenUint32= '%v'\n"+
+			"allowRepetitions= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsUintStr,
-			numOfItemsChosenUintStr,
+			numOfItemsUint32Str,
+			numOfItemsChosenUint32Str,
 			strconv.FormatBool(allowRepetitions),
 			err.Error())
 
@@ -219,31 +176,6 @@ Clipboard Main
 			"Expected bigIntNumResultNumStr = '%v'\n"+
 			"  Actual bigIntNumResultNumStr = '%v'\n\n",
 			ePrefix, expectedNumStr, bigIntNumResultNumStr)
-
-		return
-	}
-
-	expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(bigIntNumResult)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedAndResultBigINumsAreEqual, err :=\n"+
-			"  expectedBigINum.Equal(bigIntNumResult)\n"+
-			"expectedBigINum= '%v'\n"+
-			"bigIntNumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, expectedBigINumStr, bigIntNumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedAndResultBigINumsAreEqual == false {
-		t.Errorf("%v\n"+
-			"Error: bigIntNumResult is INVALID!\n"+
-			"Because expectedAndResultBigINumsAreEqual == false\n"+
-			"Expected bigIntNumResult = '%v'\n"+
-			"  Actual bigIntNumResult = '%v'\n\n",
-			ePrefix, expectedBigINumStr, bigIntNumResultNumStr)
 
 		return
 	}
