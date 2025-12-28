@@ -3,18 +3,26 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsNumberStr_16"
-*************************************************
+	ePrefix := "TestProbability_CombinationsUint_14"
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+	numOfItemsUint := uint(
+****************************************************
+)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+	numOfItemsChosenUint := uint(
+****************************************************
+)
+
+	numOfItemsUintStr := strconv.FormatUint(uint64(numOfItemsUint), 10)
+
+	numOfItemsChosenUintStr := strconv.FormatUint(uint64(numOfItemsChosenUint), 10)
 
 	var allowRepetitions bool
 
-	allowRepetitions = true
-****************************************************
-expectedNumStr
+	allowRepetitions = false
+
+	expectedNumStr :=
+
 ****************************************************
 
 	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
@@ -88,20 +96,20 @@ expectedNumStr
 		return
 	}
 
-	bigIntNumResult, err := new(Probability).CombinationsNumberStr(numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)
+	bigIntNumResult, err := new(Probability).CombinationsUint(numOfItemsUint, numOfItemsChosenUint, allowRepetitions)
 
 	if err != nil {
 		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsNumberStr(\n" +
-			"  numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)\n"+
-			"numOfItemsIntStr= '%v'\n" +
-			"numOfItemsChosenIntStr= '%v'\n" +
+			"bigIntNumResult, err := new(Probability).CombinationsUint(\n" +
+			"  numOfItemsUint, numOfItemsChosenUint, allowRepetitions)\n"+
+			"numOfItemsUint= '%v'\n" +
+			"numOfItemsChosenUint= '%v'\n" +
 			"allowRepetitions= '%v'\n" +
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsIntStr,
-			numOfItemsChosenIntStr,
+			numOfItemsUintStr,
+			numOfItemsChosenUintStr,
 			strconv.FormatBool(allowRepetitions),
 			err.Error())
 
@@ -317,32 +325,39 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsNumberStr_28"
+	ePrefix := "TestProbability_CombinationsUint_26"
+
+	numOfItemsUint := uint(
 *************************************************
+)
 
-	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+	numOfItemsChosenUint := uint(
+****************************************************
+)
 
-	numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+	numOfItemsUintStr := strconv.FormatUint(uint64(numOfItemsUint), 10)
+
+	numOfItemsChosenUintStr := strconv.FormatUint(uint64(numOfItemsChosenUint), 10)
 
 	var allowRepetitions bool
 
 	allowRepetitions = true
 
-	_, err := new(Probability).CombinationsNumberStr(numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)
+	_, err := new(Probability).CombinationsUint(numOfItemsUint, numOfItemsChosenUint, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
 			"Function Call:\n"+
-			"_, err = new(Probability).CombinationsNumberStr(\n"+
-			"  numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)\n"+
-			"numOfItemsIntStr= '%v'\n"+
-			"numOfItemsChosenIntStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
-			"Error should have triggered because: numOfItemsIntStr < numOfItemsChosenIntStr\n\n",
+			"_, err = new(Probability).CombinationsUint(\n"+
+			"  numOfItemsUint, numOfItemsChosenUint, allowRepetitions)\n"+
+			"numOfItemsUint= '%v'\n" +
+			"numOfItemsChosenUint= '%v'\n" +
+			"allowRepetitions= '%v'\n" +
+			"Error should have triggered because: numOfItemsUint <= numOfItemsChosenUint\n\n",
 			ePrefix,
-			numOfItemsIntStr,
-			numOfItemsChosenIntStr,
+			numOfItemsUintStr,
+			numOfItemsChosenUintStr,
 			strconv.FormatBool(allowRepetitions))
 
 		return
