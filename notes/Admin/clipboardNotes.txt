@@ -3,7 +3,7 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsUint32_01"
+	ePrefix := "TestProbability_CombinationsUint32_14"
 
 	numOfItemsUint32 := uint32(
 ****************************************************
@@ -19,7 +19,7 @@ Clipboard Main
 
 	var allowRepetitions bool
 
-	allowRepetitions = false
+	allowRepetitions = true
 
 	expectedNumStr :=
 
@@ -257,39 +257,39 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsUint_26"
+	ePrefix := "TestProbability_CombinationsUint32_26"
 
-	numOfItemsUint := uint(
+	numOfItemsUint32 := uint32(
 *************************************************
 )
 
-	numOfItemsChosenUint := uint(
+	numOfItemsChosenUint32 := uint32(
 ****************************************************
 )
 
-	numOfItemsUintStr := strconv.FormatUint(uint64(numOfItemsUint), 10)
+	numOfItemsUint32Str := strconv.FormatUint(uint64(numOfItemsUint32), 10)
 
-	numOfItemsChosenUintStr := strconv.FormatUint(uint64(numOfItemsChosenUint), 10)
+	numOfItemsChosenUint32Str := strconv.FormatUint(uint64(numOfItemsChosenUint32), 10)
 
 	var allowRepetitions bool
 
 	allowRepetitions = true
 
-	_, err := new(Probability).CombinationsUint(numOfItemsUint, numOfItemsChosenUint, allowRepetitions)
+	_, err := new(Probability).CombinationsUint32(numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
 			"Function Call:\n"+
-			"_, err = new(Probability).CombinationsUint(\n"+
-			"  numOfItemsUint, numOfItemsChosenUint, allowRepetitions)\n"+
-			"numOfItemsUint= '%v'\n" +
-			"numOfItemsChosenUint= '%v'\n" +
+			"_, err = new(Probability).CombinationsUint32(\n"+
+			"  numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)\n"+
+			"numOfItemsUint32= '%v'\n" +
+			"numOfItemsChosenUint32= '%v'\n" +
 			"allowRepetitions= '%v'\n" +
-			"Error should have triggered because: numOfItemsUint <= numOfItemsChosenUint\n\n",
+			"Error should have triggered because: numOfItemsUint32 < numOfItemsChosenUint32\n\n",
 			ePrefix,
-			numOfItemsUintStr,
-			numOfItemsChosenUintStr,
+			numOfItemsUint32Str,
+			numOfItemsChosenUint32Str,
 			strconv.FormatBool(allowRepetitions))
 
 		return
