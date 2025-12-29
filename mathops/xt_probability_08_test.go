@@ -7792,588 +7792,7212 @@ func TestProbability_PermutationsBigIntNum_25(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_01(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(3, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_01"
 
-  numOfItemsPicked := Decimal{}.NewInt(2, 0)
+  numOfItemsInt := 3
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  expectedResultStr := "6"
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "6"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_02(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(3, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_02"
 
-  numOfItemsPicked := Decimal{}.NewInt(2, 0)
+  numOfItemsInt := 3
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "9"
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "9"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_03(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(10, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_03"
 
-  numOfItemsPicked := Decimal{}.NewInt(3, 0)
+  numOfItemsInt := 10
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "1000"
+  numOfItemsChosenInt := 3
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "1000"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_04(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(20, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_04"
 
-  numOfItemsPicked := Decimal{}.NewInt(5, 0)
+  numOfItemsInt := 20
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "1860480"
+  numOfItemsChosenInt := 5
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "1860480"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_05(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(52, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_05"
 
-  numOfItemsPicked := Decimal{}.NewInt(5, 0)
+  numOfItemsInt := 52
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "311875200"
+  numOfItemsChosenInt := 5
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "311875200"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_06(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(5, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_06"
 
-  numOfItemsPicked := Decimal{}.NewInt(3, 0)
+  numOfItemsInt := 5
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "125"
+  numOfItemsChosenInt := 3
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "125"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_07(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(20, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_07"
 
-  numOfItemsPicked := Decimal{}.NewInt(5, 0)
+  numOfItemsInt := 20
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "3200000"
+  numOfItemsChosenInt := 5
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "3200000"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_08(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(5, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_08"
 
-  numOfItemsPicked := Decimal{}.NewInt(11, 0)
+  numOfItemsInt := 5
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "48828125"
+  numOfItemsChosenInt := 11
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "48828125"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_09(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(56, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_09"
 
-  numOfItemsPicked := Decimal{}.NewInt(5, 0)
+  numOfItemsInt := 56
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "458377920"
+  numOfItemsChosenInt := 5
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "458377920"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_10(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(9, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_10"
 
-  numOfItemsPicked := Decimal{}.NewInt(3, 0)
+  numOfItemsInt := 9
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "504"
+  numOfItemsChosenInt := 3
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "504"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_11(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(12, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_11"
 
-  numOfItemsPicked := Decimal{}.NewInt(7, 0)
+  numOfItemsInt := 12
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "3991680"
+  numOfItemsChosenInt := 7
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "3991680"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_12(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(18, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_12"
 
-  numOfItemsPicked := Decimal{}.NewInt(8, 0)
+  numOfItemsInt := 18
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "1764322560"
+  numOfItemsChosenInt := 8
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "1764322560"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_13(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(9, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_13"
 
-  numOfItemsPicked := Decimal{}.NewInt(9, 0)
+  numOfItemsInt := 9
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "362880"
+  numOfItemsChosenInt := 9
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "362880"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_14(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(9, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_14"
 
-  numOfItemsPicked := Decimal{}.NewInt(9, 0)
+  numOfItemsInt := 9
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "387420489"
+  numOfItemsChosenInt := 9
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "387420489"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_15(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(9, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_15"
 
-  numOfItemsPicked := Decimal{}.NewInt(1, 0)
+  numOfItemsInt := 9
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
-  expectedResultStr := "9"
+  numOfItemsChosenInt := 1
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  expectedNumStr := "9"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_16(t *testing.T) {
 
-  numOfItems := Decimal{}.NewInt(9, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_16"
 
-  numOfItemsPicked := Decimal{}.NewInt(1, 0)
+  numOfItemsInt := 9
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
-  expectedResultStr := "9"
+  numOfItemsChosenInt := 1
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  expectedNumStr := "9"
+
+  expectedAbsoluteAllDigitsStr := expectedNumStr
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: isOk == false\n\n",
+      ePrefix,
+      expectedNumStr)
+
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  big10 := big.NewInt(10)
+
+  baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+  expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
   if err != nil {
-    t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
-      "numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
-      numOfItems, numOfItemsPicked, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
 
-  if expectedResultStr != actualNumStr {
-    t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
-      expectedResultStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  decimalResult, err := new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResult, err := new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions),
+      err.Error())
+
+    return
+  }
+
+  err = decimalResult.IsValid("Validating decimalResult")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalResult.IsValid('Validating decimalResult')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultNumStr, err := decimalResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumStr, err := decimalResult.GetNumStr()\n"+
+      "decimalResult set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalResultPrecisionInt, err := decimalResult.GetPrecision()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionInt, err :=\n"+
+      "  decimalResult.GetPrecisionInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultPrecisionUint, err := decimalResult.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultPrecisionUint, err :=\n"+
+      "  decimalResult.GetPrecisionUint()\n"+
+      "decimalResultResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultScaleFactorBigInt, err := decimalResult.GetScaleVal()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultScaleFactorBigInt, err :=\n"+
+      "  decimalResult.GetScaleVal()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultSignValue, err := decimalResult.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultSignValue, err := decimalResult.GetSign()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultNumSeps, err := decimalResult.GetNumericSeparatorsDto()\n"+
+      "decimalResult= '%v\n"+
+      "Error= '%v'\n\n", ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultBigInt, err := decimalResult.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultBigInt, err :=\n"+
+      "  decimalResult.GetBigInt()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  decimalResultAbsoluteAllDigitsStr, err := decimalResult.GetAbsoluteAllDigitsStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalResultAbsoluteAllDigitsStr, err :=\n"+
+      "  decimalResult.GetAbsoluteAllDigitsStr()\n"+
+      "decimalResult= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, decimalResultNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != decimalResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != decimalResultNumStr\n"+
+      "Expected decimalResultNumStr = '%v'\n"+
+      "  Actual decimalResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, decimalResultNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != decimalResultPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != decimalResultPrecisionInt\n"+
+      "Expected decimalResultPrecisionInt = '%v'\n"+
+      "  Actual decimalResultPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, decimalResultPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != decimalResultPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Precision Uint's DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != decimalResultPrecisionUint\n"+
+      "Expected decimalResultPrecisionUint = '%v'\n"+
+      "  Actual decimalResultPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, decimalResultPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != decimalResultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != decimalResultSignValue\n"+
+      "Expected decimalResultSignValue = '%v'\n"+
+      "  Actual decimalResultSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, decimalResultSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(decimalResultNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Numeric Separators DON'T MATCH!\n"+
+      "Because expectedNumSeps != decimalResultNumSeps \n"+
+      "Expected decimalResultNumSeps = '%v'\n"+
+      "  Actual decimalResultNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), decimalResultNumSeps.String())
+
+    return
+  }
+
+  if expectedScaleFactorBigInt.Cmp(decimalResultScaleFactorBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult Scale Factors DON'T MATCH!\n"+
+      "Because expectedScaleFactorBigInt!=decimalResultScaleFactorBigInt\n"+
+      "Expected decimalResultScaleFactorBigInt = '%v'\n"+
+      "  Actual decimalResultScaleFactorBigInt = '%v'\n\n",
+      ePrefix,
+      expectedScaleFactorBigInt.Text(10),
+      decimalResultScaleFactorBigInt.Text(10))
+
+    return
+  }
+
+  if expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual Absolute All Digit Strings DON'T MATCH!\n"+
+      "Because expectedAbsoluteAllDigitsStr != decimalResultAbsoluteAllDigitsStr\n"+
+      "Expected decimalResultAbsoluteAllDigitsStr = '%v'\n"+
+      "  Actual decimalResultAbsoluteAllDigitsStr = '%v'\n\n",
+      ePrefix, expectedAbsoluteAllDigitsStr, decimalResultAbsoluteAllDigitsStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(decimalResultBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual decimalResult BigInt Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(decimalResultBigInt) != 0\n"+
+      "Expected decimalResultBigInt = '%v'\n"+
+      "  Actual decimalResultBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), decimalResultBigInt.Text(10))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_17(t *testing.T) {
-  nDecimal := 0
-  rDecimal := 4
 
-  numOfItems := Decimal{}.NewInt(nDecimal, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_17"
 
-  numOfItemsPicked := Decimal{}.NewInt(rDecimal, 0)
+  numOfItemsInt := 0
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 4
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. n==0;  n='%v' r='%v' ", nDecimal, rDecimal)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_18(t *testing.T) {
-  nInt := 15
-  rInt := 0
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_18"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 0
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. r==0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_19(t *testing.T) {
-  nInt := -15
-  rInt := 2
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_19"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := -15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. n < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_20(t *testing.T) {
-  nInt := 15
-  rInt := -2
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_20"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := -2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. r < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_21(t *testing.T) {
-  nInt := 5
-  rInt := 11
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_21"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := 5
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 11
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal("+
-      "numOfItems, numOfItemsPicked, allowRepetitions) "+
-      "However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems < decimalNumOfItemsChosen\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_22(t *testing.T) {
-  nDecimal := 0
-  rDecimal := 4
 
-  numOfItems := Decimal{}.NewInt(nDecimal, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_22"
 
-  numOfItemsPicked := Decimal{}.NewInt(rDecimal, 0)
+  numOfItemsInt := 0
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 4
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. n==0;  n='%v' r='%v' ", nDecimal, rDecimal)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems < decimalNumOfItemsChosen\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_23(t *testing.T) {
-  nInt := 15
-  rInt := 0
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_23"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 0
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. r==0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_24(t *testing.T) {
-  nInt := -15
-  rInt := 2
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_24"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := -15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. n < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItems <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsDecimal_25(t *testing.T) {
-  nInt := 15
-  rInt := -2
 
-  numOfItems := Decimal{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsDecimal_25"
 
-  numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := -2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) "+
-      "However no error was generated. r < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItems, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsInt, numOfItemsPrecisionUint)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsInt,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+      "decimalNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != decimalNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+      "Expected decimalNumOfItemsNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+    return
+  }
+
+  decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n"+
+      "  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+      "decimalNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+      "Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsDecimal(\n"+
+      "  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
+      "decimalNumOfItems= '%v'\n"+
+      "decimalNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: decimalNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      decimalNumOfItemsNumStr,
+      decimalNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
