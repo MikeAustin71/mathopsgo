@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestProbability_CombinationsUint32_10; xt_probability_06_test.go
+ TestProbability_CombinationsUint32_10; xt_probability_07_test.go
 
 -------------------------------
 git protocol
