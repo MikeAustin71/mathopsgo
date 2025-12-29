@@ -3,26 +3,17 @@ Clipboard Main
 ================================
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsUint64_20"
+	ePrefix := "TestProbability_PermutationsWithRepsBigInt_11"
 
-	numOfItemsUint64 := uint64(
+	numOfItemsBigInt := big.NewInt(int64(
 ****************************************************
-)
+))
 
-	numOfItemsChosenUint64 := uint64(
+	numOfItemsChosenBigInt := big.NewInt(int64(
 ****************************************************
-)
-
-	numOfItemsUint64Str := strconv.FormatUint(numOfItemsUint64, 10)
-
-	numOfItemsChosenUint64Str := strconv.FormatUint(numOfItemsChosenUint64, 10)
-
-	var allowRepetitions bool
-
-	allowRepetitions = true
+))
 
 	expectedNumStr :=
-
 ****************************************************
 
 	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
@@ -53,21 +44,19 @@ Clipboard Main
 
 	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	bigIntNumResult, err := new(Probability).CombinationsUint64(numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)
+	bigIntNumResult, err := new(Probability).PermutationsWithRepsBigInt(numOfItemsBigInt, numOfItemsChosenBigInt)
 
 	if err != nil {
-		t.Errorf("%v\n"+
+		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"bigIntNumResult, err := new(Probability).CombinationsUint64(\n"+
-			"  numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)\n"+
-			"numOfItemsUint64= '%v'\n"+
-			"numOfItemsChosenUint64= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
+			"bigIntNumResult, err := new(Probability).PermutationsWithRepsBigInt(\n" +
+			"  numOfItemsBigInt, numOfItemsChosenBigInt)\n"+
+			"numOfItemsBigInt= '%v'\n" +
+			"numOfItemsChosenBigInt= '%v'\n" +
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsUint64Str,
-			numOfItemsChosenUint64Str,
-			strconv.FormatBool(allowRepetitions),
+			numOfItemsBigInt.Text(10),
+			numOfItemsChosenBigInt.Text(10),
 			err.Error())
 
 		return
@@ -257,40 +246,29 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_CombinationsUint64_26"
+	ePrefix := "TestProbability_PermutationsWithRepsBigInt_11"
 
-	numOfItemsUint64 := uint64(
+	numOfItemsBigInt := big.NewInt(int64(
 ****************************************************
-)
+))
 
-	numOfItemsChosenUint64 := uint64(
+	numOfItemsChosenBigInt := big.NewInt(int64(
 ****************************************************
-)
+))
 
-	numOfItemsUint64Str := strconv.FormatUint(numOfItemsUint64, 10)
-
-	numOfItemsChosenUint64Str := strconv.FormatUint(numOfItemsChosenUint64, 10)
-
-	var allowRepetitions bool
-
-	allowRepetitions = true
-
-	_, err := new(Probability).CombinationsUint64(numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)
+	_, err := new(Probability).PermutationsWithRepsBigInt(numOfItemsBigInt, numOfItemsChosenBigInt)
 
 	if err == nil {
 		t.Errorf("%v\n"+
-			"Expected an Error, BUT NO ERROR WAS RETURNED!\n"+
-			"Function Call:\n"+
-			"_, err = new(Probability).CombinationsUint64(\n"+
-			"  numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)\n"+
-			"numOfItemsUint64= '%v'\n" +
-			"numOfItemsChosenUint64= '%v'\n" +
-			"allowRepetitions= '%v'\n" +
-			"Error should have triggered because: numOfItemsUint64 < numOfItemsChosenUint64\n\n",
+			"Error returned by:\n"+
+			"_, err := new(Probability).PermutationsNoRepsBigInt(\n"+
+			"  numOfItemsBigInt, numOfItemsChosenBigInt)\n"+
+			"numOfItemsBigInt= '%v'\n"+
+			"numOfItemsChosenBigInt= '%v'\n"+
+			"Error should have triggered because: numOfItemsBigInt < numOfItemsChosenBigInt\n\n",
 			ePrefix,
-			numOfItemsUint64Str,
-			numOfItemsChosenUint64Str,
-			strconv.FormatBool(allowRepetitions))
+			numOfItemsBigInt.Text(10),
+			numOfItemsChosenBigInt.Text(10))
 
 		return
 	}
