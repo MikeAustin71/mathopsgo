@@ -369,7 +369,7 @@ Clipboard err = nil
 ---------------------------------------------------
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsDecimal_2X"
+	ePrefix := "TestProbability_PermutationsIntAry_1X"
 
 	numOfItemsInt := X
 	numOfItemsPrecisionUint := uint(0)
@@ -386,65 +386,65 @@ Clipboard err = nil
 	allowRepetitions = X
 ****************************************************
 
-	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+	intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
 
 	if err != nil {
-		t.Errorf("%v\n" +
+		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"decimalNumOfItems, err := new(Decimal).NewInt(\n" +
-			"  numOfItemsInt, numOfItemsPrecisionUint)\n"+
-			"numOfItemsInt= '%v'\n" +
-			"numOfItemsPrecisionUint= '%v'\n" +
+			"intAryNumOfItems, err := new(IntAry).\n"+
+			"  NewInt(numOfItemsInt, 0)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsPrecisionUint= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsInt,
+			numOfItemsIntStr,
 			numOfItemsPrecisionUint,
 			err.Error())
 
 		return
 	}
 
-	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+	err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+			"err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
 			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
-	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+	intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
-			"decimalNumOfItems set to final value\n"+
+			"intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+			"intAryNumOfItems set to final value\n"+
 			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
-	if numOfItemsIntStr != decimalNumOfItemsNumStr {
+	if numOfItemsIntStr != intAryNumOfItemsNumStr {
 		t.Errorf("%v\n"+
-			"Error: decimalNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
-			"Expected decimalNumOfItemsNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+			"Error: intAryNumOfItems Initialization FAILED!\n"+
+			"Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+			"Expected intAryNumOfItemsNumStr = '%v'\n"+
+			"  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+			ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
 
 		return
 	}
 
-	decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+	intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
 
 	if err != nil {
-		t.Errorf("%v\n" +
+		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"decimalNumOfItemsChosen, err := new(Decimal).NewInt(\n" +
-			"  numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
-			"numOfItemsChosenInt= '%v'\n" +
-			"numOfItemsChosenPrecisionUint= '%v'\n" +
+			"intAryNumOfItemsChosen, err := new(IntAry).\n"+
+			"  NewInt(numOfItemsChosenInt, 0)\n"+
+			"numOfItemsChosenInt= '%v'\n"+
+			"numOfItemsChosenPrecisionUint= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
 			numOfItemsChosenInt,
@@ -454,52 +454,52 @@ Clipboard err = nil
 		return
 	}
 
-	err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+	err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+			"err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
 			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
-	decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+	intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
-			"decimalNumOfItemsChosen set to final value\n"+
+			"intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+			"intAryNumOfItemsChosen set to final value\n"+
 			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
-	if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+	if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
 		t.Errorf("%v\n"+
-			"Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
-			"Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+			"Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+			"Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+			"Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+			"  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+			ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
 
 		return
 	}
 
-	_, err = new(Probability).PermutationsDecimal(decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)
+	_, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"_, err = new(Probability).PermutationsDecimal(\n"+
-			"  decimalNumOfItems, decimalNumOfItemsChosen, allowRepetitions)\n"+
-			"decimalNumOfItems= '%v'\n"+
-			"decimalNumOfItemsChosen= '%v'\n"+
+			"_, err = new(Probability).PermutationsIntAry(\n"+
+			"  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+			"intAryNumOfItems= '%v'\n"+
+			"intAryNumOfItemsChosen= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
-			"Error should have triggered because: decimalNumOfItems < decimalNumOfItemsChosen\n\n",
+			"Error should have triggered because: intAryNumOfItems < intAryNumOfItemsChosen\n\n",
 			ePrefix,
-			decimalNumOfItemsNumStr,
-			decimalNumOfItemsChosenNumStr,
+			intAryNumOfItemsNumStr,
+			intAryNumOfItemsChosenNumStr,
 			strconv.FormatBool(allowRepetitions))
 
 		return

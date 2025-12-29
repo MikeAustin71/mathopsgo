@@ -5783,174 +5783,1263 @@ func TestProbability_PermutationsIntAry_16(t *testing.T) {
 }
 
 func TestProbability_PermutationsIntAry_17(t *testing.T) {
-  nIntAry := 0
-  rIntAry := 4
 
-  numOfItems := IntAry{}.NewInt(nIntAry, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_17"
 
-  numOfItemsPicked := IntAry{}.NewInt(rIntAry, 0)
+  numOfItemsInt := 0
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 4
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. n==0;  n='%v' r='%v' ", nIntAry, rIntAry)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_18(t *testing.T) {
-  nInt := 15
-  rInt := 0
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_18"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 0
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. r==0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_19(t *testing.T) {
-  nInt := -15
-  rInt := 2
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_19"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := -15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. n < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_20(t *testing.T) {
-  nInt := 15
-  rInt := -2
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_20"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := true
+  numOfItemsChosenInt := -2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. r < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = true
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_21(t *testing.T) {
-  nInt := 5
-  rInt := 11
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_21"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := 5
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 11
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry("+
-      "numOfItems, numOfItemsPicked, allowRepetitions) "+
-      "However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems < intAryNumOfItemsChosen\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_22(t *testing.T) {
-  nIntAry := 0
-  rIntAry := 4
 
-  numOfItems := IntAry{}.NewInt(nIntAry, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_22"
 
-  numOfItemsPicked := IntAry{}.NewInt(rIntAry, 0)
+  numOfItemsInt := 0
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 4
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. n==0;  n='%v' r='%v' ", nIntAry, rIntAry)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_23(t *testing.T) {
-  nInt := 15
-  rInt := 0
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_23"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 0
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. r==0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_24(t *testing.T) {
-  nInt := -15
-  rInt := 2
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_24"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := -15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := 2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
-  if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. n < 0;  n='%v' r='%v' ", nInt, rInt)
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
   }
 
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+
+  if err == nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItems <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
+  }
+
+  return
 }
 
 func TestProbability_PermutationsIntAry_25(t *testing.T) {
-  nInt := 15
-  rInt := -2
 
-  numOfItems := IntAry{}.NewInt(nInt, 0)
+  ePrefix := "TestProbability_PermutationsIntAry_25"
 
-  numOfItemsPicked := IntAry{}.NewInt(rInt, 0)
+  numOfItemsInt := 15
+  numOfItemsPrecisionUint := uint(0)
 
-  allowRepetitions := false
+  numOfItemsChosenInt := -2
+  numOfItemsChosenPrecisionUint := uint(0)
 
-  _, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
+  numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
+
+  numOfItemsChosenIntStr := strconv.Itoa(numOfItemsChosenInt)
+
+  var allowRepetitions bool
+
+  allowRepetitions = false
+
+  intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItems, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+      "intAryNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != intAryNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+      "Expected intAryNumOfItemsNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+    return
+  }
+
+  intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosen, err := new(IntAry).\n"+
+      "  NewInt(numOfItemsChosenInt, 0)\n"+
+      "numOfItemsChosenInt= '%v'\n"+
+      "numOfItemsChosenPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenInt,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+
+    return
+  }
+
+  err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+      "intAryNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+      "Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+    return
+  }
+
+  _, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
 
   if err == nil {
-    t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(n, r) "+
-      "However no error was generated. r < 0;  n='%v' r='%v' ", nInt, rInt)
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "_, err = new(Probability).PermutationsIntAry(\n"+
+      "  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
+      "intAryNumOfItems= '%v'\n"+
+      "intAryNumOfItemsChosen= '%v'\n"+
+      "allowRepetitions= '%v'\n"+
+      "Error should have triggered because: intAryNumOfItemsChosen <= 0\n\n",
+      ePrefix,
+      intAryNumOfItemsNumStr,
+      intAryNumOfItemsChosenNumStr,
+      strconv.FormatBool(allowRepetitions))
+
+    return
   }
+
+  return
 }
 
 func TestProbability_PermutationsINumMgr_01(t *testing.T) {
