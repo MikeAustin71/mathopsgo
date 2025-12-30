@@ -1,0 +1,466 @@
+
+
+**************************************************************
+Decimal Input Setups
+**************************************************************
+--------------------------------------------------------------
+decimalNumOfItems
+--------------------------------------------------------------
+
+	decimalNumOfItems, err := new(Decimal).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decimalNumOfItems, err := new(Decimal).\n"+
+			"  NewInt(numOfItemsInt, 0)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsPrecisionUint= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numOfItemsIntStr,
+			numOfItemsPrecisionUint,
+			err.Error())
+
+		return
+	}
+
+	err = decimalNumOfItems.IsValid("Validating decimalNumOfItems")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := decimalNumOfItems.IsValid('Validating decimalNumOfItems')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decimalNumOfItemsNumStr, err := decimalNumOfItems.GetNumStr()\n"+
+			"decimalNumOfItems set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsIntStr != decimalNumOfItemsNumStr {
+		t.Errorf("%v\n"+
+			"Error: decimalNumOfItems Initialization FAILED!\n"+
+			"Because numOfItemsIntStr != decimalNumOfItemsNumStr\n"+
+			"Expected decimalNumOfItemsNumStr = '%v'\n"+
+			"  Actual decimalNumOfItemsNumStr = '%v'\n\n",
+			ePrefix, numOfItemsIntStr, decimalNumOfItemsNumStr)
+
+		return
+	}
+--------------------------------------------------------------
+decimalNumOfItemsChosen
+--------------------------------------------------------------
+
+	decimalNumOfItemsChosen, err := new(Decimal).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decimalNumOfItemsChosen, err := new(Decimal).\n"+
+			"  NewInt(numOfItemsChosenInt, 0)\n"+
+			"numOfItemsChosenInt = '%v'\n"+
+			"numOfItemsChosenPrecisionUint = '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numOfItemsChosenIntStr,
+			numOfItemsChosenPrecisionUint,
+			err.Error())
+
+		return
+	}
+
+	err = decimalNumOfItemsChosen.IsValid("Validating decimalNumOfItemsChosen")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := decimalNumOfItemsChosen.IsValid('Validating decimalNumOfItemsChosen')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decimalNumOfItemsChosenNumStr, err := decimalNumOfItemsChosen.GetNumStr()\n"+
+			"decimalNumOfItemsChosen set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr {
+		t.Errorf("%v\n"+
+			"Error: decimalNumOfItemsChosen Initialization FAILED!\n"+
+			"Because numOfItemsChosenIntStr != decimalNumOfItemsChosenNumStr\n"+
+			"Expected decimalNumOfItemsChosenNumStr = '%v'\n"+
+			"  Actual decimalNumOfItemsChosenNumStr = '%v'\n\n",
+			ePrefix, numOfItemsChosenIntStr, decimalNumOfItemsChosenNumStr)
+
+		return
+	}
+**************************************************************
+IntAry Input Setups
+**************************************************************
+--------------------------------------------------------------
+intAryNumOfItems
+--------------------------------------------------------------
+
+	intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumOfItems, err := new(IntAry).\n"+
+			"  NewInt(numOfItemsInt, 0)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsPrecisionUint= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numOfItemsInt,
+			numOfItemsPrecisionUint,
+			err.Error())
+
+		return
+	}
+
+	err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
+			"intAryNumOfItems set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsIntStr != intAryNumOfItemsNumStr {
+		t.Errorf("%v\n"+
+			"Error: intAryNumOfItems Initialization FAILED!\n"+
+			"Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
+			"Expected intAryNumOfItemsNumStr = '%v'\n"+
+			"  Actual intAryNumOfItemsNumStr = '%v'\n\n",
+			ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
+
+		return
+	}
+--------------------------------------------------------------
+intAryNumOfItemsChosen
+--------------------------------------------------------------
+
+	intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumOfItemsChosen, err := new(IntAry).\n"+
+			"  NewInt(numOfItemsChosenInt, 0)\n"+
+			"numOfItemsChosenInt= '%v'\n"+
+			"numOfItemsChosenPrecisionUint= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			 numOfItemsChosenInt,
+			 numOfItemsChosenPrecisionUint,
+			 err.Error())
+		return
+	}
+
+	err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
+			"intAryNumOfItemsChosen set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
+		t.Errorf("%v\n"+
+			"Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
+			"Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
+			"Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
+			"  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
+			ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
+
+		return
+	}
+**************************************************************
+BigIntNum Input Setups
+**************************************************************
+--------------------------------------------------------------
+bigINumNumOfItems
+--------------------------------------------------------------
+
+	bigINumNumOfItems, err := new(BigIntNum).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"bigINumNumOfItems, err := new(BigIntNum).\n"+
+			"  NewInt(numOfItemsInt, 0)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsPrecisionUint= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numOfItemsIntStr,
+			numOfItemsPrecisionUint,
+			err.Error())
+
+		return
+	}
+
+	err = bigINumNumOfItems.IsValid("Validating bigINumNumOfItems")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := bigINumNumOfItems.IsValid('Validating bigINumNumOfItems')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"bigINumNumOfItemsNumStr, err := bigINumNumOfItems.GetNumStr()\n"+
+			"bigINumNumOfItems set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsIntStr != bigINumNumOfItemsNumStr {
+		t.Errorf("%v\n"+
+			"Error: bigINumNumOfItems Initialization FAILED!\n"+
+			"Because numOfItemsIntStr != bigINumNumOfItemsNumStr\n"+
+			"Expected bigINumNumOfItemsNumStr = '%v'\n"+
+			"  Actual bigINumNumOfItemsNumStr = '%v'\n\n",
+			ePrefix, numOfItemsIntStr, bigINumNumOfItemsNumStr)
+
+		return
+	}
+--------------------------------------------------------------
+bigINumNumOfItemsChosen
+--------------------------------------------------------------
+
+	bigINumNumOfItemsChosen, err := new(BigIntNum).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"bigINumNumOfItemsChosen, err := new(BigIntNum).\n"+
+			"  NewInt(numOfItemsChosenInt, 0)\n"+
+			"numOfItemsChosenInt = '%v'\n"+
+			"numOfItemsChosenPrecisionUint = '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numOfItemsChosenIntStr,
+			numOfItemsChosenPrecisionUint,
+			err.Error())
+			
+		return
+	}
+
+	err = bigINumNumOfItemsChosen.IsValid("Validating bigINumNumOfItemsChosen")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := bigINumNumOfItemsChosen.IsValid('Validating bigINumNumOfItemsChosen')\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"bigINumNumOfItemsChosenNumStr, err := bigINumNumOfItemsChosen.GetNumStr()\n"+
+			"bigINumNumOfItemsChosen set to final value\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr {
+		t.Errorf("%v\n"+
+			"Error: bigINumNumOfItemsChosen Initialization FAILED!\n"+
+			"Because numOfItemsChosenIntStr != bigINumNumOfItemsChosenNumStr\n"+
+			"Expected bigINumNumOfItemsChosenNumStr = '%v'\n"+
+			"  Actual bigINumNumOfItemsChosenNumStr = '%v'\n\n",
+			ePrefix, numOfItemsChosenIntStr, bigINumNumOfItemsChosenNumStr)
+
+		return
+	}
+**************************************************************
+NumStrDto Input Setups
+**************************************************************
+--------------------------------------------------------------
+numStrDtoNumOfItems
+--------------------------------------------------------------
+
+  numStrDtoNumOfItems, err := new(NumStrDto).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItems, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsInt, 0)\n"+
+      "numOfItemsInt= '%v'\n"+
+      "numOfItemsPrecisionUint= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsIntStr,
+      numOfItemsPrecisionUint,
+      err.Error())
+    return
+  }
+
+  err = numStrDtoNumOfItems.IsValid("Validating numStrDtoNumOfItems")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItems.IsValid('Validating numStrDtoNumOfItems')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsNumStr, err := numStrDtoNumOfItems.GetNumStr()\n"+
+      "numStrDtoNumOfItems set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsIntStr != numStrDtoNumOfItemsNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItems Initialization FAILED!\n"+
+      "Because numOfItemsIntStr != numStrDtoNumOfItemsNumStr\n"+
+      "Expected numStrDtoNumOfItemsNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsNumStr = '%v'\n\n",
+      ePrefix, numOfItemsIntStr, numStrDtoNumOfItemsNumStr)
+
+    return
+  }
+
+--------------------------------------------------------------
+numStrDtoNumOfItemsChosen
+--------------------------------------------------------------
+
+  numStrDtoNumOfItemsChosen, err := new(NumStrDto).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosen, err := new(NumStrDto).\n"+
+      "  NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)\n"+
+      "numOfItemsChosenInt = '%v'\n"+
+      "numOfItemsChosenPrecisionUint = '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      numOfItemsChosenIntStr,
+      numOfItemsChosenPrecisionUint,
+      err.Error())
+      
+    return
+  }
+
+  err = numStrDtoNumOfItemsChosen.IsValid("Validating numStrDtoNumOfItemsChosen")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := numStrDtoNumOfItemsChosen.IsValid('Validating numStrDtoNumOfItemsChosen')\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "numStrDtoNumOfItemsChosenNumStr, err := numStrDtoNumOfItemsChosen.GetNumStr()\n"+
+      "numStrDtoNumOfItemsChosen set to final value\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr {
+    t.Errorf("%v\n"+
+      "Error: numStrDtoNumOfItemsChosen Initialization FAILED!\n"+
+      "Because numOfItemsChosenIntStr != numStrDtoNumOfItemsChosenNumStr\n"+
+      "Expected numStrDtoNumOfItemsChosenNumStr = '%v'\n"+
+      "  Actual numStrDtoNumOfItemsChosenNumStr = '%v'\n\n",
+      ePrefix, numOfItemsChosenIntStr, numStrDtoNumOfItemsChosenNumStr)
+
+    return
+  }
+**************************************************************
+INumMgr Results Setups
+**************************************************************
+--------------------------------------------------------------
+bigINumResult
+--------------------------------------------------------------
+
+	bigINumResult, err := new(Probability).PermutationsINumMgr(&numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"bigINumResult, err := new(Probability).PermutationsINumMgr(\n"+
+			"  &numStrDtoNumOfItems, &bigINumNumOfItemsChosen, allowRepetitions)\n"+
+			"numStrDtoNumOfItems= '%v'\n"+
+			"bigINumNumOfItemsChosen= '%v'\n"+
+			"allowRepetitions= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			numStrDtoNumOfItemsNumStr,
+			bigINumNumOfItemsChosenNumStr,
+			strconv.FormatBool(allowRepetitions),
+			err.Error())
+
+		return
+	}
+**************************************************************
+THE END
+**************************************************************
