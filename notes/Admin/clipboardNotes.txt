@@ -328,9 +328,11 @@ Clipboard Main #4
 ---------------------------------------------------
 Clipboard err = nil
 ---------------------------------------------------
+================================
+Clipboard Err = nil #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsIntAry_1X"
+	ePrefix := "TestProbability_PermutationsINumMgr_2X"
 
 	numOfItemsInt := X
 	numOfItemsPrecisionUint := uint(0)
@@ -346,121 +348,24 @@ Clipboard err = nil
 
 	allowRepetitions = X
 ****************************************************
+Clipboard Err = nil #2
+****************************************************
 
-	intAryNumOfItems, err := new(IntAry).NewInt(numOfItemsInt, numOfItemsPrecisionUint)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItems, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsInt, 0)\n"+
-			"numOfItemsInt= '%v'\n"+
-			"numOfItemsPrecisionUint= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			numOfItemsIntStr,
-			numOfItemsPrecisionUint,
-			err.Error())
-
-		return
-	}
-
-	err = intAryNumOfItems.IsValid("Validating intAryNumOfItems")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItems.IsValid('Validating intAryNumOfItems')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsNumStr, err := intAryNumOfItems.GetNumStr()\n"+
-			"intAryNumOfItems set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsIntStr != intAryNumOfItemsNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItems Initialization FAILED!\n"+
-			"Because numOfItemsIntStr != intAryNumOfItemsNumStr\n"+
-			"Expected intAryNumOfItemsNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsNumStr = '%v'\n\n",
-			ePrefix, numOfItemsIntStr, intAryNumOfItemsNumStr)
-
-		return
-	}
-
-	intAryNumOfItemsChosen, err := new(IntAry).NewInt(numOfItemsChosenInt, numOfItemsChosenPrecisionUint)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosen, err := new(IntAry).\n"+
-			"  NewInt(numOfItemsChosenInt, 0)\n"+
-			"numOfItemsChosenInt= '%v'\n"+
-			"numOfItemsChosenPrecisionUint= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			numOfItemsChosenInt,
-			numOfItemsChosenPrecisionUint,
-			err.Error())
-
-		return
-	}
-
-	err = intAryNumOfItemsChosen.IsValid("Validating intAryNumOfItemsChosen")
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"err := intAryNumOfItemsChosen.IsValid('Validating intAryNumOfItemsChosen')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"intAryNumOfItemsChosenNumStr, err := intAryNumOfItemsChosen.GetNumStr()\n"+
-			"intAryNumOfItemsChosen set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr {
-		t.Errorf("%v\n"+
-			"Error: intAryNumOfItemsChosen Initialization FAILED!\n"+
-			"Because numOfItemsChosenIntStr != intAryNumOfItemsChosenNumStr\n"+
-			"Expected intAryNumOfItemsChosenNumStr = '%v'\n"+
-			"  Actual intAryNumOfItemsChosenNumStr = '%v'\n\n",
-			ePrefix, numOfItemsChosenIntStr, intAryNumOfItemsChosenNumStr)
-
-		return
-	}
-
-	_, err = new(Probability).PermutationsIntAry(intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)
+	_, err = new(Probability).PermutationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"_, err = new(Probability).PermutationsIntAry(\n"+
-			"  intAryNumOfItems, intAryNumOfItemsChosen, allowRepetitions)\n"+
-			"intAryNumOfItems= '%v'\n"+
-			"intAryNumOfItemsChosen= '%v'\n"+
+			"_, err = new(Probability).PermutationsINumMgr(\n"+
+			"  &numOfItems, &numOfItemsChosen, allowRepetitions)\n"+
+			"numOfItems= '%v'\n"+
+			"numOfItemsChosen= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
-			"Error should have triggered because: intAryNumOfItems < intAryNumOfItemsChosen\n\n",
+			"Error should have triggered because:\n" +
+			"  numOfItems < numOfItemsChosen\n\n",
 			ePrefix,
-			intAryNumOfItemsNumStr,
-			intAryNumOfItemsChosenNumStr,
+			numOfItemsNumStr,
+			numOfItemsChosenNumStr,
 			strconv.FormatBool(allowRepetitions))
 
 		return
