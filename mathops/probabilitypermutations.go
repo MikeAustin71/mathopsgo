@@ -23,6 +23,8 @@ Reference
 	https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 	https://www.youtube.com/watch?v=XqQTXW7XfYA&list=PL06A16C388F14E6FE&index=21
 	https://www.probabilitycourse.com/courses.php
+	https://mathworld.wolfram.com/Permutation.html
+  https://en.wikipedia.org/wiki/Permutation
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   *** This permutation calculation assumes NO REPETITIONS! ***
