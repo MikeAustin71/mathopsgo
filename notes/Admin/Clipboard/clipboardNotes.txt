@@ -4,13 +4,11 @@ Clipboard Main
 Clipboard Main #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsINumMgr_1X"
+	ePrefix := "TestProbability_PermutationsInt_1X"
 
 	numOfItemsInt := X
-	numOfItemsPrecisionUint := uint(0)
 
 	numOfItemsChosenInt := X
-	numOfItemsChosenPrecisionUint := uint(0)
 
 	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
@@ -95,32 +93,26 @@ Clipboard Main #2
 
 		return
 	}
-****************************************************
-Clipboard Main #3
-****************************************************
 
-	bigINumResult, err := new(Probability).PermutationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+	bigINumResult, err := new(Probability).PermutationsInt(numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"bigINumResult, err := new(Probability).PermutationsINumMgr(\n"+
-			"  &numOfItems, &numOfItemsChosen, allowRepetitions)\n"+
-			"numOfItems= '%v'\n"+
-			"numOfItemsChosen= '%v'\n"+
+			"bigINumResult, err := new(Probability).PermutationsInt(\n"+
+			"  numOfItemsInt, numOfItemsChosenInt, allowRepetitions)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsChosenInt= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsNumStr,
-			numOfItemsChosenNumStr,
+			numOfItemsIntStr,
+			numOfItemsChosenIntStr,
 			strconv.FormatBool(allowRepetitions),
 			err.Error())
 
 		return
 	}
-****************************************************
-Clipboard Main #4
-****************************************************
 
 	err = bigINumResult.IsValid("Validating bigINumResult")
 
@@ -332,13 +324,11 @@ Clipboard err = nil
 Clipboard Err = nil #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsINumMgr_2X"
+	ePrefix := "TestProbability_PermutationsInt_2X"
 
 	numOfItemsInt := X
-	numOfItemsPrecisionUint := uint(0)
 
 	numOfItemsChosenInt := X
-	numOfItemsChosenPrecisionUint := uint(0)
 
 	numOfItemsIntStr := strconv.Itoa(numOfItemsInt)
 
@@ -351,21 +341,21 @@ Clipboard Err = nil #1
 Clipboard Err = nil #2
 ****************************************************
 
-	_, err = new(Probability).PermutationsINumMgr(&numOfItems, &numOfItemsChosen, allowRepetitions)
+	_, err := new(Probability).PermutationsInt(numOfItemsInt, numOfItemsChosenInt, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"_, err = new(Probability).PermutationsINumMgr(\n"+
-			"  &numOfItems, &numOfItemsChosen, allowRepetitions)\n"+
-			"numOfItems= '%v'\n"+
-			"numOfItemsChosen= '%v'\n"+
+			"_, err := new(Probability).PermutationsInt(\n"+
+			"  numOfItemsInt, numOfItemsChosenInt, allowRepetitions)\n"+
+			"numOfItemsInt= '%v'\n"+
+			"numOfItemsChosenInt= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
 			"Error should have triggered because:\n" +
-			"  numOfItems < numOfItemsChosen\n\n",
+			"  numOfItemsInt < numOfItemsChosenInt\n\n",
 			ePrefix,
-			numOfItemsNumStr,
-			numOfItemsChosenNumStr,
+			numOfItemsIntStr,
+			numOfItemsChosenIntStr,
 			strconv.FormatBool(allowRepetitions))
 
 		return
