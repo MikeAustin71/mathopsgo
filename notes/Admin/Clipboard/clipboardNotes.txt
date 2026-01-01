@@ -4,310 +4,229 @@ Clipboard Main
 Clipboard Main #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsNumberStr_1X"
+	ePrefix := "TestStrMathOp_AddN1N2_1X"
 
-	numOfItemsIntStr := "X"
+	inputNumStr1 :=
 
-	numOfItemsChosenIntStr := "X"
+	inputNumStr2 :=
 
-	var allowRepetitions bool
+	expectedFinalNumStr :=
 
-	allowRepetitions = X
+	expectedNRunes :=
 
-	expectedNumStr := "X"
+	expectedIntArray :=
+
+	expectedPrecisionInt :=
+
+	expectedSignValue :=
+
 ****************************************************
 Clipboard Main #2
 ****************************************************
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+	expectedLengthNRunes := len(expectedNRunes)
 
-	if !isOk {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n"+
-			"Error: isOk == false\n\n",
-			ePrefix,
-			expectedNumStr)
+	expectedLengthIntArray := len(expectedIntArray)
 
-		return
-	}
+	mOps := new(StrMathOp).New()
 
-	expectedPrecisionInt := 0
-
-	expectedPrecisionUint := uint(expectedPrecisionInt)
-
-	big10 := big.NewInt(10)
-
-	baseExp := big.NewInt(int64(expectedPrecisionInt))
-
-	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
-
-	expectedSignValue := 1
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
-
-	expectedBigINum, err := new(BigIntNum).NewNumStr(expectedNumStr)
+	err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"bINum, err := new(BigIntNum).NewNumStr(expectedNumStr)\n"+
-			"expectedNumStr= '%v'\n"+
+			"err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+			"inputNumStr1= '%v'\n"+
 			"Error= '%v'\n\n",
-			ePrefix, expectedNumStr, err.Error())
+			ePrefix, inputNumStr1, err.Error())
 		return
 	}
 
-	err = expectedBigINum.IsValid("Validating expectedBigINum")
+	err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = expectedBigINum.IsValid('Validating expectedBigINum')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
+			"err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)\n"+
+			"inputNumStr2= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, inputNumStr2, err.Error())
 		return
 	}
 
-	expectedBigINumStr, err := expectedBigINum.GetNumStr()
+	err = mOps.AddN1N2()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"expectedBigINumStr, err := expectedBigINum.GetNumStr()\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	if expectedNumStr != expectedBigINumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected Number String Values NOT Equal\n"+
-			"Because expectedNumStr != expectedBigINumStr \n"+
-			"Expected expectedBigINumStr = '%v'\n"+
-			"  Actual expectedBigINumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, expectedBigINumStr)
-
-		return
-	}
-
-	bigINumResult, err := new(Probability).PermutationsNumberStr(numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResult, err := new(Probability).PermutationsNumberStr(\n"+
-			"  numOfItemsIntStr, numOfItemsChosenIntStr, allowRepetitions)\n"+
-			"numOfItemsIntStr= '%v'\n"+
-			"numOfItemsChosenIntStr= '%v'\n"+
-			"allowRepetitions= '%v'\n"+
+			"err = mOps.AddN1N2()\n"+
+			"inputNumStr1= '%v'\n"+
+			"inputNumStr2= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsIntStr,
-			numOfItemsChosenIntStr,
-			strconv.FormatBool(allowRepetitions),
+			inputNumStr1,
+			inputNumStr2,
 			err.Error())
 
 		return
 	}
 
-	err = bigINumResult.IsValid("Validating bigINumResult")
+	actualFinalNumStr, err := mOps.IFinal.GetNumStr()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err := bigINumResult.IsValid('Validating bigINumResult')\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumResultNumStr, err := bigINumResult.GetNumStr()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultNumStr, err := bigINumResult.GetNumStr()\n"+
-			"bigINumResult set to final value\n"+
-			"Error= '%v'\n\n", ePrefix, err.Error())
-		return
-	}
-
-	bigINumResultPrecisionInt, err := bigINumResult.GetPrecisionInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultPrecisionInt, err :=\n"+
-			"  bigINumResult.GetPrecisionInt()\n"+
-			"bigINumResult= '%v'\n"+
+			"actualFinalNumStr, err := mOps.IFinal.GetNumStr()\n"+
+			"inputNumStr1= '%v'\n"+
+			"inputNumStr2= '%v'\n"+
 			"Error= '%v'\n\n",
-			ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	bigINumResultPrecisionUint, err := bigINumResult.GetPrecisionUint()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultPrecisionUint, err :=\n"+
-			"  bigINumResult.GetPrecisionUint()\n"+
-			"bigINumResultResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	bigINumResultSignValue, err := bigINumResult.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultSignValue, err := bigINumResult.GetSign()\n"+
-			"bigINumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	bigINumResultNumSeps, err := bigINumResult.GetNumericSeparatorsDto()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultNumSeps, err := bigINumResult.GetNumericSeparatorsDto()\n"+
-			"bigINumResult= '%v\n"+
-			"Error= '%v'\n\n", ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	bigINumResultScaleFactorBigInt, err := bigINumResult.GetScaleFactor()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultScaleFactorBigInt, err :=\n"+
-			"  bigINumResult.GetScaleFactor()\n"+
-			"bigINumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	bigINumResultBigInt, err := bigINumResult.GetBigInt()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"bigINumResultBigInt, err :=\n"+
-			"  bigINumResult.GetBigInt()\n"+
-			"bigINumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedNumStr != bigINumResultNumStr {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != bigINumResultNumStr\n"+
-			"Expected bigINumResultNumStr = '%v'\n"+
-			"  Actual bigINumResultNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, bigINumResultNumStr)
-
-		return
-	}
-
-	expectedAndResultBigINumsAreEqual, err := expectedBigINum.Equal(bigINumResult)
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"expectedAndResultBigINumsAreEqual, err :=\n"+
-			"  expectedBigINum.Equal(bigINumResult)\n"+
-			"expectedBigINum= '%v'\n"+
-			"bigINumResult= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix, expectedBigINumStr, bigINumResultNumStr, err.Error())
-		return
-	}
-
-	if expectedAndResultBigINumsAreEqual == false {
-		t.Errorf("%v\n"+
-			"Error: bigINumResult is INVALID!\n"+
-			"Because expectedAndResultBigINumsAreEqual == false\n"+
-			"Expected bigINumResult = '%v'\n"+
-			"  Actual bigINumResult = '%v'\n\n",
-			ePrefix, expectedBigINumStr, bigINumResultNumStr)
-
-		return
-	}
-
-	if expectedPrecisionInt != bigINumResultPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Precision Integers DON'T MATCH!\n"+
-			"Because expectedPrecisionInt != bigINumResultPrecisionInt\n"+
-			"Expected bigINumResultPrecisionInt = '%v'\n"+
-			"  Actual bigINumResultPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, bigINumResultPrecisionInt)
-
-		return
-	}
-
-	if expectedPrecisionUint != bigINumResultPrecisionUint {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Precision Uint's DON'T MATCH!\n"+
-			"Because expectedPrecisionUint != bigINumResultPrecisionUint\n"+
-			"Expected bigINumResultPrecisionUint = '%v'\n"+
-			"  Actual bigINumResultPrecisionUint = '%v'\n\n",
-			ePrefix, expectedPrecisionUint, bigINumResultPrecisionUint)
-
-		return
-	}
-
-	if expectedSignValue != bigINumResultSignValue {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Sign Values DON'T MATCH!\n"+
-			"Because expectedSignValue != bigINumResultSignValue\n"+
-			"Expected bigINumResultSignValue = '%v'\n"+
-			"  Actual bigINumResultSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, bigINumResultSignValue)
-
-		return
-	}
-
-	if !expectedNumSeps.Equal(bigINumResultNumSeps) {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Numeric Separators DON'T MATCH!\n"+
-			"Because expectedNumSeps != bigINumResultNumSeps \n"+
-			"Expected bigINumResultNumSeps = '%v'\n"+
-			"  Actual bigINumResultNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), bigINumResultNumSeps.String())
-
-		return
-	}
-
-	if expectedScaleFactorBigInt.Cmp(bigINumResultScaleFactorBigInt) != 0 {
-		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult Scale Factors DON'T MATCH!\n"+
-			"Because expectedScaleFactorBigInt!=bigINumResultScaleFactorBigInt\n"+
-			"Expected bigINumResultScaleFactorBigInt = '%v'\n"+
-			"  Actual bigINumResultScaleFactorBigInt = '%v'\n\n",
 			ePrefix,
-			expectedScaleFactorBigInt.Text(10),
-			bigINumResultScaleFactorBigInt.Text(10))
+			inputNumStr1,
+			inputNumStr2,
+			err.Error())
 
 		return
 	}
 
-	if expectedBigInt.Cmp(bigINumResultBigInt) != 0 {
+	actualFinalPrecisionInt := mOps.IFinal.GetPrecision()
+
+	actualFinalSignValue, err := mOps.IFinal.GetSign()
+
+	if err != nil {
 		t.Errorf("%v\n"+
-			"Error: Expected vs Actual bigINumResult BigInt Values DON'T MATCH!\n"+
-			"Because expectedBigInt.Cmp(bigINumResultBigInt) != 0\n"+
-			"Expected bigINumResultBigInt = '%v'\n"+
-			"  Actual bigINumResultBigInt = '%v'\n\n",
-			ePrefix, expectedBigInt.Text(10), bigINumResultBigInt.Text(10))
+			"Error returned by:\n"+
+			"actualFinalSignValue, err := mOps.IFinal.GetSign()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	actualLengthNRunes := mOps.IFinal.GetIntAryLength()
+
+	actualLengthIntArray := mOps.IFinal.GetIntAryLength()
+
+	if expectedFinalNumStr != actualFinalNumStr {
+		t.Errorf("%v\n"+
+			"Error: actualFinalNumStr Result is INVALID!\n"+
+			"Because expectedFinalNumStr != actualFinalNumStr\n"+
+			"Expected actualFinalNumStr = '%v'\n"+
+			"  Actual actualFinalNumStr = '%v'\n\n",
+			ePrefix, actualFinalNumStr, actualFinalNumStr)
 
 		return
+	}
+
+	if expectedPrecisionInt != actualFinalPrecisionInt {
+		t.Errorf("%v\n"+
+			"Error: actualFinalPrecisionInt Result is INVALID!\n"+
+			"Because expectedPrecisionInt != actualFinalPrecisionInt\n"+
+			"Expected actualFinalPrecisionInt = '%v'\n"+
+			"  Actual actualFinalPrecisionInt = '%v'\n\n",
+			ePrefix, expectedPrecisionInt, actualFinalPrecisionInt)
+
+		return
+	}
+
+	if expectedSignValue != actualFinalSignValue {
+		t.Errorf("%v\n"+
+			"Error: actualFinalSignValue is INVALID!\n"+
+			"Because expectedSignValue != actualFinalSignValue\n"+
+			"Expected actualFinalSignValue = '%v'\n"+
+			"  Actual actualFinalSignValue = '%v'\n\n",
+			ePrefix, expectedSignValue, actualFinalSignValue)
+
+		return
+	}
+
+	if expectedLengthNRunes != actualLengthNRunes {
+		t.Errorf("%v\n"+
+			"Error: actualLengthNRunes is INVALID!\n"+
+			"Because expectedLengthNRunes != actualLengthNRunes\n"+
+			"Expected actualLengthNRunes = '%v'\n"+
+			"  Actual actualLengthNRunes = '%v'\n\n",
+			ePrefix, expectedLengthNRunes, actualLengthNRunes)
+
+		return
+	}
+
+	if expectedLengthIntArray != actualLengthIntArray {
+		t.Errorf("%v\n"+
+			"Error: actualLengthIntArray Result is INVALID!\n"+
+			"Because expectedLengthIntArray != actualLengthIntArray\n"+
+			"Expected actualLengthIntArray = '%v'\n"+
+			"  Actual actualLengthIntArray = '%v'\n\n",
+			ePrefix, expectedLengthIntArray, actualLengthIntArray)
+
+		return
+	}
+
+	var actualRune rune
+
+	for i := 0; i < expectedLengthNRunes; i++ {
+
+		actualRune, err = mOps.IFinal.GetIntAryRune(i)
+
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"actualRune, err := mOps.IFinal.GetIntAryRune(i)\n"+
+				"i= '%v'\n"+
+				"Error= '%v'\n\n",
+				ePrefix, i, err.Error())
+			return
+		}
+
+		if expectedNRunes[i] != actualRune {
+			t.Errorf("%v\n"+
+				"Error: expected VS actual rune DO NOT MATCH!\n"+
+				"Because expectedNRunes[i] != actualRune\n"+
+				"Expected actualRune = '%v'\n"+
+				"  Actual actualRune = '%v'\n"+
+				"Index 'i' = '%v'\n\n",
+				ePrefix, expectedNRunes[i], actualRune, i)
+
+			return
+		}
+
+	}
+
+	var elementUint8 uint8
+
+	var actualArrayElement int
+
+	for i := 0; i < expectedLengthIntArray; i++ {
+
+		elementUint8, err = mOps.IFinal.GetIntAryElement(i)
+
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"elementUint8, err = mOps.IFinal.GetIntAryElement(i)\n"+
+				"i= '%v'\n"+
+				"Error= '%v'\n\n",
+				ePrefix, i, err.Error())
+			return
+		}
+
+		actualArrayElement = int(elementUint8)
+
+		if expectedIntArray[i] != actualArrayElement {
+
+			t.Error("Error: Expected IntAry Array does NOT match ia.IntAry! ")
+			return
+
+		}
+
+		if expectedIntArray[i] != actualArrayElement {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected actualArrayElement = '%v'\n"+
+				"  Actual actualArrayElement = '%v'\n"+
+				"Index 'i' = '%v'\n\n",
+				ePrefix, expectedIntArray[i], actualArrayElement, i)
+
+			return
+		}
+
 	}
 
 	return
