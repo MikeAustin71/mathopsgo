@@ -1,590 +1,1007 @@
 package examples
 
 import (
-	"fmt"
-	"github.com/mikeaustin71/mathops"
-	"math/big"
-	"time"
+  "fmt"
+  "math/big"
+  "time"
+
+  "github.com/mikeaustin71/mathops"
 )
 
 func TestBigIntToPositiveFractionalPower(
-	base,
-	basePrecision,
-	exponent,
-	exponentPrecision,
-	maxPrecision *big.Int,
-	expectedResult string) {
+  base,
+  basePrecision,
+  exponent,
+  exponentPrecision,
+  maxPrecision *big.Int,
+  expectedResult string) {
 
-	timeStart := time.Now()
-	result,
-		resultPrecision,
-		err := mathops.BigIntMathPower{}.BigIntToPositiveFractionalPower(
-		base,
-		basePrecision,
-		exponent,
-		exponentPrecision,
-		maxPrecision)
+  timeStart := time.Now()
+  result,
+    resultPrecision,
+    err := new(mathops.BigIntMathPower).BigIntToPositiveFractionalPower(
+    base,
+    basePrecision,
+    exponent,
+    exponentPrecision,
+    maxPrecision)
 
-	timeEnd := time.Now()
+  if err != nil {
 
-	if err != nil {
-		fmt.Printf("%v ", err.Error())
-	}
+    fmt.Printf("%v ", err.Error())
 
-	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
-	timeDuration := timeEnd.Sub(timeStart)
+    return
+  }
 
-	duration := CodeDurationToStr(timeDuration)
+  timeEnd := time.Now()
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("BigIntMathPower{}.BigIntToPositiveFractionalPower() ")
-	fmt.Println("============================================================")
-	fmt.Println("                  base: ", base.Text(10))
-	fmt.Println("         basePrecision: ", basePrecision.Text(10))
-	fmt.Println("              exponent: ", exponent.Text(10))
-	fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
-	fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision)
-	fmt.Println("         result NumStr: ", binResult.GetNumStr())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  binResult, err := new(mathops.BigIntNum).NewBigInt(result, uint(resultPrecision.Uint64()))
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
+  if err != nil {
+    fmt.Printf("%v ", err.Error())
+    return
+  }
 
-	timeStart = time.Now()
-	binPwr, err := mathops.BigIntMathPower{}.BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(...) "+
-			"Error='%v' ", err.Error())
-	}
+  timeDuration := timeEnd.Sub(timeStart)
 
-	timeDuration = timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
 
-	duration = CodeDurationToStr(timeDuration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
-	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v ", err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("BigIntMathPower{}.BigIntToPositiveFractionalPower() ")
+  fmt.Println("============================================================")
+  fmt.Println("                  base: ", base.Text(10))
+  fmt.Println("         basePrecision: ", basePrecision.Text(10))
+  fmt.Println("              exponent: ", exponent.Text(10))
+  fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
+  fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision)
+  fmt.Println("         result NumStr: ", binResultNumStr)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
+
+  binBase, err := new(mathops.BigIntNum).NewBigIntBigPrecision(base, basePrecision)
+
+  if err != nil {
+    fmt.Printf("%v ", err.Error())
+    return
+  }
+
+  binExponent, err := new(mathops.BigIntNum).NewBigIntBigPrecision(exponent, exponentPrecision)
+
+  timeStart = time.Now()
+
+  binPwr, err := new(mathops.BigIntMathPower).BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("Error returned by BigIntMathPower.BigIntNumPwr(...) "+
+      "Error='%v' ", err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
+  timeDuration = timeEnd.Sub(timeStart)
+
+  duration = CodeDurationToStr(timeDuration)
+
+  binPwrNumStr, err := binPwr.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      " binPwrNumStr, err := binPwr.GetNumStr() "+
+      "Error='%v' ", err.Error())
+    return
+  }
+
+  binPwrPrecisionInt, err := binPwr.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      " binPwrPrecisionInt, err := binPwr.GetPrecisionInt() "+
+      "Error='%v' ", err.Error())
+    return
+  }
+
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("     BigIntNum  result: ", binPwrNumStr)
+  fmt.Println("   BigIntNum precision: ", binPwrPrecisionInt)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
+
 }
 
 func TestBigIntNegativeFractionalNthRoot(
-	radicand,
-	radicandPrecision,
-	nthRoot,
-	nthRootPrecision,
-	maxPrecision *big.Int,
-	expectedValue string) {
+  radicand,
+  radicandPrecision,
+  nthRoot,
+  nthRootPrecision,
+  maxPrecision *big.Int,
+  expectedValue string) {
 
-	fdNr := mathops.FixedDecimalNthRoot{}
-	timeStart := time.Now()
-	result, resultPrecision, err :=
-		fdNr.CalculateNegativeFractionalNthRoot(
-			radicand,
-			radicandPrecision,
-			nthRoot,
-			nthRootPrecision,
-			maxPrecision)
-	timeEnd := time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by fdNr.CalculateNegativeFractionalNthRoot(...) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  fdNr := mathops.FixedDecimalNthRoot{}
+  timeStart := time.Now()
+  result, resultPrecision, err :=
+    fdNr.CalculateNegativeFractionalNthRoot(
+      radicand,
+      radicandPrecision,
+      nthRoot,
+      nthRootPrecision,
+      maxPrecision)
+  timeEnd := time.Now()
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "  result, resultPrecision, err :=\n"+
+      "fdNr.CalculateNegativeFractionalNthRoot(...)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-			"Error='%v' ", err.Error())
-	}
+  resultBiNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
-	timeDuration := timeEnd.Sub(timeStart)
-	duration := CodeDurationToStr(timeDuration)
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "  resultBiNum, err := BigIntNum.\n"+
+      "NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.CalculateNegativeFractionalNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", radicand.Text(10))
-	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
-	fmt.Println("               nthRoot: ", nthRoot.Text(10))
-	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
-	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  timeDuration := timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
 
-	binRadicand, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
-	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(nthRoot, nthRootPrecision)
-	uintMaxPrecision := uint(maxPrecision.Uint64())
-	timeStart = time.Now()
-	binRoot, err := mathops.BigIntMathNthRoot{}.GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathNthRoot{}.GetNthRoot() "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  resultBiNumNumStr, err := resultBiNum.GetNumStr()
 
-	timeDuration = timeEnd.Sub(timeStart)
-	duration = CodeDurationToStr(timeDuration)
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "  resultBiNumNumStr, err := resultBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println("============================================================")
-	fmt.Println("           BigIntMathNthRoot{}.GetNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", binRadicand.GetNumStr())
-	fmt.Println("     radicandPrecision: ", binRadicand.GetPrecisionInt())
-	fmt.Println("               nthRoot: ", binNthRoot.GetNumStr())
-	fmt.Println("      nthRootPrecision: ", binNthRoot.GetPrecisionInt())
-	fmt.Println("     Maximum Precision: ", uintMaxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", binRoot.GetNumStr())
-	fmt.Println("       resultPrecision: ", binRoot.GetPrecisionInt())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.CalculateNegativeFractionalNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", radicand.Text(10))
+  fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+  fmt.Println("               nthRoot: ", nthRoot.Text(10))
+  fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+  fmt.Println("     Maximum Precision: ", maxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+  fmt.Println("         result NumStr: ", resultBiNumNumStr)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
+
+  binRadicand, err := new(mathops.BigIntNum).NewBigIntBigPrecision(radicand, radicandPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "  binRadicand, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRoot, err := new(mathops.BigIntNum).NewBigIntBigPrecision(nthRoot, nthRootPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRoot, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(nthRoot, nthRootPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  uintMaxPrecision := uint(maxPrecision.Uint64())
+
+  timeStart = time.Now()
+
+  binRoot, err := new(mathops.BigIntMathNthRoot).GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicand, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
+  timeDuration = timeEnd.Sub(timeStart)
+  duration = CodeDurationToStr(timeDuration)
+
+  binRadicandNumStr, err := binRadicand.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicandNumStr, err := binRadicand.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binRadicandPrecisionInt, err := binRadicand.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicandPrecisionInt, err := binRadicand.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRootNumStr, err := binRadicand.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRootNumStr, err := binRadicand.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRootPrecisionInt, err := binRadicand.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRootNumStr, err := binRadicand.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binRootNumStr, err := binRoot.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRootNumStr, err := binRoot.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binRootPrecisionInt, err := binRoot.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println("============================================================")
+  fmt.Println("           BigIntMathNthRoot{}.GetNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", binRadicandNumStr)
+  fmt.Println("     radicandPrecision: ", binRadicandPrecisionInt)
+  fmt.Println("               nthRoot: ", binNthRootNumStr)
+  fmt.Println("      nthRootPrecision: ", binNthRootPrecisionInt)
+  fmt.Println("     Maximum Precision: ", uintMaxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", binRootNumStr)
+  fmt.Println("       resultPrecision: ", binRootPrecisionInt)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestBigIntPositiveFractionalNthRoot(
-	radicand,
-	radicandPrecision,
-	nthRoot,
-	nthRootPrecision,
-	maxPrecision *big.Int,
-	expectedValue string) {
+  radicand,
+  radicandPrecision,
+  nthRoot,
+  nthRootPrecision,
+  maxPrecision *big.Int,
+  expectedValue string) {
 
-	fdNr := mathops.FixedDecimalNthRoot{}
-	timeStart := time.Now()
-	result, resultPrecision, err :=
-		fdNr.CalculatePositiveFractionalNthRoot(
-			radicand,
-			radicandPrecision,
-			nthRoot,
-			nthRootPrecision,
-			maxPrecision)
-	timeEnd := time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by fdNr.CalculatePositiveFractionalNthRoot(...) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  fdNr := mathops.FixedDecimalNthRoot{}
+  timeStart := time.Now()
+  result, resultPrecision, err :=
+    fdNr.CalculatePositiveFractionalNthRoot(
+      radicand,
+      radicandPrecision,
+      nthRoot,
+      nthRootPrecision,
+      maxPrecision)
+  timeEnd := time.Now()
+  if err != nil {
+    fmt.Printf("Error returned by fdNr.CalculatePositiveFractionalNthRoot(...) "+
+      "Error='%v' ", err.Error())
+    return
+  }
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
-	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNum, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	timeDuration := timeEnd.Sub(timeStart)
-	duration := CodeDurationToStr(timeDuration)
+  timeDuration := timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.CalculatePositiveFractionalNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", radicand.Text(10))
-	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
-	fmt.Println("               nthRoot: ", nthRoot.Text(10))
-	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
-	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  resultBiNumStr, err := resultBiNum.GetNumStr()
 
-	binRadicand, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
-	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(nthRoot, nthRootPrecision)
-	uintMaxPrecision := uint(maxPrecision.Uint64())
-	timeStart = time.Now()
-	binRoot, err := mathops.BigIntMathNthRoot{}.GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathNthRoot{}.GetNthRoot() "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNumStr, err := resultBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	timeDuration = timeEnd.Sub(timeStart)
-	duration = CodeDurationToStr(timeDuration)
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.CalculatePositiveFractionalNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", radicand.Text(10))
+  fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+  fmt.Println("               nthRoot: ", nthRoot.Text(10))
+  fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+  fmt.Println("     Maximum Precision: ", maxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+  fmt.Println("         result NumStr: ", resultBiNumStr)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
-	fmt.Println()
-	fmt.Println("============================================================")
-	fmt.Println("           BigIntMathNthRoot{}.GetNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", binRadicand.GetNumStr())
-	fmt.Println("     radicandPrecision: ", binRadicand.GetPrecisionInt())
-	fmt.Println("               nthRoot: ", binNthRoot.GetNumStr())
-	fmt.Println("      nthRootPrecision: ", binNthRoot.GetPrecisionInt())
-	fmt.Println("     Maximum Precision: ", uintMaxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", binRoot.GetNumStr())
-	fmt.Println("       resultPrecision: ", binRoot.GetPrecisionInt())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  binRadicand, err := new(mathops.BigIntNum).NewBigIntBigPrecision(radicand, radicandPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicand, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRoot, err := new(mathops.BigIntNum).NewBigIntBigPrecision(nthRoot, nthRootPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRoot, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(nthRoot, nthRootPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  uintMaxPrecision := uint(maxPrecision.Uint64())
+
+  timeStart = time.Now()
+
+  binRoot, err := new(mathops.BigIntMathNthRoot).GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRoot, err := new(mathops.BigIntMathNthRoot).\n"+
+      "  GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
+  timeDuration = timeEnd.Sub(timeStart)
+  duration = CodeDurationToStr(timeDuration)
+
+  binRadicandNumStr, err := binRadicand.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicandNumStr, err := binRadicand.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binRadicandPrecisionInt, err := binRadicand.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRadicandNumStr, err := binRadicand.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRootNumStr, err := binNthRoot.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRootNumStr, err := binNthRoot.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRootPrecisionInt, err := binNthRoot.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRootPrecisionInt, err := binNthRoot.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binNthRootNumStr, err = binRoot.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binNthRootNumStr, err = binRoot.GetNumStr()\n"+
+      "Item # 2\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  binRootPrecisionInt, err := binRoot.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println("============================================================")
+  fmt.Println("           BigIntMathNthRoot{}.GetNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", binRadicandNumStr)
+  fmt.Println("     radicandPrecision: ", binRadicandPrecisionInt)
+  fmt.Println("               nthRoot: ", binNthRootNumStr)
+  fmt.Println("      nthRootPrecision: ", binNthRootPrecisionInt)
+  fmt.Println("     Maximum Precision: ", uintMaxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", binNthRootNumStr)
+  fmt.Println("       resultPrecision: ", binRootPrecisionInt)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestBigIntNegativeIntNthRoot(
-	radicand,
-	radicandPrecision,
-	nthRoot,
-	nthRootPrecision,
-	maxPrecision *big.Int,
-	expectedValue string) {
+  radicand,
+  radicandPrecision,
+  nthRoot,
+  nthRootPrecision,
+  maxPrecision *big.Int,
+  expectedValue string) {
 
-	fdNr := mathops.FixedDecimalNthRoot{}
-	timeStart := time.Now()
-	result, resultPrecision, err :=
-		fdNr.CalculateNegativeIntegerNthRoot(
-			radicand,
-			radicandPrecision,
-			nthRoot,
-			nthRootPrecision,
-			maxPrecision)
-	timeEnd := time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  fdNr := mathops.FixedDecimalNthRoot{}
+  timeStart := time.Now()
+  result, resultPrecision, err :=
+    fdNr.CalculateNegativeIntegerNthRoot(
+      radicand,
+      radicandPrecision,
+      nthRoot,
+      nthRootPrecision,
+      maxPrecision)
+  timeEnd := time.Now()
+  if err != nil {
+    fmt.Printf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
+      "Error='%v' ", err.Error())
+    return
+  }
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  resultBiNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
-	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNum, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(result, resultPrecision)"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	timeDuration := timeEnd.Sub(timeStart)
-	duration := CodeDurationToStr(timeDuration)
+  timeDuration := timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.CalculateNegativeIntegerNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", radicand.Text(10))
-	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
-	fmt.Println("               nthRoot: ", nthRoot.Text(10))
-	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
-	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  resultBiNumStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNumStr, err := resultBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.CalculateNegativeIntegerNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", radicand.Text(10))
+  fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+  fmt.Println("               nthRoot: ", nthRoot.Text(10))
+  fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+  fmt.Println("     Maximum Precision: ", maxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+  fmt.Println("         result NumStr: ", resultBiNumStr)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestBigIntPositiveIntNthRoot(
-	radicand,
-	radicandPrecision,
-	nthRoot,
-	nthRootPrecision,
-	maxPrecision *big.Int,
-	expectedValue string) {
+  radicand,
+  radicandPrecision,
+  nthRoot,
+  nthRootPrecision,
+  maxPrecision *big.Int,
+  expectedValue string) {
 
-	timeStart := time.Now()
-	timeEnd := time.Now()
+  timeStart := time.Now()
+  timeEnd := time.Now()
 
-	fdNr := mathops.FixedDecimalNthRoot{}
-	timeStart = time.Now()
-	result, resultPrecision, err :=
-		fdNr.CalculatePositiveIntegerNthRoot(
-			radicand,
-			radicandPrecision,
-			nthRoot,
-			nthRootPrecision,
-			maxPrecision)
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  fdNr := new(mathops.FixedDecimalNthRoot)
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
+  timeStart = time.Now()
 
-	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
-			"Error='%v' ", err.Error())
-	}
+  result, resultPrecision, err :=
+    fdNr.CalculatePositiveIntegerNthRoot(
+      radicand,
+      radicandPrecision,
+      nthRoot,
+      nthRootPrecision,
+      maxPrecision)
 
-	timeDuration := timeEnd.Sub(timeStart)
-	duration := CodeDurationToStr(timeDuration)
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "result, resultPrecision, err :=\n"+
+      "  fdNr.CalculatePositiveIntegerNthRoot(\n"+
+      "   radicand, radicandPrecision, nthRoot,\n"+
+      "   nthRootPrecision, maxPrecision)\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot() ")
-	fmt.Println("============================================================")
-	fmt.Println("              radicand: ", radicand.Text(10))
-	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
-	fmt.Println("               nthRoot: ", nthRoot.Text(10))
-	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
-	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
-	fmt.Println("       expected result: ", expectedValue)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  timeEnd = time.Now()
+
+  resultBiNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNum, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(result, resultPrecision)"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  timeDuration := timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
+
+  resultBiNumStr, err := resultBiNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("Error returned by:\n"+
+      "resultBiNumStr, err := resultBiNum.GetNumStr()\n"+
+      "Error='%v'\n\n", err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot() ")
+  fmt.Println("============================================================")
+  fmt.Println("              radicand: ", radicand.Text(10))
+  fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+  fmt.Println("               nthRoot: ", nthRoot.Text(10))
+  fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+  fmt.Println("     Maximum Precision: ", maxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+  fmt.Println("         result NumStr: ", resultBiNumStr)
+  fmt.Println("       expected result: ", expectedValue)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestBigIntNegativeIntPower(
-	base,
-	basePrecision,
-	exponent,
-	exponentPrecision,
-	maxPrecision *big.Int,
-	expectedResult string) {
+  base,
+  basePrecision,
+  exponent,
+  exponentPrecision,
+  maxPrecision *big.Int,
+  expectedResult string) {
 
-	timeStart := time.Now()
-	result,
-		resultPrecision,
-		err := mathops.BigIntMathPower{}.BigIntToNegativeIntegerPower(
-		base,
-		basePrecision,
-		exponent,
-		exponentPrecision,
-		maxPrecision)
+  ePrefix := "maintests.TestBigIntNegativeIntPower()"
 
-	timeEnd := time.Now()
+  timeStart := time.Now()
 
-	if err != nil {
-		fmt.Printf("%v", err.Error())
-	}
+  result,
+    resultPrecision,
+    err := new(mathops.BigIntMathPower).BigIntToNegativeIntegerPower(
+    base,
+    basePrecision,
+    exponent,
+    exponentPrecision,
+    maxPrecision)
 
-	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result,resultPrecision, err := new(mathops.BigIntMathPower).BigIntToNegativeIntegerPower(\n"+
+      "  base, basePrecision, exponent, exponentPrecision, maxPrecision)"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	timeDuration := timeEnd.Sub(timeStart)
-	duration := CodeDurationToStr(timeDuration)
+  timeEnd := time.Now()
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("BigIntMathPower{}.BigIntToNegativeIntegerPower() ")
-	fmt.Println("============================================================")
-	fmt.Println("                  base: ", base.Text(10))
-	fmt.Println("         basePrecision: ", basePrecision)
-	fmt.Println("              exponent: ", exponent.Text(10))
-	fmt.Println("     exponentPrecision: ", basePrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision)
-	fmt.Println("         result NumStr: ", binResult.GetNumStr())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  binResult, err := new(mathops.BigIntNum).NewBigInt(result, uint(resultPrecision.Uint64()))
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(mathops.BigIntNum).NewBigInt(\n"+
+      "  result, uint(resultPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	timeStart = time.Now()
-	binPwr, err := mathops.BigIntMathPower{}.BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(...) "+
-			"Error='%v' ", err.Error())
-	}
+  timeDuration := timeEnd.Sub(timeStart)
+  duration := CodeDurationToStr(timeDuration)
 
-	timeDuration = timeEnd.Sub(timeStart)
+  binResultNumStr, err := binResult.GetNumStr()
 
-	duration = CodeDurationToStr(timeDuration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
-	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("BigIntMathPower{}.BigIntToNegativeIntegerPower() ")
+  fmt.Println("============================================================")
+  fmt.Println("                  base: ", base.Text(10))
+  fmt.Println("         basePrecision: ", basePrecision)
+  fmt.Println("              exponent: ", exponent.Text(10))
+  fmt.Println("     exponentPrecision: ", basePrecision)
+  fmt.Println("     Maximum Precision: ", maxPrecision)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision)
+  fmt.Println("         result NumStr: ", binResultNumStr)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
+
+  binBase, err := new(mathops.BigIntNum).NewBigIntBigPrecision(base, basePrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binBase, err := new(mathops.BigIntNum).NewBigIntBigPrecision(\n"+
+      "  base, basePrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  binExponent, err := new(mathops.BigIntNum).NewBigIntBigPrecision(exponent, exponentPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binExponent, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(exponent, exponentPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeStart = time.Now()
+
+  binPwr, err := new(mathops.BigIntMathPower).BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwr, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
+  timeDuration = timeEnd.Sub(timeStart)
+
+  binPwrNumStr, err := binPwr.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrNumStr, err := binPwr.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  binPwrPrecisionInt, err := binPwr.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrPrecisionInt, err := binPwr.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  duration = CodeDurationToStr(timeDuration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("     BigIntNum  result: ", binPwrNumStr)
+  fmt.Println("   BigIntNum precision: ", binPwrPrecisionInt)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestBigIntPositiveIntPower(
-	base,
-	basePrecision,
-	exponent,
-	exponentPrecision,
-	maxPrecision *big.Int,
-	expectedResult string) {
+  base,
+  basePrecision,
+  exponent,
+  exponentPrecision,
+  maxPrecision *big.Int,
+  expectedResult string) {
 
-	timeStart := time.Now()
-	result,
-		resultPrecision,
-		err := mathops.BigIntMathPower{}.BigIntToPositiveIntegerPower(
-		base,
-		basePrecision,
-		exponent,
-		exponentPrecision,
-		maxPrecision)
+  ePrefix := "maintests.TestBigIntPositiveIntPower()"
 
-	timeEnd := time.Now()
+  timeStart := time.Now()
+  result,
+    resultPrecision,
+    err := new(mathops.BigIntMathPower).BigIntToPositiveIntegerPower(
+    base,
+    basePrecision,
+    exponent,
+    exponentPrecision,
+    maxPrecision)
 
-	if err != nil {
-		fmt.Printf("%v ", err.Error())
-		return
-	}
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntToPositiveIntegerPower(base, basePrecision, exponent,\n"+
+      "   exponentPrecision, maxPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
-	timeDuration := timeEnd.Sub(timeStart)
+  timeEnd := time.Now()
 
-	duration := CodeDurationToStr(timeDuration)
+  binResult, err := new(mathops.BigIntNum).NewBigInt(result, uint(resultPrecision.Uint64()))
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("BigIntMathPower{}.BigIntToPositiveIntegerPower() ")
-	fmt.Println("============================================================")
-	fmt.Println("                  base: ", base.Text(10))
-	fmt.Println("         basePrecision: ", basePrecision.Text(10))
-	fmt.Println("              exponent: ", exponent.Text(10))
-	fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
-	fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                result: ", result.Text(10))
-	fmt.Println("       resultPrecision: ", resultPrecision)
-	fmt.Println("         result NumStr: ", binResult.GetNumStr())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(mathops.BigIntNum).n"+
+      "  NewBigInt(result, uint(resultPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
+  timeDuration := timeEnd.Sub(timeStart)
 
-	timeStart = time.Now()
-	binPwr, err := mathops.BigIntMathPower{}.BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
-	timeEnd = time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(...) "+
-			"Error='%v' ", err.Error())
-	}
+  duration := CodeDurationToStr(timeDuration)
 
-	timeDuration = timeEnd.Sub(timeStart)
+  binResultNumStr, err := binResult.GetNumStr()
 
-	duration = CodeDurationToStr(timeDuration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
-	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())
-	fmt.Println("        expectedResult: ", expectedResult)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("Execution Time: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("BigIntMathPower{}.BigIntToPositiveIntegerPower() ")
+  fmt.Println("============================================================")
+  fmt.Println("                  base: ", base.Text(10))
+  fmt.Println("         basePrecision: ", basePrecision.Text(10))
+  fmt.Println("              exponent: ", exponent.Text(10))
+  fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
+  fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                result: ", result.Text(10))
+  fmt.Println("       resultPrecision: ", resultPrecision)
+  fmt.Println("         result NumStr: ", binResultNumStr)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
+
+  binBase, err := new(mathops.BigIntNum).NewBigIntBigPrecision(base, basePrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binBase, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(base, basePrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  binExponent, err := new(mathops.BigIntNum).NewBigIntBigPrecision(exponent, exponentPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binExponent, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(exponent, exponentPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeStart = time.Now()
+
+  binPwr, err := new(mathops.BigIntMathPower).BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwr, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
+  timeDuration = timeEnd.Sub(timeStart)
+
+  binPwrNumStr, err := binPwr.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrNumStr, err := binPwr.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  binPwrPrecisionInt, err := binPwr.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrPrecisionInt, err := binPwr.GetPrecisionInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  duration = CodeDurationToStr(timeDuration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("     BigIntNum  result: ", binPwrNumStr)
+  fmt.Println("   BigIntNum precision: ", binPwrPrecisionInt)
+  fmt.Println("        expectedResult: ", expectedResult)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("Execution Time: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println()
 
 }
 
 func TestFixDecNthRootFmtFracDigits(
-	radicand,
-	radicandPrecision,
-	nthRoot,
-	nthRootPrecision,
-	maxPrecision *big.Int) {
+  radicand,
+  radicandPrecision,
+  nthRoot,
+  nthRootPrecision,
+  maxPrecision *big.Int) {
 
-	nthRootCalc := mathops.FixedDecimalNthRoot{}
+  ePrefix := "maintests.TestFixDecNthRootFmtFracDigits()"
 
-	/*
-		func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
-		radicand,
-		radicandPrecision,
-		intRadicand,
-		fracRadicand,
-		fracRadicandPrecision,
-		nthRoot *big.Int,
-		maxPrecision uint64) error
-	*/
+  nthRootCalc := new(mathops.FixedDecimalNthRoot)
 
-	timeStart := time.Now()
+  /*
+  	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
+  	radicand,
+  	radicandPrecision,
+  	intRadicand,
+  	fracRadicand,
+  	fracRadicandPrecision,
+  	nthRoot *big.Int,
+  	maxPrecision uint64) error
+  */
 
-	err := nthRootCalc.FormatCalculationConstants(
-		radicand,
-		radicandPrecision,
-		nthRoot,
-		nthRootPrecision,
-		maxPrecision)
+  timeStart := time.Now()
 
-	timeEnd := time.Now()
+  err := nthRootCalc.FormatCalculationConstants(
+    radicand,
+    radicandPrecision,
+    nthRoot,
+    nthRootPrecision,
+    maxPrecision)
 
-	if err != nil {
-		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() "+
-			"%v", err.Error())
-		return
-	}
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err := nthRootCalc.FormatCalculationConstants(\n"+
+      "  radicand, radicandPrecision, nthRoot,\n"+
+      "  nthRootPrecision, maxPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	intRadicand, fracRadicand := big.NewInt(0).QuoRem(radicand, radicandPrecision, nil)
+  timeEnd := time.Now()
 
-	calcFacs := nthRootCalc.GetInternalCalcFactors()
+  remainder := new(big.Int)
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
-	fmt.Println("============================================================")
-	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
-	fmt.Println("                 radicand: ", radicand.Text(10))
-	fmt.Println("       radicand precision: ", radicandPrecision.Text(10))
-	fmt.Println("         radicand integer: ", intRadicand.Text(10))
-	fmt.Println("            radicand frac: ", fracRadicand.Text(10))
-	fmt.Println("  radicand frac precision: ", radicandPrecision.Text(10))
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("   formatted frac integer: ", calcFacs.FmtFracRadicand.Text(10))
-	fmt.Println(" formatted frac precision: ", calcFacs.FmtFracRadicandPrecision.Text(10))
-	fmt.Println("------------------------------------------------------------")
-	timeDuration := timeEnd.Sub(timeStart)
+  intRadicand, fracRadicand := big.NewInt(0).QuoRem(radicand, radicandPrecision, remainder)
 
-	duration := CodeDurationToStr(timeDuration)
-	fmt.Println("            Time Duration: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                fracMask1: ", calcFacs.FracMask1.Text(10))
-	fmt.Println("                fracMask2: ", calcFacs.FracMask2.Text(10))
-	fmt.Println("============================================================")
-	fmt.Println()
+  calcFacs := nthRootCalc.GetInternalCalcFactors()
+
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
+  fmt.Println("============================================================")
+  fmt.Println("                  nthRoot: ", nthRoot.Text(10))
+  fmt.Println("                 radicand: ", radicand.Text(10))
+  fmt.Println("       radicand precision: ", radicandPrecision.Text(10))
+  fmt.Println("         radicand integer: ", intRadicand.Text(10))
+  fmt.Println("            radicand frac: ", fracRadicand.Text(10))
+  fmt.Println("  radicand frac precision: ", radicandPrecision.Text(10))
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("   formatted frac integer: ", calcFacs.FmtFracRadicand.Text(10))
+  fmt.Println(" formatted frac precision: ", calcFacs.FmtFracRadicandPrecision.Text(10))
+  fmt.Println("------------------------------------------------------------")
+  timeDuration := timeEnd.Sub(timeStart)
+
+  duration := CodeDurationToStr(timeDuration)
+  fmt.Println("            Time Duration: ", duration)
+  fmt.Println("------------------------------------------------------------")
+  fmt.Println("                fracMask1: ", calcFacs.FracMask1.Text(10))
+  fmt.Println("                fracMask2: ", calcFacs.FracMask2.Text(10))
+  fmt.Println("============================================================")
+  fmt.Println()
 
 }
 
@@ -652,167 +1069,177 @@ func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision u
 */
 
 func TestFixDecNthRootGetNextFracBundle(
-	fracNum,
-	fracPrecision,
-	nthRoot *big.Int) {
+  fracNum,
+  fracPrecision,
+  nthRoot *big.Int) {
 
-	nthRootCalc := mathops.FixedDecimalNthRoot{}
+  ePrefix := "maintests.TestFixDecNthRootGetNextFracBundle()"
 
-	/*
-		func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
-		radicand,
-		radicandPrecision,
-		nthRoot,
-		nthRootPrecision,
-		maxPrecision *big.Int) error {
+  nthRootCalc := new(mathops.FixedDecimalNthRoot)
 
-	*/
+  /*
+  	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
+  	radicand,
+  	radicandPrecision,
+  	nthRoot,
+  	nthRootPrecision,
+  	maxPrecision *big.Int) error {
 
-	err := nthRootCalc.FormatCalculationConstants(
-		fracNum,
-		fracPrecision,
-		nthRoot,
-		big.NewInt(0),
-		big.NewInt(9))
+  */
 
-	fmtFracNum, fmtFracPrecision, err :=
-		nthRootCalc.FormatFractionalDigitsFromRadicand(
-			fracNum,
-			fracPrecision)
+  err := nthRootCalc.FormatCalculationConstants(
+    fracNum,
+    fracPrecision,
+    nthRoot,
+    big.NewInt(0),
+    big.NewInt(9))
 
-	if err != nil {
-		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() "+
-			"%v", err.Error())
-		return
-	}
+  fmtFracNum, fmtFracPrecision, err :=
+    nthRootCalc.FormatFractionalDigitsFromRadicand(
+      fracNum,
+      fracPrecision)
 
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot.GetNextFractionalBundleFromRadicand()")
-	fmt.Println("=========================================================")
-	fmt.Println("   fmtFracNum: ", fmtFracNum.Text(10))
-	fmt.Println("fracPrecision: ", fmtFracPrecision.Text(10))
-	fmt.Println("      nthRoot: ", nthRoot.Text(10))
-	fmt.Println("=========================================================")
-	fmt.Println()
-	fmt.Println("---------------------------------------------------------")
-	bigZero := big.NewInt(0)
-	nextBundle := big.NewInt(0)
-	cycle := 0
-	timeStart := time.Now()
-	timeEnd := time.Now()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "fmtFracNum, fmtFracPrecision, err :=\n"+
+      "  nthRootCalc.FormatFractionalDigitsFromRadicand(\n"+
+      "  fracNum, fracPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	for fmtFracPrecision.Cmp(bigZero) == 1 {
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot.GetNextFractionalBundleFromRadicand()")
+  fmt.Println("=========================================================")
+  fmt.Println("   fmtFracNum: ", fmtFracNum.Text(10))
+  fmt.Println("fracPrecision: ", fmtFracPrecision.Text(10))
+  fmt.Println("      nthRoot: ", nthRoot.Text(10))
+  fmt.Println("=========================================================")
+  fmt.Println()
+  fmt.Println("---------------------------------------------------------")
+  bigZero := big.NewInt(0)
+  nextBundle := big.NewInt(0)
+  cycle := 0
+  timeStart := time.Now()
+  timeEnd := time.Now()
 
-		timeStart = time.Now()
+  for fmtFracPrecision.Cmp(bigZero) == 1 {
 
-		nextBundle, fmtFracNum, fmtFracPrecision, err =
-			nthRootCalc.GetNextFractionalBundleFromRadicand(
-				fmtFracNum,
-				fmtFracPrecision)
+    timeStart = time.Now()
 
-		timeEnd = time.Now()
+    nextBundle, fmtFracNum, fmtFracPrecision, err =
+      nthRootCalc.GetNextFractionalBundleFromRadicand(
+        fmtFracNum,
+        fmtFracPrecision)
 
-		if err != nil {
-			fmt.Printf("Error returned bynthRootCalc.GetNextFractionalBundleFromRadicand(...). "+
-				"Error='%v' ", err.Error())
-			return
-		}
+    if err != nil {
+      fmt.Printf("%v\n"+
+        "Error returned by:\n"+
+        "nextBundle, fmtFracNum, fmtFracPrecision, err =\n"+
+        "  nthRootCalc.GetNextFractionalBundleFromRadicand(\n"+
+        "  fmtFracNum, fmtFracPrecision)\n"+
+        "Error='%v'\n\n", ePrefix, err.Error())
+      return
+    }
 
-		cycle++
-		timeDuration := timeEnd.Sub(timeStart)
+    timeEnd = time.Now()
 
-		duration := CodeDurationToStr(timeDuration)
-		fmt.Println("           Cycle: ", cycle)
-		fmt.Println("Next Frac Bundle: ", nextBundle.Text(10))
-		fmt.Println("         fracNum: ", fmtFracNum.Text(10))
-		fmt.Println("   fracPrecision: ", fmtFracPrecision.Text(10))
-		fmt.Println("   Time Duration: ", duration)
-		fmt.Println("---------------------------------------------------------")
-		fmt.Println()
-	}
+    cycle++
+    timeDuration := timeEnd.Sub(timeStart)
+
+    duration := CodeDurationToStr(timeDuration)
+    fmt.Println("           Cycle: ", cycle)
+    fmt.Println("Next Frac Bundle: ", nextBundle.Text(10))
+    fmt.Println("         fracNum: ", fmtFracNum.Text(10))
+    fmt.Println("   fracPrecision: ", fmtFracPrecision.Text(10))
+    fmt.Println("   Time Duration: ", duration)
+    fmt.Println("---------------------------------------------------------")
+    fmt.Println()
+  }
 
 }
 
 func TestFixDecNthRootNextIntBundle(
-	integerNum,
-	intTotalDigits,
-	nthRoot *big.Int) {
+  integerNum,
+  intTotalDigits,
+  nthRoot *big.Int) {
 
-	bigZero := big.NewInt(0)
-	nextBundle := big.NewInt(0)
-	nextBundleTotDigits := big.NewInt(0)
-	var err error
-	cycle := 0
-	nthRootCalc := mathops.FixedDecimalNthRoot{}
+  bigZero := big.NewInt(0)
+  nextBundle := big.NewInt(0)
+  nextBundleTotDigits := big.NewInt(0)
+  var err error
+  cycle := 0
+  nthRootCalc := mathops.FixedDecimalNthRoot{}
 
-	/*
-		func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
-		radicand,
-		radicandPrecision,
-		nthRoot,
-		nthRootPrecision,
-		maxPrecision *big.Int) error {
+  /*
+  	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
+  	radicand,
+  	radicandPrecision,
+  	nthRoot,
+  	nthRootPrecision,
+  	maxPrecision *big.Int) error {
 
-	*/
+  */
 
-	err = nthRootCalc.FormatCalculationConstants(
-		integerNum,
-		big.NewInt(0),
-		nthRoot,
-		big.NewInt(0),
-		big.NewInt(9))
+  err = nthRootCalc.FormatCalculationConstants(
+    integerNum,
+    big.NewInt(0),
+    nthRoot,
+    big.NewInt(0),
+    big.NewInt(9))
 
-	if err != nil {
-		fmt.Printf("Error '%v' ", err.Error())
-		return
-	}
+  if err != nil {
+    fmt.Printf("Error '%v' ", err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() ")
-	fmt.Println("=============================================")
-	fmt.Println("       integerNum: ", integerNum.Text(10))
-	fmt.Println("intTotalDigits: ", intTotalDigits.Text(10))
-	fmt.Println("       nthRoot: ", nthRoot.Text(10))
-	fmt.Println("=============================================")
-	fmt.Println("--------------------------------------------------------")
+  fmt.Println()
+  fmt.Println()
+  fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() ")
+  fmt.Println("=============================================")
+  fmt.Println("       integerNum: ", integerNum.Text(10))
+  fmt.Println("intTotalDigits: ", intTotalDigits.Text(10))
+  fmt.Println("       nthRoot: ", nthRoot.Text(10))
+  fmt.Println("=============================================")
+  fmt.Println("--------------------------------------------------------")
 
-	timeStart := time.Now()
-	timeEnd := time.Now()
+  timeStart := time.Now()
+  timeEnd := time.Now()
 
-	for intTotalDigits.Cmp(bigZero) == 1 {
+  for intTotalDigits.Cmp(bigZero) == 1 {
 
-		timeStart = time.Now()
+    timeStart = time.Now()
 
-		nextBundle, integerNum, intTotalDigits, err =
-			nthRootCalc.GetNextIntegerBundleFromRadicand(
-				integerNum,
-				intTotalDigits)
+    nextBundle, integerNum, intTotalDigits, err =
+      nthRootCalc.GetNextIntegerBundleFromRadicand(
+        integerNum,
+        intTotalDigits)
 
-		timeEnd = time.Now()
+    timeEnd = time.Now()
 
-		if err != nil {
-			fmt.Printf("Error returned from FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() "+
-				"Error='%v' ", err.Error())
-			return
-		}
+    if err != nil {
+      fmt.Printf("Error returned from FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() "+
+        "Error='%v' ", err.Error())
+      return
+    }
 
-		cycle++
+    cycle++
 
-		fmt.Println("                 Cycle: ", cycle)
-		fmt.Println("           Next Bundle: ", nextBundle.Text(10))
-		fmt.Println("Next Bundle Tot-Digits: ", nextBundleTotDigits.Text(10))
-		fmt.Println("               integerNum: ", integerNum.Text(10))
-		fmt.Println("     Num of Int Digits: ", intTotalDigits.Text(10))
-		fmt.Println("               nthRoot: ", nthRoot.Text(10))
-		timeDuration := timeEnd.Sub(timeStart)
+    fmt.Println("                 Cycle: ", cycle)
+    fmt.Println("           Next Bundle: ", nextBundle.Text(10))
+    fmt.Println("Next Bundle Tot-Digits: ", nextBundleTotDigits.Text(10))
+    fmt.Println("               integerNum: ", integerNum.Text(10))
+    fmt.Println("     Num of Int Digits: ", intTotalDigits.Text(10))
+    fmt.Println("               nthRoot: ", nthRoot.Text(10))
+    timeDuration := timeEnd.Sub(timeStart)
 
-		duration := CodeDurationToStr(timeDuration)
-		fmt.Println("         Time Duration: ", duration)
-		fmt.Println("--------------------------------------------------------")
-		fmt.Println()
+    duration := CodeDurationToStr(timeDuration)
+    fmt.Println("         Time Duration: ", duration)
+    fmt.Println("--------------------------------------------------------")
+    fmt.Println()
 
-	}
+  }
 
 }
 
@@ -880,76 +1307,151 @@ expectedValue:="1500000.000000000000000000000000000"
 */
 
 func TestEPwrXFromTaylorSeriesFixedDecimal(
-	exponentX mathops.BigIntFixedDecimal,
-	a, nCycles uint, expectedResult string) {
+  exponentX mathops.BigIntFixedDecimal,
+  a, nCycles uint, expectedResult string) {
 
-	timeStart := time.Now()
+  ePrefix := "maintests.TestEPwrXFromTaylorSeriesFixedDecimal()"
 
-	result, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal(
-		exponentX,
-		a,
-		nCycles)
+  timeStart := time.Now()
 
-	timeEnd := time.Now()
+  result, err := new(mathops.BigIntMathLogarithms).EPwrXFromTaylorSeriesFixedDecimal(
+    exponentX,
+    a,
+    nCycles)
 
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal() "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(mathops.BigIntMathLogarithms).\n"+
+      "  EPwrXFromTaylorSeriesFixedDecimal(exponentX, a,nCycles)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println("----------------------------------------------------------")
-	fmt.Println("BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal()")
-	fmt.Println("----------------------------------------------------------")
-	fmt.Println("           nCycles: ", nCycles)
-	fmt.Println("           A-Value: ", a)
-	fmt.Println("          exponent: ", exponentX.GetNumStr())
-	fmt.Println("exponent Precision: ", exponentX.GetPrecisionUint())
-	fmt.Println("            xValue: ", result.GetNumStr())
-	fmt.Println("    expectedXValue: ", expectedResult)
-	fmt.Println("  xValue Precision: ", result.GetPrecisionUint())
+  timeEnd := time.Now()
 
-	timeDuration := timeEnd.Sub(timeStart)
+  exponentXNumStr, err := exponentX.GetNumStr()
 
-	duration := CodeDurationToStr(timeDuration)
-	fmt.Println("   Time Duration: ", duration)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "exponentXNumStr, err := exponentX.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  exponentXPrecisionInt, err := exponentX.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "exponentXPrecisionInt, err := exponentX.GetPrecisionInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultPrecisionInt, err := result.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println("----------------------------------------------------------")
+  fmt.Println("BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal()")
+  fmt.Println("----------------------------------------------------------")
+  fmt.Println("           nCycles: ", nCycles)
+  fmt.Println("           A-Value: ", a)
+  fmt.Println("          exponent: ", exponentXNumStr)
+  fmt.Println("exponent Precision: ", exponentXPrecisionInt)
+  fmt.Println("            xValue: ", resultNumStr)
+  fmt.Println("    expectedXValue: ", expectedResult)
+  fmt.Println("  xValue Precision: ", resultPrecisionInt)
+
+  timeDuration := timeEnd.Sub(timeStart)
+
+  duration := CodeDurationToStr(timeDuration)
+  fmt.Println("   Time Duration: ", duration)
 }
 
 func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, expectedXValue string) {
 
-	/*
-		exponent:  14.220975666072438486085961843571
-			  binA:  12
-		  xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
-		expectedXValue:  1500000
-		StartTime:  2018-10-01 23:47:04.3386444 -0500 CDT m=+0.009993801
-		  EndTime:  2018-10-01 23:47:04.372625 -0500 CDT m=+0.043974401
-		Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
-	*/
+  ePrefix := "maintests.TestEPwrXFromTaylorSeries()"
 
-	timeStart := time.Now()
+  /*
+  	exponent:  14.220975666072438486085961843571
+  		  binA:  12
+  	  xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
+  	expectedXValue:  1500000
+  	StartTime:  2018-10-01 23:47:04.3386444 -0500 CDT m=+0.009993801
+  	  EndTime:  2018-10-01 23:47:04.372625 -0500 CDT m=+0.043974401
+  	Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
+  */
 
-	xValue, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles)
-	if err != nil {
-		fmt.Printf("Error returned by "+
-			"BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  timeStart := time.Now()
 
-	timeEnd := time.Now()
+  xValue, err := new(mathops.BigIntMathLogarithms).EPwrXFromTaylorSeries(exponent, binA, nCycles)
 
-	fmt.Println(" nCycles: ", nCycles)
-	fmt.Println("exponent: ", exponent.GetNumStr())
-	fmt.Println("  xValue: ", xValue.GetNumStr())
-	fmt.Println("expectedXValue: ", expectedXValue)
-	fmt.Println("StartTime: ", timeStart.String())
-	fmt.Println("  EndTime: ", timeEnd.String())
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "xValue, err := new(mathops.BigIntMathLogarithms).\n"+
+      "  EPwrXFromTaylorSeries(exponent, binA, nCycles)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	timeDuration := timeEnd.Sub(timeStart)
+  timeEnd := time.Now()
 
-	duration := CodeDurationToStr(timeDuration)
-	fmt.Println("Time Duration: ", duration)
+  exponentNumStr, err := exponent.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "exponentNumStr, err := exponent.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  xValueNumStr, err := xValue.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "xValueNumStr, err := xValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println(" nCycles: ", nCycles)
+  fmt.Println("exponent: ", exponentNumStr)
+  fmt.Println("  xValue: ", xValueNumStr)
+  fmt.Println("expectedXValue: ", expectedXValue)
+  fmt.Println("StartTime: ", timeStart.String())
+  fmt.Println("  EndTime: ", timeEnd.String())
+
+  timeDuration := timeEnd.Sub(timeStart)
+
+  duration := CodeDurationToStr(timeDuration)
+  fmt.Println("Time Duration: ", duration)
 
 }
 
@@ -971,142 +1473,335 @@ func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, 
 
 	//xNum := mathops.BigIntNum{}.NewInt(xNumInt, 0)
 
-	PowerTest_01(base, exponent, maxPrecision)
+	PowerTest01(base, exponent, maxPrecision)
 
 */
 
 func TestBigIntDivide(
-	dividend,
-	dividendPrecision,
-	divisor,
-	divisorPrecision,
-	maxPrecision *big.Int,
-	expectedResult string) {
+  dividend,
+  dividendPrecision,
+  divisor,
+  divisorPrecision,
+  maxPrecision *big.Int,
+  expectedResult string) {
 
-	quotient, quotientPrecision, err :=
-		mathops.BigIntMathDivide{}.BigIntFracQuotient(
-			dividend,
-			dividendPrecision,
-			divisor,
-			divisorPrecision,
-			maxPrecision)
+  ePrefix := "maintests.TestBigIntDivide()"
 
-	if err != nil {
-		fmt.Printf("Error returned by "+
-			"BigIntMathDivide{}.BigIntFracQuotient() "+
-			"Error='%v'", err.Error())
-		return
-	}
+  quotient, quotientPrecision, err :=
+    new(mathops.BigIntMathDivide).BigIntFracQuotient(
+      dividend,
+      dividendPrecision,
+      divisor,
+      divisorPrecision,
+      maxPrecision)
 
-	biNumResult := mathops.BigIntNum{}.NewBigInt(quotient, uint(quotientPrecision.Uint64()))
-	timeStart := time.Now()
-	biNumExpectedResult, err := mathops.BigIntNum{}.NewNumStr(expectedResult)
-	timeEnd := time.Now()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "quotient, quotientPrecision, err :=\n"+
+      "  new(mathops.BigIntMathDivide).BigIntFracQuotient(\n"+
+      "  dividend, dividendPrecision, divisor,\n"+
+      "  divisorPrecision, maxPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Error returned by "+
-			"BigIntNum{}.NewNumStr(expectedResult) "+
-			"Error='%v'", err.Error())
-		return
-	}
+  biNumResult, err := new(mathops.BigIntNum).NewBigInt(quotient, uint(quotientPrecision.Uint64()))
 
-	fmt.Println("** Test BigIntMathDivide{}.BigIntFracQuotient() **")
-	fmt.Println("--------------------------------------------------")
-	fmt.Println("                 dividend: ", dividend.Text(10))
-	fmt.Println("        dividendPrecision: ", dividendPrecision.Text(10))
-	fmt.Println("                  divisor: ", divisor.Text(10))
-	fmt.Println("         divisorPrecision: ", divisorPrecision.Text(10))
-	fmt.Println("                 quotient: ", quotient.Text(10))
-	fmt.Println("             maxPrecision: ", maxPrecision.Text(10))
-	fmt.Println("        quotientPrecision: ", quotientPrecision)
-	fmt.Println("          quotient Result: ", biNumResult.GetNumStr())
-	fmt.Println("quotient Result Precision: ", biNumResult.GetPrecisionUint())
-	fmt.Println("          expected Result: ", expectedResult)
-	fmt.Println("   bi Num Expected Result: ", biNumExpectedResult.GetNumStr())
-	fmt.Println("bi Num Expected Precision: ", biNumExpectedResult.GetPrecisionUint())
-	fmt.Println("====================================================")
-	if biNumExpectedResult.GetNumStr() == biNumResult.GetNumStr() {
-		fmt.Println("Success! Expected Result Matches Actual Result!")
-	} else {
-		fmt.Println("Failure! Expected Result DOES NOT Match Actual Result!")
-	}
-	fmt.Println("====================================================")
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumResult, err := new(mathops.BigIntNum).\n"+
+      "  NewBigInt(quotient, uint(quotientPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	timeDuration := timeEnd.Sub(timeStart)
+  timeStart := time.Now()
 
-	duration := CodeDurationToStr(timeDuration)
-	fmt.Println("Time Duration: ", duration)
-	fmt.Println("====================================================")
-	biNumDividend := mathops.BigIntNum{}.NewBigInt(dividend, uint(dividendPrecision.Uint64()))
-	biNumDivisor := mathops.BigIntNum{}.NewBigInt(divisor, uint(divisorPrecision.Uint64()))
-	timeStart = time.Now()
-	biNumQuotient, err := mathops.BigIntMathDivide{}.BigIntNumFracQuotient(biNumDividend, biNumDivisor, uint(maxPrecision.Uint64()))
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient() "+
-			"Error='%v' ", err.Error())
-		return
-	}
-	timeEnd = time.Now()
-	timeDuration = timeEnd.Sub(timeStart)
-	duration = CodeDurationToStr(timeDuration)
-	fmt.Println("-- BigIntMathDivide{}.BigIntNumFracQuotient() --")
-	fmt.Println("--------------------------------------------------")
-	fmt.Println("dividend: ", biNumDividend.GetNumStr())
-	fmt.Println(" divisor: ", biNumDivisor.GetNumStr())
-	fmt.Println("quotient: ", biNumQuotient.GetNumStr())
-	fmt.Println("====================================================")
-	fmt.Println("Time Duration: ", duration)
+  biNumExpectedResult, err := new(mathops.BigIntNum).NewNumStr(expectedResult)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumExpectedResult, err := new(mathops.BigIntNum).\n"+
+      "  NewNumStr(expectedResult)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeEnd := time.Now()
+
+  biNumResultNumStr, err := biNumResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumResultNumStr, err := biNumResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumResultPrecisionInt, err := biNumResult.GetPrecisionUint()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumResultPrecisionInt, err := biNumResult.GetPrecisionUint()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumExpectedResultNumStr, err := biNumExpectedResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumExpectedResultNumStr, err := biNumExpectedResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumExpectedResultPrecisionInt, err := biNumExpectedResult.GetPrecisionUint()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumExpectedResultPrecisionInt, err := biNumExpectedResult.\n"+
+      "  GetPrecisionUint()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("** Test BigIntMathDivide{}.BigIntFracQuotient() **")
+  fmt.Println("--------------------------------------------------")
+  fmt.Println("                 dividend: ", dividend.Text(10))
+  fmt.Println("        dividendPrecision: ", dividendPrecision.Text(10))
+  fmt.Println("                  divisor: ", divisor.Text(10))
+  fmt.Println("         divisorPrecision: ", divisorPrecision.Text(10))
+  fmt.Println("                 quotient: ", quotient.Text(10))
+  fmt.Println("             maxPrecision: ", maxPrecision.Text(10))
+  fmt.Println("        quotientPrecision: ", quotientPrecision)
+  fmt.Println("          quotient Result: ", biNumResultNumStr)
+  fmt.Println("quotient Result Precision: ", biNumResultPrecisionInt)
+  fmt.Println("          expected Result: ", expectedResult)
+  fmt.Println("   bi Num Expected Result: ", biNumExpectedResultNumStr)
+  fmt.Println("bi Num Expected Precision: ", biNumExpectedResultPrecisionInt)
+  fmt.Println("====================================================")
+  if biNumExpectedResult.GetNumStr() == biNumResult.GetNumStr() {
+    fmt.Println("Success! Expected Result Matches Actual Result!")
+  } else {
+    fmt.Println("Failure! Expected Result DOES NOT Match Actual Result!")
+  }
+  fmt.Println("====================================================")
+
+  timeDuration := timeEnd.Sub(timeStart)
+
+  duration := CodeDurationToStr(timeDuration)
+  fmt.Println("Time Duration: ", duration)
+  fmt.Println("====================================================")
+
+  biNumDividend, err := new(mathops.BigIntNum).NewBigInt(dividend, uint(dividendPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumDividend, err := new(mathops.BigIntNum).NewBigInt(\n"+
+      "  dividend, uint(dividendPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumDivisor, err := new(mathops.BigIntNum).NewBigInt(divisor, uint(divisorPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumDivisor, err := new(mathops.BigIntNum).NewBigInt(\n"+
+      "  divisor, uint(divisorPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeStart = time.Now()
+
+  numSeps := new(mathops.NumericSeparatorDto).NewUSADefaults()
+
+  biNumQuotient, err := new(mathops.BigIntMathDivide).BigIntNumFracQuotient(biNumDividend, biNumDivisor, numSeps, uint(maxPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumQuotient, err := new(mathops.BigIntMathDivide).BigIntNumFracQuotient(\n"+
+      "  biNumDividend, biNumDivisor, numSeps, uint(maxPrecision.Uint64()))\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+  timeDuration = timeEnd.Sub(timeStart)
+  duration = CodeDurationToStr(timeDuration)
+
+  biNumDividendNumStr, err := biNumDividend.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumDividendNumStr, err := biNumDividend.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumDivisorNumStr, err := biNumDivisor.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumDivisorNumStr, err := biNumDivisor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  biNumQuotientNumStr, err := biNumQuotient.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumQuotientNumStr, err := biNumQuotient.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("-- BigIntMathDivide{}.BigIntNumFracQuotient() --")
+  fmt.Println("--------------------------------------------------")
+  fmt.Println("dividend: ", biNumDividendNumStr)
+  fmt.Println(" divisor: ", biNumDivisorNumStr)
+  fmt.Println("quotient: ", biNumQuotientNumStr)
+  fmt.Println("====================================================")
+  fmt.Println("Time Duration: ", duration)
 
 }
 
 func TestBigIntPwr(
-	base *big.Int,
-	basePrecision,
-	exponent,
-	internalMaxPrecision,
-	outputMaxPrecision uint,
-	expectedResult string) {
+  base *big.Int,
+  basePrecision,
+  exponent,
+  internalMaxPrecision,
+  outputMaxPrecision uint,
+  expectedResult string) {
 
-	baseToPwr, baseToPwrPrecision := mathops.BigIntMathPower{}.BigIntPwrIteration(
-		base,
-		basePrecision,
-		exponent,
-		internalMaxPrecision,
-		outputMaxPrecision)
+  ePrefix := "maintests.TestBigIntPwr"
 
-	fmt.Println("TestBigIntPwr")
-	fmt.Println("                     base: ", base.Text(10))
-	fmt.Println("            basePrecision: ", basePrecision)
-	fmt.Println("                 exponent: ", exponent)
-	fmt.Println("     internalMaxPrecision: ", internalMaxPrecision)
-	fmt.Println("       outputMaxPrecision: ", outputMaxPrecision)
-	fmt.Println("----------------------------------------------")
-	fmt.Println("         Result baseToPwr: ", baseToPwr.Text(10))
-	fmt.Println("Result baseToPwrPrecision: ", baseToPwrPrecision)
-	bINumResult := mathops.BigIntNum{}.NewBigInt(baseToPwr, baseToPwrPrecision)
-	fmt.Println("  Result BigIntNum NumStr: ", bINumResult.GetNumStr())
-	fmt.Println("          Expected Result: ", expectedResult)
+  baseToPwr, baseToPwrPrecision, err := new(mathops.BigIntMathPower).
+    BigIntPwrIteration(
+      base,
+      basePrecision,
+      exponent,
+      internalMaxPrecision,
+      outputMaxPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "baseToPwr, baseToPwrPrecision, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntPwrIteration(base, basePrecision, exponent, internalMaxPrecision,\n"+
+      "    outputMaxPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bINumResult, err := new(mathops.BigIntNum).NewBigInt(baseToPwr, baseToPwrPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binRadicand, err := new(mathops.BigIntNum).\n"+
+      "  NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  bINumResultNumStr, err := bINumResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINumResultNumStr, err := bINumResult.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("TestBigIntPwr")
+  fmt.Println("                     base: ", base.Text(10))
+  fmt.Println("            basePrecision: ", basePrecision)
+  fmt.Println("                 exponent: ", exponent)
+  fmt.Println("     internalMaxPrecision: ", internalMaxPrecision)
+  fmt.Println("       outputMaxPrecision: ", outputMaxPrecision)
+  fmt.Println("----------------------------------------------")
+  fmt.Println("         Result baseToPwr: ", baseToPwr.Text(10))
+  fmt.Println("Result baseToPwrPrecision: ", baseToPwrPrecision)
+  fmt.Println("  Result BigIntNum NumStr: ", bINumResultNumStr)
+  fmt.Println("          Expected Result: ", expectedResult)
 
 }
 
-func PowerTest_01(base, exponent mathops.BigIntNum, maxPrecision, i uint) {
+func PowerTest01(base, exponent mathops.BigIntNum, maxPrecision, i uint) {
+	
+  ePrefix := "maintests.PowerTest01"
 
-	powerValue, err := mathops.BigIntMathPower{}.BigIntNumPwr(base, exponent, maxPrecision)
+  powerValue, err := new(mathops.BigIntMathPower).BigIntNumPwr(base, exponent, maxPrecision)
 
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(base, exponent, maxPrecision) "+
-			"Error='%v' ", err.Error())
-		return
-	}
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "powerValue, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntNumPwr(base, exponent, maxPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
-	fmt.Println()
-	fmt.Println("--------------------------------------")
-	fmt.Println("     Index: ", i)
-	fmt.Println("      base: ", base.GetNumStr())
-	fmt.Println("  exponent: ", exponent.GetNumStr())
-	fmt.Println("powerValue: ", powerValue.GetNumStr())
-	fmt.Println("--------------------------------------")
-	fmt.Println()
+  baseNumStr, err := base.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "baseNumStr, err := base.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  exponentNumStr, err := exponent.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "exponentNumStr, err := exponent.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  powerValueNumStr, err := powerValue.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "powerValueNumStr, err := powerValue.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println()
+  fmt.Println("--------------------------------------")
+  fmt.Println("     Index: ", i)
+  fmt.Println("      base: ", baseNumStr)
+  fmt.Println("  exponent: ", exponentNumStr)
+  fmt.Println("powerValue: ", powerValueNumStr)
+  fmt.Println("--------------------------------------")
+  fmt.Println()
 }
 
 /*

@@ -87,6 +87,47 @@ Low-Level Error Prefix
 		}
 
 
+************************************************
+         Example Standard Error #1
+************************************************
+
+	if err != nil {
+		fmt.Printf("%v\n" +
+		    "Error returned by:\n"+
+			"binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n" +
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
+		return
+	}
+
+************************************************
+         Example Standard Error #2
+************************************************
+
+	if err != nil {
+		fmt.Printf("%v\n" +
+		 "Error returned by:\n" +
+		 "binRadicand, err := new(mathops.BigIntNum).\n" +
+		 "  NewBigIntBigPrecision(radicand, radicandPrecision)"+
+	     "Error='%v'\n\n",
+	     ePrefix, err.Error())
+		return
+	}
+
+************************************************
+         Example Standard Error #3
+************************************************
+
+	if err != nil {
+		fmt.Printf("%v\n" +
+		    "Error returned by:\n" +
+			"binRadicand, err := new(mathops.BigIntNum).\n" +
+			"  NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+
 *******************************************************
   Expected Test Error #1
  *******************************************************
