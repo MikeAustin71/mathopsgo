@@ -5,77 +5,229 @@ import (
 )
 
 func TestStrMathOp_AddN1N2_01(t *testing.T) {
-	mOps := StrMathOp{}.New()
-	nStr1 := "457.3"
-	nStr2 := "22.2"
-	expected := "479.5"
-	nRunes := []rune("4795")
-	eIAry := []int{4, 7, 9, 5}
-	lNRunes := len(nRunes)
-	lEArray := len(eIAry)
-	ePrecision := 1
-	eSignVal := 1
 
-	mOps.N1.SetIntAryWithNumStr(nStr1)
+	ePrefix := "TestStrMathOp_AddN1N2_01"
 
-	mOps.N2.SetIntAryWithNumStr(nStr2)
+	mOps := new(StrMathOp).New()
 
-	err := mOps.AddN1N2()
+	inputNumStr1 := "457.3"
+
+	inputNumStr2 := "22.2"
+
+	expectedFinalNumStr := "479.5"
+
+	expectedNRunes := []rune("4795")
+
+	expectedIntArray := []int{4, 7, 9, 5}
+
+	expectedLengthNRunes := len(expectedNRunes)
+
+	expectedLengthIntArray := len(expectedIntArray)
+
+	expectedPrecisionInt := 1
+
+	expectedSignValue := 1
+
+	err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)
 
 	if err != nil {
-		t.Errorf("Received Error from mOps.AddN1N2(). nStr1= '%v' nStr2= '%v' Error= %v",
-			nStr1, nStr2, err)
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+			"inputNumStr1= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, inputNumStr1, err.Error())
+		return
 	}
 
-	s := mOps.IFinal.GetNumStr()
+	err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)
 
-	if s != expected {
-		t.Errorf("Expected IFinal.GetNumStr()= '%v'. Instead got IFinal.Numstr= '%v' ", expected, s)
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)\n"+
+			"inputNumStr2= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, inputNumStr2, err.Error())
+		return
 	}
 
-	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'",
-			ePrecision, mOps.IFinal.GetPrecision())
+	err = mOps.AddN1N2()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = mOps.AddN1N2()\n"+
+			"inputNumStr1= '%v'\n"+
+			"inputNumStr2= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			inputNumStr1,
+			inputNumStr2,
+			err.Error())
+
+		return
 	}
 
-	if eSignVal != mOps.IFinal.GetSign() {
-		t.Errorf("Error: Expected SignVal= '%v'. Instead received SignVal= '%v'", eSignVal, mOps.IFinal.GetSign())
+	actualFinalNumStr, err := mOps.IFinal.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualFinalNumStr, err := mOps.IFinal.GetNumStr()\n"+
+			"inputNumStr1= '%v'\n"+
+			"inputNumStr2= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix,
+			inputNumStr1,
+			inputNumStr2,
+			err.Error())
+
+		return
 	}
 
-	if lNRunes != mOps.IFinal.GetIntAryLength() {
-		t.Errorf("Error: Expected NumRunes Length= '%v'. Instead received NumRunes Length= '%v'",
-			lNRunes, mOps.IFinal.GetIntAryLength())
+	actualFinalPrecisionInt := mOps.IFinal.GetPrecision()
+
+	actualFinalSignValue, err := mOps.IFinal.GetSign()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualFinalSignValue, err := mOps.IFinal.GetSign()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
 	}
 
-	if lEArray != mOps.IFinal.GetIntAryLength() {
-		t.Errorf("Error: Expected IntArray Length= '%v'. Instead received IntArry Length= '%v'", lEArray, mOps.IFinal.GetIntAryLength())
+	actualLengthNRunes := mOps.IFinal.GetIntAryLength()
+
+	actualLengthIntArray := mOps.IFinal.GetIntAryLength()
+
+	if expectedFinalNumStr != actualFinalNumStr {
+		t.Errorf("%v\n"+
+			"Error: actualFinalNumStr Result is INVALID!\n"+
+			"Because expectedFinalNumStr != actualFinalNumStr\n"+
+			"Expected actualFinalNumStr = '%v'\n"+
+			"  Actual actualFinalNumStr = '%v'\n\n",
+			ePrefix, actualFinalNumStr, actualFinalNumStr)
+
+		return
 	}
 
-	for i := 0; i < lNRunes; i++ {
+	if expectedPrecisionInt != actualFinalPrecisionInt {
+		t.Errorf("%v\n"+
+			"Error: actualFinalPrecisionInt Result is INVALID!\n"+
+			"Because expectedPrecisionInt != actualFinalPrecisionInt\n"+
+			"Expected actualFinalPrecisionInt = '%v'\n"+
+			"  Actual actualFinalPrecisionInt = '%v'\n\n",
+			ePrefix, expectedPrecisionInt, actualFinalPrecisionInt)
 
-		element, _ := mOps.IFinal.GetIntAryRune(i)
+		return
+	}
 
-		if nRunes[i] != element {
-			t.Errorf("Error: Expected nRunes Array does NOT match ia.NumRunes Array! "+
-				" nRunes[i]='%v' element='%v'",
-				nRunes[i], element)
+	if expectedSignValue != actualFinalSignValue {
+		t.Errorf("%v\n"+
+			"Error: actualFinalSignValue is INVALID!\n"+
+			"Because expectedSignValue != actualFinalSignValue\n"+
+			"Expected actualFinalSignValue = '%v'\n"+
+			"  Actual actualFinalSignValue = '%v'\n\n",
+			ePrefix, expectedSignValue, actualFinalSignValue)
+
+		return
+	}
+
+	if expectedLengthNRunes != actualLengthNRunes {
+		t.Errorf("%v\n"+
+			"Error: actualLengthNRunes is INVALID!\n"+
+			"Because expectedLengthNRunes != actualLengthNRunes\n"+
+			"Expected actualLengthNRunes = '%v'\n"+
+			"  Actual actualLengthNRunes = '%v'\n\n",
+			ePrefix, expectedLengthNRunes, actualLengthNRunes)
+
+		return
+	}
+
+	if expectedLengthIntArray != actualLengthIntArray {
+		t.Errorf("%v\n"+
+			"Error: actualLengthIntArray Result is INVALID!\n"+
+			"Because expectedLengthIntArray != actualLengthIntArray\n"+
+			"Expected actualLengthIntArray = '%v'\n"+
+			"  Actual actualLengthIntArray = '%v'\n\n",
+			ePrefix, expectedLengthIntArray, actualLengthIntArray)
+
+		return
+	}
+
+	var actualRune rune
+
+	for i := 0; i < expectedLengthNRunes; i++ {
+
+		actualRune, err = mOps.IFinal.GetIntAryRune(i)
+
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"actualRune, err := mOps.IFinal.GetIntAryRune(i)\n"+
+				"i= '%v'\n"+
+				"Error= '%v'\n\n",
+				ePrefix, i, err.Error())
+			return
+		}
+
+		if expectedNRunes[i] != actualRune {
+			t.Errorf("%v\n"+
+				"Error: expected VS actual rune DO NOT MATCH!\n"+
+				"Because expectedNRunes[i] != actualRune\n"+
+				"Expected actualRune = '%v'\n"+
+				"  Actual actualRune = '%v'\n"+
+				"Index 'i' = '%v'\n\n",
+				ePrefix, expectedNRunes[i], actualRune, i)
+
 			return
 		}
 
 	}
 
-	for i := 0; i < lEArray; i++ {
+	var elementUint8 uint8
 
-		element, _ := mOps.IFinal.GetIntAryElement(i)
+	var actualArrayElement int
 
-		if eIAry[i] != int(element) {
+	for i := 0; i < expectedLengthIntArray; i++ {
+
+		elementUint8, err = mOps.IFinal.GetIntAryElement(i)
+
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"elementUint8, err = mOps.IFinal.GetIntAryElement(i)\n"+
+				"i= '%v'\n"+
+				"Error= '%v'\n\n",
+				ePrefix, i, err.Error())
+			return
+		}
+
+		actualArrayElement = int(elementUint8)
+
+		if expectedIntArray[i] != actualArrayElement {
 
 			t.Error("Error: Expected IntAry Array does NOT match ia.IntAry! ")
 			return
 
 		}
+
+		if expectedIntArray[i] != actualArrayElement {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected actualArrayElement = '%v'\n"+
+				"  Actual actualArrayElement = '%v'\n"+
+				"Index 'i' = '%v'\n\n",
+				ePrefix, expectedIntArray[i], actualArrayElement, i)
+
+			return
+		}
+
 	}
 
+	return
 }
 
 func TestStrMathOp_AddN1N2_02(t *testing.T) {
