@@ -1,32 +1,63 @@
 package mathops
 
-import "testing"
+import (
+  "strconv"
+  "testing"
+)
 
 func TestSciNotationNum_SetNumStr_01(t *testing.T) {
 
-	numStr := "2.652E4"
+  ePrefix := "TestSciNotationNum_SetNumStr_01"
 
-	expectedStr := "2.652e+4"
+  numStr := "2.652E4"
 
-	mantissaLen := uint(3)
+  expectedStr := "2.652e+4"
 
-	sciNot1 := SciNotationNum{}.New()
+  mantissaLen := uint(3)
 
-	err := sciNot1.SetNumStr(numStr)
+  mantissaLenStr := strconv.FormatUint(uint64(mantissaLen), 10)
 
-	if err != nil {
-		t.Errorf("Error returned by sciNot1.SetNumStr(numStr). Error='%v'", err.Error())
-	}
+  sciNot1 := new(SciNotationNum).New()
 
-	resultStr, err := sciNot1.GetSciNotationStr(mantissaLen)
+  err := sciNot1.SetNumStr(numStr)
 
-	if err != nil {
-		t.Errorf("Error returned by sciNot1.GetSciNotationStr(mantissaLen). "+
-			"Error='%v'", err.Error())
-	}
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sciNot1.SetNumStr(numStr)\n"+
+      "numStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, numStr, err.Error())
+    return
+  }
 
-	if expectedStr != resultStr {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedStr, resultStr)
-	}
+  resultStr, err := sciNot1.GetSciNotationStr(mantissaLen)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultStr, err := sciNot1.GetSciNotationStr(mantissaLen)\n"+
+      "mantissaLen= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, mantissaLenStr, err.Error())
+    return
+  }
+
+  if expectedStr != resultStr {
+    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+      expectedStr, resultStr)
+  }
+
+  if expectedStr != resultStr {
+    t.Errorf("%v\n"+
+      "Error: resultStr is INVALID!\n"+
+      "Because  expectedStr != resultStr\n"+
+      "Expected resultStr = '%v'\n"+
+      "  Actual resultStr = '%v'\n\n",
+      ePrefix, expectedStr, resultStr)
+
+    return
+  }
+
+  return
 }
