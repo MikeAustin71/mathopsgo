@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestProbability_PermutationsUint32_25; xt_probability_11_test.go
+ TestProbability_PermutationsNumStrDto_27; xt_probability_12_test.go
 
 -------------------------------
 git protocol
@@ -11,10 +11,13 @@ git status
 git push origin dev
 
 --------------------------------
+NumStrDto
 Fix new(NumStrDto).NewInt
-in xt_numstrdto_06_test.go
+    in xt_numstrdto_06_test.go
+    add error return
 
-add error return
+Fix NumStrDto.GetPrecision()
+    Add Error return
 --------------------------------
 
 
@@ -25,6 +28,7 @@ Add Get Methods for
   GetAllDigitsStr
   GetIntDigitsStr
   GetFracDigitsStr
+  GetAbsPureNumStr (from NumStrDto)
 --------------------------------
 
 --------------------------------
@@ -35,6 +39,8 @@ Add Get Methods for
   GetIntDigitsStr
   GetFracDigitsStr
   GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
+
 --------------------------------
 
 --------------------------------
@@ -45,5 +51,6 @@ Add Get Methods for
   GetIntDigitsStr
   GetFracDigitsStr
   GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
 --------------------------------
 
