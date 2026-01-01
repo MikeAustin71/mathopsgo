@@ -4,15 +4,15 @@ Clipboard Main
 Clipboard Main #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsUint32_2X"
+	ePrefix := "TestProbability_PermutationsUint64_1X"
 
-	numOfItemsUint32 := uint32(X)
+	numOfItemsUint64 := uint64(X)
 
-	numOfItemsChosenUint32 := uint32(X)
+	numOfItemsChosenUint64 := uint64(X)
 
-	numOfItemsUint32Str := strconv.FormatUint(uint64(numOfItemsUint32),10)
+	numOfItemsUint64Str := strconv.FormatUint(numOfItemsUint64,10)
 
-	numOfItemsChosenUint32Str := strconv.FormatUint(uint64(numOfItemsChosenUint32),10)
+	numOfItemsChosenUint64Str := strconv.FormatUint(numOfItemsChosenUint64,10)
 
 	var allowRepetitions bool
 
@@ -94,20 +94,20 @@ Clipboard Main #2
 		return
 	}
 
-	bigINumResult, err := new(Probability).PermutationsUint32(numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)
+	bigINumResult, err := new(Probability).PermutationsUint64(numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"bigINumResult, err := new(Probability).PermutationsUint(\n"+
-			"  numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)\n"+
-			"numOfItemsUint32= '%v'\n"+
-			"numOfItemsChosenUint32= '%v'\n"+
+			"  numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)\n"+
+			"numOfItemsUint64= '%v'\n"+
+			"numOfItemsChosenUint64= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix,
-			numOfItemsUint32Str,
-			numOfItemsChosenUint32Str,
+			numOfItemsUint64Str,
+			numOfItemsChosenUint64Str,
 			strconv.FormatBool(allowRepetitions),
 			err.Error())
 
@@ -324,15 +324,15 @@ Clipboard err = nil
 Clipboard Err = nil #1
 ***************************************************
 
-	ePrefix := "TestProbability_PermutationsUint32_2X"
+	ePrefix := "TestProbability_PermutationsUint64_2X"
 
-	numOfItemsUint32 := uint32(X)
+	numOfItemsUint64 := uint64(X)
 
-	numOfItemsChosenUint32 := uint32(X)
+	numOfItemsChosenUint64 := uint64(X)
 
-	numOfItemsUint32Str := strconv.FormatUint(uint64(numOfItemsUint32),10)
+	numOfItemsUint64Str := strconv.FormatUint(numOfItemsUint64,10)
 
-	numOfItemsChosenUint32Str := strconv.FormatUint(uint64(numOfItemsChosenUint32),10)
+	numOfItemsChosenUint64Str := strconv.FormatUint(numOfItemsChosenUint64,10)
 
 	var allowRepetitions bool
 
@@ -341,21 +341,21 @@ Clipboard Err = nil #1
 Clipboard Err = nil #2
 ****************************************************
 
-	_, err := new(Probability).PermutationsUint32(numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)
+	_, err := new(Probability).PermutationsUint64(numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"_, err := new(Probability).PermutationsUint32(\n"+
-			"  numOfItemsUint32, numOfItemsChosenUint32, allowRepetitions)\n"+
-			"numOfItemsUint32= '%v'\n"+
-			"numOfItemsChosenUint32= '%v'\n"+
+			"_, err := new(Probability).PermutationsUint64(\n"+
+			"  numOfItemsUint64, numOfItemsChosenUint64, allowRepetitions)\n"+
+			"numOfItemsUint64= '%v'\n"+
+			"numOfItemsChosenUint64= '%v'\n"+
 			"allowRepetitions= '%v'\n"+
 			"Error should have triggered because:\n" +
-			"  numOfItemsUint32 < numOfItemsChosenUint32\n\n",
+			"  numOfItemsUint64 < numOfItemsChosenUint64\n\n",
 			ePrefix,
-			numOfItemsUint32Str,
-			numOfItemsChosenUint32Str,
+			numOfItemsUint64Str,
+			numOfItemsChosenUint64Str,
 			strconv.FormatBool(allowRepetitions))
 
 		return
