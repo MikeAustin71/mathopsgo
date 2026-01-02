@@ -1,6 +1,7 @@
 package mathops
 
 import (
+  "math/big"
   "testing"
 )
 
@@ -9035,192 +9036,2041 @@ func TestStrMathOp_MultiplyN1N2_08(t *testing.T) {
 }
 
 func TestStrMathOp_RaiseToPower_01(t *testing.T) {
-  nStr1 := "625"
-  power := 10
-  expected := "9094947017729282379150390625"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_01"
+
+  inputNumStr1 := "625"
+
+  inputRaiseToPowerInt := 10
+
+  internalPrecisionInt := 50
+
+  expectedNumStr := "9094947017729282379150390625"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_02(t *testing.T) {
-  nStr1 := "625.25"
-  power := 3
-  expected := "244433710.953125"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_02"
+
+  inputNumStr1 := "625.25"
+
+  inputRaiseToPowerInt := 3
+
+  internalPrecisionInt := 50
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedNumStr := "244433710.953125"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("244433710953125", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_03(t *testing.T) {
-  nStr1 := "5.3"
-  power := 9
-  expected := "3299763.591802133"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_03"
+
+  inputNumStr1 := "5.3"
+
+  inputRaiseToPowerInt := 9
+
+  internalPrecisionInt := 50
+
+  //                                  1         2         3
+  //                       0.1234567890123456789012345678901234567
+  expectedNumStr := "3299763.591802133"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("3299763591802133", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 9
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_04(t *testing.T) {
-  nStr1 := "5"
-  power := 0
-  expected := "1"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_04"
+
+  inputNumStr1 := "5"
+
+  inputRaiseToPowerInt := 0
+
+  internalPrecisionInt := 50
+
+  //                            1         2         3
+  //                 0.1234567890123456789012345678901234567
+  expectedNumStr := "1"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("1", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
+}
+
+func TestStrMathOp_RaiseToPower_05(t *testing.T) {
+
+  ePrefix := "TestStrMathOp_RaiseToPower_05"
+
+  inputNumStr1 := "5745"
+
+  inputRaiseToPowerInt := 1
+
+  internalPrecisionInt := 50
+
+  //                               1         2         3
+  //                    0.1234567890123456789012345678901234567
+  expectedNumStr := "5745"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("5745", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
+  }
+
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
+  }
+
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_06(t *testing.T) {
-  nStr1 := "5745"
-  power := 1
-  expected := "5745"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_06"
+
+  inputNumStr1 := "-57.5"
+
+  inputRaiseToPowerInt := 4
+
+  internalPrecisionInt := 50
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedNumStr := "−10931289.0625"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("−109312890625", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 4
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_07(t *testing.T) {
-  nStr1 := "-625.25"
-  power := 3
-  expected := "-244433710.953125"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_07"
+
+  inputNumStr1 := "-625.25"
+
+  inputRaiseToPowerInt := 3
+
+  internalPrecisionInt := 50
+
+  //                                     1         2         3
+  //                          0.1234567890123456789012345678901234567
+  expectedNumStr := "-244433710.953125"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("-244433710953125", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 6
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := -1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_08(t *testing.T) {
-  nStr1 := "2"
-  power := 8
-  expected := "256"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_08"
+
+  inputNumStr1 := "2"
+
+  inputRaiseToPowerInt := 8
+
+  internalPrecisionInt := 50
+
+  //                              1         2         3
+  //                   0.1234567890123456789012345678901234567
+  expectedNumStr := "256"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("256", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_09(t *testing.T) {
-  nStr1 := "0"
-  power := 8
-  expected := "0"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_09"
+
+  inputNumStr1 := "0"
+
+  inputRaiseToPowerInt := 8
+
+  internalPrecisionInt := 50
+
+  //                            1         2         3
+  //                 0.1234567890123456789012345678901234567
+  expectedNumStr := "0"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_RaiseToPower_10(t *testing.T) {
-  nStr1 := "-25.25"
-  power := 4
-  expected := "406485.94140625"
-  sMOp := StrMathOp{}.New()
 
-  sMOp.N1.SetIntAryWithNumStr(nStr1)
-  err := sMOp.RaiseToPower(power)
+  ePrefix := "TestStrMathOp_RaiseToPower_10"
+
+  inputNumStr1 := "-25.25"
+
+  inputRaiseToPowerInt := 4
+
+  internalPrecisionInt := 50
+
+  //                                 1         2         3
+  //                      0.1234567890123456789012345678901234567
+  expectedNumStr := "406485.94140625"
+
+  expectedBigInt, isOk := big.NewInt(0).SetString("40648594140625", 10)
+
+  if !isOk {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error: expectedBigINum initialization FAILED!\n\n",
+      ePrefix, expectedNumStr)
+    return
+  }
+
+  expectedPrecisionInt := 8
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  sMOp := new(StrMathOp).New()
+
+  err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+
   if err != nil {
-
-    t.Errorf("Error received from sMOp.RaiseThisToPower(power). nStr1= '%v' power= '%v' Error= %v", nStr1, power, err)
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
+      "inputNumStr1= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputNumStr1, err.Error())
+    return
   }
 
-  s := sMOp.IFinal.GetNumStr()
-  if expected != s {
-    t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
+  err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
+      "inputRaiseToPowerInt= '%v'\n"+
+      "multiplicandStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix,
+      inputRaiseToPowerInt,
+      internalPrecisionInt,
+      err.Error())
+
+    return
   }
 
+  err = sMOp.IFinal.IsValid("Validating sMOp.IFinal")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = sMOp.IFinal.IsValid(\"Validating sMOp.IFinal\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumStr, err := sMOp.IFinal.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalPrecisionInt := sMOp.IFinal.GetPrecision()
+
+  sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalPrecisionUint, err := sMOp.IFinal.GetPrecisionUint()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalSignValue, err := sMOp.IFinal.GetSign()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "sMOpIFinalNumSeps, err := sMOp.IFinal.GetNumericSeparatorsDto()\n"+
+      "sMOp.IFinal= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, sMOpIFinalNumStr, err.Error())
+    return
+  }
+
+  if expectedNumStr != sMOpIFinalNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedNumStr != sMOpIFinalNumStr\n"+
+      "Expected sMOpIFinalNumStr = '%v'\n"+
+      "  Actual sMOpIFinalNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, sMOpIFinalNumStr)
+
+    return
+  }
+
+  if expectedBigInt.Cmp(sMOpIFinalBigInt) != 0 {
+    t.Errorf("%v\n"+
+      "Error: Expected vs Actual BigInt Number Values DON'T MATCH!\n"+
+      "Because expectedBigInt.Cmp(sMOpIFinalBigInt) != 0\n"+
+      "Expected sMOpIFinalBigInt = '%v'\n"+
+      "  Actual sMOpIFinalBigInt = '%v'\n\n",
+      ePrefix, expectedBigInt.Text(10), sMOpIFinalBigInt.Text(10))
+
+    return
+  }
+
+  if expectedPrecisionInt != sMOpIFinalPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Precision Integers DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != sMOpIFinalPrecisionInt\n"+
+      "Expected sMOpIFinalPrecisionInt = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, sMOpIFinalPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != sMOpIFinalPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because Expected VS Actual Precision uint's DON'T MATCH!\n"+
+      "Expected sMOpIFinalPrecisionUint = '%v'\n"+
+      "  Actual sMOpIFinalPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, sMOpIFinalPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != sMOpIFinalSignValue {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Sign Values DON'T MATCH!\n"+
+      "Because expectedSignValue != sMOpIFinalSignValue\n"+
+      "Expected sMOpIFinalSignValue = '%v'\n"+
+      "  Actual sMOpIFinalSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, sMOpIFinalSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(sMOpIFinalNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != sMOpIFinalNumSeps \n"+
+      "Expected sMOpIFinalNumSeps = '%v'\n"+
+      "  Actual sMOpIFinalNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), sMOpIFinalNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_SubtractN1N2_01(t *testing.T) {
