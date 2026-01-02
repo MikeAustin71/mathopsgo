@@ -4,19 +4,21 @@ Clipboard Main
 Clipboard Main #1
 ***************************************************
 
-	ePrefix := "TestStrMathOp_AddN1N2_1X"
+	ePrefix := "TestStrMathOp_Divide_0X"
 
-	inputNumStr1 :=
+	inputDividendStr :=
 
-	inputNumStr2 :=
+	inputDivisorStr :=
 
-	expectedFinalNumStr :=
+    inputMaxPrecisionInt := X
 
-	expectedNRunes :=
-
-	expectedIntArray :=
+	//                                       1         2         3
+	//                            0.1234567890123456789012345678901234567
+	expectedQuotientNumStr :=
 
 	expectedPrecisionInt :=
+
+	expectedPrecisionUint := uint(expectedPrecisionInt)
 
 	expectedSignValue :=
 
@@ -24,209 +26,158 @@ Clipboard Main #1
 Clipboard Main #2
 ****************************************************
 
-	expectedLengthNRunes := len(expectedNRunes)
+	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	expectedLengthIntArray := len(expectedIntArray)
+	smop := new(StrMathOp).New()
 
-	mOps := new(StrMathOp).New()
-
-	err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)
+	err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
 
 	if err != nil {
-		t.Errorf("%v\n"+
+		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"err := mOps.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
-			"inputNumStr1= '%v'\n"+
+			"err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+			"inputDividendStr= '%v'\n" +
 			"Error= '%v'\n\n",
-			ePrefix, inputNumStr1, err.Error())
+			ePrefix, inputDividendStr, err.Error())
 		return
 	}
 
-	err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)
+	err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
 
 	if err != nil {
-		t.Errorf("%v\n"+
+		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"err = mOps.N2.SetIntAryWithNumStr(inputNumStr2)\n"+
-			"inputNumStr2= '%v'\n"+
+			"err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+			"inputDivisorStr= '%v'\n" +
 			"Error= '%v'\n\n",
-			ePrefix, inputNumStr2, err.Error())
+			ePrefix, inputDivisorStr, err.Error())
 		return
 	}
 
-	err = mOps.AddN1N2()
+	err = smop.Divide(inputMaxPrecisionInt)
 
 	if err != nil {
-		t.Errorf("%v\n"+
+		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"err = mOps.AddN1N2()\n"+
-			"inputNumStr1= '%v'\n"+
-			"inputNumStr2= '%v'\n"+
+			"err = smop.Divide(inputMaxPrecisionInt)\n"+
+			"inputMaxPrecisionInt= '%v'\n" +
 			"Error= '%v'\n\n",
-			ePrefix,
-			inputNumStr1,
-			inputNumStr2,
-			err.Error())
-
+			ePrefix, inputMaxPrecisionInt, err.Error())
 		return
 	}
 
-	actualFinalNumStr, err := mOps.IFinal.GetNumStr()
+	err = smop.Quotient.IsValid("Validating Quotient")
 
 	if err != nil {
-		t.Errorf("%v\n"+
+		t.Errorf("%v\n" +
 			"Error returned by:\n"+
-			"actualFinalNumStr, err := mOps.IFinal.GetNumStr()\n"+
-			"inputNumStr1= '%v'\n"+
-			"inputNumStr2= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			inputNumStr1,
-			inputNumStr2,
-			err.Error())
-
-		return
-	}
-
-	actualFinalPrecisionInt := mOps.IFinal.GetPrecision()
-
-	actualFinalSignValue, err := mOps.IFinal.GetSign()
-
-	if err != nil {
-		t.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"actualFinalSignValue, err := mOps.IFinal.GetSign()\n"+
+			"err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
 			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
-	actualLengthNRunes := mOps.IFinal.GetIntAryLength()
+	smopQuotientNumStr, err := smop.Quotient.GetNumStr()
 
-	actualLengthIntArray := mOps.IFinal.GetIntAryLength()
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-	if expectedFinalNumStr != actualFinalNumStr {
-		t.Errorf("%v\n"+
-			"Error: actualFinalNumStr Result is INVALID!\n"+
-			"Because expectedFinalNumStr != actualFinalNumStr\n"+
-			"Expected actualFinalNumStr = '%v'\n"+
-			"  Actual actualFinalNumStr = '%v'\n\n",
-			ePrefix, actualFinalNumStr, actualFinalNumStr)
+	smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+	smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+			"smopQuotient= '%v'\n" +
+			"Error= '%v'\n\n",
+			ePrefix, smopQuotientNumStr, err.Error())
+		return
+	}
+
+	smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+			"smopQuotient= '%v'\n" +
+			"Error= '%v'\n\n",
+			ePrefix, smopQuotientNumStr, err.Error())
+		return
+	}
+
+	smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"smopQuotientNumSeps, err :=\n" +
+			"  smop.Quotient.GetNumericSeparatorsDto()\n"+
+			"smopQuotient= '%v'\n" +
+			"Error= '%v'\n\n",
+			ePrefix, smopQuotientNumStr, err.Error())
+		return
+	}
+
+	if expectedQuotientNumStr != smopQuotientNumStr {
+		t.Errorf("%v\n" +
+			"Error: Expected VS Actual Number Strings DON'T MATCH!\n" +
+			"Because expectedQuotientNumStr != smopQuotientNumStr\n" +
+			"Expected smopQuotientNumStr = '%v'\n" +
+			"  Actual smopQuotientNumStr = '%v'\n\n",
+			ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
 
 		return
 	}
 
-	if expectedPrecisionInt != actualFinalPrecisionInt {
-		t.Errorf("%v\n"+
-			"Error: actualFinalPrecisionInt Result is INVALID!\n"+
-			"Because expectedPrecisionInt != actualFinalPrecisionInt\n"+
-			"Expected actualFinalPrecisionInt = '%v'\n"+
-			"  Actual actualFinalPrecisionInt = '%v'\n\n",
-			ePrefix, expectedPrecisionInt, actualFinalPrecisionInt)
+	if expectedPrecisionInt != smopQuotientPrecisionInt {
+		t.Errorf("%v\n" +
+			"Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n" +
+			"Because expectedPrecisionInt != smopQuotientPrecisionInt\n" +
+			"Expected smopQuotientPrecisionInt = '%v'\n" +
+			"  Actual smopQuotientPrecisionInt = '%v'\n\n",
+			ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
 
 		return
 	}
 
-	if expectedSignValue != actualFinalSignValue {
-		t.Errorf("%v\n"+
-			"Error: actualFinalSignValue is INVALID!\n"+
-			"Because expectedSignValue != actualFinalSignValue\n"+
-			"Expected actualFinalSignValue = '%v'\n"+
-			"  Actual actualFinalSignValue = '%v'\n\n",
-			ePrefix, expectedSignValue, actualFinalSignValue)
+	if expectedPrecisionUint != smopQuotientPrecisionUint {
+		t.Errorf("%v\n" +
+			"Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n" +
+			"Because expectedPrecisionUint != smopQuotientPrecisionUint\n" +
+			"Expected smopQuotientPrecisionUint = '%v'\n" +
+			"  Actual smopQuotientPrecisionUint = '%v'\n\n",
+			ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
 
 		return
 	}
 
-	if expectedLengthNRunes != actualLengthNRunes {
-		t.Errorf("%v\n"+
-			"Error: actualLengthNRunes is INVALID!\n"+
-			"Because expectedLengthNRunes != actualLengthNRunes\n"+
-			"Expected actualLengthNRunes = '%v'\n"+
-			"  Actual actualLengthNRunes = '%v'\n\n",
-			ePrefix, expectedLengthNRunes, actualLengthNRunes)
+	if expectedSignValue != smopQuotientSignValue {
+		t.Errorf("%v\n" +
+			"Error: Unexpected Result!\n" +
+			"Because expectedSignValue != smopQuotientSignValue\n" +
+			"Expected smopQuotientSignValue = '%v'\n" +
+			"  Actual smopQuotientSignValue = '%v'\n\n",
+			ePrefix, expectedSignValue, smopQuotientSignValue)
 
 		return
 	}
 
-	if expectedLengthIntArray != actualLengthIntArray {
+	if !expectedNumSeps.Equal(smopQuotientNumSeps) {
 		t.Errorf("%v\n"+
-			"Error: actualLengthIntArray Result is INVALID!\n"+
-			"Because expectedLengthIntArray != actualLengthIntArray\n"+
-			"Expected actualLengthIntArray = '%v'\n"+
-			"  Actual actualLengthIntArray = '%v'\n\n",
-			ePrefix, expectedLengthIntArray, actualLengthIntArray)
+			"Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+			"Because expectedNumSeps != smopQuotientNumSeps \n"+
+			"Expected smopQuotientNumSeps = '%v'\n"+
+			"  Actual smopQuotientNumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
 
 		return
-	}
-
-	var actualRune rune
-
-	for i := 0; i < expectedLengthNRunes; i++ {
-
-		actualRune, err = mOps.IFinal.GetIntAryRune(i)
-
-		if err != nil {
-			t.Errorf("%v\n"+
-				"Error returned by:\n"+
-				"actualRune, err := mOps.IFinal.GetIntAryRune(i)\n"+
-				"i= '%v'\n"+
-				"Error= '%v'\n\n",
-				ePrefix, i, err.Error())
-			return
-		}
-
-		if expectedNRunes[i] != actualRune {
-			t.Errorf("%v\n"+
-				"Error: expected VS actual rune DO NOT MATCH!\n"+
-				"Because expectedNRunes[i] != actualRune\n"+
-				"Expected actualRune = '%v'\n"+
-				"  Actual actualRune = '%v'\n"+
-				"Index 'i' = '%v'\n\n",
-				ePrefix, expectedNRunes[i], actualRune, i)
-
-			return
-		}
-
-	}
-
-	var elementUint8 uint8
-
-	var actualArrayElement int
-
-	for i := 0; i < expectedLengthIntArray; i++ {
-
-		elementUint8, err = mOps.IFinal.GetIntAryElement(i)
-
-		if err != nil {
-			t.Errorf("%v\n"+
-				"Error returned by:\n"+
-				"elementUint8, err = mOps.IFinal.GetIntAryElement(i)\n"+
-				"i= '%v'\n"+
-				"Error= '%v'\n\n",
-				ePrefix, i, err.Error())
-			return
-		}
-
-		actualArrayElement = int(elementUint8)
-
-		if expectedIntArray[i] != actualArrayElement {
-
-			t.Error("Error: Expected IntAry Array does NOT match ia.IntAry! ")
-			return
-
-		}
-
-		if expectedIntArray[i] != actualArrayElement {
-			t.Errorf("%v\n"+
-				"Error: Unexpected Result!\n"+
-				"Expected actualArrayElement = '%v'\n"+
-				"  Actual actualArrayElement = '%v'\n"+
-				"Index 'i' = '%v'\n\n",
-				ePrefix, expectedIntArray[i], actualArrayElement, i)
-
-			return
-		}
-
 	}
 
 	return
