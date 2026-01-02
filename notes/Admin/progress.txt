@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestStrMathOp_RaiseToPower_10; xt_strmathop_test.go
+ TestStrMathOp_SubtractN1N2_14; xt_strmathop_test.go
 
 -------------------------------
 git protocol

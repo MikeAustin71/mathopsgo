@@ -4,27 +4,29 @@ Clipboard Main
 Clipboard Main #1
 ***************************************************
 
-	ePrefix := "TestStrMathOp_RaiseToPower_0X"
+	ePrefix := "TestStrMathOp_SubtractN1N2_1X"
 
-	inputNumStr1 :=
+	// minuend - subtrahend = difference
+	inputMinuendStr1 :=
 
-	inputRaiseToPowerInt :=
-
-	internalPrecisionInt := 50
+	inputSubtrahendStr2 :=
 
 	//                                       1         2         3
 	//                            0.1234567890123456789012345678901234567
-	expectedNumStr :=
+	expectedDifferenceNumStr :=
 
-	expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)
+	expectedBigIntStr := X
+
+	expectedBigInt, isOk := big.NewInt(0).SetString(expectedBigIntStr, 10)
 
 	if !isOk {
-		t.Errorf("%v\n" +
+		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedNumStr, 10)\n"+
-			"expectedNumStr= '%v'\n" +
+			"expectedBigInt, isOk := big.NewInt(0).SetString(expectedBigIntStr, 10)\n"+
+			"expectedBigIntStr= '%v'\n"+
+			"isOk == false\n" +
 			"Error: expectedBigINum initialization FAILED!\n\n",
-			ePrefix, expectedNumStr )
+			ePrefix, expectedBigIntStr)
 		return
 	}
 
@@ -33,40 +35,107 @@ Clipboard Main #1
 	expectedPrecisionUint := uint(expectedPrecisionInt)
 
 	expectedSignValue :=
-
-	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 ****************************************************
 Clipboard Main #2
 ****************************************************
 
+	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
 	sMOp := new(StrMathOp).New()
 
-	err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)
+	err := sMOp.N1.SetIntAryWithNumStr(inputMinuendStr1)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err := sMOp.N1.SetIntAryWithNumStr(inputNumStr1)\n"+
-			"inputNumStr1= '%v'\n"+
+			"err := sMOp.N1.SetIntAryWithNumStr(inputMinuendStr1)\n"+
+			"inputMinuendStr1= '%v'\n"+
 			"Error= '%v'\n\n",
-			ePrefix, inputNumStr1, err.Error())
+			ePrefix, inputMinuendStr1, err.Error())
 		return
 	}
 
-	err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)
+	err = sMOp.N1.IsValid("Validating sMOp.N1")
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = sMOp.RaiseToPower(inputRaiseToPowerInt, internalPrecisionInt)\n"+
-			"inputRaiseToPowerInt= '%v'\n"+
-			"multiplicandStr= '%v'\n"+
-			"Error= '%v'\n\n",
-			ePrefix,
-			inputRaiseToPowerInt,
-			internalPrecisionInt,
-			err.Error())
+			"err = sMOp.N1.IsValid(\"Validating sMOp.N1\")\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
+	sMOpN1NumStr, err := sMOp.N1.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"sMOpN1NumStr, err := sMOp.N1.GetNumStr()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if inputMinuendStr1 != sMOpN1NumStr {
+		t.Errorf("%v\n"+
+			"Error: sMOp.N1 initialization FAILED!\n"+
+			"Because inputMinuendStr1 != sMOpN1NumStr\n"+
+			"Expected sMOpN1NumStr = '%v'\n"+
+			"  Actual sMOpN1NumStr = '%v'\n\n",
+			ePrefix, inputMinuendStr1, sMOpN1NumStr)
+
+		return
+	}
+
+	err = sMOp.N2.SetIntAryWithNumStr(inputSubtrahendStr2)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = sMOp.N2.SetIntAryWithNumStr(inputSubtrahendStr2)\n"+
+			"inputSubtrahendStr2= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, inputSubtrahendStr2, err.Error())
+		return
+	}
+
+	err = sMOp.N2.IsValid("Validating sMOp.N2")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = sMOp.N2.IsValid(\"Validating sMOp.N2\")\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	sMOpN2NumStr, err := sMOp.N2.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"sMOpN2NumStr, err := sMOp.N2.GetNumStr()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if inputSubtrahendStr2 != sMOpN2NumStr {
+		t.Errorf("%v\n"+
+			"Error: sMOp.N2 initialization FAILED!\n"+
+			"Because inputSubtrahendStr2 != sMOpN2NumStr\n"+
+			"Expected sMOpN2NumStr = '%v'\n"+
+			"  Actual sMOpN2NumStr = '%v'\n\n",
+			ePrefix, inputSubtrahendStr2, sMOpN2NumStr)
+
+		return
+	}
+
+	err = sMOp.SubtractN1N2()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"err = sMOp.SubtractN1N2()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
@@ -93,10 +162,10 @@ Clipboard Main #2
 	sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()
 
 	if err != nil {
-		t.Errorf("%v\n" +
+		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"sMOpIFinalBigInt, err := sMOp.IFinal.GetBigInt()\n"+
-			"sMOp.IFinal= '%v'\n" +
+			"sMOp.IFinal= '%v'\n"+
 			"Error= '%v'\n\n",
 			ePrefix, sMOpIFinalNumStr, err.Error())
 		return
@@ -140,13 +209,13 @@ Clipboard Main #2
 		return
 	}
 
-	if expectedNumStr != sMOpIFinalNumStr {
+	if expectedDifferenceNumStr != sMOpIFinalNumStr {
 		t.Errorf("%v\n"+
 			"Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
-			"Because expectedNumStr != sMOpIFinalNumStr\n"+
+			"Because expectedDifferenceNumStr != sMOpIFinalNumStr\n"+
 			"Expected sMOpIFinalNumStr = '%v'\n"+
 			"  Actual sMOpIFinalNumStr = '%v'\n\n",
-			ePrefix, expectedNumStr, sMOpIFinalNumStr)
+			ePrefix, expectedDifferenceNumStr, sMOpIFinalNumStr)
 
 		return
 	}
