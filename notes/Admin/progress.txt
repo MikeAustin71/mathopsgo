@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
- TestStrMathOp_Divide_01; xt_strmathop_test.go
+ TestStrMathOp_Divide_06; xt_strmathop_test.go
 
 -------------------------------
 git protocol

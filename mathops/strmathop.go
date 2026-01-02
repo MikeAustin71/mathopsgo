@@ -1,9 +1,9 @@
 package mathops
 
 import (
-  "fmt"
+	"fmt"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -27,42 +27,42 @@ import (
 //
 //	IntAry
 type StrMathOp struct {
-  N1       IntAry
-  N2       IntAry
-  N3       IntAry
-  IntMAry  [][]int
-  IFinal   IntAry
-  Dividend IntAry
-  Divisor  IntAry
-  Quotient IntAry
-  Modulo   IntAry
+	N1       IntAry
+	N2       IntAry
+	N3       IntAry
+	IntMAry  [][]int
+	IFinal   IntAry
+	Dividend IntAry
+	Divisor  IntAry
+	Quotient IntAry
+	Modulo   IntAry
 }
 
 func (sMathOp *StrMathOp) New() StrMathOp {
-  iAry := StrMathOp{}
-  iAry.N1 = IntAry{}
-  iAry.N2 = IntAry{}
-  iAry.N3 = IntAry{}
-  iAry.IntMAry = make([][]int, 0)
-  iAry.IFinal = IntAry{}
-  iAry.Dividend = IntAry{}
-  iAry.Divisor = IntAry{}
-  iAry.Quotient = IntAry{}
-  iAry.Modulo = IntAry{}
-  return iAry
+	iAry := StrMathOp{}
+	iAry.N1 = IntAry{}
+	iAry.N2 = IntAry{}
+	iAry.N3 = IntAry{}
+	iAry.IntMAry = make([][]int, 0)
+	iAry.IFinal = IntAry{}
+	iAry.Dividend = IntAry{}
+	iAry.Divisor = IntAry{}
+	iAry.Quotient = IntAry{}
+	iAry.Modulo = IntAry{}
+	return iAry
 }
 
 func (sMathOp *StrMathOp) Empty() {
 
-  sMathOp.N1 = IntAry{}
-  sMathOp.N2 = IntAry{}
-  sMathOp.N3 = IntAry{}
-  sMathOp.IntMAry = make([][]int, 0)
-  sMathOp.IFinal = IntAry{}
-  sMathOp.Dividend = IntAry{}
-  sMathOp.Divisor = IntAry{}
-  sMathOp.Quotient = IntAry{}
-  sMathOp.Modulo = IntAry{}
+	sMathOp.N1 = IntAry{}
+	sMathOp.N2 = IntAry{}
+	sMathOp.N3 = IntAry{}
+	sMathOp.IntMAry = make([][]int, 0)
+	sMathOp.IFinal = IntAry{}
+	sMathOp.Dividend = IntAry{}
+	sMathOp.Divisor = IntAry{}
+	sMathOp.Quotient = IntAry{}
+	sMathOp.Modulo = IntAry{}
 
 }
 
@@ -77,71 +77,71 @@ func (sMathOp *StrMathOp) Empty() {
 //	values.
 func (sMathOp *StrMathOp) AddN1N2() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.AddN1N2",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.AddN1N2",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
+	err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
-      ErrContext: "Error: 'sMathOp.N1' is invalid!\n" +
-        "'sMathOp.N1' FAILED validation tests.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
+			ErrContext: "Error: 'sMathOp.N1' is invalid!\n" +
+				"'sMathOp.N1' FAILED validation tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.N2.IsValid(ePrefix.XCpy("Validating sMathOp.N2").String())
+	err = sMathOp.N2.IsValid(ePrefix.XCpy("Validating sMathOp.N2").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N2.IsValid(ePrefix)",
-      ErrContext: "Error: 'sMathOp.N2' is invalid!\n" +
-        "'sMathOp.N2' FAILED validation tests.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N2.IsValid(ePrefix)",
+			ErrContext: "Error: 'sMathOp.N2' is invalid!\n" +
+				"'sMathOp.N2' FAILED validation tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+	sMathOp.IFinal, err = sMathOp.N1.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "sMathOp.IFinal, err =\n" +
-        "  sMathOp.N1.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "sMathOp.IFinal, err =\n" +
+				"  sMathOp.N1.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.IFinal.AddIntAryToThis(&sMathOp.N2)
+	err = sMathOp.IFinal.AddIntAryToThis(&sMathOp.N2)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.IFinal.AddIntAryToThis(&sMathOp.N2)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.IFinal.AddIntAryToThis(&sMathOp.N2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // RaiseToPower
@@ -170,149 +170,149 @@ func (sMathOp *StrMathOp) AddN1N2() error {
 //	Upon completion, calculated values are returned in
 //	StrMathOp.IFinal.
 func (sMathOp *StrMathOp) RaiseToPower(
-  power int,
-  internalPrecisionIncrement int) error {
+	power int,
+	internalPrecisionIncrement int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.RaiseToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.RaiseToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if power < 0 {
+	if power < 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf("power=%d", power),
-      ErrMessage: "Error: Input parameter 'power' is out of range!\n" +
-        "'power' is less than zero.",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("power=%d", power),
+			ErrMessage: "Error: Input parameter 'power' is out of range!\n" +
+				"'power' is less than zero.",
+		}
+	}
 
-  err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
+	err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
-      ErrContext: "sMathOp.N1 is invalid!\n" +
-        "You must configure sMathOp.N1 correctly before calling\n" +
-        "this method.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
+			ErrContext: "sMathOp.N1 is invalid!\n" +
+				"You must configure sMathOp.N1 correctly before calling\n" +
+				"this method.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if internalPrecisionIncrement < 50 {
-    internalPrecisionIncrement = 50
-  }
+	if internalPrecisionIncrement < 50 {
+		internalPrecisionIncrement = 50
+	}
 
-  err = sMathOp.N1.SetInternalFlags()
+	err = sMathOp.N1.SetInternalFlags()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N1.SetInternalFlags()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N1.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+	sMathOp.IFinal, err = sMathOp.N1.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  resultPrecision := sMathOp.N1.GetPrecision()
+	resultPrecision := sMathOp.N1.GetPrecision()
 
-  sMathOpN1IsZero, err := sMathOp.N1.IsZero()
+	sMathOpN1IsZero, err := sMathOp.N1.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpN1IsZero, err := sMathOp.N1.IsZero()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpN1IsZero, err := sMathOp.N1.IsZero()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if sMathOpN1IsZero {
+	if sMathOpN1IsZero {
 
-    err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
+		err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))",
-        ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
-          "sMathOp.N1 = 0", uint(resultPrecision)),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))",
+				ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
+					"sMathOp.N1 = 0", uint(resultPrecision)),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  if power == 0 {
+	if power == 0 {
 
-    err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)
+		err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)",
-        ErrContext: "power= 0",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)",
+				ErrContext: "power= 0",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  if power == 1 {
+	if power == 1 {
 
-    return nil
-  }
+		return nil
+	}
 
-  resultPrecision = resultPrecision * power
+	resultPrecision = resultPrecision * power
 
-  internalPrecision := resultPrecision + internalPrecisionIncrement
+	internalPrecision := resultPrecision + internalPrecisionIncrement
 
-  err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)
+	err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)",
-      ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
-        "internalPrecisionIncrement= '%v'\n"+
-        "internalPrecision= '%v'",
-        resultPrecision, internalPrecisionIncrement, internalPrecision),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)",
+			ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
+				"internalPrecisionIncrement= '%v'\n"+
+				"internalPrecision= '%v'",
+				resultPrecision, internalPrecisionIncrement, internalPrecision),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // MultiplyN1N2
@@ -327,150 +327,150 @@ func (sMathOp *StrMathOp) RaiseToPower(
 //	 and configured with the desired values before calling this method.
 func (sMathOp *StrMathOp) MultiplyN1N2() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.MultiplyN1N2",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.MultiplyN1N2",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = sMathOp.N1.SetInternalFlags()
+	err = sMathOp.N1.SetInternalFlags()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N1.SetInternalFlags()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N1.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.N2.SetInternalFlags()
+	err = sMathOp.N2.SetInternalFlags()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
+	err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
-      ErrContext: "Errror: 'sMathOp.N1' is invalid!\n" +
-        "You must configure sMathOp.N1 correctly before calling\n" +
-        "this method.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
+			ErrContext: "Errror: 'sMathOp.N1' is invalid!\n" +
+				"You must configure sMathOp.N1 correctly before calling\n" +
+				"this method.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.N2.IsValid(ePrefix.XCpy("Validating sMathOp.N2").String())
+	err = sMathOp.N2.IsValid(ePrefix.XCpy("Validating sMathOp.N2").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N2.IsValid(ePrefix)",
-      ErrContext: "Errror: 'sMathOp.N2' is invalid!\n" +
-        "You must configure sMathOp.N2 correctly before calling\n" +
-        "this method.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N2.IsValid(ePrefix)",
+			ErrContext: "Errror: 'sMathOp.N2' is invalid!\n" +
+				"You must configure sMathOp.N2 correctly before calling\n" +
+				"this method.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+	sMathOp.IFinal, err = sMathOp.N1.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.IFinal.SetInternalFlags()
+	err = sMathOp.IFinal.SetInternalFlags()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.IFinal.SetInternalFlags()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.IFinal.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  n1Precision := sMathOp.N1.GetPrecision()
+	n1Precision := sMathOp.N1.GetPrecision()
 
-  n2Precision := sMathOp.N2.GetPrecision()
+	n2Precision := sMathOp.N2.GetPrecision()
 
-  greatestPrecision := n1Precision
+	greatestPrecision := n1Precision
 
-  if n2Precision > n1Precision {
+	if n2Precision > n1Precision {
 
-    greatestPrecision = n2Precision
-  }
+		greatestPrecision = n2Precision
+	}
 
-  maxPrecision := n1Precision + n2Precision
+	maxPrecision := n1Precision + n2Precision
 
-  sMathOpN2NumStr, err := sMathOp.N2.GetNumStr()
+	sMathOpN2NumStr, err := sMathOp.N2.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpN2NumStr, err := sMathOp.N2.GetNumStr()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpN2NumStr, err := sMathOp.N2.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  sMathOpIFinalNumStr, err := sMathOp.IFinal.GetNumStr()
+	sMathOpIFinalNumStr, err := sMathOp.IFinal.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpIFinalNumStr, err := sMathOp.IFinal.GetNumStr()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpIFinalNumStr, err := sMathOp.IFinal.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
+	err = sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = sMathOp.IFinal.MultiplyThisBy(\n" +
-        "  &sMathOp.N2, greatestPrecision, maxPrecision)",
-      ErrContext: fmt.Sprintf("sMathOp.IFinal= '%v'\n"+
-        "sMathOp.N2= '%v'\n"+
-        "greatestPrecision= '%v'\n"+
-        "maxPrecision= '%v'",
-        sMathOpIFinalNumStr, sMathOpN2NumStr, greatestPrecision, maxPrecision),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = sMathOp.IFinal.MultiplyThisBy(\n" +
+				"  &sMathOp.N2, greatestPrecision, maxPrecision)",
+			ErrContext: fmt.Sprintf("sMathOp.IFinal= '%v'\n"+
+				"sMathOp.N2= '%v'\n"+
+				"greatestPrecision= '%v'\n"+
+				"maxPrecision= '%v'",
+				sMathOpIFinalNumStr, sMathOpN2NumStr, greatestPrecision, maxPrecision),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // Divide
@@ -491,603 +491,603 @@ func (sMathOp *StrMathOp) MultiplyN1N2() error {
 //	error will be returned.
 func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.Divide",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.Divide",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if maxPrecision < 0 {
+	if maxPrecision < 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
-      ErrMessage: "Error: Input parameter 'maxPrecision' is invalid!\n" +
-        "'maxPrecision' must be greater than or equal to '0'.",
-    }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+			ErrMessage: "Error: Input parameter 'maxPrecision' is invalid!\n" +
+				"'maxPrecision' must be greater than or equal to '0'.",
+		}
 
-  }
+	}
 
-  err = sMathOp.Quotient.SetIntAryToZero(0)
+	err = sMathOp.Quotient.SetIntAryToZero(0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = err = sMathOp.Quotient.SetIntAryToZero(0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = err = sMathOp.Quotient.SetIntAryToZero(0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.Modulo.SetIntAryToZero(0)
+	err = sMathOp.Modulo.SetIntAryToZero(0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.Modulo.SetIntAryToZero(0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.Modulo.SetIntAryToZero(0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  tensCount := new(IntAry).New()
+	tensCount := new(IntAry).New()
 
-  err = tensCount.SetIntAryToOne(0)
+	err = tensCount.SetIntAryToOne(0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = tensCount.SetIntAryToOne(0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = tensCount.SetIntAryToOne(0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  newSignVal := 1
+	newSignVal := 1
 
-  divisorSignValue, err := sMathOp.Divisor.GetSign()
+	divisorSignValue, err := sMathOp.Divisor.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "divisorSignValue, err := sMathOp.Divisor.GetSign()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "divisorSignValue, err := sMathOp.Divisor.GetSign()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dividendSignValue, err := sMathOp.Dividend.GetSign()
+	dividendSignValue, err := sMathOp.Dividend.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "dividendSignValue, err := sMathOp.Dividend.GetSign()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dividendSignValue, err := sMathOp.Dividend.GetSign()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if divisorSignValue != dividendSignValue {
+	if divisorSignValue != dividendSignValue {
 
-    newSignVal = -1
-  }
+		newSignVal = -1
+	}
 
-  if divisorSignValue == -1 {
+	if divisorSignValue == -1 {
 
-    err = sMathOp.Divisor.SetSign(1)
+		err = sMathOp.Divisor.SetSign(1)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.Divisor.SetSign(1)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.Divisor.SetSign(1)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  if dividendSignValue == -1 {
+	if dividendSignValue == -1 {
 
-    err = sMathOp.Dividend.SetSign(1)
+		err = sMathOp.Dividend.SetSign(1)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.Dividend.SetSign(1)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.Dividend.SetSign(1)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  sMathOp.Divisor.SetIsZeroValue()
+	sMathOp.Divisor.SetIsZeroValue()
 
-  sMathOpDivisorIsZero, err := sMathOp.Divisor.IsZero()
+	sMathOpDivisorIsZero, err := sMathOp.Divisor.IsZero()
 
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpDivisorIsZero, err := sMathOp.Divisor.IsZero()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpDivisorIsZero, err := sMathOp.Divisor.IsZero()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if sMathOpDivisorIsZero {
+	if sMathOpDivisorIsZero {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: 'sMathOp.Divisor' is invalid!\n" +
-        "'sMathOp.Divisor' has a zero value. This will\n" +
-        "result in a 'divide by zero' error.",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: 'sMathOp.Divisor' is invalid!\n" +
+				"'sMathOp.Divisor' has a zero value. This will\n" +
+				"result in a 'divide by zero' error.",
+		}
+	}
 
-  sMathOp.Dividend.SetIsZeroValue()
+	sMathOp.Dividend.SetIsZeroValue()
 
-  sMathOpDividendIsZero, err := sMathOp.Dividend.IsZero()
+	sMathOpDividendIsZero, err := sMathOp.Dividend.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpDividendIsZero, err := sMathOp.Dividend.IsZero()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpDividendIsZero, err := sMathOp.Dividend.IsZero()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if sMathOpDividendIsZero {
-    return nil
-  }
+	if sMathOpDividendIsZero {
+		return nil
+	}
 
-  trialDividend, err := sMathOp.Dividend.CopyOut()
+	trialDividend, err := sMathOp.Dividend.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "trialDividend, err := sMathOp.Dividend.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "trialDividend, err := sMathOp.Dividend.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dividendMag, err := sMathOp.Dividend.GetMagnitudeDigits()
+	dividendMag, err := sMathOp.Dividend.GetMagnitudeDigits()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "dividendMag, err := sMathOp.Dividend.GetMagnitudeDigits()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dividendMag, err := sMathOp.Dividend.GetMagnitudeDigits()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  divisorMag, err := sMathOp.Divisor.GetMagnitudeDigits()
+	divisorMag, err := sMathOp.Divisor.GetMagnitudeDigits()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "divisorMag, err := sMathOp.Divisor.GetMagnitudeDigits()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "divisorMag, err := sMathOp.Divisor.GetMagnitudeDigits()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  deltaMag := uint(0)
+	deltaMag := uint(0)
 
-  incrementVal := new(IntAry).New()
+	incrementVal := new(IntAry).New()
 
-  sMathOpDivisorNumStr, err := sMathOp.Divisor.GetNumStr()
+	sMathOpDivisorNumStr, err := sMathOp.Divisor.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOpDivisorNumStr, err := sMathOp.Divisor.GetNumStr()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOpDivisorNumStr, err := sMathOp.Divisor.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = incrementVal.SetIntAryWithNumStr(sMathOpDivisorNumStr)
+	err = incrementVal.SetIntAryWithNumStr(sMathOpDivisorNumStr)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = incrementVal.SetIntAryWithNumStr(sMathOpDivisorNumStr)",
-      ErrContext: fmt.Sprintf("sMathOpDivisorNumStr= '%v'",
-        sMathOpDivisorNumStr),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = incrementVal.SetIntAryWithNumStr(sMathOpDivisorNumStr)",
+			ErrContext: fmt.Sprintf("sMathOpDivisorNumStr= '%v'",
+				sMathOpDivisorNumStr),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  var tensCountNumStr, incrementValNumStr, trialDividendNumStr string
+	var tensCountNumStr, incrementValNumStr, trialDividendNumStr string
 
-  if dividendMag > divisorMag {
+	if dividendMag > divisorMag {
 
-    deltaMag = uint(dividendMag - divisorMag)
+		deltaMag = uint(dividendMag - divisorMag)
 
-    err = tensCount.MultiplyByTenToPower(deltaMag)
+		err = tensCount.MultiplyByTenToPower(deltaMag)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = tensCount.MultiplyByTenToPower(deltaMag)",
-        ErrContext: fmt.Sprintf("deltaMag= '%v'",
-          deltaMag),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = tensCount.MultiplyByTenToPower(deltaMag)",
+				ErrContext: fmt.Sprintf("deltaMag= '%v'",
+					deltaMag),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    tensCountNumStr, err = tensCount.GetNumStr()
+		tensCountNumStr, err = tensCount.GetNumStr()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
-        ErrContext: "tensCountNumStr, err = tensCount.GetNumStr()",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
+				ErrContext: "tensCountNumStr, err = tensCount.GetNumStr()",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    incrementValNumStr, err = incrementVal.GetNumStr()
+		incrementValNumStr, err = incrementVal.GetNumStr()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    err = incrementVal.MultiplyThisBy(&tensCount, -1, -1)
+		err = incrementVal.MultiplyThisBy(&tensCount, -1, -1)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = incrementVal.MultiplyThisBy(&tensCount, -1, -1)",
-        ErrContext: fmt.Sprintf("incrementVal= '%v'\n"+
-          "tensCount= '%v'", incrementValNumStr, tensCountNumStr),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = incrementVal.MultiplyThisBy(&tensCount, -1, -1)",
+				ErrContext: fmt.Sprintf("incrementVal= '%v'\n"+
+					"tensCount= '%v'", incrementValNumStr, tensCountNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
 
-  } else if divisorMag > dividendMag {
+	} else if divisorMag > dividendMag {
 
-    deltaMag = uint(divisorMag - dividendMag)
+		deltaMag = uint(divisorMag - dividendMag)
 
-    trialDividendNumStr, err = trialDividend.GetNumStr()
+		trialDividendNumStr, err = trialDividend.GetNumStr()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "trialDividendNumStr, err = trialDividend.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "trialDividendNumStr, err = trialDividend.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    err = trialDividend.MultiplyByTenToPower(deltaMag)
+		err = trialDividend.MultiplyByTenToPower(deltaMag)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = trialDividend.MultiplyByTenToPower(deltaMag)",
-        ErrContext: fmt.Sprintf("deltaMag= '%v'\n"+
-          "trialDividend= '%v'", deltaMag, trialDividendNumStr),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = trialDividend.MultiplyByTenToPower(deltaMag)",
+				ErrContext: fmt.Sprintf("deltaMag= '%v'\n"+
+					"trialDividend= '%v'", deltaMag, trialDividendNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    err = tensCount.DivideByTenToPower(deltaMag)
+		err = tensCount.DivideByTenToPower(deltaMag)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = tensCount.DivideByTenToPower(deltaMag)",
-        ErrContext: fmt.Sprintf("deltaMag= '%v'\n"+
-          "tensCount= '%v'", deltaMag, tensCountNumStr),
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = tensCount.DivideByTenToPower(deltaMag)",
+				ErrContext: fmt.Sprintf("deltaMag= '%v'\n"+
+					"tensCount= '%v'", deltaMag, tensCountNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  compareAbsValues := 0
+	compareAbsValues := 0
 
-  precisionCutOff := maxPrecision + dividendMag + 1
+	precisionCutOff := maxPrecision + dividendMag + 1
 
-  var sMathOpQuotientPrecisionInt int
+	var sMathOpQuotientPrecisionInt int
 
-  idx := 0
+	idx := 0
 
-  for {
+	for {
 
-    idx++
+		idx++
 
-    sMathOpQuotientPrecisionInt = sMathOp.Quotient.GetPrecision()
+		sMathOpQuotientPrecisionInt = sMathOp.Quotient.GetPrecision()
 
-    if sMathOpQuotientPrecisionInt == precisionCutOff {
+		if sMathOpQuotientPrecisionInt == precisionCutOff {
 
-      err = sMathOp.Quotient.SetSign(newSignVal)
+			err = sMathOp.Quotient.SetSign(newSignVal)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = sMathOp.Quotient.SetSign(newSignVal)",
-          ErrContext: fmt.Sprintf("newSignVal= '%v'", newSignVal),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = sMathOp.Quotient.SetSign(newSignVal)",
+					ErrContext: fmt.Sprintf("newSignVal= '%v'", newSignVal),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      err = sMathOp.Quotient.RoundToPrecision(maxPrecision)
+			err = sMathOp.Quotient.RoundToPrecision(maxPrecision)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = sMathOp.Quotient.RoundToPrecision(maxPrecision)",
-          ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = sMathOp.Quotient.RoundToPrecision(maxPrecision)",
+					ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      return nil
-    }
+			return nil
+		}
 
-    trialDividendNumStr, err = trialDividend.GetNumStr()
+		trialDividendNumStr, err = trialDividend.GetNumStr()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
-        ErrContext: fmt.Sprintf("Cycle No. = '%v'\n", idx),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.N2.SetInternalFlags()",
+				ErrContext: fmt.Sprintf("Cycle No. = '%v'\n", idx),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    incrementValNumStr, err = incrementVal.GetNumStr()
+		incrementValNumStr, err = incrementVal.GetNumStr()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
-        ErrContext: fmt.Sprintf("Cycle No. = '%v'\n", idx),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
+				ErrContext: fmt.Sprintf("Cycle No. = '%v'\n", idx),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    compareAbsValues, err = incrementVal.CompareAbsoluteValues(&trialDividend)
+		compareAbsValues, err = incrementVal.CompareAbsoluteValues(&trialDividend)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "compareAbsValues, err = \n" +
-          "  incrementVal.CompareAbsoluteValues(&trialDividend)",
-        ErrContext: fmt.Sprintf("Cycle No. = '%v'\n"+
-          "trialDividend= '%v'\n"+
-          "incrementVal= '%v'",
-          idx, trialDividendNumStr, incrementValNumStr),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "compareAbsValues, err = \n" +
+					"  incrementVal.CompareAbsoluteValues(&trialDividend)",
+				ErrContext: fmt.Sprintf("Cycle No. = '%v'\n"+
+					"trialDividend= '%v'\n"+
+					"incrementVal= '%v'",
+					idx, trialDividendNumStr, incrementValNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    if compareAbsValues == 0 {
-      // incrementalVal is equal to trialDividend
+		if compareAbsValues == 0 {
+			// incrementalVal is equal to trialDividend
 
-      tensCountNumStr, err = tensCount.GetNumStr()
+			tensCountNumStr, err = tensCount.GetNumStr()
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
-          ErrContext: fmt.Sprintf("tensCount= '%v'\n"+
-            "Cycle No. = '%v'", tensCountNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
+					ErrContext: fmt.Sprintf("tensCount= '%v'\n"+
+						"Cycle No. = '%v'", tensCountNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      err = sMathOp.Quotient.AddIntAryToThis(&tensCount)
+			err = sMathOp.Quotient.AddIntAryToThis(&tensCount)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = sMathOp.Quotient.AddIntAryToThis(&tensCount)",
-          ErrContext: fmt.Sprintf("tensCount= '%v'\n"+
-            "Cycle No. = '%v'", tensCountNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = sMathOp.Quotient.AddIntAryToThis(&tensCount)",
+					ErrContext: fmt.Sprintf("tensCount= '%v'\n"+
+						"Cycle No. = '%v'", tensCountNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      err = sMathOp.Quotient.SetSign(newSignVal)
+			err = sMathOp.Quotient.SetSign(newSignVal)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = sMathOp.Quotient.SetSign(newSignVal)",
-          ErrContext: fmt.Sprintf("newSignVal= '%v'\n"+
-            "Cycle No. = '%v'", newSignVal, idx),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = sMathOp.Quotient.SetSign(newSignVal)",
+					ErrContext: fmt.Sprintf("newSignVal= '%v'\n"+
+						"Cycle No. = '%v'", newSignVal, idx),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      return nil
+			return nil
 
-    } else if compareAbsValues == -1 {
-      // incrementalVal < trialDividend
+		} else if compareAbsValues == -1 {
+			// incrementalVal < trialDividend
 
-      tensCountNumStr, err = tensCount.GetNumStr()
+			tensCountNumStr, err = tensCount.GetNumStr()
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "Cycle No. = '%v'", idx),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"Cycle No. = '%v'", idx),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      err = sMathOp.Quotient.AddIntAryToThis(&tensCount)
+			err = sMathOp.Quotient.AddIntAryToThis(&tensCount)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = sMathOp.Quotient.AddIntAryToThis(&tensCount)",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "tensCount= '%v'\n"+
-            "Cycle No. = '%v'", tensCountNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = sMathOp.Quotient.AddIntAryToThis(&tensCount)",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"tensCount= '%v'\n"+
+						"Cycle No. = '%v'", tensCountNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
 
-      incrementValNumStr, err = incrementVal.GetNumStr()
+			incrementValNumStr, err = incrementVal.GetNumStr()
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "Cycle No. = '%v'", idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      trialDividendNumStr, err = trialDividend.GetNumStr()
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "trialDividendNumStr, err = trialDividend.GetNumStr()",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "Cycle No. = '%v'", idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      // Calc Remainder
-      err = trialDividend.SubtractFromThis(&incrementVal)
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = trialDividend.SubtractFromThis(&incrementVal)",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "incrementVal= '%v'\n"+
-            "trialDividend= '%v'\n"+
-            "Cycle No. = '%v'",
-            incrementValNumStr, trialDividendNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      continue
-
-    } else {
-      // Must Be compareAbsValues == 1
-      // incrementalVal > trialDividend
-
-      tensCountNumStr, err = tensCount.GetNumStr()
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
-          ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
-            "Cycle No. = '%v'", idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      incrementValNumStr, err = incrementVal.GetNumStr()
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
-          ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
-            "Cycle No. = '%v'", idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      err = tensCount.DivideByTenToPower(1)
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = tensCount.DivideByTenToPower(1)",
-          ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
-            "tensCount= '%v'\n"+
-            "Cycle No. = '%v'",
-            tensCountNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
-
-      err = incrementVal.DivideByTenToPower(1)
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = incrementVal.DivideByTenToPower(1)",
-          ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
-            "incrementVal= '%v'\n"+
-            "Cycle No. = '%v'",
-            incrementValNumStr, idx),
-          ErrMessage: err.Error(),
-        }
-      }
-    }
-  } // for 'true' loop
-
-  //return nil
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"Cycle No. = '%v'", idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			trialDividendNumStr, err = trialDividend.GetNumStr()
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "trialDividendNumStr, err = trialDividend.GetNumStr()",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"Cycle No. = '%v'", idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			// Calc Remainder
+			err = trialDividend.SubtractFromThis(&incrementVal)
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = trialDividend.SubtractFromThis(&incrementVal)",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"incrementVal= '%v'\n"+
+						"trialDividend= '%v'\n"+
+						"Cycle No. = '%v'",
+						incrementValNumStr, trialDividendNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			continue
+
+		} else {
+			// Must Be compareAbsValues == 1
+			// incrementalVal > trialDividend
+
+			tensCountNumStr, err = tensCount.GetNumStr()
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "tensCountNumStr, err = tensCount.GetNumStr()",
+					ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
+						"Cycle No. = '%v'", idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			incrementValNumStr, err = incrementVal.GetNumStr()
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "incrementValNumStr, err = incrementVal.GetNumStr()",
+					ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
+						"Cycle No. = '%v'", idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			err = tensCount.DivideByTenToPower(1)
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = tensCount.DivideByTenToPower(1)",
+					ErrContext: fmt.Sprintf("compareAbsValues == 1 \n"+
+						"tensCount= '%v'\n"+
+						"Cycle No. = '%v'",
+						tensCountNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
+
+			err = incrementVal.DivideByTenToPower(1)
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = incrementVal.DivideByTenToPower(1)",
+					ErrContext: fmt.Sprintf("compareAbsValues == -1 \n"+
+						"incrementVal= '%v'\n"+
+						"Cycle No. = '%v'",
+						incrementValNumStr, idx),
+					ErrMessage: err.Error(),
+				}
+			}
+		}
+	} // for 'true' loop
+
+	//return nil
 }
 
 // DivideDividendByDivisor
@@ -1102,127 +1102,127 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 //	the desired values.
 func (sMathOp *StrMathOp) DivideDividendByDivisor() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.DivideDividendByDivisor",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.DivideDividendByDivisor",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  sMathOp.N1 = sMathOp.Divisor
+	sMathOp.N1 = sMathOp.Divisor
 
-  compare := -1
+	compare := -1
 
-  quotient := 0
+	quotient := 0
 
-  sN := fmt.Sprintf("%v", quotient)
+	sN := fmt.Sprintf("%v", quotient)
 
-  err = sMathOp.N2.SetIntAryWithNumStr(sN)
+	err = sMathOp.N2.SetIntAryWithNumStr(sN)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.N2.SetIntAryWithNumStr(sN)",
-      ErrContext: fmt.Sprintf("sN= '%v'", sN),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.N2.SetIntAryWithNumStr(sN)",
+			ErrContext: fmt.Sprintf("sN= '%v'", sN),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  currentCompare := 0
+	currentCompare := 0
 
-  for compare < 1 {
+	for compare < 1 {
 
-    currentCompare = compare
+		currentCompare = compare
 
-    quotient++
+		quotient++
 
-    err = sMathOp.N2.IncrementIntegerOne()
+		err = sMathOp.N2.IncrementIntegerOne()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.N2.IncrementIntegerOne()",
-        ErrContext: fmt.Sprintf("compare= '%v'", compare),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.N2.IncrementIntegerOne()",
+				ErrContext: fmt.Sprintf("compare= '%v'", compare),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    sMathOp.N3 = sMathOp.IFinal
+		sMathOp.N3 = sMathOp.IFinal
 
-    err = sMathOp.MultiplyN1N2()
+		err = sMathOp.MultiplyN1N2()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.MultiplyN1N2()",
-        ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.MultiplyN1N2()",
+				ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    compare, err = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
+		compare, err = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.MultiplyN1N2()",
-        ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.MultiplyN1N2()",
+				ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  quotient = quotient - 1
+	quotient = quotient - 1
 
-  sN = fmt.Sprintf("%v", quotient)
+	sN = fmt.Sprintf("%v", quotient)
 
-  err = sMathOp.Quotient.SetIntAryWithNumStr(sN)
+	err = sMathOp.Quotient.SetIntAryWithNumStr(sN)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.Quotient.SetIntAryWithNumStr(sN)",
-      ErrContext: fmt.Sprintf("sN= '%v'", sN),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.Quotient.SetIntAryWithNumStr(sN)",
+			ErrContext: fmt.Sprintf("sN= '%v'", sN),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  // Always false
-  //if compare == 0 {
-  //	sMathOp.Modulo.SetIntAryToZero(0)
-  //	return nil
-  //}
+	// Always false
+	//if compare == 0 {
+	//	sMathOp.Modulo.SetIntAryToZero(0)
+	//	return nil
+	//}
 
-  sMathOp.N1 = sMathOp.Dividend
+	sMathOp.N1 = sMathOp.Dividend
 
-  sMathOp.N2 = sMathOp.N3
+	sMathOp.N2 = sMathOp.N3
 
-  err = sMathOp.SubtractN1N2()
+	err = sMathOp.SubtractN1N2()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.SubtractN1N2()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.SubtractN1N2()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  sMathOp.Modulo = sMathOp.IFinal
+	sMathOp.Modulo = sMathOp.IFinal
 
-  return nil
+	return nil
 }
 
 // DivideBySubtraction
@@ -1239,100 +1239,100 @@ func (sMathOp *StrMathOp) DivideDividendByDivisor() error {
 //		the desired values.
 func (sMathOp *StrMathOp) DivideBySubtraction() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.DivideBySubtraction",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.DivideBySubtraction",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()
+	sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOp.Modulo, err = sMathOp.Dividend.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.Quotient.SetIntAryToZero(0)
+	err = sMathOp.Quotient.SetIntAryToZero(0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.Quotient.SetIntAryToZero(0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.Quotient.SetIntAryToZero(0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  //compare := 1
-  compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
+	//compare := 1
+	compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
-      ErrContext: "Error on initial comparison of Dividend and Divisor",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "compare, err := sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
+			ErrContext: "Error on initial comparison of Dividend and Divisor",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  idx := 0
+	idx := 0
 
-  for compare >= 0 {
+	for compare >= 0 {
 
-    idx++
+		idx++
 
-    err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
+		err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    err = sMathOp.Quotient.IncrementIntegerOne()
+		err = sMathOp.Quotient.IncrementIntegerOne()
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = sMathOp.Quotient.IncrementIntegerOne()",
-        ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = sMathOp.Quotient.IncrementIntegerOne()",
+				ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
+		compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
-        ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "compare, err = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)",
+				ErrContext: fmt.Sprintf("Cycle Index= '%d'", idx),
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  return nil
+	return nil
 }
 
 //func (sMathOp *StrMathOp) SubtractDivArys() {
@@ -1349,42 +1349,42 @@ func (sMathOp *StrMathOp) DivideBySubtraction() error {
 //		properly initialized and configured with the desired values.
 func (sMathOp *StrMathOp) SubtractN1N2() error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "StrMathOp.SubtractN1N2",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"StrMathOp.SubtractN1N2",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+	sMathOp.IFinal, err = sMathOp.N1.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
+	err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)",
-      ErrContext: "sMathOp.IFinal contains the value of sMathOp.N1",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)",
+			ErrContext: "sMathOp.IFinal contains the value of sMathOp.N1",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }

@@ -5607,141 +5607,887 @@ func TestStrMathOp_Divide_01(t *testing.T) {
 
 func TestStrMathOp_Divide_02(t *testing.T) {
 
-  dividend := "48"
-  divisor := "24"
-  eQuotient := "2"
-  eSignVal := 1
-  maxPrecision := 0
+  ePrefix := "TestStrMathOp_Divide_02"
 
-  smop := StrMathOp{}.New()
-  smop.Dividend.SetIntAryWithNumStr(dividend)
-  smop.Divisor.SetIntAryWithNumStr(divisor)
-  smop.Divide(maxPrecision)
+  inputDividendStr := "48"
 
-  if eQuotient != smop.Quotient.GetNumStr() {
-    t.Errorf("Error - Expected smop.Quotient.GetNumStr()= '%v'. Instead, smop.Quotient.GetNumStr()= '%v' .", eQuotient, smop.Quotient.GetNumStr())
+  inputDivisorStr := "24"
+
+  inputMaxPrecisionInt := 0
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedQuotientNumStr := "2"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  smop := new(StrMathOp).New()
+
+  err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+      "inputDividendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDividendStr, err.Error())
+    return
   }
 
-  if maxPrecision != smop.Quotient.GetPrecision() {
-    t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", maxPrecision, smop.Quotient.GetPrecision())
+  err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+      "inputDivisorStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDivisorStr, err.Error())
+    return
   }
 
-  if eSignVal != smop.Quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, smop.Quotient.GetSign())
+  err = smop.Divide(inputMaxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divide(inputMaxPrecisionInt)\n"+
+      "inputMaxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputMaxPrecisionInt, err.Error())
+    return
   }
 
+  err = smop.Quotient.IsValid("Validating Quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientNumStr, err := smop.Quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+  smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumSeps, err :=\n"+
+      "  smop.Quotient.GetNumericSeparatorsDto()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumStr != smopQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedQuotientNumStr != smopQuotientNumStr\n"+
+      "Expected smopQuotientNumStr = '%v'\n"+
+      "  Actual smopQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != smopQuotientPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != smopQuotientPrecisionInt\n"+
+      "Expected smopQuotientPrecisionInt = '%v'\n"+
+      "  Actual smopQuotientPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != smopQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != smopQuotientPrecisionUint\n"+
+      "Expected smopQuotientPrecisionUint = '%v'\n"+
+      "  Actual smopQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != smopQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != smopQuotientSignValue\n"+
+      "Expected smopQuotientSignValue = '%v'\n"+
+      "  Actual smopQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, smopQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(smopQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != smopQuotientNumSeps \n"+
+      "Expected smopQuotientNumSeps = '%v'\n"+
+      "  Actual smopQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_Divide_03(t *testing.T) {
 
-  dividend := "54"
-  divisor := "24"
-  eQuotient := "2.25"
-  eSignVal := 1
-  maxPrecision := 7
-  ePrecision := 2
+  ePrefix := "TestStrMathOp_Divide_03"
 
-  smop := StrMathOp{}.New()
-  smop.Dividend.SetIntAryWithNumStr(dividend)
-  smop.Divisor.SetIntAryWithNumStr(divisor)
-  smop.Divide(maxPrecision)
+  inputDividendStr := "54"
 
-  if eQuotient != smop.Quotient.GetNumStr() {
-    t.Errorf("Error - Expected smop.Quotient.GetNumStr()= '%v'. Instead, smop.Quotient.GetNumStr()= '%v' .", eQuotient, smop.Quotient.GetNumStr())
+  inputDivisorStr := "24"
+
+  inputMaxPrecisionInt := 7
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedQuotientNumStr := "2.25"
+
+  expectedPrecisionInt := 2
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  smop := new(StrMathOp).New()
+
+  err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+      "inputDividendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDividendStr, err.Error())
+    return
   }
 
-  if ePrecision != smop.Quotient.GetPrecision() {
-    t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+  err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+      "inputDivisorStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDivisorStr, err.Error())
+    return
   }
 
-  if eSignVal != smop.Quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, smop.Quotient.GetSign())
+  err = smop.Divide(inputMaxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divide(inputMaxPrecisionInt)\n"+
+      "inputMaxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputMaxPrecisionInt, err.Error())
+    return
   }
 
+  err = smop.Quotient.IsValid("Validating Quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientNumStr, err := smop.Quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+  smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumSeps, err :=\n"+
+      "  smop.Quotient.GetNumericSeparatorsDto()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumStr != smopQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedQuotientNumStr != smopQuotientNumStr\n"+
+      "Expected smopQuotientNumStr = '%v'\n"+
+      "  Actual smopQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != smopQuotientPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != smopQuotientPrecisionInt\n"+
+      "Expected smopQuotientPrecisionInt = '%v'\n"+
+      "  Actual smopQuotientPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != smopQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != smopQuotientPrecisionUint\n"+
+      "Expected smopQuotientPrecisionUint = '%v'\n"+
+      "  Actual smopQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != smopQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != smopQuotientSignValue\n"+
+      "Expected smopQuotientSignValue = '%v'\n"+
+      "  Actual smopQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, smopQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(smopQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != smopQuotientNumSeps \n"+
+      "Expected smopQuotientNumSeps = '%v'\n"+
+      "  Actual smopQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_Divide_04(t *testing.T) {
 
-  dividend := "0"
-  divisor := "24"
-  eQuotient := "0"
-  eSignVal := 1
-  maxPrecision := 7
-  ePrecision := 0
+  ePrefix := "TestStrMathOp_Divide_04"
 
-  smop := StrMathOp{}.New()
-  smop.Dividend.SetIntAryWithNumStr(dividend)
-  smop.Divisor.SetIntAryWithNumStr(divisor)
-  smop.Divide(maxPrecision)
+  inputDividendStr := "0"
 
-  if eQuotient != smop.Quotient.GetNumStr() {
-    t.Errorf("Error - Expected smop.Quotient.GetNumStr()= '%v'. Instead, smop.Quotient.GetNumStr()= '%v' .", eQuotient, smop.Quotient.GetNumStr())
+  inputDivisorStr := "24"
+
+  inputMaxPrecisionInt := 7
+
+  //                                       1         2         3
+  //                            0.1234567890123456789012345678901234567
+  expectedQuotientNumStr := "0"
+
+  expectedPrecisionInt := 0
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  smop := new(StrMathOp).New()
+
+  err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+      "inputDividendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDividendStr, err.Error())
+    return
   }
 
-  if ePrecision != smop.Quotient.GetPrecision() {
-    t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+  err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+      "inputDivisorStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDivisorStr, err.Error())
+    return
   }
 
-  if eSignVal != smop.Quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, smop.Quotient.GetSign())
+  err = smop.Divide(inputMaxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divide(inputMaxPrecisionInt)\n"+
+      "inputMaxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputMaxPrecisionInt, err.Error())
+    return
   }
 
+  err = smop.Quotient.IsValid("Validating Quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientNumStr, err := smop.Quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+  smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumSeps, err :=\n"+
+      "  smop.Quotient.GetNumericSeparatorsDto()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumStr != smopQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedQuotientNumStr != smopQuotientNumStr\n"+
+      "Expected smopQuotientNumStr = '%v'\n"+
+      "  Actual smopQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != smopQuotientPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != smopQuotientPrecisionInt\n"+
+      "Expected smopQuotientPrecisionInt = '%v'\n"+
+      "  Actual smopQuotientPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != smopQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != smopQuotientPrecisionUint\n"+
+      "Expected smopQuotientPrecisionUint = '%v'\n"+
+      "  Actual smopQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != smopQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != smopQuotientSignValue\n"+
+      "Expected smopQuotientSignValue = '%v'\n"+
+      "  Actual smopQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, smopQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(smopQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != smopQuotientNumSeps \n"+
+      "Expected smopQuotientNumSeps = '%v'\n"+
+      "  Actual smopQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_Divide_05(t *testing.T) {
 
-  dividend := "5"
-  divisor := "24"
-  eQuotient := "0.20833333333333333333333333333333"
-  eSignVal := 1
-  maxPrecision := 32
-  ePrecision := 32
+  ePrefix := "TestStrMathOp_Divide_05"
 
-  smop := StrMathOp{}.New()
-  smop.Dividend.SetIntAryWithNumStr(dividend)
-  smop.Divisor.SetIntAryWithNumStr(divisor)
-  smop.Divide(maxPrecision)
+  inputDividendStr := "5"
 
-  if eQuotient != smop.Quotient.GetNumStr() {
-    t.Errorf("Error - Expected smop.Quotient.GetNumStr()= '%v'. Instead, smop.Quotient.GetNumStr()= '%v' .", eQuotient, smop.Quotient.GetNumStr())
+  inputDivisorStr := "24"
+
+  inputMaxPrecisionInt := 32
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedQuotientNumStr := "0.20833333333333333333333333333333"
+
+  expectedPrecisionInt := 32
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  smop := new(StrMathOp).New()
+
+  err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+      "inputDividendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDividendStr, err.Error())
+    return
   }
 
-  if ePrecision != smop.Quotient.GetPrecision() {
-    t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+  err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+      "inputDivisorStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDivisorStr, err.Error())
+    return
   }
 
-  if eSignVal != smop.Quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, smop.Quotient.GetSign())
+  err = smop.Divide(inputMaxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divide(inputMaxPrecisionInt)\n"+
+      "inputMaxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputMaxPrecisionInt, err.Error())
+    return
   }
 
+  err = smop.Quotient.IsValid("Validating Quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientNumStr, err := smop.Quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+  smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumSeps, err :=\n"+
+      "  smop.Quotient.GetNumericSeparatorsDto()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumStr != smopQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedQuotientNumStr != smopQuotientNumStr\n"+
+      "Expected smopQuotientNumStr = '%v'\n"+
+      "  Actual smopQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != smopQuotientPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != smopQuotientPrecisionInt\n"+
+      "Expected smopQuotientPrecisionInt = '%v'\n"+
+      "  Actual smopQuotientPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != smopQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != smopQuotientPrecisionUint\n"+
+      "Expected smopQuotientPrecisionUint = '%v'\n"+
+      "  Actual smopQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != smopQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != smopQuotientSignValue\n"+
+      "Expected smopQuotientSignValue = '%v'\n"+
+      "  Actual smopQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, smopQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(smopQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != smopQuotientNumSeps \n"+
+      "Expected smopQuotientNumSeps = '%v'\n"+
+      "  Actual smopQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_Divide_06(t *testing.T) {
 
-  dividend := "0.05"
-  divisor := "24"
-  eQuotient := "0.00208333333333333333333333333333"
-  eSignVal := 1
-  maxPrecision := 32
-  ePrecision := 32
+  ePrefix := "TestStrMathOp_Divide_06"
 
-  smop := StrMathOp{}.New()
-  smop.Dividend.SetIntAryWithNumStr(dividend)
-  smop.Divisor.SetIntAryWithNumStr(divisor)
-  smop.Divide(maxPrecision)
+  inputDividendStr := "0.05"
 
-  if eQuotient != smop.Quotient.GetNumStr() {
-    t.Errorf("Error - Expected smop.Quotient.GetNumStr()= '%v'. Instead, smop.Quotient.GetNumStr()= '%v' .", eQuotient, smop.Quotient.GetNumStr())
+  inputDivisorStr := "24"
+
+  inputMaxPrecisionInt := 32
+
+  //                                    1         2         3
+  //                         0.1234567890123456789012345678901234567
+  expectedQuotientNumStr := "0.00208333333333333333333333333333"
+
+  expectedPrecisionInt := 32
+
+  expectedPrecisionUint := uint(expectedPrecisionInt)
+
+  expectedSignValue := 1
+
+  expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+  smop := new(StrMathOp).New()
+
+  err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err := smop.Dividend.SetIntAryWithNumStr(inputDividendStr)\n"+
+      "inputDividendStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDividendStr, err.Error())
+    return
   }
 
-  if ePrecision != smop.Quotient.GetPrecision() {
-    t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+  err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divisor.SetIntAryWithNumStr(inputDivisorStr)\n"+
+      "inputDivisorStr= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputDivisorStr, err.Error())
+    return
   }
 
-  if eSignVal != smop.Quotient.GetSign() {
-    t.Errorf("Error - Expected smop.Quotient.GetSign()= '%v'. Instead, smop.Quotient.GetSign()= '%v' .", eSignVal, smop.Quotient.GetSign())
+  err = smop.Divide(inputMaxPrecisionInt)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Divide(inputMaxPrecisionInt)\n"+
+      "inputMaxPrecisionInt= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, inputMaxPrecisionInt, err.Error())
+    return
   }
 
+  err = smop.Quotient.IsValid("Validating Quotient")
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = smop.Quotient.IsValid(\"Validating Quotient\")\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientNumStr, err := smop.Quotient.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumStr, err := smop.Quotient.GetNumStr()\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  smopQuotientPrecisionInt := smop.Quotient.GetPrecision()
+
+  smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientPrecisionUint, err := smop.Quotient.GetPrecisionUint()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientSignValue, err := smop.Quotient.GetSign()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientSignValue, err := smop.Quotient.GetSign()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  smopQuotientNumSeps, err := smop.Quotient.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "smopQuotientNumSeps, err :=\n"+
+      "  smop.Quotient.GetNumericSeparatorsDto()\n"+
+      "smopQuotient= '%v'\n"+
+      "Error= '%v'\n\n",
+      ePrefix, smopQuotientNumStr, err.Error())
+    return
+  }
+
+  if expectedQuotientNumStr != smopQuotientNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Number Strings DON'T MATCH!\n"+
+      "Because expectedQuotientNumStr != smopQuotientNumStr\n"+
+      "Expected smopQuotientNumStr = '%v'\n"+
+      "  Actual smopQuotientNumStr = '%v'\n\n",
+      ePrefix, expectedQuotientNumStr, smopQuotientNumStr)
+
+    return
+  }
+
+  if expectedPrecisionInt != smopQuotientPrecisionInt {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Integer Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionInt != smopQuotientPrecisionInt\n"+
+      "Expected smopQuotientPrecisionInt = '%v'\n"+
+      "  Actual smopQuotientPrecisionInt = '%v'\n\n",
+      ePrefix, expectedPrecisionInt, smopQuotientPrecisionInt)
+
+    return
+  }
+
+  if expectedPrecisionUint != smopQuotientPrecisionUint {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Uint Precision Values DON'T MATCH!\n"+
+      "Because expectedPrecisionUint != smopQuotientPrecisionUint\n"+
+      "Expected smopQuotientPrecisionUint = '%v'\n"+
+      "  Actual smopQuotientPrecisionUint = '%v'\n\n",
+      ePrefix, expectedPrecisionUint, smopQuotientPrecisionUint)
+
+    return
+  }
+
+  if expectedSignValue != smopQuotientSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedSignValue != smopQuotientSignValue\n"+
+      "Expected smopQuotientSignValue = '%v'\n"+
+      "  Actual smopQuotientSignValue = '%v'\n\n",
+      ePrefix, expectedSignValue, smopQuotientSignValue)
+
+    return
+  }
+
+  if !expectedNumSeps.Equal(smopQuotientNumSeps) {
+    t.Errorf("%v\n"+
+      "Error: Expected VS Actual Numeric Separator Values DON'T MATCH!\n"+
+      "Because expectedNumSeps != smopQuotientNumSeps \n"+
+      "Expected smopQuotientNumSeps = '%v'\n"+
+      "  Actual smopQuotientNumSeps = '%v'\n\n",
+      ePrefix, expectedNumSeps.String(), smopQuotientNumSeps.String())
+
+    return
+  }
+
+  return
 }
 
 func TestStrMathOp_MultiplyN1N2_01(t *testing.T) {
