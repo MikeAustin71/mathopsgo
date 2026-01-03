@@ -1767,7 +1767,9 @@ func ExampleSubtraction02() {
 
 }
 
-func Example_SubtractIntAryArray_01() {
+func ExampleSubtractIntAryArray01() {
+
+  ePrefix := "ExampleSubtractIntAryArray01()"
 
   var err error
 
@@ -1859,18 +1861,37 @@ func Example_SubtractIntAryArray_01() {
     return
   }
 
-  result, err := mathops.BigIntMathSubtract{}.SubtractIntAryArray(iaMinuend, subtrahendAry)
+  result, err := new(mathops.BigIntMathSubtract).SubtractIntAryArray(iaMinuend, subtrahendAry)
 
   if err != nil {
-    fmt.Printf("Error returned by BigIntMathSubtract{}.SubtractIntAryArray("+
-      "iaMinuend, subtrahendAry). Error='%v' ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(mathops.BigIntMathSubtract).\n"+
+      " SubtractIntAryArray(iaMinuend, subtrahendAry)\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
   expectedBigInt, err := expectedBigINum.GetBigInt()
 
   if err != nil {
-    fmt.Printf("Error returned by expectedBigINum.GetBigInt(). Error='%v' ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBigInt, err := expectedBigINum.GetBigInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
@@ -1881,22 +1902,40 @@ func Example_SubtractIntAryArray_01() {
     return
   }
 
+  resultNumberSignValue, err := result.GetSign()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumberSignValue, err := result.GetSign()\n"+
+      "result= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      resultNumStr,
+      err.Error())
+    return
+  }
+
   if expectedBigInt.Cmp(resultBigInt) != 0 {
     fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
       expectedBigInt.Text(10), resultBigInt.Text(10))
     return
   }
 
-  if expectedBigINumSign != result.GetSign() {
+  if expectedBigINumSign != resultNumberSignValue {
+    fmt.Printf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumSign != resultNumberSignValue\n"+
+      "Expected resultNumberSignValue = '%v'\n"+
+      "  Actual resultNumberSignValue = '%v'\n\n",
+      ePrefix, expectedBigINumSign, resultNumberSignValue)
 
-    fmt.Printf("Error: Expected number sign= '%v'. Instead, number sign= '%v' ",
-      expectedBigINumSign, result.GetSign())
     return
   }
 
   fmt.Println("BigIntMathSubtract{}.SubtractIntAryArray")
   fmt.Println("========================================")
-  fmt.Println("  Actual Result: ", result.GetNumStr())
+  fmt.Println("  Actual Result: ", resultNumStr)
   fmt.Println("Expected Result: ", expectedBigINumStr)
 }
 
