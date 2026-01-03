@@ -152,7 +152,7 @@ Low-Level Error Prefix
 		fmt.Printf("%v\n" +
 		    "Error returned by:\n" +
 			"bigTarget, err := new(mathops.BigIntNum).\n" +
-			"  NewBigInt(target, xrayStr)\n"+
+			" NewBigInt(target, xrayStr)\n"+
 			"target= '%v'\n" +
 			"xrayStr= '%v'\n" +
 			"Error='%v'\n\n",

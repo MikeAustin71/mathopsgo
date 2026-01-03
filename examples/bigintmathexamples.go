@@ -1019,7 +1019,7 @@ func ExampleSubtraction01() {
 
 func ExampleSubtraction02() {
 
-  ePrefix := "ExampleSubtraction02"
+  ePrefix := "ExampleSubtraction02()"
 
   minuendStr := "-1718973642.1234567"
 
@@ -1158,6 +1158,18 @@ func ExampleSubtraction02() {
     return
   }
 
+  iaSub3NumStr, err := iaSub3.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "iaSub3NumStr, err := iaSub3.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      err.Error())
+    return
+  }
+
   iaSub4, err := new(mathops.IntAry).NewNumStr(subtrahend4)
 
   if err != nil {
@@ -1173,6 +1185,18 @@ func ExampleSubtraction02() {
     return
   }
 
+  iaSub4NumStr, err := iaSub4.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "iaSub4NumStr, err := iaSub4.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      err.Error())
+    return
+  }
+
   iaSub5, err := new(mathops.IntAry).NewNumStr(subtrahend5)
 
   if err != nil {
@@ -1184,6 +1208,18 @@ func ExampleSubtraction02() {
       "Error='%v'\n\n",
       ePrefix,
       subtrahend5,
+      err.Error())
+    return
+  }
+
+  iaSub5NumStr, err := iaSub5.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "iaSub5NumStr, err := iaSub5.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix,
       err.Error())
     return
   }
@@ -1259,6 +1295,17 @@ func ExampleSubtraction02() {
     return
   }
 
+  bigISub2NumStr, err := bigISub2.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bigISub2NumStr, err := bigISub2.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
   subtrahendAry[2] = bigISub2
 
   bigISub3, err := new(mathops.BigIntNum).NewNumStr(subtrahend3)
@@ -1273,6 +1320,17 @@ func ExampleSubtraction02() {
       ePrefix,
       subtrahend3,
       err.Error())
+    return
+  }
+
+  bigISub3NumStr, err := bigISub3.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
@@ -1293,6 +1351,17 @@ func ExampleSubtraction02() {
     return
   }
 
+  bigISub4NumStr, err := bigISub4.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bigISub4NumStr, err := bigISub4.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
   subtrahendAry[4] = bigISub4
 
   bigISub5, err := new(mathops.BigIntNum).NewNumStr(subtrahend5)
@@ -1306,6 +1375,18 @@ func ExampleSubtraction02() {
       "Error='%v'\n\n",
       ePrefix,
       subtrahend5,
+      err.Error())
+    return
+  }
+
+  bigISub5NumStr, err := bigISub5.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bigISub5NumStr, err := bigISub5.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix,
       err.Error())
     return
   }
@@ -1418,43 +1499,271 @@ func ExampleSubtraction02() {
   fmt.Println("         Result1: ", resultNumStr)
   fmt.Println("      ia Result1: ", iaMinuendNumStr)
 
-  _ = iaMinuend.SubtractFromThis(&iaSub2)
+  err = iaMinuend.SubtractFromThis(&iaSub2)
 
-  bPair = new(mathops.BigIntPair).NewBigIntNum(result, bigISub2)
+  bPair, err = new(mathops.BigIntPair).NewBigIntNum(result, bigISub2)
 
-  result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bPair, err = new(mathops.BigIntPair).\n"+
+      " NewBigIntNum(result, bigISub2)\n"+
+      "target= '%v'\n"+
+      "result= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      resultNumStr,
+      bigISub2NumStr,
+      err.Error())
+    return
+  }
 
-  fmt.Println("       bigISub2: ", bigISub2.GetNumStr())
-  fmt.Println("        Result2: ", result.GetNumStr())
-  fmt.Println("     ia Result2: ", iaMinuend.GetNumStr())
+  result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)
 
-  _ = iaMinuend.SubtractFromThis(&iaSub3)
-  bPair = new(mathops.BigIntPair).NewBigIntNum(result, bigISub3)
-  result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
-  fmt.Println("       bigISub3: ", bigISub3.GetNumStr())
-  fmt.Println("        Result3: ", result.GetNumStr())
-  fmt.Println("     ia Result3: ", iaMinuend.GetNumStr())
+  resultNumStr, err = result.GetNumStr()
 
-  _ = iaMinuend.SubtractFromThis(&iaSub4)
-  bPair = new(mathops.BigIntPair).NewBigIntNum(result, bigISub4)
-  result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Initialization #3\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
-  fmt.Println("       bigISub4: ", bigISub4.GetNumStr())
-  fmt.Println("        Result4: ", result.GetNumStr())
-  fmt.Println("     ia Result4: ", iaMinuend.GetNumStr())
+  fmt.Println("       bigISub2: ", bigISub2NumStr)
+  fmt.Println("        Result2: ", resultNumStr)
+  fmt.Println("     ia Result2: ", iaMinuendNumStr)
 
-  _ = iaMinuend.SubtractFromThis(&iaSub5)
-  bPair = new(mathops.BigIntPair).NewBigIntNum(result, bigISub5)
-  result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
+  err = iaMinuend.SubtractFromThis(&iaSub3)
 
-  fmt.Println("       bigISub5: ", bigISub5.GetNumStr())
-  fmt.Println("        Result5: ", result.GetNumStr())
-  fmt.Println("     ia Result5: ", iaMinuend.GetNumStr())
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaMinuend.SubtractFromThis(&iaSub3)\n"+
+      "iaMinuend= '%v'\n"+
+      "xrayStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      iaMinuendNumStr,
+      iaSub3NumStr,
+      err.Error())
+    return
+  }
 
-  result = mathops.BigIntMathSubtract{}.SubtractBigIntNumArray(bigIMinuend, subtrahendAry)
+  iaMinuendNumStr, err = iaMinuend.GetNumStr()
 
-  fmt.Println("   Array Result: ", result.GetNumStr())
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "iaMinuendNumStr, err = iaMinuend.GetNumStr()\n"+
+      "Initialization # 2-b\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  bPair, err = new(mathops.BigIntPair).NewBigIntNum(result, bigISub3)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bPair, err = new(mathops.BigIntPair).\n"+
+      " NewBigIntNum(result, bigISub3)\n"+
+      "result= '%v'\n"+
+      "bigISub3= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      resultNumStr,
+      bigISub3NumStr,
+      err.Error())
+    return
+  }
+
+  result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err = result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err = result.GetNumStr()\n"+
+      "Initialization # 3-b\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("       bigISub3: ", bigISub3NumStr)
+  fmt.Println("        Result3: ", resultNumStr)
+  fmt.Println("     ia Result3: ", iaMinuendNumStr)
+
+  err = iaMinuend.SubtractFromThis(&iaSub4)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaMinuend.SubtractFromThis(&iaSub4)\n"+
+      "iaSub4= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      iaSub4NumStr,
+      err.Error())
+    return
+  }
+
+  bPair, err = new(mathops.BigIntPair).NewBigIntNum(result, bigISub4)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bPair, err = new(mathops.BigIntPair).\n"+
+      " NewBigIntNum(result, bigISub4)\n"+
+      "result= '%v'\n"+
+      "bigISub4= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      resultNumStr,
+      bigISub4NumStr,
+      err.Error())
+    return
+  }
+
+  result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err = new(mathops.BigIntMathSubtract).\n"+
+      " SubtractPair(bPair)\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err = result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err = result.GetNumStr()\n"+
+      "Initialization # 5-a\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("       bigISub4: ", bigISub4NumStr)
+  fmt.Println("        Result4: ", resultNumStr)
+  fmt.Println("     ia Result4: ", iaMinuendNumStr)
+
+  err = iaMinuend.SubtractFromThis(&iaSub5)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaMinuend.SubtractFromThis(&iaSub5)\n"+
+      "iaSub5= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      iaSub5NumStr,
+      err.Error())
+    return
+  }
+
+  bPair, err = new(mathops.BigIntPair).NewBigIntNum(result, bigISub5)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bPair, err = new(mathops.BigIntPair).\n"+
+      " NewBigIntNum(result, bigISub5)\n"+
+      "result= '%v'\n"+
+      "bigISub5= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      resultNumStr,
+      bigISub5NumStr,
+      err.Error())
+    return
+  }
+
+  result, err = new(mathops.BigIntMathSubtract).SubtractPair(bPair)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err = new(mathops.BigIntMathSubtract).\n"+
+      "  SubtractPair(bPair)\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err = result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Initialization # 6-a\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("       bigISub5: ", bigISub5NumStr)
+  fmt.Println("        Result5: ", resultNumStr)
+  fmt.Println("     ia Result5: ", iaMinuendNumStr)
+
+  result, err = new(mathops.BigIntMathSubtract).SubtractBigIntNumArray(bigIMinuend, subtrahendAry)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err = new(mathops.BigIntMathSubtract).\n"+
+      " SubtractBigIntNumArray(bigIMinuend, subtrahendAry)\n"+
+      "bigIMinuend= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      bigIMinuendNumStr,
+      err.Error())
+    return
+  }
+
+  resultNumStr, err = result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err = result.GetNumStr()\n"+
+      "Initialization # 7 \n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      err.Error())
+    return
+  }
+
+  fmt.Println("   Array Result: ", resultNumStr)
 
 }
 
