@@ -7,99 +7,273 @@ import (
 	"time"
 )
 
-// ExampleNumStrDtoBigIntParse_02
+// ExampleNumStrDtoBigIntParse02
 // Example # 2
-func ExampleNumStrDtoBigIntParse_02() {
+func ExampleNumStrDtoBigIntParse02() {
+
+	ePrefix := "bigintmathexamples.ExampleNumStrDtoBigIntParse02()"
+
 	num1Str := "-123456789"
+
 	precision := uint(15)
 
-	bNum1, ok := big.NewInt(0).SetString(num1Str, 10)
+	bNum1, isOk := big.NewInt(0).SetString(num1Str, 10)
 
-	if !ok {
-		fmt.Print("Error returned by big.NewInt(0).SetString(num1Str, 10).  ")
+	if !isOk {
+		fmt.Printf("%v\n"+
+			"Error: isOk == false\n"+
+			"Error returned by:\n"+
+			"bNum1, isOk := big.NewInt(0).SetString(num1Str, 10)\n"+
+			"num1Str= '%v'\n\n",
+			ePrefix,
+			num1Str)
 		return
 	}
 
 	nDto2, err := new(mathops.NumStrDto).ParseSignedBigInt(bNum1, precision)
+
 	if err != nil {
-		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"nDto2, err := new(mathops.NumStrDto).\n"+
+			"  ParseSignedBigInt(bNum1, precision)\n"+
+			"bNum1= '%v'\n"+
+			"precision= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			bNum1.Text(10),
+			precision,
 			err.Error())
 		return
 	}
 
+	nDto2NumStr, err := nDto2.GetNumStr()
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"nDto2NumStr, err := nDto2.GetNumStr()\n"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
+		return
+	}
+
 	fmt.Println("Original NumStr: ", num1Str)
-	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
+	fmt.Println("   nDto2 NumStr: ", nDto2NumStr)
 	fmt.Println(" spec precision: ", precision)
 
 }
 
-func ExampleNumStrDtoBigIntNumParse_01() {
+func ExampleNumStrDtoBigIntNumParse01() {
+
+	ePrefix := "bigintmathexamples.ExampleNumStrDtoBigIntNumParse01()"
+
 	num1Str := "0.000"
 
 	bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). Error='%v' ",
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)\n"+
+			"num1Str= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			num1Str,
 			err.Error())
 		return
 	}
 
-	nDto2, err := mathops.NumStrDto{}.ParseBigIntNum(bNum1)
+	bNum1NumStr, err := bNum1.GetNumStr()
+
 	if err != nil {
-		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1NumStr, err := bNum1.GetNumStr()"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
+		return
+	}
+
+	nDto2, err := new(mathops.NumStrDto).ParseBigIntNum(bNum1)
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"nDto2, err := new(mathops.NumStrDto).\n"+
+			" ParseBigIntNum(bNum1)\n"+
+			"bNum1= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			bNum1NumStr,
 			err.Error())
+		return
+	}
+
+	nDto2NumStr, err := nDto2.GetNumStr()
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"nDto2NumStr, err := nDto2.GetNumStr()"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
 		return
 	}
 
 	fmt.Println("Original NumStr: ", num1Str)
-	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
+	fmt.Println("   nDto2 NumStr: ", nDto2NumStr)
 
 }
 
-// ExampleRoundPrecision_01
-func ExampleRoundPrecision_01() {
+// ExampleRoundPrecision01
+func ExampleRoundPrecision01() {
+
+	ePrefix := "bigintmathexamples.ExampleRoundPrecision01()"
+
 	num1Str := "654.123456"
 	expectedNumStr := "654.123"
-	newPrecision := uint(3)
+	newPrecisionUint := uint(3)
 
 	bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). Error='%v' ",
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)\n"+
+			"num1Str= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			num1Str,
 			err.Error())
+		return
+	}
+
+	bNum1NumStr, err := bNum1.GetNumStr()
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1NumStr, err := bNum1.GetNumStr()\n"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
 		return
 	}
 
 	expectedNum, err := new(mathops.BigIntNum).NewNumStr(expectedNumStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(expectedNumStr). Error='%v' ",
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"expectedNum, err := new(mathops.BigIntNum).\n"+
+			" NewNumStr(expectedNumStr)\n"+
+			"expectedNumStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			expectedNumStr,
 			err.Error())
 		return
 	}
 
-	fmt.Println("Old BNum1: ", bNum1.GetNumStr())
+	expectedNumNumStr, err := expectedNum.GetNumStr()
 
-	bNum1.RoundToDecPlace(newPrecision)
-
-	fmt.Println("New BNum1: ", bNum1.GetNumStr())
-
-	if !expectedNum.Equal(bNum1) {
-		fmt.Printf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
-			expectedNum.GetNumStr(), bNum1.GetNumStr())
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"expectedNumNumStr, err := expectedNum.GetNumStr()\n"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
 		return
 	}
 
-	if newPrecision != bNum1.GetPrecisionUint() {
-		fmt.Printf("Error: Expected precision='%v'. Instead, precision='%v' .",
-			newPrecision, bNum1.GetPrecisionUint())
+	fmt.Println("Old BNum1: ", bNum1NumStr)
+
+	err = bNum1.RoundToDecPlace(newPrecisionUint)
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"err = bNum1.RoundToDecPlace(newPrecision)\n"+
+			"newPrecision= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			newPrecisionUint,
+			err.Error())
 		return
 	}
 
+	bNum1NumStr, err = bNum1.GetNumStr()
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1NumStr, err = bNum1.GetNumStr()\n"+
+			"Initialize #2\n"+
+			"Error='%v'\n\n",
+			ePrefix, err.Error())
+		return
+	}
+
+	fmt.Println("New BNum1: ", bNum1NumStr)
+
+	bNum1PrecisionUint, err := bNum1.GetPrecisionUint()
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"bNum1PrecisionUint, err := bNum1.GetPrecisionUint()\n"+
+			"bNum1= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			bNum1NumStr,
+			err.Error())
+		return
+	}
+
+	expectedNumIsEqualTobNum1, err := expectedNum.Equal(bNum1)
+
+	if err != nil {
+		fmt.Printf("%v\n"+
+			"Error returned by:\n"+
+			"expectedNumIsEqualTobNum1, err := \n"+
+			"  expectedNum.Equal(bNum1)\n"+
+			"expectedNum= '%v'\n"+
+			"bNum1= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			expectedNumNumStr,
+			bNum1NumStr,
+			err.Error())
+		return
+	}
+
+	if !expectedNumIsEqualTobNum1 {
+		fmt.Printf("%v\n"+
+			"Error: expectedNum IS NOT EQUAL TO bNum1!\n"+
+			"Because expectedNumIsEqualTobNum1 == false\n"+
+			"Expected bNum1 = '%v'\n"+
+			"  Actual bNum1 = '%v'\n\n",
+			ePrefix, expectedNumNumStr, bNum1NumStr)
+
+		return
+	}
+
+	if newPrecisionUint != bNum1PrecisionUint {
+		fmt.Printf("%v\n"+
+			"Error: Precision Uint Values DON'T MATCH!\n"+
+			"Because newPrecisionUint != bNum1PrecisionUint\n"+
+			"Expected bNum1PrecisionUint = '%v'\n"+
+			"  Actual bNum1PrecisionUint = '%v'\n\n",
+			ePrefix, newPrecisionUint, bNum1PrecisionUint)
+
+		return
+	}
+
+	return
 }
 
-// ExampleSetPrecision_01
-func ExampleSetPrecision_01() {
+// ExampleSetPrecision01
+func ExampleSetPrecision01() {
 
 	num1Str := "654.123456"
 	expectedNumStr := "654.123"
