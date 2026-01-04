@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-TestBigIntPositiveFractionalNthRoot; examples/maintests.go
+TestFixDecNthRootGetNextFracBundle; examples/maintests.go
 
 -------------------------------
 git protocol
