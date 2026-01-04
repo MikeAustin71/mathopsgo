@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-examples/intAryExamples.go
+TestBigIntPositiveFractionalNthRoot; examples/maintests.go
 
 -------------------------------
 git protocol
