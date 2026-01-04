@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-ExampleShiftPrecisionRight; examples/bigIntNumExamples.go
+examples/intAryExamples.go
 
 -------------------------------
 git protocol
