@@ -159,22 +159,52 @@ func ExampleShiftPrecisionRight(baseNumStr string, shiftPlacesLeft uint, expecte
 
 func ExampleShiftPrecisionLeft(baseNumStr string, shiftPlacesLeft uint, expectedResult string) {
 
-  bigIntNum, err := mathops.BigIntNum{}.NewNumStr(baseNumStr)
+  ePrefix := "ExampleShiftPrecisionLeft()"
+
+  bigIntNum, err := new(mathops.BigIntNum).NewNumStr(baseNumStr)
 
   if err != nil {
-    fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseNumStr). "+
-      "baseNumStr='%v' Error='%v' \n",
-      baseNumStr, err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bigIntNum, err := new(mathops.BigIntNum).\n"+
+      " NewNumStr(baseNumStr)\n"+
+      "baseNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      baseNumStr,
+      err.Error())
     return
   }
 
-  bigIntNum.ShiftPrecisionLeft(shiftPlacesLeft)
+  err = bigIntNum.ShiftPrecisionLeft(shiftPlacesLeft)
 
-  actualResult := bigIntNum.GetNumStr()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = bigIntNum.ShiftPrecisionLeft(shiftPlacesLeft)\n"+
+      "shiftPlacesLeft= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      shiftPlacesLeft,
+      err.Error())
+    return
+  }
+
+  actualResult, err := bigIntNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "actualResult, err := bigIntNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   fmt.Println()
   fmt.Println("BigIntNum{}.ShiftPrecisionLeft()")
   fmt.Println("-------------------------")
+
   if expectedResult == actualResult {
     fmt.Println("*** SUCCESS ***")
   } else {
@@ -187,24 +217,54 @@ func ExampleShiftPrecisionLeft(baseNumStr string, shiftPlacesLeft uint, expected
   fmt.Println("  Expected Result: ", expectedResult)
 }
 
-func ExampleSetBigFloat_01(bigFloat *big.Float, maxPrecision uint, expectedResult string) {
+func ExampleSetBigFloat01(bigFloat *big.Float, maxPrecision uint, expectedResult string) {
 
-  bINum := mathops.BigIntNum{}.NewZero(0)
+  ePrefix := "ExampleSetBigFloat01()"
 
-  err := bINum.SetBigFloat(bigFloat, maxPrecision)
+  bINum, err := new(mathops.BigIntNum).NewZero(0)
 
   if err != nil {
-    fmt.Printf("Error returned by bINum.SetBigFloat(bigFloat, maxPrecision). "+
-      "bigFloat='%v' maxPrecision='%v' Error='%v' \n",
-      bigFloat.Text('f', -1), maxPrecision, err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINum, err := new(mathops.BigIntNum).NewZero(0)\n"+
+      "precision= '0'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      err.Error())
     return
   }
 
-  actualNumStr := bINum.GetNumStr()
+  err = bINum.SetBigFloat(bigFloat, maxPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = bINum.SetBigFloat(bigFloat, maxPrecision)\n"+
+      "target= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      bigFloat.Text('f', -1),
+      maxPrecision,
+      err.Error())
+    return
+  }
+
+  actualNumStr, err := bINum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := bINum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   fmt.Println()
   fmt.Println("BigIntNum{}.SetBigFloat()")
   fmt.Println("-------------------------")
+
   if expectedResult == actualNumStr {
     fmt.Println("*** SUCCESS ***")
   } else {
@@ -216,61 +276,110 @@ func ExampleSetBigFloat_01(bigFloat *big.Float, maxPrecision uint, expectedResul
   fmt.Println("  Actual Result: ", actualNumStr)
   fmt.Println("Expected Result: ", expectedResult)
 
+  return
 }
 
-func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
+func ExampleBundleCount01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
 
-  target, _ := bINumTarget.GetBigInt()
-  nthRoot, _ := bINumNthRoot.GetBigInt()
+  ePrefix := "ExampleBundleCount01()"
+
+  target, err := bINumTarget.GetBigInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "target, err := bINumTarget.GetBigInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nthRoot, err := bINumNthRoot.GetBigInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nthRoot, err := bINumNthRoot.GetBigInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   fmt.Println("      Original Target: ", target.Text(10))
-  newTarget, err := ExampleBundleCount_02(target, nthRoot)
+
+  newTarget, err := ExampleBundleCount02(target, nthRoot)
+
   if err != nil {
-    fmt.Printf("Error returned by ExampleBundleCount_02(target, nthRoot). "+
-      "Error='%v' ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "newTarget, err := ExampleBundleCount02(target, nthRoot)\n"+
+      "target= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      target.Text(10),
+      nthRoot.Text(10),
+      err.Error())
     return
   }
 
   fmt.Println("           New Target: ", newTarget.Text(10))
 
-  bundleCnt, err := ExampleBundleCount_03(newTarget, nthRoot)
+  bundleCnt, err := ExampleBundleCount03(newTarget, nthRoot)
 
   if err != nil {
-    fmt.Printf("Error returned by ExampleBundleCount_03(newTarget, nthRoot). "+
-      "Error='%v' ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bundleCnt, err := ExampleBundleCount03(newTarget, nthRoot)\n"+
+      "newTarget= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      newTarget.Text(10),
+      nthRoot.Text(10),
+      err.Error())
     return
   }
 
   fmt.Println("         Bundle Count: ", bundleCnt.Text(10))
   fmt.Println("Expected Bundle Count: ", expectedBundleCnt)
 
+  return
 }
 
-func ExampleBundlePrecisionCount_03(
+func ExampleBundlePrecisionCount03(
   intBundleCnt *big.Int,
   maxPrecision uint) (totalBundleCnt, precisionBundleCnt *big.Int, err error) {
 
   err = nil
+
   totalBundleCnt = big.NewInt(0).Add(intBundleCnt, big.NewInt(int64(maxPrecision)))
+
   precisionBundleCnt = big.NewInt(0)
 
   return
 }
 
-func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err error) {
+func ExampleBundleCount03(target, nthRoot *big.Int) (bundleCnt *big.Int, err error) {
   // Guaranteed: Magnitude of target is Greater Than or Equal to nthRoot
   bundleCnt = big.NewInt(0)
   err = nil
 
-  ePrefix := "ExampleBundleCount_03() "
-  magnitude, errx := mathops.BigIntMath{}.GetMagnitude(target)
+  ePrefix := "ExampleBundleCount03() "
 
-  if errx != nil {
-    err = fmt.Errorf(ePrefix+
-      "Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
-      "target='%v' Error='%v' ",
-      target.Text(10), errx.Error())
-    return bundleCnt, err
+  magnitude, err := new(mathops.BigIntMath).GetMagnitude(target)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "magnitude, err := new(mathops.BigIntMath).\n"+
+      " GetMagnitude(target)\n"+
+      "target= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      target.Text(10),
+      err.Error())
+    return
   }
 
   bigOne := big.NewInt(1)
@@ -291,19 +400,26 @@ func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err er
   return bundleCnt, nil
 }
 
-func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, err error) {
+func ExampleBundleCount02(target, nthRoot *big.Int) (newTarget *big.Int, err error) {
   // FormatTargetInt
-  ePrefix := "ExampleBundleCount_02() "
+
+  ePrefix := "ExampleBundleCount02() "
+
   newTarget = big.NewInt(0)
   err = nil
-  magnitude, errx := mathops.BigIntMath{}.GetMagnitude(target)
+  magnitude, err := new(mathops.BigIntMath).GetMagnitude(target)
 
-  if errx != nil {
-    err = fmt.Errorf(ePrefix+
-      "Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
-      "target='%v' Error='%v' ",
-      target.Text(10), errx.Error())
-    return newTarget, err
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "magnitude, err := new(mathops.BigIntMath).\n"+
+      " GetMagnitude(target)\n"+
+      "target= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      target.Text(10),
+      err.Error())
+    return
   }
 
   baseTen := big.NewInt(10)
@@ -320,55 +436,185 @@ func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, err er
   return newTarget, nil
 }
 
-func ExampleBigIntNumNthRoot_01(
+func ExampleBigIntNumNthRoot01(
   radicandStr, nthRootStr string,
   maxPrecision uint,
   expectedNumStr string) {
 
-  radicand, err := mathops.BigIntNum{}.NewNumStr(radicandStr)
+  ePrefix := "ExampleBigIntNumNthRoot01() "
+
+  radicand, err := new(mathops.BigIntNum).NewNumStr(radicandStr)
 
   if err != nil {
-    fmt.Printf("Error returned by BigIntNum{}.NewNumStr(radicandStr). "+
-      "radicandStr='%v' Error='%v' \n", radicandStr, err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "radicand, err := new(mathops.BigIntNum).\n"+
+      " NewNumStr(radicandStr)\n"+
+      "radicandStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      radicandStr,
+      err.Error())
     return
   }
 
-  nthRoot, err := mathops.BigIntNum{}.NewNumStr(nthRootStr)
+  radicandNumStr, err := radicand.GetNumStr()
 
   if err != nil {
-    fmt.Printf("Error returned by BigIntNum{}.NewNumStr(nthRootStr). "+
-      "nthRootStr='%v' Error='%v' \n", nthRootStr, err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "radicandNumStr, err := radicand.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
-  result, err := mathops.BigIntMathNthRoot{}.GetNthRoot(radicand, nthRoot, maxPrecision)
+  nthRoot, err := new(mathops.BigIntNum).NewNumStr(nthRootStr)
 
   if err != nil {
-    fmt.Printf("Error returned by mathNthRootOp.OriginalNthRoot(radicand, nthRoot, maxPrecision). "+
-      "Error='%v' \n", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nthRoot, err := new(mathops.BigIntNum).\n"+
+      " NewNumStr(nthRootStr)\n"+
+      "nthRootStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      nthRootStr,
+      err.Error())
     return
   }
 
-  expectedResult, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
   if err != nil {
-    fmt.Printf("Error returned by mathNthRootOp.BigIntNum{}.NewNumStr(expectedNumStr). "+
-      "expectedNumStr='%v' Error='%v' \n", expectedNumStr, err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nthRootNumStr, err := nthRoot.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  result, err := new(mathops.BigIntMathNthRoot).GetNthRoot(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(mathops.BigIntMathNthRoot).\n"+
+      "  GetNthRoot(radicand, nthRoot, maxPrecision)\n"+
+      "radicand= '%v'\n"+
+      "nthRoot= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      radicandNumStr,
+      nthRootNumStr,
+      maxPrecision,
+      err.Error())
+    return
+  }
+
+  err = result.IsValid("Validating result")
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = result.IsValid(\"Validating result\")\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  expectedResult, err := new(mathops.BigIntNum).NewNumStr(expectedNumStr)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "expectedResult, err := new(mathops.BigIntNum).\n"+
+      " NewNumStr(expectedNumStr)\n"+
+      "expectedNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      expectedNumStr,
+      err.Error())
+    return
+  }
+
+  expectedResultNumStr, err := expectedResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "expectedResultNumStr, err := expectedResult.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != expectedResultNumStr {
+    fmt.Printf("%v\n"+
+      "Error: 'expectedResult' Initialization FAILED!\n"+
+      "Because expectedNumStr != expectedResultNumStr\n"+
+      "Expected expectedResultNumStr = '%v'\n"+
+      "  Actual expectedResultNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, expectedResultNumStr)
+
     return
   }
 
   fmt.Println("*** BigIntMathNthRoot ***")
   fmt.Println("Expected Result: ", expectedNumStr)
-  fmt.Println("  Actual Result: ", result.GetNumStr())
+  fmt.Println("  Actual Result: ", resultNumStr)
   fmt.Println("  Max Precision: ", maxPrecision)
-  if !expectedResult.Equal(result) {
-    fmt.Println("*** ERROR - Actual Result Does NOT Match Expected Result! ***")
-  } else {
-    fmt.Println("SUCCESS - Expected Result Matched Actual Result!")
-    fmt.Println()
+
+  fmt.Println("*** BigIntMathNthRoot Outcome ***")
+
+  expectedResultEqualsActualResult, err := expectedResult.Equal(result)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "expectedResultEqualsActualResult, err :=\n"+
+      " expectedResult.Equal(result)\n"+
+      "expectedResult= '%v'\n"+
+      "result= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      expectedResultNumStr,
+      resultNumStr,
+      err.Error())
+    return
   }
 
-  fmt.Println("           Base: ", radicand.GetNumStr())
-  fmt.Println("        NthRootInt: ", nthRoot.GetNumStr())
+  if !expectedResultEqualsActualResult {
 
+    fmt.Printf("%v\n"+
+      "Error: Expected vs Actual Results DON'T MATCH!\n"+
+      "Because expectedResultEqualsActualResult == false\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedResultNumStr, resultNumStr)
+
+    fmt.Println("           Base: ", radicandNumStr)
+    fmt.Println("        NthRootInt: ", nthRootNumStr)
+
+    return
+
+  }
+
+  fmt.Println("SUCCESS - Expected Result Matched Actual Result!")
+  fmt.Println()
+  fmt.Println("           Base: ", radicandNumStr)
+  fmt.Println("        NthRootInt: ", nthRootNumStr)
 }
