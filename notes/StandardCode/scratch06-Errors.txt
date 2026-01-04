@@ -88,7 +88,7 @@ Low-Level Error Prefix
 
 
 ************************************************
-         Example Standard Error #1
+         Example Standard Error #4-0
 ************************************************
 
 	if err != nil {
@@ -97,33 +97,6 @@ Low-Level Error Prefix
 			"binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n" +
 			"Error='%v'\n\n",
 			ePrefix, err.Error())
-		return
-	}
-
-************************************************
-         Example Standard Error #2
-************************************************
-
-	if err != nil {
-		fmt.Printf("%v\n" +
-		 "Error returned by:\n" +
-		 "binRadicand, err := new(mathops.BigIntNum).\n" +
-		 "  NewBigIntBigPrecision(radicand, radicandPrecision)"+
-	     "Error='%v'\n\n",
-	     ePrefix, err.Error())
-		return
-	}
-
-************************************************
-         Example Standard Error #3
-************************************************
-
-	if err != nil {
-		fmt.Printf("%v\n" +
-		    "Error returned by:\n" +
-			"binRadicand, err := new(mathops.BigIntNum).\n" +
-			"  NewBigIntBigPrecision(radicand, radicandPrecision)\n"+
-			"Error='%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
