@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-ExampleSubtractIntAryArray01; examples/bigintmathexamples.go
+ExampleShiftPrecisionRight; examples/bigIntNumExamples.go
 
 -------------------------------
 git protocol
