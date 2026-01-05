@@ -4554,6 +4554,8 @@ func (nDto *NumStrDto) NewNumStr(signedNumStr string) (NumStrDto, error) {
 			}
 	}
 
+	numSeps.SetDefaultsIfEmpty()
+
 	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
 	if err != nil {
