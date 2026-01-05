@@ -286,6 +286,10 @@ func (bIntMolecule *bigIntNumMolecule) formatBigIntNumStr(
 	negValMode NegativeValueFmtMode,
 	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
 	bIntMolecule.lock.Lock()
 
 	defer bIntMolecule.lock.Unlock()
