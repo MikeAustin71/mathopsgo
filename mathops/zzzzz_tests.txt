@@ -617,155 +617,23 @@
 === RUN   TestBigIntMathAdd_AddDecimal_04
 --- PASS: TestBigIntMathAdd_AddDecimal_04 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalArray_01
-    xt_bigintmathadd_01_test.go:3203: TestBigIntMathAdd_AddDecimalArray_01
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
-        Error='BigIntMathAdd.AddDecimalArray() 
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(decs[0])
-        decs[0].GetNumStr()='45.8'
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalArray_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalArray_02
-    xt_bigintmathadd_01_test.go:3311: TestBigIntMathAdd_AddDecimalArray_02
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
-        Error='BigIntMathAdd.AddDecimalArray() 
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(decs[0])
-        decs[0].GetNumStr()='-978425.648941'
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalArray_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalArray_03
-    xt_bigintmathadd_01_test.go:3418: TestBigIntMathAdd_AddDecimalArray_03
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
-        Error='BigIntMathAdd.AddDecimalArray() 
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(decs[0])
-        decs[0].GetNumStr()='45,8'
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalArray_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalOutputToArray_01
---- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_01 (0.01s)
+--- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalOutputToArray_02
 --- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalOutputToArray_03
 --- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalSeries_01
-    xt_bigintmathadd_01_test.go:3964: TestBigIntMathAdd_AddDecimalSeries_01
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
-        dec1= '45.8'
-        dec2= '1.45962'
-        dec3= '58.71'
-        dec4= '-37.62174'
-        dec5= '89.8'
-        Error='BigIntMathAdd.AddDecimalSeries()
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(dec)
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalSeries_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalSeries_02
-    xt_bigintmathadd_01_test.go:4161: TestBigIntMathAdd_AddDecimalSeries_02
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
-        dec1= '-978425.648941'
-        dec2= '33.12'
-        dec3= '-804.1'
-        dec4= '32567'
-        dec5= '-41.859'
-        Error='BigIntMathAdd.AddDecimalSeries()
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(dec)
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalSeries_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalSeries_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalSeries_03
-    xt_bigintmathadd_01_test.go:4358: TestBigIntMathAdd_AddDecimalSeries_03
-        Error returned by:
-        total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
-        dec1= '45.8'
-        dec2= '1.45962'
-        dec3= '58.71'
-        dec4= '-37.62174'
-        dec5= '89.8'
-        Error='BigIntMathAdd.AddDecimalSeries()
-        Error returned by: \n  finalResult, err = new(BigIntNum).NewDecimal(dec)
-        Error: 
-          BigIntNum.NewDecimal
-         :  Validating 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error: 
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddDecimalSeries_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddDecimalSeries_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgr_01
 --- PASS: TestBigIntMathAdd_AddINumMgr_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgr_02
@@ -848,20 +716,20 @@
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
 --- FAIL: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
 panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
-[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff7d98950a7]
+[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff7ad8555a7]
 
-goroutine 419 [running]:
-testing.tRunner.func1.2({0x7ff7da8a00e0, 0x7ff7daf86090})
+goroutine 409 [running]:
+testing.tRunner.func1.2({0x7ff7ae8600e0, 0x7ff7aef46090})
 	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
 testing.tRunner.func1()
 	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
-panic({0x7ff7da8a00e0?, 0x7ff7daf86090?})
+panic({0x7ff7ae8600e0?, 0x7ff7aef46090?})
 	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
 internal/sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/internal/sync/mutex.go:63
 sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/sync/mutex.go:46
-github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff7daff0ec0?, 0xc0000267c8, 0xc000026cf0, 0x0, 0x0, 0x0?)
+github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff7aefb0ec0?, 0xc0000267c8, 0xc000026cf0, 0x0, 0x0, 0x0?)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intaryproton.go:32 +0x67
 github.com/mikeaustin71/mathops.(*IntAry).NewBigInt(0xc000026cf0, 0xc000026cd0, _)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:4265 +0x10d
@@ -869,13 +737,13 @@ github.com/mikeaustin71/mathops.(*bigIntNumProton).bigIntNumGetIntAry(0xc0000270
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnumproton.go:2062 +0x3a7
 github.com/mikeaustin71/mathops.(*BigIntNum).GetIntAry(0xc000027320)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnum.go:1591 +0x150
-github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000027928, {{0xc0001c5d58, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathadd.go:1161 +0x6c5
-github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc0005061c0)
+github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000027928, {{0xc00020c588, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathadd.go:1183 +0x6c5
+github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc00039e380)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathadd_02_test.go:3350 +0x70b
-testing.tRunner(0xc0005061c0, 0x7ff7da9e3018)
+testing.tRunner(0xc00039e380, 0x7ff7ae9a30e0)
 	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
 created by testing.(*T).Run in goroutine 1
 	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
 exit status 2
-FAIL	github.com/mikeaustin71/mathops	0.559s
+FAIL	github.com/mikeaustin71/mathops	0.565s
