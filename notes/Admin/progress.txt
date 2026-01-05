@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-TestNumberDelimiter(); examples/numstrutilexamples.go
+TestBabylonianSqrRoot; examples/testmisc01.go
 
 -------------------------------
 git protocol

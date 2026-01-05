@@ -88,6 +88,19 @@ Low-Level Error Prefix
 
 
 ************************************************
+    Example Input nil Error #4-a
+************************************************
+
+    if x == nil {
+		fmt.Printf("%v\n" +
+		    "Error: Input parameter is 'nil'\n"+
+			" x == nil\n\n",
+			ePrefix)
+		return
+    }
+
+
+************************************************
          Example Standard Error #4-0
 ************************************************
 
@@ -201,6 +214,34 @@ Low-Level Error Prefix
 			 param3Str,
 			 param4Str,
 			 param5Str,
+			 err.Error())
+		return
+	}
+
+*******************************************************
+         Example Standard Error #4-6
+*******************************************************
+
+	if err != nil {
+		fmt.Printf("%v\n" +
+		    "Error returned by:\n" +
+			"bigTarget, err := new(mathops.BigIntNum).\n" +
+			"  SomeFunc(param1, param2, param3, param4,\n" +
+			"    param5, param6)\n"+
+			"param1= '%v'\n" +
+			"param2= '%v'\n" +
+			"param3= '%v'\n" +
+			"param4= '%v'\n" +
+			"param5= '%v'\n" +
+			"param6= '%v'\n" +
+			"Error='%v'\n\n",
+			 ePrefix,
+			 param1Str,
+			 param2Str,
+			 param3Str,
+			 param4Str,
+			 param5Str,
+			 param6Str,
 			 err.Error())
 		return
 	}
