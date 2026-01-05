@@ -86,7 +86,16 @@ func TestNumStrDto_Multiply_01(t *testing.T) {
 
 	expectedPrecisionUint := uint(expectedPrecisionInt)
 
-	expectedScaleFactorBigInt := big.NewInt(10000000000000)
+	expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString("10000000000000", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString(\n"+
+			"  \"10000000000000\", 10)\n"+
+			"Error: isOk == false\n\n", ePrefix)
+		return
+	}
 
 	expectedSignValue := 1
 
@@ -4738,15 +4747,32 @@ func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
 	//                          0.1234567890123456789012345678901234567
 	expectedProductNumStr := "194.039932864555212496281111782"
 
-	expectedBigInt := big.NewInt(194039932864555212496281111782)
+	expectedBigInt, isOk := big.NewInt(0).SetString("194039932864555212496281111782", 0)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(\"194039932864555212496281111782\", 0\n"+
+			"Error: isOk == false\n\n",
+			ePrefix)
+		return
+	}
 
 	expectedPrecisionInt := 27
 
 	expectedPrecisionUint := uint(expectedPrecisionInt)
 
-	//                                                   1         2         3
-	//                                         01234567890123456789012345678901234567
-	expectedScaleFactorBigInt := big.NewInt(1000000000000000000000000000)
+	//                                                                          1         2         3
+	//                                                                01234567890123456789012345678901234567
+	expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString("1000000000000000000000000000", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString(\"1000000000000000000000000000\",10)\n"+
+			"Error: isOk == false\n\n", ePrefix)
+		return
+	}
 
 	expectedSignValue := 1
 
@@ -5127,15 +5153,33 @@ func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
 	//                           0.1234567890123456789012345678901234567
 	expectedProductNumStr := "-194.039932864555212496281111782"
 
-	expectedBigInt := big.NewInt(-194039932864555212496281111782)
+	expectedBigInt, isOk := big.NewInt(0).SetString("-194039932864555212496281111782", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(\n"+
+			"  \"-194039932864555212496281111782\", 10)\n"+
+			"Error: isOk == false'\n\n", ePrefix)
+		return
+	}
 
 	expectedPrecisionInt := 27
 
 	expectedPrecisionUint := uint(expectedPrecisionInt)
 
-	//                                                   1         2         3
-	//                                         01234567890123456789012345678901234567
-	expectedScaleFactorBigInt := big.NewInt(1000000000000000000000000000)
+	//                                                                    1         2         3
+	//                                                          01234567890123456789012345678901234567
+	expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString("1000000000000000000000000000", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString(\n"+
+			"  \"1000000000000000000000000000\", 10)\n"+
+			"Error: isOk == false\n\n", ePrefix)
+		return
+	}
 
 	expectedSignValue := -1
 
@@ -5516,15 +5560,35 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 	//                          0.1234567890123456789012345678901234567
 	expectedProductNumStr := "194.039932864555212496281111782"
 
-	expectedBigInt := big.NewInt(194039932864555212496281111782)
+	expectedBigInt, isOk := big.NewInt(0).SetString("194039932864555212496281111782", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBigInt, isOk := big.NewInt(0).SetString(\n"+
+			"  \"194039932864555212496281111782\", 10)\n"+
+			"Error= '%v'\n\n", ePrefix)
+		return
+	}
 
 	expectedPrecisionInt := 27
 
 	expectedPrecisionUint := uint(expectedPrecisionInt)
 
-	//                                                   1         2         3
-	//                                         01234567890123456789012345678901234567
-	expectedScaleFactorBigInt := big.NewInt(1000000000000000000000000000)
+	//expectedScaleFactorBigInt := big.NewInt(1000000000000000000000000000)
+
+	//                                                                          1         2         3
+	//                                                                01234567890123456789012345678901234567
+	expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString("1000000000000000000000000000", 10)
+
+	if !isOk {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedScaleFactorBigInt, isOk := big.NewInt(0).SetString(\n"+
+			"  \"10000000000000\", 10)\n"+
+			"Error: isOk == false\n\n", ePrefix)
+		return
+	}
 
 	expectedSignValue := 1
 

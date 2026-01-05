@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"strconv"
 	"sync"
 
 	ePref "github.com/MikeAustin71/errpref"
@@ -3086,6 +3087,8 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt64(
 	bIntMaxUint64 :=
 		big.NewInt(0).SetUint64(uint64(math.MaxUint64))
 
+	mathMaxUint64Str := strconv.FormatUint(math.MaxUint64, 10)
+
 	if bNum.bigInt.Cmp(bIntMaxUint64) == 1 {
 		return uint64(0),
 			&FuncReturnError{
@@ -3095,7 +3098,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt64(
 				ErrMessage: fmt.Sprintf("The value of this BigIntNum instance exceeds\n"+
 					"the maximum value of the unsigned 64-bit integer.\n"+
 					"BigIntNum='%v'\nMaxUint64='%v'",
-					bNum.bigInt.Text(10), math.MaxUint64),
+					bNum.bigInt.Text(10), mathMaxUint64Str),
 			}
 	}
 
