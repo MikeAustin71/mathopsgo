@@ -1,77 +1,78 @@
 package examples
 
 import (
-	"fmt"
-	"github.com/mikeaustin71/mathops"
+  "fmt"
+
+  "github.com/mikeaustin71/mathops"
 )
 
 func TestNumberDelimiter() {
-	ns := mathops.NumStrUtility{}
-	n := "1234567890"
+  ns := mathops.NumStrUtility{}
+  n := "1234567890"
 
-	result := ns.DlimDecCurrStr(n, ',', '.', '$')
-	fmt.Println(" Original Number: ", n)
-	fmt.Println("Delimited Number: ", result)
-	//expected result == "1,234,567,890"
+  result := ns.DlimDecCurrStr(n, ',', '.', '$')
+  fmt.Println(" Original Number: ", n)
+  fmt.Println("Delimited Number: ", result)
+  //expected result == "1,234,567,890"
 }
 
 func TestCurrencyDelimiter() {
-	ns := mathops.NumStrUtility{}
-	n := "$1234567890.25"
+  ns := mathops.NumStrUtility{}
+  n := "$1234567890.25"
 
-	result := ns.DlimDecCurrStr(n, ',', '.', '$')
-	fmt.Println(" Original Number: ", n)
-	fmt.Println("Delimited Number: ", result)
-	//expected result == "$1,234,567,890.25"
+  result := ns.DlimDecCurrStr(n, ',', '.', '$')
+  fmt.Println(" Original Number: ", n)
+  fmt.Println("Delimited Number: ", result)
+  //expected result == "$1,234,567,890.25"
 
 }
 
 func TestDNumStr() {
-	ns := mathops.NumStrUtility{}
-	n := int64(1234567890)
-	expected := "1,234,567,890"
+  ns := mathops.NumStrUtility{}
+  n := int64(1234567890)
+  expected := "1,234,567,890"
 
-	result := ns.DLimI64(n, ',')
+  result := ns.DLimI64(n, ',')
 
-	fmt.Println("Original int64:", n)
-	fmt.Println("Expected Result from ns.DLimI64:", expected)
-	fmt.Println("Result from ns.DLimI64:", result)
+  fmt.Println("Original int64:", n)
+  fmt.Println("Expected Result from ns.DLimI64:", expected)
+  fmt.Println("Result from ns.DLimI64:", result)
 }
 
 func TestDNumStrEvenThousands() {
-	ns := mathops.NumStrUtility{}
-	n := int64(123456)
-	expected := "123,456"
+  ns := mathops.NumStrUtility{}
+  n := int64(123456)
+  expected := "123,456"
 
-	result := ns.DLimI64(n, ',')
+  result := ns.DLimI64(n, ',')
 
-	fmt.Println("Original int64:", n)
-	fmt.Println("Expected Result from ns.DLimI64:", expected)
-	fmt.Println("Result from ns.DLimI64:", result)
+  fmt.Println("Original int64:", n)
+  fmt.Println("Expected Result from ns.DLimI64:", expected)
+  fmt.Println("Result from ns.DLimI64:", result)
 }
 
-func TestNumStrUtility_ParseNumString() {
-	strs := []string{"123456.654321",
-		"123456",
-		"0.123456",
-		".123456",
-		"1 2   3 4",
-		"1 2   3 4 . 1 2 3 4 5 6",
-		"-32.495",
-		"-.4219",
-		"-0.713",
-		"Exit Status  1",
-		"0",
-		"5",
-		"24.95",
-		"+24.95",
-		"Nothing"}
+func TestNumStrUtilityParseNumString() {
+  strs := []string{"123456.654321",
+    "123456",
+    "0.123456",
+    ".123456",
+    "1 2   3 4",
+    "1 2   3 4 . 1 2 3 4 5 6",
+    "-32.495",
+    "-.4219",
+    "-0.713",
+    "Exit Status  1",
+    "0",
+    "5",
+    "24.95",
+    "+24.95",
+    "Nothing"}
 
-	for _, s := range strs {
+  for _, s := range strs {
 
-		TestParseAndPrintOutNumStrs(s)
+    TestParseAndPrintOutNumStrs(s)
 
-	}
+  }
 
 }
 
@@ -288,134 +289,348 @@ nStr.IsFractionalValue:  false
 */
 
 func TestParseAndPrintOutNumStrs(str string) {
-	nu := mathops.NumStrUtility{}
 
-	nStr, err := nu.ParseNumString(str)
+  ePrefix := "TestParseAndPrintOutNumStrs"
 
-	if err != nil {
-		fmt.Printf("Error from nu.ParseNumString(str). str='%v' Error: %v\n", str, err.Error())
-		return
-	}
+  nu := mathops.NumStrUtility{}
 
-	PrintNumStrDtoContents(str, nStr)
+  nStr, err := nu.ParseNumString(str)
 
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nStr, err := nu.ParseNumString(str)\n"+
+      "str= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      str,
+      err.Error())
+    return
+  }
+
+  PrintNumStrDtoContents(str, nStr)
+
+  return
 }
 
 func TestConvertNumStrToDecimal(str string) {
 
-	nsu := mathops.NumStrUtility{}
+  nsu := mathops.NumStrUtility{}
 
-	nsu.CurrencySymbol = '$'
-	nsu.DecimalSeparator = '.'
-	nsu.ThousandsSeparator = ','
+  nsu.CurrencySymbol = '$'
+  nsu.DecimalSeparator = '.'
+  nsu.ThousandsSeparator = ','
 
-	dec, err := nsu.ConvertNumStrToDecimal(str)
+  dec, err := nsu.ConvertNumStrToDecimal(str)
 
-	if err != nil {
-		panic(fmt.Errorf("TestConvertNumStrToDecimal() Error from nsu.ConvertNumStrToDecimal(str). str='%v' Error: %v ", str, err))
-	}
+  if err != nil {
+    panic(fmt.Errorf("TestConvertNumStrToDecimal() Error from nsu.ConvertNumStrToDecimal(str). str='%v' Error: %v ", str, err))
+  }
 
-	PrintDecimalContents(dec)
+  PrintDecimalContents(dec)
 
 }
 
 func TestScaleNumStr(numStr string, precision uint) {
 
-	nu := mathops.NumStrUtility{}
+  ePrefix := "TestScaleNumStr"
 
-	nsDto, err := nu.ScaleNumStr(numStr, precision, true)
+  nu := mathops.NumStrUtility{}
 
-	if err != nil {
-		fmt.Printf("TestScaleNumStr(): Error returned from nu.ScaleNumStr(). numStr='%v' precision='%v' Error: %v", numStr, precision, err)
-		return
-	}
+  nsDto, err := nu.ScaleNumStr(numStr, precision, true)
 
-	fmt.Printf("numStr= '%v' precision='%v' \n", numStr, precision)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nsDto, err := nu.ScaleNumStr(\n"+
+      " numStr, precision, true)\n"+
+      "numStr= '%v'\n"+
+      "precision= '%v'\n"+
+      "roundResult= 'true'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      numStr,
+      precision,
+      err.Error())
+    return
+  }
 
-	PrintNumStrDtoContents(numStr, nsDto)
+  fmt.Printf("numStr= '%v' precision='%v' \n", numStr, precision)
+
+  PrintNumStrDtoContents(numStr, nsDto)
 
 }
 
 func AddTwoDecimals(numStr1, numStr2 string) {
 
-	d1 := mathops.Decimal{}
-	err := d1.SetNumStr(numStr1)
+  ePrefix := "AddTwoDecimals"
 
-	if err != nil {
-		fmt.Printf("Error from SetNumStr(numStr1). Error = %v", err)
-		return
-	}
+  d1 := mathops.Decimal{}
 
-	d2 := mathops.Decimal{}
+  err := d1.SetNumStr(numStr1)
 
-	err = d2.SetNumStr(numStr2)
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err := d1.SetNumStr(numStr1)\n"+
+      "numStr1= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      numStr1,
+      err.Error())
+    return
+  }
 
-	if err != nil {
-		fmt.Printf("Error from 2nd SetNumStr(numStr1). Error = %v", err)
-		return
-	}
+  d2 := mathops.Decimal{}
 
-	d3, err := d1.Add(d2)
-	fmt.Println("numStr1: ", numStr1)
-	PrintDecimalContents(d1)
-	fmt.Println("numStr2: ", numStr2)
-	PrintDecimalContents(d2)
-	fmt.Println()
-	fmt.Println()
-	PrintDecimalContents(d3)
+  err = d2.SetNumStr(numStr2)
 
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = d2.SetNumStr(numStr2)\n"+
+      "numStr2= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      numStr2,
+      err.Error())
+    return
+  }
+
+  d3, err := d1.Add(d2)
+  fmt.Println("numStr1: ", numStr1)
+
+  PrintDecimalContents(d1)
+
+  fmt.Println("numStr2: ", numStr2)
+
+  PrintDecimalContents(d2)
+
+  fmt.Println()
+  fmt.Println()
+
+  PrintDecimalContents(d3)
+
+  return
 }
 
 func PrintDecimalContents(dec mathops.Decimal) {
 
-	fmt.Println()
-	fmt.Println("******************************************************")
+  ePrefix := "PrintDecimalContents"
 
-	fmt.Println("               dec.IsValid: ", dec.GetIsValid())
-	str := dec.GetNumStr()
-	fmt.Println("             dec.GetNumStr: ", str)
-	sgn := dec.GetSign()
-	fmt.Println("               dec.GetSign: ", sgn)
-	str, _ = dec.GetSignedAllDigitsStr()
-	fmt.Println(" dec.GetSignedAllDigitsStr: ", str)
-	bScaleVal, _ := dec.GetScaleVal()
-	fmt.Println("         dec.GetScaleVal(): ", bScaleVal.String())
-	precision := dec.GetPrecision()
-	fmt.Println("          dec.GetPrecisionInt: ", precision)
-	bf, _ := dec.GetBigFloat()
-	fmt.Println("           dec.GetBigFloat: ", bf.Text('e', 16))
-	str, _ = dec.GetBigFloatString(uint(precision))
-	fmt.Println("        dec.GetFloatString: ", str)
-	fmt.Println("******************************************************")
-	fmt.Println()
+  fmt.Println()
+  fmt.Println("******************************************************")
 
+  fmt.Println("               dec.IsValid: ", dec.GetIsValid())
+
+  decNumStr, err := dec.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "str, err := dec.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  fmt.Println("             dec.GetNumStr: ", decNumStr)
+
+  sgn, err := dec.GetSign()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "sgn, err := dec.GetSign()\n"+
+      "dec= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      err.Error())
+    return
+  }
+
+  fmt.Println("               dec.GetSign: ", sgn)
+
+  decAllDigitsNumStr, err := dec.GetSignedAllDigitsStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "decAllDigitsNumStr, err := dec.GetSignedAllDigitsStr()\n"+
+      "decNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      err.Error())
+    return
+  }
+
+  fmt.Println(" dec.GetSignedAllDigitsStr: ", decAllDigitsNumStr)
+
+  bScaleVal, err := dec.GetScaleVal()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bScaleVal, err := dec.GetScaleVal()\n"+
+      "decNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      err.Error())
+    return
+  }
+
+  fmt.Println("         dec.GetScaleVal(): ", bScaleVal.Text(10))
+
+  precision, err := dec.GetPrecision()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "precision, err := dec.GetPrecision()\n"+
+      "precision is an 'int'\n"+
+      "decNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      err.Error())
+    return
+  }
+
+  fmt.Println("          dec.GetPrecisionInt: ", precision)
+
+  bf, err := dec.GetBigFloat()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bf, err := dec.GetBigFloat()\n"+
+      "decNumStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      err.Error())
+    return
+  }
+
+  fmt.Println("           dec.GetBigFloat: ", bf.Text('e', 16))
+
+  decBigFloatNumStr, err := dec.GetBigFloatString(uint(precision))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "decBigFloatNumStr, err := \n"+
+      " dec.GetBigFloatString(uint(precision))\n"+
+      "decNumStr= '%v'\n"+
+      "uint(precision)= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      decNumStr,
+      uint(precision),
+      err.Error())
+    return
+  }
+
+  fmt.Println("        dec.GetFloatString: ", decBigFloatNumStr)
+  fmt.Println("******************************************************")
+  fmt.Println()
+
+  return
 }
 
 func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 
-	err := nStr.IsValid("PrintNumStrDtoContents() 'nStr' INVALID! ")
+  ePrefix := "PrintNumStrDtoContents"
 
-	fmt.Println()
-	fmt.Println("******************************************************")
-	fmt.Println("          Original Input Str: ", originalInputStr)
-	fmt.Println("            nStr.GetNumStr(): ", nStr.GetNumStr())
-	fmt.Println("              nStr.GetSign(): ", nStr.GetSign())
-	fmt.Println("    nStr.GetAbsAllNumRunes(): ", nStr.GetAbsAllNumRunes())
-	fmt.Println("       nStr.GetAbsIntRunes(): ", nStr.GetAbsIntRunes())
-	fmt.Println("      nStr.GetAbsFracRunes(): ", nStr.GetAbsFracRunes())
-	fmt.Println("         nStr.GetPrecisionInt(): ", nStr.GetPrecision())
-	fmt.Println("     nStr.HasNumericDigits(): ", nStr.HasNumericDigits())
-	fmt.Println("      nStr.IsFractionalValue: ", nStr.IsFractionalValue())
-	if err != nil {
-		fmt.Println("              nStr.IsValid(): ", err.Error())
-	} else {
-		fmt.Println("              nStr.IsValid(): ", "nStr IS VALID!")
-	}
+  err := nStr.IsValid("Validating PrintNumStrDtoContents() 'nStr'")
 
-	fmt.Println("nStr.GetThousandsSeparator(): ", nStr.GetThousandsSeparator())
-	fmt.Println("  nStr.GetDecimalSeparator(): ", nStr.GetDecimalSeparator())
-	fmt.Println("    nStr.GetCurrencySymbol(): ", nStr.GetCurrencySymbol())
-	fmt.Println("******************************************************")
-	fmt.Println()
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err := nStr.IsValid(\"Validating PrintNumStrDtoContents() 'nStr'\")\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
+  nStrNumStr, err := nStr.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binRootPrecisionInt, err := binRoot.GetPrecisionInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nStrSignValue, err := nStr.GetSign()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nStrSignValue, err := nStr.GetSign()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nStrAbsAllNumRunes, err := nStr.GetAbsAllNumRunes()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nStrAbsAllNumRunes, err := nStr.GetAbsAllNumRunes()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nStrAbsIntRunes, err := nStr.GetAbsIntRunes()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nStrAbsIntRunes, err := nStr.GetAbsIntRunes()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nStrAbsFracRunes, err := nStr.GetAbsFracRunes()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "nStrAbsFracRunes, err := nStr.GetAbsFracRunes()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  nStrPrecisionInt := nStr.GetPrecision()
+	
+  fmt.Println()
+  fmt.Println("******************************************************")
+  fmt.Println("          Original Input Str: ", originalInputStr)
+  fmt.Println("            nStr.GetNumStr(): ", nStrNumStr)
+  fmt.Println("              nStr.GetSign(): ", nStrSignValue)
+  fmt.Println("    nStr.GetAbsAllNumRunes(): ", nStrAbsAllNumRunes)
+  fmt.Println("       nStr.GetAbsIntRunes(): ", nStrAbsIntRunes)
+  fmt.Println("      nStr.GetAbsFracRunes(): ", nStrAbsFracRunes)
+  fmt.Println("         nStr.GetPrecisionInt(): ", nStrPrecisionInt)
+  fmt.Println("     nStr.HasNumericDigits(): ", nStr.HasNumericDigits())
+  fmt.Println("      nStr.IsFractionalValue: ", nStr.IsFractionalValue())
+  fmt.Println("nStr.GetThousandsSeparator(): ", nStr.GetThousandsSeparator())
+  fmt.Println("  nStr.GetDecimalSeparator(): ", nStr.GetDecimalSeparator())
+  fmt.Println("    nStr.GetCurrencySymbol(): ", nStr.GetCurrencySymbol())
+  fmt.Println("******************************************************")
+  fmt.Println("            nStr.IsValid(): ", "nStr IS VALID!")
+  fmt.Println("******************************************************")
+  fmt.Println()
+
+  return
 }

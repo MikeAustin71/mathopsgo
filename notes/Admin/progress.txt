@@ -1,6 +1,6 @@
 
 Start Test cleanup here:
-TestFixDecNthRootGetNextFracBundle; examples/maintests.go
+TestNumberDelimiter(); examples/numstrutilexamples.go
 
 -------------------------------
 git protocol
