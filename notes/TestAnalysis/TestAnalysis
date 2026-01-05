@@ -1,12 +1,1399 @@
-Test Run: 2026-01-05 11:38-hours
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_01
+    xt_bigIntfixeddecimal_03_test.go:30: TestBigIntFixedDecimal_MultiplyByTenToPwr_01
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '105.6752
+        exponent='0'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
 
-# github.com/mikeaustin71/mathops
-# [github.com/mikeaustin71/mathops]
-
-FIXED
-
-NOT FIXED
-.\fixeddecimalnthroot.go:981:20: non-constant format string in call to fmt.Errorf
 
 
-.\fixeddecimalreadonly.go:197:15: non-constant format string in call to fmt.Errorf
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_02
+    xt_bigIntfixeddecimal_03_test.go:85: TestBigIntFixedDecimal_MultiplyByTenToPwr_02
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '-105.6752
+        exponent='0'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_03
+    xt_bigIntfixeddecimal_03_test.go:140: fixedDec
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '105.6752
+        exponent='1'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_04
+    xt_bigIntfixeddecimal_03_test.go:194: TestBigIntFixedDecimal_MultiplyByTenToPwr_04
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '-105.6752
+        exponent='1'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_05
+    xt_bigIntfixeddecimal_03_test.go:248: TestBigIntFixedDecimal_MultiplyByTenToPwr_05
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '105.6752
+        exponent='2'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_06
+    xt_bigIntfixeddecimal_03_test.go:303: TestBigIntFixedDecimal_MultiplyByTenToPwr_06
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '-105.6752
+        exponent='2'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_07
+    xt_bigIntfixeddecimal_03_test.go:358: TestBigIntFixedDecimal_MultiplyByTenToPwr_07
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '105.6752
+        exponent='8'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTenToPwr_08
+    xt_bigIntfixeddecimal_03_test.go:412: TestBigIntFixedDecimal_MultiplyByTenToPwr_08
+        Error returned by:
+        fixedDec.MultiplyByTenToPower(exponent)
+        fixedDecNumStr= '0.0000
+        exponent='5'
+        Error='BigIntFixedDecimal.DivideByTwoToPower
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_MultiplyByTenToPwr_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_01
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_02
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_03
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_04
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_05
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_MultiplyByTwoToPower_06
+--- PASS: TestBigIntFixedDecimal_MultiplyByTwoToPower_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_01
+--- PASS: TestBigIntFixedDecimal_NewNumStr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_02
+--- PASS: TestBigIntFixedDecimal_NewNumStr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_03
+--- PASS: TestBigIntFixedDecimal_NewNumStr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_04
+--- PASS: TestBigIntFixedDecimal_NewNumStr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_05
+--- PASS: TestBigIntFixedDecimal_NewNumStr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_06
+--- PASS: TestBigIntFixedDecimal_NewNumStr_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_07
+--- PASS: TestBigIntFixedDecimal_NewNumStr_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_08
+--- PASS: TestBigIntFixedDecimal_NewNumStr_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_09
+--- PASS: TestBigIntFixedDecimal_NewNumStr_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_10
+--- PASS: TestBigIntFixedDecimal_NewNumStr_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_11
+--- PASS: TestBigIntFixedDecimal_NewNumStr_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_12
+--- PASS: TestBigIntFixedDecimal_NewNumStr_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_13
+--- PASS: TestBigIntFixedDecimal_NewNumStr_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_14
+--- PASS: TestBigIntFixedDecimal_NewNumStr_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_15
+--- PASS: TestBigIntFixedDecimal_NewNumStr_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_16
+--- PASS: TestBigIntFixedDecimal_NewNumStr_16 (0.00s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_17
+    xt_bigIntfixeddecimal_03_test.go:1707: TestBigIntFixedDecimal_NewNumStr_17
+        Error returned by:
+        err = fixedDec.RoundToDecPlace(expectedPrecision)
+        expectedPrecision= '1024'
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_NewNumStr_17 (0.03s)
+=== RUN   TestBigIntFixedDecimal_NewNumStr_18
+--- PASS: TestBigIntFixedDecimal_NewNumStr_18 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_01
+    xt_bigintfixeddecimal_01_test.go:30: TestBigIntFixedDecimal_Ceiling_01
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_02
+    xt_bigintfixeddecimal_01_test.go:79: TestBigIntFixedDecimal_Ceiling_02
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_03
+    xt_bigintfixeddecimal_01_test.go:130: TestBigIntFixedDecimal_Ceiling_03
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_04
+    xt_bigintfixeddecimal_01_test.go:180: TestBigIntFixedDecimal_Ceiling_04
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_05
+    xt_bigintfixeddecimal_01_test.go:229: TestBigIntFixedDecimal_Ceiling_05
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_06
+    xt_bigintfixeddecimal_01_test.go:280: TestBigIntFixedDecimal_Ceiling_06
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_07
+    xt_bigintfixeddecimal_01_test.go:330: TestBigIntFixedDecimal_Ceiling_07
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_08
+    xt_bigintfixeddecimal_01_test.go:378: TestBigIntFixedDecimal_Ceiling_08
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_09
+    xt_bigintfixeddecimal_01_test.go:428: TestBigIntFixedDecimal_Ceiling_09
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to Zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_10
+    xt_bigintfixeddecimal_01_test.go:477: TestBigIntFixedDecimal_Ceiling_10
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to Zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_11
+    xt_bigintfixeddecimal_01_test.go:526: TestBigIntFixedDecimal_Ceiling_11
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_12
+    xt_bigintfixeddecimal_01_test.go:577: TestBigIntFixedDecimal_Ceiling_12
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_13
+    xt_bigintfixeddecimal_01_test.go:628: TestBigIntFixedDecimal_Ceiling_13
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_14
+    xt_bigintfixeddecimal_01_test.go:680: TestBigIntFixedDecimal_Ceiling_14
+        Error returned by:
+        floor, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_15
+    xt_bigintfixeddecimal_01_test.go:731: TestBigIntFixedDecimal_Ceiling_15
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_16
+    xt_bigintfixeddecimal_01_test.go:780: TestBigIntFixedDecimal_Ceiling_16
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_16 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Ceiling_17
+    xt_bigintfixeddecimal_01_test.go:828: TestBigIntFixedDecimal_Ceiling_17
+        Error returned by:
+        ceiling, err := fixDec.Ceiling()
+        Error='BigIntFixedDecimal.Ceiling
+         :  Computing 'bigIFd' ceiling
+        bigIntFixedDecUtility.ceiling
+         :  Setting 'bigIFd2' to 'ceiling'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_Ceiling_17 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_01
+--- PASS: TestBigIntFixedDecimal_ChangeSign_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_02
+--- PASS: TestBigIntFixedDecimal_ChangeSign_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_03
+--- PASS: TestBigIntFixedDecimal_ChangeSign_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_04
+--- PASS: TestBigIntFixedDecimal_ChangeSign_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_05
+--- PASS: TestBigIntFixedDecimal_ChangeSign_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_ChangeSign_06
+--- PASS: TestBigIntFixedDecimal_ChangeSign_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_01
+--- PASS: TestBigIntFixedDecimal_Cmp_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_02
+--- PASS: TestBigIntFixedDecimal_Cmp_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_03
+--- PASS: TestBigIntFixedDecimal_Cmp_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_04
+--- PASS: TestBigIntFixedDecimal_Cmp_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_05
+--- PASS: TestBigIntFixedDecimal_Cmp_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_06
+--- PASS: TestBigIntFixedDecimal_Cmp_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_07
+--- PASS: TestBigIntFixedDecimal_Cmp_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_08
+--- PASS: TestBigIntFixedDecimal_Cmp_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_09
+--- PASS: TestBigIntFixedDecimal_Cmp_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_10
+--- PASS: TestBigIntFixedDecimal_Cmp_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Cmp_11
+--- PASS: TestBigIntFixedDecimal_Cmp_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_01
+--- PASS: TestBigIntFixedDecimal_CmpZero_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_02
+--- PASS: TestBigIntFixedDecimal_CmpZero_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_03
+--- PASS: TestBigIntFixedDecimal_CmpZero_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_04
+--- PASS: TestBigIntFixedDecimal_CmpZero_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_05
+--- PASS: TestBigIntFixedDecimal_CmpZero_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CmpZero_06
+--- PASS: TestBigIntFixedDecimal_CmpZero_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyIn_01
+    xt_bigintfixeddecimal_01_test.go:2288: TestBigIntFixedDecimal_CopyIn_01
+        Error returned by:
+        err = fD2.CopyIn(fixedDec)
+        Error='BigIntFixedDecimal.CopyIn
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyIn_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyIn_02
+    xt_bigintfixeddecimal_01_test.go:2361: TestBigIntFixedDecimal_CopyIn_02
+        Error returned by:
+        err = fD2.CopyIn(fixedDec)
+        Error='BigIntFixedDecimal.CopyIn
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyIn_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyIn_03
+    xt_bigintfixeddecimal_01_test.go:2434: TestBigIntFixedDecimal_CopyIn_03
+        Error returned by:
+        err = fD2.CopyIn(fixedDec)
+        Error='BigIntFixedDecimal.CopyIn
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyIn_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyIn_04
+    xt_bigintfixeddecimal_01_test.go:2506: TestBigIntFixedDecimal_CopyIn_04
+        Error returned by:
+        err = fD2.CopyIn(fixedDec)
+        Error='BigIntFixedDecimal.CopyIn
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyIn_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyIn_05
+    xt_bigintfixeddecimal_01_test.go:2578: TestBigIntFixedDecimal_CopyIn_05
+        Error returned by:
+        err = fD2.CopyIn(fixedDec)
+        Error='BigIntFixedDecimal.CopyIn
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyIn_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyInPtr_01
+    xt_bigintfixeddecimal_01_test.go:2651: TestBigIntFixedDecimal_CopyIn_01
+        Error returned by:
+        err = fD2.CopyInPtr(&fixedDec)
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyInPtr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyInPtr_02
+    xt_bigintfixeddecimal_01_test.go:2724: TestBigIntFixedDecimal_CopyIn_02
+        Error returned by:
+        err = fD2.CopyInPtr(&fixedDec)
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyInPtr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyInPtr_03
+    xt_bigintfixeddecimal_01_test.go:2796: TestBigIntFixedDecimal_CopyIn_03
+        Error returned by:
+        err = fD2.CopyInPtr(&fixedDec)
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyInPtr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyInPtr_04
+    xt_bigintfixeddecimal_01_test.go:2867: TestBigIntFixedDecimal_CopyIn_04
+        Error returned by:
+        err = fD2.CopyInPtr(&fixedDec)
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyInPtr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyInPtr_05
+    xt_bigintfixeddecimal_01_test.go:2938: TestBigIntFixedDecimal_CopyIn_05
+        Error returned by:
+        err = fD2.CopyInPtr(&fixedDec)
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFdSrc' -> 'bigIFd'
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' to zero
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyInPtr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyOut_01
+    xt_bigintfixeddecimal_01_test.go:3009: TestBigIntFixedDecimal_CopyOut_01
+        Error returned by:
+        fD2, err := fixedDec.CopyOut()
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyOut_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyOut_02
+    xt_bigintfixeddecimal_01_test.go:3080: TestBigIntFixedDecimal_CopyOut_02
+        Error returned by:
+        fD2, err := fixedDec.CopyOut()
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyOut_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_CopyOut_03
+    xt_bigintfixeddecimal_01_test.go:3150: TestBigIntFixedDecimal_CopyOut_03
+        Error returned by:
+        fD2, err := fixedDec.CopyOut()
+        Error='BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_CopyOut_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_01
+    xt_bigintfixeddecimal_01_test.go:3211: TestBigIntFixedDecimal_DivideByTenToPwr_01
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '3'
+        Original fixedDec= '-123.45'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '3')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_02
+    xt_bigintfixeddecimal_01_test.go:3265: TestBigIntFixedDecimal_DivideByTenToPwr_02
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '1'
+        Original fixedDec= '123.45'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '1')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_03
+    xt_bigintfixeddecimal_01_test.go:3319: TestBigIntFixedDecimal_DivideByTenToPwr_03
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '1'
+        Original fixedDec= '-123.45'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '1')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_04
+    xt_bigintfixeddecimal_01_test.go:3373: TestBigIntFixedDecimal_DivideByTenToPwr_04
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '8'
+        Original fixedDec= '12345'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '8')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_05
+    xt_bigintfixeddecimal_01_test.go:3428: TestBigIntFixedDecimal_DivideByTenToPwr_05
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '8'
+        Original fixedDec= '-12345'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '8')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_06
+    xt_bigintfixeddecimal_01_test.go:3483: TestBigIntFixedDecimal_DivideByTenToPwr_06
+        Error returned by:
+        err = fixedDec.DivideByTenToPower(exponent)
+        exponent= '4'
+        Original fixedDec= '57'
+        Error='BigIntFixedDecimal.Ceiling
+         :  bigIFd/10^(exponent= '4')
+        bigIntFixedDecNeutron.divideByTenToPower
+         :  Copying 'bigIFxDec' -> bigIFxDec2
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_DivideByTenToPwr_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_DivideByTenToPwr_07
+--- PASS: TestBigIntFixedDecimal_DivideByTenToPwr_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_01
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_02
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_03
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_04
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_05
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_06
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_07
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_08
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_09
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_BigIntDividedByTwoToPower_10
+--- PASS: TestBigIntFixedDecimal_BigIntDividedByTwoToPower_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_01
+--- PASS: TestBigIntFixedDecimal_Floor_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_02
+--- PASS: TestBigIntFixedDecimal_Floor_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_03
+--- PASS: TestBigIntFixedDecimal_Floor_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_04
+--- PASS: TestBigIntFixedDecimal_Floor_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_05
+--- PASS: TestBigIntFixedDecimal_Floor_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_06
+--- PASS: TestBigIntFixedDecimal_Floor_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_07
+--- PASS: TestBigIntFixedDecimal_Floor_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_08
+--- PASS: TestBigIntFixedDecimal_Floor_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_09
+--- PASS: TestBigIntFixedDecimal_Floor_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_10
+--- PASS: TestBigIntFixedDecimal_Floor_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_11
+--- PASS: TestBigIntFixedDecimal_Floor_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_12
+--- PASS: TestBigIntFixedDecimal_Floor_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_13
+--- PASS: TestBigIntFixedDecimal_Floor_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_14
+--- PASS: TestBigIntFixedDecimal_Floor_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_15
+--- PASS: TestBigIntFixedDecimal_Floor_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_16
+--- PASS: TestBigIntFixedDecimal_Floor_16 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Floor_17
+--- PASS: TestBigIntFixedDecimal_Floor_17 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_01
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_02
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_03
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_04
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_05
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_06
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_07
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_08
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_09
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_12
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_13
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_14
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_15
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_16
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_16 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_17
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_17 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_18
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_18 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_19
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_19 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_20
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_20 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_21
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_21 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_22
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_22 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_23
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_23 (0.00s)
+=== RUN   TestBigIntFixedDecimal_FormatNumStr_24
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_24 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_01
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_02
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_03
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_04
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_05
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_06
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetIntegerFractionalParts_07
+--- PASS: TestBigIntFixedDecimal_GetIntegerFractionalParts_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_01
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_02
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_03
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_04
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_05
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_06
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_07
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetMagnitude_08
+--- PASS: TestBigIntFixedDecimal_GetMagnitude_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetNumStr_01
+--- PASS: TestBigIntFixedDecimal_GetNumStr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetNumStr_02
+--- PASS: TestBigIntFixedDecimal_GetNumStr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetNumStr_03
+--- PASS: TestBigIntFixedDecimal_GetNumStr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_GetNumStr_04
+--- PASS: TestBigIntFixedDecimal_GetNumStr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_01
+--- PASS: TestBigIntFixedDecimal_Inverse_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_02
+--- PASS: TestBigIntFixedDecimal_Inverse_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_03
+--- PASS: TestBigIntFixedDecimal_Inverse_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_04
+--- PASS: TestBigIntFixedDecimal_Inverse_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_05
+--- PASS: TestBigIntFixedDecimal_Inverse_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_Inverse_06
+--- PASS: TestBigIntFixedDecimal_Inverse_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_01
+--- PASS: TestBigIntFixedDecimal_IsEven_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_02
+--- PASS: TestBigIntFixedDecimal_IsEven_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_03
+--- PASS: TestBigIntFixedDecimal_IsEven_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_04
+--- PASS: TestBigIntFixedDecimal_IsEven_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_05
+--- PASS: TestBigIntFixedDecimal_IsEven_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_06
+--- PASS: TestBigIntFixedDecimal_IsEven_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_07
+--- PASS: TestBigIntFixedDecimal_IsEven_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_08
+--- PASS: TestBigIntFixedDecimal_IsEven_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_09
+--- PASS: TestBigIntFixedDecimal_IsEven_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_10
+--- PASS: TestBigIntFixedDecimal_IsEven_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_11
+--- PASS: TestBigIntFixedDecimal_IsEven_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_01
+    xt_bigintfixeddecimal_04_test.go:20: TestBigIntFixedDecimal_RoundToDecPlace_01
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_02
+    xt_bigintfixeddecimal_04_test.go:61: TestBigIntFixedDecimal_RoundToDecPlace_02
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_03
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_04
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_05
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_06
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_07
+    xt_bigintfixeddecimal_04_test.go:265: TestBigIntFixedDecimal_RoundToDecPlace_07
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_08
+    xt_bigintfixeddecimal_04_test.go:306: TestBigIntFixedDecimal_RoundToDecPlace_08
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_09
+    xt_bigintfixeddecimal_04_test.go:347: TestBigIntFixedDecimal_RoundToDecPlace_09
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_10
+    xt_bigintfixeddecimal_04_test.go:388: TestBigIntFixedDecimal_RoundToDecPlace_10
+        Error returned by:
+        err := fixedDec.RoundToDecPlace(roundToDec)
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_RoundToDecPlace_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_11
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_12
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_13
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_14
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_RoundToDecPlace_15
+--- PASS: TestBigIntFixedDecimal_RoundToDecPlace_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_01
+--- PASS: TestBigIntFixedDecimal_SetNumStr_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_02
+--- PASS: TestBigIntFixedDecimal_SetNumStr_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_03
+--- PASS: TestBigIntFixedDecimal_SetNumStr_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_04
+--- PASS: TestBigIntFixedDecimal_SetNumStr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_05
+--- PASS: TestBigIntFixedDecimal_SetNumStr_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_06
+--- PASS: TestBigIntFixedDecimal_SetNumStr_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_07
+--- PASS: TestBigIntFixedDecimal_SetNumStr_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_08
+--- PASS: TestBigIntFixedDecimal_SetNumStr_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_09
+--- PASS: TestBigIntFixedDecimal_SetNumStr_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_10
+--- PASS: TestBigIntFixedDecimal_SetNumStr_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_11
+--- PASS: TestBigIntFixedDecimal_SetNumStr_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_12
+--- PASS: TestBigIntFixedDecimal_SetNumStr_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_13
+--- PASS: TestBigIntFixedDecimal_SetNumStr_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_14
+--- PASS: TestBigIntFixedDecimal_SetNumStr_14 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_15
+--- PASS: TestBigIntFixedDecimal_SetNumStr_15 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_16
+--- PASS: TestBigIntFixedDecimal_SetNumStr_16 (0.00s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_17
+    xt_bigintfixeddecimal_04_test.go:1734: TestBigIntFixedDecimal_SetNumStr_17
+        Error returned by:
+        err = fixedDec.SetNumStr(EulersNum50kStr, '.')
+        Error='BigIntFixedDecimal.RoundToDecPlace
+        Error returned by: \n  bigIFd2, err := bigIFd.CopyOut()
+        Error:
+          BigIntFixedDecimal.CopyInPtr
+         :  Copying 'bigIFd' -> Out
+        bigIntFixedDecUtility.copyIn
+         :  Setting 'bigIFxDecDest' = 'bigIFxDecSrc'
+        bigIntFixedDecAtom.setNumericValue
+        Error:
+          Error: This instance of BigIntFixedDecimal is INVALID!
+        BigIntFixedDecimal.integerNum is a 'nil' pointer.
+        This BigIntFixedDecimal instance FAILED Validation Testing!
+
+
+
+        '
+
+--- FAIL: TestBigIntFixedDecimal_SetNumStr_17 (0.03s)
+=== RUN   TestBigIntFixedDecimal_SetNumStr_18
+--- PASS: TestBigIntFixedDecimal_SetNumStr_18 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_01
+--- PASS: TestBigIntFixedDecimal_TrimTrailingFracZeros_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_02
+--- PASS: TestBigIntFixedDecimal_TrimTrailingFracZeros_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_03
+--- PASS: TestBigIntFixedDecimal_TrimTrailingFracZeros_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_04
+--- PASS: TestBigIntFixedDecimal_TrimTrailingFracZeros_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_05
+--- PASS: TestBigIntFixedDecimal_TrimTrailingFracZeros_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_01
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_02
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_03
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_04
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_05
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_06
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_07
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_08
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_09
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_10
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_11
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_11 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_12
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_12 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_13
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_13 (0.00s)
+=== RUN   TestBigIntFixedDecimal_TruncToDecPlace_14
+--- PASS: TestBigIntFixedDecimal_TruncToDecPlace_14 (0.00s)
+=== RUN   TestBigIntPair_Compare_01
+--- PASS: TestBigIntPair_Compare_01 (0.00s)
+=== RUN   TestBigIntPair_Compare_02
+--- PASS: TestBigIntPair_Compare_02 (0.00s)
+=== RUN   TestBigIntPair_Compare_03
+--- PASS: TestBigIntPair_Compare_03 (0.00s)
+=== RUN   TestBigIntPair_NewBase_01
+--- PASS: TestBigIntPair_NewBase_01 (0.00s)
+=== RUN   TestBigIntPair_NewBase_02
+--- PASS: TestBigIntPair_NewBase_02 (0.00s)
+=== RUN   TestBigIntPair_NewBigIntNum_01
+--- FAIL: TestBigIntPair_NewBigIntNum_01 (0.00s)
+panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff6999b0e80]
+
+goroutine 306 [running]:
+testing.tRunner.func1.2({0x7ff69aa800e0, 0x7ff69b166090})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff69aa800e0?, 0x7ff69b166090?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+internal/sync.(*Mutex).Lock(...)
+	C:/Program Files/Go/src/internal/sync/mutex.go:63
+sync.(*Mutex).Lock(...)
+	C:/Program Files/Go/src/sync/mutex.go:46
+github.com/mikeaustin71/mathops.(*bigIntNumMolecule).formatBigIntNumStr(0x0?, 0xc000027c40, 0x0, 0x0?)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnummolecule.go:289 +0x60
+github.com/mikeaustin71/mathops.(*bigIntNumAtom).getBigIntNumStr(0xc0000278c8, 0xc000027c40, 0xc000251b80)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnumatom.go:265 +0x187
+github.com/mikeaustin71/mathops.(*BigIntNum).GetNumStr(0xc000027c40)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnum.go:1821 +0xf5
+github.com/mikeaustin71/mathops.TestBigIntPair_NewBigIntNum_01(0xc000586700)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_biginthelper_01_test.go:699 +0x65b
+testing.tRunner(0xc000586700, 0x7ff69abc5790)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+exit status 2
+FAIL	github.com/mikeaustin71/mathops	0.469s
