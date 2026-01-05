@@ -475,53 +475,9 @@
 === RUN   TestBigIntPair_NewNumStr_02
 --- PASS: TestBigIntPair_NewNumStr_02 (0.00s)
 === RUN   TestBigIntPair_NewNumStrDto_01
-    xt_biginthelper_01_test.go:1475: TestBigIntPair_NewNumStrDto_01
-        Error returned by:
-        nx1Dto, err := new(NumStrDto).NewNumStr(n1Str)
-        n1Str='1234567.8901'
-        Error= 'NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntPair_NewNumStrDto_01 (0.00s)
+--- PASS: TestBigIntPair_NewNumStrDto_01 (0.00s)
 === RUN   TestBigIntPair_NewNumStrDto_02
-    xt_biginthelper_01_test.go:1689: TestBigIntPair_NewNumStrDto_02
-        Error returned by:
-        nx1Dto, err := new(NumStrDto).NewNumStr(n1Str)
-        n1Str='-1234567.8901'
-        Error= 'NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntPair_NewNumStrDto_02 (0.00s)
+--- PASS: TestBigIntPair_NewNumStrDto_02 (0.00s)
 === RUN   TestBigIntPair_NewIntAry_01
 --- PASS: TestBigIntPair_NewIntAry_01 (0.00s)
 === RUN   TestBigIntPair_NewIntAry_02
@@ -815,53 +771,9 @@
 === RUN   TestBigIntMathAdd_AddINumMgr_02
 --- PASS: TestBigIntMathAdd_AddINumMgr_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgr_03
-    xt_bigintmathadd_02_test.go:301: TestBigIntMathAdd_AddINumMgr_03
-        Error returned by:
-        nDto1, err := new(NumStrDto).NewNumStr(n1Str)
-        n1Str= '-123456.789'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddINumMgr_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgr_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgr_04
-    xt_bigintmathadd_02_test.go:440: BigIntMathAdd_AddINumMgr_04
-        Error returned by:
-        nDto1, err := new(NumStrDto).NewNumStr(n1Str)
-        n1Str= '-123456.789'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddINumMgr_04 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgr_04 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgr_05
     xt_bigintmathadd_02_test.go:566: TestBigIntMathAdd_AddINumMgr_05
         Error returned by:
@@ -870,99 +782,31 @@
         
 --- FAIL: TestBigIntMathAdd_AddINumMgr_05 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_01
-    xt_bigintmathadd_02_test.go:790: TestBigIntMathAdd_AddINumMgrArray_01
-        Error returned by:
-        nDto, err := new(NumStrDto).NewNumStr(numStrAry[2])
-        numStrAry[2]= '58.71'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
+    xt_bigintmathadd_02_test.go:840: TestBigIntMathAdd_AddINumMgrArray_01
+        Error: Unexpected Result!
+        Expected totalNumstr = '158.14788'
+        Instead, totalNumstr = '113.80750'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_02
-    xt_bigintmathadd_02_test.go:976: TestBigIntMathAdd_AddINumMgrArray_02
-        Error returned by:
-        nDto, err = new(NumStrDto).NewNumStr(numStrAry[2])
-        numStrAry[2]= '-804.1'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
+    xt_bigintmathadd_02_test.go:1036: TestBigIntMathAdd_AddINumMgrArray_02
+        Error: Unexpected Result!
+        Expected BNum Int = '-946671487941'
+        Instead, BNum Int = '65158381'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_03
-    xt_bigintmathadd_02_test.go:1163: TestBigIntMathAdd_AddINumMgrArray_03
-        Error returned by:
-        nDto, err = new(NumStrDto).NewNumStr(numStrAry[2])
-        numStrAry[2]= '58.71'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
+    xt_bigintmathadd_02_test.go:1233: TestBigIntMathAdd_AddINumMgrArray_03
+        Error: Unexpected Result!
+        Expected totalNumStr = '158,14788'
+        Instead, totalNumStr = '17,47576'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_01
-    xt_bigintmathadd_02_test.go:1323: TestBigIntMathAdd_AddINumMgrOutputToArray_01
-        Error returned by:
-        nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[0])
-        numMgrStrs[0]= '5'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
+    xt_bigintmathadd_02_test.go:1361: TestBigIntMathAdd_AddINumMgrOutputToArray_01
+        Error: Unexpected Result!
+        Expected result[0] = '10'
+        Instead, result[0] = '60'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_02
@@ -973,101 +817,18 @@
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_03
-    xt_bigintmathadd_02_test.go:1569: TestBigIntMathAdd_AddINumMgrOutputToArray_03
-        Error returned by:
-        nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[0])
-        numMgrStrs[0]= '5'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
+    xt_bigintmathadd_02_test.go:1608: TestBigIntMathAdd_AddINumMgrOutputToArray_03
+        Error: Unexpected Result!
+        Expected result[0] = '10'
+        Instead, result[0] = '60'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrSeries_01
-    xt_bigintmathadd_02_test.go:1709: TestBigIntMathAdd_AddINumMgrSeries_01
-        Error returned by:
-        nDto2, err := new(NumStrDto).NewNumStr(n2Str)
-        n2Str= '1.45962'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrSeries_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrSeries_02
-    xt_bigintmathadd_02_test.go:1892: TestBigIntMathAdd_AddINumMgrSeries_02
-        Error returned by:
-        nDto3, err := new(NumStrDto).NewNumStr(n3Str)
-        n3Str= '-804.1'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrSeries_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrSeries_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrSeries_03
-    xt_bigintmathadd_02_test.go:2031: TestBigIntMathAdd_AddINumMgrSeries_03
-        Error returned by:
-        nDto2, err := new(NumStrDto).NewNumStr(n2Str)
-        n2Str= '1.45962'
-        Error='NumStrDto.NewNumStr
-        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-        Error: The current instance of NumStrDto ('nDto') is INVALID!
-        Numeric Separators from 'nDto' FAILED Validation Tests.
-        Error: 
-          NumericSeparatorDto.IsValid
-        NumStrDto.NewNumStr
-         :  Validating 'numSeps'
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-        
-        
-        
-        '
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrSeries_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrSeries_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAry_01
 --- PASS: TestBigIntMathAdd_AddIntAry_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAry_02
@@ -1087,20 +848,20 @@
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
 --- FAIL: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
 panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
-[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff7f0835067]
+[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff6be8f5067]
 
-goroutine 396 [running]:
-testing.tRunner.func1.2({0x7ff7f18400e0, 0x7ff7f1f26090})
+goroutine 441 [running]:
+testing.tRunner.func1.2({0x7ff6bf9000e0, 0x7ff6bffe6090})
 	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
 testing.tRunner.func1()
 	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
-panic({0x7ff7f18400e0?, 0x7ff7f1f26090?})
+panic({0x7ff6bf9000e0?, 0x7ff6bffe6090?})
 	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
 internal/sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/internal/sync/mutex.go:63
 sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/sync/mutex.go:46
-github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff7f1f90ec0?, 0xc0000267c8, 0xc000026cf0, 0x0, 0x0, 0x0?)
+github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff6c0050ec0?, 0xc0000267c8, 0xc000026cf0, 0x0, 0x0, 0x0?)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intaryproton.go:32 +0x67
 github.com/mikeaustin71/mathops.(*IntAry).NewBigInt(0xc000026cf0, 0xc000026cd0, _)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:4265 +0x10d
@@ -1108,13 +869,13 @@ github.com/mikeaustin71/mathops.(*bigIntNumProton).bigIntNumGetIntAry(0xc0000270
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnumproton.go:2062 +0x3a7
 github.com/mikeaustin71/mathops.(*BigIntNum).GetIntAry(0xc000027320)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnum.go:1591 +0x150
-github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000027928, {{0xc000246f00, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
+github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000027928, {{0xc00022a730, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathadd.go:1159 +0x6c5
-github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc000606540)
+github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc00043ca80)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathadd_02_test.go:3350 +0x70b
-testing.tRunner(0xc000606540, 0x7ff7f1983018)
+testing.tRunner(0xc00043ca80, 0x7ff6bfa43018)
 	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
 created by testing.(*T).Run in goroutine 1
 	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
 exit status 2
-FAIL	github.com/mikeaustin71/mathops	0.535s
+FAIL	github.com/mikeaustin71/mathops	0.524s
