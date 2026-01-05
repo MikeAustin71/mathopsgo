@@ -2,11 +2,12 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"strconv"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type numStrDtoMolecule struct {
@@ -150,17 +151,16 @@ func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
 
 			return 0, nil
 
-		} else {
-			// n1Dto.signVal != n2Dto.signVal
-
-			if n1Dto.signVal == 1 {
-				return 1, nil
-			}
-
-			// n2Dto.signVal must == 1
-			return -1, nil
-
 		}
+		// n1Dto.signVal != n2Dto.signVal
+
+		if n1Dto.signVal == 1 {
+			return 1, nil
+		}
+
+		// n2Dto.signVal must == 1
+		return -1, nil
+
 	}
 
 	if cmpAbs == 1 {
@@ -181,11 +181,11 @@ func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
 		if n1Dto.signVal == 1 {
 
 			return 1, nil
-		} else {
-			// must be n2Dto.signVal == 1
-
-			return -1, nil
 		}
+		// must be n2Dto.signVal == 1
+
+		return -1, nil
+
 	}
 
 	// MUST BE:
@@ -197,12 +197,10 @@ func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
 			// n1Dto.signVal && n2Dto.signVal must equal 1
 
 			return -1, nil
-		} else {
-			// n1Dto.signVal && n2Dto.signVal must equal -1
-
-			return 1, nil
 		}
+		// n1Dto.signVal && n2Dto.signVal must equal -1
 
+		return 1, nil
 	}
 
 	// must be n2Dto.signVal != n1Dto.signVal

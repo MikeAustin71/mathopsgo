@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryPhoton struct {
@@ -229,11 +230,9 @@ func (iaPhoton *intAryPhoton) compareSignedValues(
 
 			return 1, nil
 
-		} else {
-
-			return -1, nil
-
 		}
+
+		return -1, nil
 	}
 
 	// Must be ia.signVal == iAry2.signVal

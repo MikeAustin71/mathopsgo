@@ -7352,22 +7352,21 @@ func (bNum *BigIntNum) SetThousandsSeparator(
 
 // String
 //
-//	Implements the fmt.Stringer interface.
+//		Implements the fmt.Stringer interface.
 //
-//  The returned string is a signed floating point
-//  number string representing the true numeric value
-//  encapsulated by the current instance of BigIntNum.
+//	 The returned string is a signed floating point
+//	 number string representing the true numeric value
+//	 encapsulated by the current instance of BigIntNum.
 //
-//  As such, it is identical to the string returned by
-//  method: BigIntNum.GetNumStr()
+//	 As such, it is identical to the string returned by
+//	 method: BigIntNum.GetNumStr()
 //
-//  BigIntNum.GetNumStr() is the preferred means of
-//  returned a signed number string because that method
-//  also returns an error value.
+//	 BigIntNum.GetNumStr() is the preferred means of
+//	 returned a signed number string because that method
+//	 also returns an error value.
 //
-//  If an error is encountered by this method, BigIntNum.String(),
-//  the returned string will be set equal to "ERROR".
-//  
+//	 If an error is encountered by this method, BigIntNum.String(),
+//	 the returned string will be set equal to "ERROR".
 func (bNum *BigIntNum) String() string {
 
   var bNumNumStr string
