@@ -1477,26 +1477,97 @@ func TestBigIntNumNatLogOfX(
   maxPrecision uint,
   expectedValue string) {
 
-  timeStart := time.Now()
-  timeEnd := time.Now()
   ePrefix := "TestBigIntNumNatLogOfX() "
 
-  timeStart = time.Now()
-  lnOfX, err :=
-    new(mathops.BigIntMathLogarithms).BigIntNumNatLogOfX(xNum, maxPrecision)
-  timeEnd = time.Now()
+  var timeStart, timeEnd time.Time
+
+  err := xNum.IsValid("Validating xNum")
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err := xNum.IsValid(\"Validating xNum\")\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
+  xNumNumStr, err := xNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "xNumNumStr, err := xNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  xNumPrecisionInt, err := xNum.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "xNumPrecisionInt, err := xNum.GetPrecisionInt()\n"+
+      "xNum= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      xNumNumStr,
+      err.Error())
+    return
+  }
+
+  timeStart = time.Now()
+
+  lnOfX, err :=
+    new(mathops.BigIntMathLogarithms).BigIntNumNatLogOfX(xNum, maxPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "lnOfX, err := new(mathops.BigIntMathLogarithms).\n"+
+      " BigIntNumNatLogOfX(xNum, maxPrecision)\n"+
+      "xNum= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      xNumNumStr,
+      maxPrecision,
+      err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
   timeDuration := timeEnd.Sub(timeStart)
 
-  duration := CodeDurationToStr(timeDuration)
+  lnOfXNumStr, err := lnOfX.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "lnOfXNumStr, err := lnOfX.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  lnOfXPrecisionInt, err := lnOfX.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "lnOfXPrecisionInt, err := lnOfX.GetPrecisionInt()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  CodeDurationStr := CodeDurationToStr(timeDuration)
+
   status := "SUCCESS!!! Expected Value Matches Actual Value"
 
-  if expectedValue != lnOfX.GetNumStr() {
+  if expectedValue != lnOfXNumStr {
     status = "FAILURE*** Expected Value DOES NOT MATCH Actual Value"
   }
 
@@ -1504,18 +1575,20 @@ func TestBigIntNumNatLogOfX(
   fmt.Println("======================================================================")
   fmt.Println("               BigIntMath{}.BigIntNumNatLogOfX() ")
   fmt.Println("======================================================================")
-  fmt.Println("                xNum: ", xNum.GetNumStr())
-  fmt.Println("       xNumPrecision: ", xNum.GetPrecisionInt())
+  fmt.Println("                xNum: ", xNumNumStr)
+  fmt.Println("       xNumPrecision: ", xNumPrecisionInt)
   fmt.Println("        maxPrecision: ", maxPrecision)
   fmt.Println("======================================================================")
-  fmt.Println("  ln(xNum) Precision: ", lnOfX.GetPrecisionInt())
-  fmt.Println("            ln(xNum): ", lnOfX.GetNumStr())
+  fmt.Println("  ln(xNum) Precision: ", lnOfXPrecisionInt)
+  fmt.Println("            ln(xNum): ", lnOfXNumStr)
   fmt.Println("      expected value: ", expectedValue)
   fmt.Println("======================================================================")
   fmt.Println("              Status: ", status)
-  fmt.Println("      Execution Time: ", duration)
+  fmt.Println("      Execution Time: ", CodeDurationStr)
   fmt.Println("======================================================================")
   fmt.Println()
+
+  return
 }
 
 func TestArithmeticGeometricMean(
@@ -1528,11 +1601,68 @@ func TestArithmeticGeometricMean(
   expectedValue string) {
 
   ePrefix := "TestArithmeticGeometricMean() "
+
+  if aNum == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " aNum == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if aNumPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " aNumPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if gNum == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " gNum == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if gNumPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " gNumPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if maxInternalPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " maxInternalPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if targetPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " targetPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if len(expectedValue) == 0 {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is an empty string!\n"+
+      " expectedValue == \"\"\n\n",
+      ePrefix)
+    return
+  }
+
   fmt.Println(ePrefix)
   // timeStart := time.Now()
 
   agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err :=
-    mathops.BigIntMath{}.ArithmeticGeometricMean(
+    new(mathops.BigIntMath).ArithmeticGeometricMean(
       aNum,
       aNumPrecision,
       gNum,
@@ -1540,38 +1670,130 @@ func TestArithmeticGeometricMean(
       maxInternalPrecision,
       targetPrecision)
 
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err :=\n"+
+      "  new(mathops.BigIntMath).ArithmeticGeometricMean(\n"+
+      "    aNum, aNumPrecision, gNum, gNumPrecision, maxInternalPrecision, targetPrecision))\n"+
+      "aNum= '%v'\n"+
+      "aNumPrecision= '%v'\n"+
+      "gNum= '%v'\n"+
+      "gNumPrecision= '%v'\n"+
+      "maxInternalPrecision= '%v'\n"+
+      "targetPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      aNum.Text(10),
+      aNumPrecision.Text(10),
+      gNum.Text(10),
+      gNumPrecision.Text(10),
+      maxInternalPrecision.Text(10),
+      targetPrecision.Text(10),
+      err.Error())
+    return
+  }
+
   // timeEnd := time.Now()
 
+  binANum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(aNum, aNumPrecision)
+
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binANum, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(aNum, aNumPrecision)\n"+
+      "aNum= '%v'\n"+
+      "aNumPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      aNum.Text(10),
+      aNumPrecision.Text(10),
+      err.Error())
     return
   }
 
-  binANum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(aNum, aNumPrecision)
+  binANumNumStr, err := binANum.GetNumStr()
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binANumNumStr, err := binANum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
-  binGNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(gNum, gNumPrecision)
+  binGNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(gNum, gNumPrecision)
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binGNum, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(gNum, gNumPrecision)\n"+
+      "gNum= '%v'\n"+
+      "gNumPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      gNum.Text(10),
+      gNumPrecision,
+      err.Error())
     return
   }
 
-  binAGMean, err := mathops.BigIntNum{}.NewBigIntBigPrecision(agMean, agMeanPrecision)
+  binGNumNumStr, err := binGNum.GetNumStr()
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binGNumNumStr, err := binGNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
-  binGValue, err := mathops.BigIntNum{}.NewBigIntBigPrecision(gValue, gValuePrecision)
+  binAGMean, err := new(mathops.BigIntNum).NewBigIntBigPrecision(agMean, agMeanPrecision)
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binAGMean, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(agMean, agMeanPrecision)\n"+
+      "agMean= '%v'\n"+
+      "xrayStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      agMean.Text(10),
+      agMeanPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  binAGMeanNumStr, err := binAGMean.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binAGMeanNumStr, err := binAGMean.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  binGValue, err := new(mathops.BigIntNum).NewBigIntBigPrecision(gValue, gValuePrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binGValue, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(gValue, gValuePrecision)\n"+
+      "gValue= '%v'\n"+
+      "xrayStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      gValue.Text(10),
+      gValuePrecision.Text(10),
+      err.Error())
     return
   }
 
@@ -1579,25 +1801,37 @@ func TestArithmeticGeometricMean(
 
   //duration := examples.CodeDurationToStr(timeDuration)
 
+  binGValueNumStr, err := binGValue.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binGValueNumStr, err := binGValue.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
   fmt.Println()
   fmt.Println("======================================================================")
   fmt.Println("               BigIntMath{}.ArithmeticGeometricMean() ")
   fmt.Println("======================================================================")
   fmt.Println("                aNum: ", aNum.Text(10))
   fmt.Println("       aNumPrecision: ", aNumPrecision.Text(10))
-  fmt.Println("           a Num Str: ", binANum.GetNumStr())
+  fmt.Println("           a Num Str: ", binANumNumStr)
   fmt.Println("                gNum: ", gNum.Text(10))
   fmt.Println("       gNumPrecision: ", gNumPrecision.Text(10))
-  fmt.Println("           g Num Str: ", binGNum.GetNumStr())
+  fmt.Println("           g Num Str: ", binGNumNumStr)
   fmt.Println("maxInternalPrecision: ", maxInternalPrecision.Text(10))
   fmt.Println("     targetPrecision: ", targetPrecision.Text(10))
   fmt.Println("======================================================================")
   fmt.Println("              agMean: ", agMean.Text(10))
   fmt.Println("     agMeanPrecision: ", agMeanPrecision.Text(10))
-  fmt.Println("       agMean NumStr: ", binAGMean.GetNumStr())
+  fmt.Println("       agMean NumStr: ", binAGMeanNumStr)
   fmt.Println("      expected value: ", expectedValue)
   status := "FAILURE - Actual DOES NOT MATCH Expected Value!!"
-  if binAGMean.GetNumStr() == expectedValue {
+
+  if binAGMeanNumStr == expectedValue {
     status = "SUCCESS - Actual Matches Expected Value!"
   }
 
@@ -1605,7 +1839,7 @@ func TestArithmeticGeometricMean(
   fmt.Println("----------------------------------------------------------------------")
   fmt.Println("              gValue: ", gValue.Text(10))
   fmt.Println("     gValuePrecision: ", gValuePrecision.Text(10))
-  fmt.Println("       gValue NumStr: ", binGValue.GetNumStr())
+  fmt.Println("       gValue NumStr: ", binGValueNumStr)
   fmt.Println("----------------------------------------------------------------------")
   fmt.Println("              Cycles: ", cycles)
   fmt.Println("----------------------------------------------------------------------")
@@ -1613,6 +1847,7 @@ func TestArithmeticGeometricMean(
   fmt.Println("======================================================================")
   fmt.Println()
 
+  return
 }
 
 func TestNatLogOfXArithmeticGeometricMean(
@@ -1675,14 +1910,86 @@ func TestNatLogOfXArithmeticGeometricMean(
 
   */
 
-  timeStart := time.Now()
-  timeEnd := time.Now()
   ePrefix := "TestNatLogOfXArithmeticGeometricMean() "
+
+  var timeStart, timeEnd time.Time
+
+  if xNum == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " xNum == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if xNumPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " xNumPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if m == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " m == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if s4DivPrecisionMaxInternalPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " s4DivPrecisionMaxInternalPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if agMeanMaxInternalPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " agMeanMaxInternalPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if agMeanMaxOutputPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " agMeanMaxOutputPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if piDivideMaxPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " piDivideMaxPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if maxFinalResultPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " maxFinalResultPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if len(expectedValue) == 0 {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is an empty string!\n"+
+      " expectedValue == \"\"\n\n",
+      ePrefix)
+    return
+  }
 
   timeStart = time.Now()
 
   lnOfX, lnOfXPrecision, err :=
-    mathops.BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(
+    new(mathops.BigIntMathLogarithms).SaskiKanadaNatLogOfX(
       xNum,
       xNumPrecision,
       m,
@@ -1692,32 +1999,98 @@ func TestNatLogOfXArithmeticGeometricMean(
       piDivideMaxPrecision,
       maxFinalResultPrecision)
 
-  timeEnd = time.Now()
-
   if err != nil {
-    fmt.Printf(ePrefix+"%v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "lnOfX, lnOfXPrecision, err := new(mathops.BigIntMathLogarithms).\n"+
+      "  SaskiKanadaNatLogOfX(xNum, xNumPrecision, m,\n"+
+      "   s4DivPrecisionMaxInternalPrecision, agMeanMaxInternalPrecision,\n"+
+      "   agMeanMaxOutputPrecision, piDivideMaxPrecision, maxFinalResultPrecision)\n"+
+      "xNum= '%v'\n"+
+      "xNumPrecision= '%v'\n"+
+      "m= '%v'\n"+
+      "s4DivPrecisionMaxInternalPrecision= '%v'\n"+
+      "agMeanMaxInternalPrecision= '%v'\n"+
+      "agMeanMaxOutputPrecision= '%v'\n"+
+      "piDivideMaxPrecision= '%v'\n"+
+      "maxFinalResultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      xNum.Text(10),
+      xNumPrecision.Text(10),
+      m.Text(10),
+      s4DivPrecisionMaxInternalPrecision.Text(10),
+      agMeanMaxInternalPrecision.Text(10),
+      agMeanMaxOutputPrecision.Text(10),
+      piDivideMaxPrecision.Text(10),
+      maxFinalResultPrecision.Text(10),
+      err.Error())
     return
   }
 
+  timeEnd = time.Now()
+
   bINumXNum, err :=
-    mathops.BigIntNum{}.NewBigIntBigPrecision(xNum, xNumPrecision)
+    new(mathops.BigIntNum).NewBigIntBigPrecision(xNum, xNumPrecision)
 
   if err != nil {
-    fmt.Printf(ePrefix+"bINumXNum Error= %v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINumXNum, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(xNum, xNumPrecision)\n"+
+      "xNum= '%v'\n"+
+      "xNumPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      xNum.Text(10),
+      xNumPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  bINumXNumNumStr, err := bINumXNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINumXNumNumStr, err := bINumXNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
   bINumlnOfX, err :=
-    mathops.BigIntNum{}.NewBigIntBigPrecision(lnOfX, lnOfXPrecision)
+    new(mathops.BigIntNum).NewBigIntBigPrecision(lnOfX, lnOfXPrecision)
 
   if err != nil {
-    fmt.Printf(ePrefix+"bINumlnOfX Error= %v", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINumlnOfX, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(lnOfX, lnOfXPrecision)\n"+
+      "lnOfX= '%v'\n"+
+      "lnOfXPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      lnOfX.Text(10),
+      lnOfXPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  bINumlnOfXNumStr, err := bINumlnOfX.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "bINumlnOfXNumStr, err := bINumlnOfX.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
   timeDuration := timeEnd.Sub(timeStart)
 
-  duration := examples.CodeDurationToStr(timeDuration)
+  duration := CodeDurationToStr(timeDuration)
 
   fmt.Println()
   fmt.Println("======================================================================")
@@ -1725,7 +2098,7 @@ func TestNatLogOfXArithmeticGeometricMean(
   fmt.Println("======================================================================")
   fmt.Println("                              xNum: ", xNum.Text(10))
   fmt.Println("                     xNumPrecision: ", xNumPrecision.Text(10))
-  fmt.Println("                       xNum NumStr: ", bINumXNum.GetNumStr())
+  fmt.Println("                       xNum NumStr: ", bINumXNumNumStr)
   fmt.Println("                                 m: ", m.Text(10))
   fmt.Println("s4DivPrecisionMaxInternalPrecision: ", s4DivPrecisionMaxInternalPrecision.Text(10))
   fmt.Println("        agMeanMaxInternalPrecision: ", agMeanMaxInternalPrecision.Text(10))
@@ -1735,11 +2108,11 @@ func TestNatLogOfXArithmeticGeometricMean(
   fmt.Println("========================== Result ====================================")
   fmt.Println("                             ln(x): ", lnOfX.Text(10))
   fmt.Println("                   ln(x) Precision: ", lnOfXPrecision.Text(10))
-  fmt.Println("                      ln(x) NumStr: ", bINumlnOfX.GetNumStr())
+  fmt.Println("                      ln(x) NumStr: ", bINumlnOfXNumStr)
   fmt.Println("              ln(x) Expected Value: ", expectedValue)
 
   status := "FAILURE!!! Expected Value DOES NOT MATCH Actual Value"
-  if expectedValue == bINumlnOfX.GetNumStr() {
+  if expectedValue == bINumlnOfXNumStr {
     status = "SUCCESS**** Expected Value MATCHES Actual Value"
   }
 
@@ -1747,6 +2120,7 @@ func TestNatLogOfXArithmeticGeometricMean(
   fmt.Println("======================================================================")
   fmt.Println("      Execution Time: ", duration)
 
+  return
 }
 
 func TestBigIntNumLogBaseOfX(
@@ -1756,47 +2130,118 @@ func TestBigIntNumLogBaseOfX(
   expectedLogValue string) {
 
   // Logarithm test code
-  timeStart := time.Now()
-  timeEnd := time.Now()
   ePrefix := "TestBigIntNumLogBaseOfX() "
 
-  timeStart = time.Now()
-  logValue, err :=
-    mathops.BigIntMathLogarithms{}.BigIntNumLogBaseOfX(
-      base,
-      xNum,
-      maxPrecision)
-  timeEnd = time.Now()
+  var timeStart, timeEnd time.Time
+
+  err := base.IsValid("Validating 'base'")
 
   if err != nil {
-    fmt.Printf(ePrefix+
-      "Error: error returned from "+
-      "BigIntMathLogarithms{}.BigIntNumLogBaseOfX("+
-      "base, xNum, maxPrecision) "+
-      "base='%v' xNum='%v' Error='%v'",
-      base.GetNumStr(), xNum.GetNumStr(), err.Error())
-
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err := base.IsValid(\"Validating 'base'\")\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
     return
   }
 
+  baseNumStr, err := base.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "baseNumStr, err := base.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  err = xNum.IsValid("Validating 'xNum'")
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "err = xNum.IsValid(\"Validating 'xNum'\")\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  xNumNumStr, err := xNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "xNumNumStr, err := xNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  if len(expectedLogValue) == 0 {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is an empty string!\n"+
+      "expectedLogValue == \"\"\n\n",
+      ePrefix)
+    return
+  }
+
+  timeStart = time.Now()
+
+  logValue, err :=
+    new(mathops.BigIntMathLogarithms).BigIntNumLogBaseOfX(
+      base,
+      xNum,
+      maxPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "logValue, err := new(mathops.BigIntMathLogarithms).\n"+
+      "  BigIntNumLogBaseOfX(base, xNum, maxPrecision)\n"+
+      "base= '%v'\n"+
+      "xNum= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      baseNumStr,
+      xNumNumStr,
+      maxPrecision,
+      err.Error())
+    return
+  }
+
+  timeEnd = time.Now()
+
   timeDuration := timeEnd.Sub(timeStart)
 
-  duration := examples.CodeDurationToStr(timeDuration)
+  logValueNumStr, err := logValue.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "logValueNumStr, err := logValue.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  duration := CodeDurationToStr(timeDuration)
 
   status := "Success!!!!! Expected Value Matches Actual Value"
 
-  if expectedLogValue != logValue.GetNumStr() {
+  if expectedLogValue != logValueNumStr {
     status = "FAILURE***** Expected Value DOES NOT MATCH Actual Value!"
   }
 
   fmt.Println()
   fmt.Println("   BigIntMathLogarithms{}.BigIntNumLogBaseOfX() ")
   fmt.Println("==================================================")
-  fmt.Println("               base: ", base.GetNumStr())
-  fmt.Println("               xNum: ", xNum.GetNumStr())
+  fmt.Println("               base: ", baseNumStr)
+  fmt.Println("               xNum: ", xNumNumStr)
   fmt.Println("       maxPrecision: ", maxPrecision)
   fmt.Println("--------------------------------------------------")
-  fmt.Println("          log Value: ", logValue.GetNumStr())
+  fmt.Println("          log Value: ", logValueNumStr)
   fmt.Println(" Expected log Value: ", expectedLogValue)
   fmt.Println("--------------------------------------------------")
   fmt.Println(status)
@@ -1815,92 +2260,265 @@ func TestBigIntLogBaseOfX(
   expectedValue string) {
 
   ePrefix := "TestBigIntLogBaseOfX() "
-  timeStart := time.Now()
-  timeEnd := time.Now()
+
+  var timeStart, timeEnd time.Time
+
+  if base == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " base == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if basePrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " basePrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if xNum == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " xNum == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if xNumPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " xNumPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if maxPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " maxPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if len(expectedValue) == 0 {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is an empty string!\n"+
+      " expectedValue == \"\"\n\n",
+      ePrefix)
+    return
+  }
 
   timeStart = time.Now()
+
   logResult, logResultPrecision, err :=
-    mathops.BigIntMathLogarithms{}.BigIntLogBaseOfX(
+    new(mathops.BigIntMathLogarithms).BigIntLogBaseOfX(
       base,
       basePrecision,
       xNum,
       xNumPrecision,
       maxPrecision)
 
-  timeEnd = time.Now()
-
   if err != nil {
-    fmt.Printf(ePrefix+"%v ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "logResult, logResultPrecision, err :=\n"+
+      "  new(mathops.BigIntMathLogarithms).BigIntLogBaseOfX(\n"+
+      "  base, basePrecision, xNum, xNumPrecision, maxPrecision)\n"+
+      "param1= '%v'\n"+
+      "param2= '%v'\n"+
+      "param3= '%v'\n"+
+      "param4= '%v'\n"+
+      "param5= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      base.Text(10),
+      basePrecision.Text(10),
+      xNum.Text(10),
+      xNumPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+    return
   }
+
+  timeEnd = time.Now()
 
   timeDuration := timeEnd.Sub(timeStart)
 
-  duration := examples.CodeDurationToStr(timeDuration)
+  codeDurationStr := CodeDurationToStr(timeDuration)
+
+  binLogResult, err := new(mathops.BigIntNum).NewBigIntBigPrecision(logResult, logResultPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binLogResult, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(logResult, logResultPrecision)\n"+
+      "logResult= '%v'\n"+
+      "logResultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      logResult.Text(10),
+      logResultPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  binLogResultNumStr, err := binLogResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binLogResultNumStr, err := binLogResult.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   status := "Success!!!!! Expected Matches Actual Value"
 
-  if err == nil {
-    binLogResult, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(logResult, logResultPrecision)
+  fmt.Println()
+  fmt.Println("================================================")
+  fmt.Println("    BigIntMathLogarithms{}.BigIntLogBaseOfX() ")
+  fmt.Println("================================================")
+  fmt.Println("           base: ", base.Text(10))
+  fmt.Println("           xNum: ", xNum.Text(10))
+  fmt.Println("  xNumPrecision: ", xNumPrecision.Text(10))
+  fmt.Println("      logResult: ", logResult.Text(10))
+  fmt.Println("   logPrecision: ", logResultPrecision.Text(10))
+  fmt.Println("      logNumStr: ", binLogResultNumStr)
+  fmt.Println("Expected Result: ", expectedValue)
+  fmt.Println(" Execution Time: ", codeDurationStr)
+  fmt.Println("================================================")
 
-    fmt.Println()
-    fmt.Println("================================================")
-    fmt.Println("    BigIntMathLogarithms{}.BigIntLogBaseOfX() ")
-    fmt.Println("================================================")
-    fmt.Println("           base: ", base.Text(10))
-    fmt.Println("           xNum: ", xNum.Text(10))
-    fmt.Println("  xNumPrecision: ", xNumPrecision.Text(10))
-    fmt.Println("      logResult: ", logResult.Text(10))
-    fmt.Println("   logPrecision: ", logResultPrecision.Text(10))
-    fmt.Println("      logNumStr: ", binLogResult.GetNumStr())
-    fmt.Println("Expected Result: ", expectedValue)
-    fmt.Println(" Execution Time: ", duration)
-    fmt.Println("================================================")
-    if expectedValue != binLogResult.GetNumStr() {
-      status = "FAILURE****** Expected DOES NOT MATCH Actual Value"
-    }
-
-    fmt.Println(status)
-    fmt.Println("================================================")
-    fmt.Println()
+  if expectedValue != binLogResultNumStr {
+    status = "FAILURE****** Expected DOES NOT MATCH Actual Value"
   }
 
-  biBase := mathops.BigIntNum{}.NewBigInt(base, 0)
-  biXNum, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(xNum, xNumPrecision)
+  fmt.Println(status)
+  fmt.Println("================================================")
+  fmt.Println()
+
+  biBase, err := new(mathops.BigIntNum).NewBigInt(base, 0)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biBase, err := new(mathops.BigIntNum).\n"+
+      " NewBigInt(base, 0)\n"+
+      "base= '%v'\n"+
+      "precision= '0'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      base.Text(10),
+      err.Error())
+    return
+  }
+
+  biBaseNumStr, err := biBase.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biBaseNumStr, err := biBase.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  biXNum, err := new(mathops.BigIntNum).NewBigIntBigPrecision(xNum, xNumPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biXNum, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(xNum, xNumPrecision)\n"+
+      "xNum= '%v'\n"+
+      "xrayStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      xNum.Text(10),
+      xNumPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  biXNumNumStr, err := biXNum.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biXNumNumStr, err := biXNum.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   uiMaxPrecision := uint(maxPrecision.Uint64())
 
   timeStart = time.Now()
 
-  biNumResult, err := mathops.BigIntMathLogarithms{}.BigIntNumLogBaseOfX(
+  biNumResult, err := new(mathops.BigIntMathLogarithms).BigIntNumLogBaseOfX(
     biBase,
     biXNum,
     uiMaxPrecision)
-  timeEnd = time.Now()
 
   if err != nil {
-    fmt.Printf(ePrefix+"%v ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumResult, err := new(mathops.BigIntMathLogarithms).\n"+
+      "  BigIntNumLogBaseOfX(biBase, biXNum, uiMaxPrecision)\n"+
+      "param1= '%v'\n"+
+      "param2= '%v'\n"+
+      "uiMaxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      biBaseNumStr,
+      biXNumNumStr,
+      uiMaxPrecision,
+      err.Error())
     return
   }
 
+  timeEnd = time.Now()
+
   timeDuration = timeEnd.Sub(timeStart)
 
-  duration = examples.CodeDurationToStr(timeDuration)
+  biNumResultNumStr, err := biNumResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "biNumResultNumStr, err := biNumResult.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  codeDurationStr = CodeDurationToStr(timeDuration)
+
   status = "Success!!!!! Expected Matches Actual Value"
 
   fmt.Println()
   fmt.Println("------------------------------------------------")
   fmt.Println("      BigIntMathLogarithms.BigIntNumLogBaseOfX() ")
   fmt.Println("------------------------------------------------")
-  fmt.Println("BigIntNum Log Result: ", biNumResult.GetNumStr())
+  fmt.Println("BigIntNum Log Result: ", biNumResultNumStr)
   fmt.Println("     Expected Result: ", expectedValue)
-  fmt.Println("      Execution Time: ", duration)
+  fmt.Println("      Execution Time: ", codeDurationStr)
   fmt.Println("------------------------------------------------")
-  if expectedValue != biNumResult.GetNumStr() {
+
+  if expectedValue != biNumResultNumStr {
     status = "FAILURE****** Expected DOES NOT MATCH Actual Value"
   }
+
   fmt.Println(status)
   fmt.Println("------------------------------------------------")
   fmt.Println()
+
+  return
 }
 
 /*
@@ -2068,26 +2686,122 @@ func TestBigIntToNegativeFractionalPower(
   maxPrecision *big.Int,
   expectedResult string) {
 
-  timeStart := time.Now()
+  ePrefix := "TestBigIntToNegativeFractionalPower"
+
+  var timeStart, timeEnd time.Time
+
+  if base == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " base == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if basePrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " basePrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if exponent == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " exponent == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if exponentPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " exponentPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if maxPrecision == nil {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is 'nil'\n"+
+      " maxPrecision == nil\n\n",
+      ePrefix)
+    return
+  }
+
+  if len(expectedResult) == 0 {
+    fmt.Printf("%v\n"+
+      "Error: Input parameter is an emtpy string!\n"+
+      " expectedResult == \"\"\n\n",
+      ePrefix)
+    return
+  }
+
+  timeStart = time.Now()
+
   result,
     resultPrecision,
-    err := mathops.BigIntMathPower{}.BigIntToNegativeFractionalPower(
+    err := new(mathops.BigIntMathPower).BigIntToNegativeFractionalPower(
     base,
     basePrecision,
     exponent,
     exponentPrecision,
     maxPrecision)
 
-  timeEnd := time.Now()
-
   if err != nil {
-    fmt.Printf("%v ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntToNegativeFractionalPower(base, basePrecision,\n"+
+      "   exponent, exponentPrecision, maxPrecision)\n"+
+      "base= '%v'\n"+
+      "basePrecision= '%v'\n"+
+      "exponent= '%v'\n"+
+      "exponentPrecision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      base.Text(10),
+      basePrecision.Text(10),
+      exponent.Text(10),
+      exponentPrecision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+    return
   }
 
-  binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
+  timeEnd = time.Now()
   timeDuration := timeEnd.Sub(timeStart)
+  codeDurationStr := CodeDurationToStr(timeDuration)
 
-  duration := examples.CodeDurationToStr(timeDuration)
+  binResult, err := new(mathops.BigIntNum).NewBigInt(result, uint(resultPrecision.Uint64()))
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(mathops.BigIntNum).\n"+
+      " NewBigInt(result, uint(resultPrecision.Uint64()))\n"+
+      "result= '%v'\n"+
+      "precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      uint(resultPrecision.Uint64()),
+      err.Error())
+    return
+  }
+
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   fmt.Println()
   fmt.Println()
@@ -2101,35 +2815,131 @@ func TestBigIntToNegativeFractionalPower(
   fmt.Println("------------------------------------------------------------")
   fmt.Println("                result: ", result.Text(10))
   fmt.Println("       resultPrecision: ", resultPrecision)
-  fmt.Println("         result NumStr: ", binResult.GetNumStr())
+  fmt.Println("         result NumStr: ", binResultNumStr)
   fmt.Println("        expectedResult: ", expectedResult)
   fmt.Println("------------------------------------------------------------")
-  fmt.Println("Execution Time: ", duration)
+  fmt.Println("Execution Time: ", codeDurationStr)
   fmt.Println("------------------------------------------------------------")
   fmt.Println()
 
-  binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
-  binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
+  binBase, err := new(mathops.BigIntNum).NewBigIntBigPrecision(base, basePrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binBase, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(base, basePrecision)\n"+
+      "base= '%v'\n"+
+      "basePrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      base.Text(10),
+      basePrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  binBaseNumStr, err := binBase.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binBaseNumStr, err := binBase.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  binExponent, err := new(mathops.BigIntNum).NewBigIntBigPrecision(exponent, exponentPrecision)
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binExponent, err := new(mathops.BigIntNum).\n"+
+      " NewBigIntBigPrecision(exponent, exponentPrecision)\n"+
+      "exponent= '%v'\n"+
+      "exponentPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      exponent.Text(10),
+      exponentPrecision.Text(10),
+      err.Error())
+    return
+  }
+
+  binExponentNumStr, err := binExponent.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binExponentNumStr, err := binExponent.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
 
   timeStart = time.Now()
-  binPwr, err := mathops.BigIntMathPower{}.BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
-  timeEnd = time.Now()
+
+  binPwr, err := new(mathops.BigIntMathPower).BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+
   if err != nil {
-    fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(...) "+
-      "Error='%v' ", err.Error())
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwr, err := new(mathops.BigIntMathPower).\n"+
+      "  BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))\n"+
+      "binBase= '%v'\n"+
+      "binExponent= '%v'\n"+
+      "Max Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      binBaseNumStr,
+      binExponentNumStr,
+      uint(maxPrecision.Uint64()),
+      err.Error())
+    return
   }
+
+  timeEnd = time.Now()
 
   timeDuration = timeEnd.Sub(timeStart)
 
-  duration = examples.CodeDurationToStr(timeDuration)
+  binPwrNumStr, err := binPwr.GetNumStr()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrNumStr, err := binPwr.GetNumStr()\n"+
+      "Error='%v'\n\n",
+      ePrefix, err.Error())
+    return
+  }
+
+  binPwrPrecisionInt, err := binPwr.GetPrecisionInt()
+
+  if err != nil {
+    fmt.Printf("%v\n"+
+      "Error returned by:\n"+
+      "binPwrPrecisionInt, err := binPwr.GetPrecisionInt()\n"+
+      "binPwr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      binPwrNumStr,
+      err.Error())
+    return
+  }
+
+  codeDurationStr = CodeDurationToStr(timeDuration)
+
   fmt.Println("------------------------------------------------------------")
   fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
   fmt.Println("------------------------------------------------------------")
-  fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
-  fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())
+  fmt.Println("     BigIntNum  result: ", binPwrNumStr)
+  fmt.Println("   BigIntNum precision: ", binPwrPrecisionInt)
   fmt.Println("        expectedResult: ", expectedResult)
   fmt.Println("------------------------------------------------------------")
-  fmt.Println("Execution Time: ", duration)
+  fmt.Println("Execution Time: ", codeDurationStr)
   fmt.Println("------------------------------------------------------------")
   fmt.Println()
+
+  return
 }

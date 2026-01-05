@@ -4,6 +4,6 @@ package main
 
 func main() {
 
-  // examples.TestArithmeticGeometricMean()
+	// examples.TestArithmeticGeometricMean()
 
 }
