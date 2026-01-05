@@ -5567,7 +5567,7 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 			"Error returned by:\n"+
 			"expectedBigInt, isOk := big.NewInt(0).SetString(\n"+
 			"  \"194039932864555212496281111782\", 10)\n"+
-			"Error= '%v'\n\n", ePrefix)
+			"Error: isOk == false\n\n", ePrefix)
 		return
 	}
 

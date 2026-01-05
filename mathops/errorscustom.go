@@ -81,11 +81,13 @@ func (e *FuncReturnError) Error() string {
 }
 
 func (e *FuncReturnError) GetError() error {
-	return fmt.Errorf("%w", e.Error())
+	//return fmt.Errorf("%w", e.Error())
+	return fmt.Errorf("%s", e.Error())
 }
 
 func (e *FuncReturnError) Unwrap() error {
-	return fmt.Errorf("%w", e.Error())
+
+	return fmt.Errorf("%s", e.Error())
 }
 
 // InputPtrNilError
@@ -146,5 +148,5 @@ func (i *InputPtrNilError) Error() string {
 }
 
 func (i *InputPtrNilError) Unwrap() error {
-	return fmt.Errorf("%w", i.Error())
+	return fmt.Errorf("%s", i.Error())
 }

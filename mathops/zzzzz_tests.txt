@@ -1,18 +1,1 @@
 FAIL	github.com/mikeaustin71/mathops [build failed]
-D:\GoProjects\MikeAustin71\mathopsgo\mathops>go test -v > zzzzz_tests.txt
-# github.com/mikeaustin71/mathops [github.com/mikeaustin71/mathops.test]
-
-FIXED
-.\bigintnumproton.go:3098:28: cannot use math.MaxUint64 (untyped int constant 18446744073709551615) as int value in argument to fmt.Sprintf (overflows)
-.\xt_numstrdto_05_test.go:4741:31: cannot use 194039932864555212496281111782 (untyped int constant) as int64 value in argument to big.NewInt (overflows)
-.\xt_numstrdto_05_test.go:4749:42: cannot use 1000000000000000000000000000 (untyped int constant) as int64 value in argument to big.NewInt (overflows)
-.\xt_numstrdto_05_test.go:5130:31: cannot use -194039932864555212496281111782 (untyped int constant) as int64 value in argument to big.NewInt (overflows)
-
-
-.\xt_numstrdto_05_test.go:5138:42: cannot use 1000000000000000000000000000 (untyped int constant) as int64 value in argument to big.NewInt (overflows)
-
-.\xt_numstrdto_05_test.go:5519:31: cannot use 194039932864555212496281111782 (untyped int constant) as int64 value in argument to big.NewInt (overflows)
-
-NOT FIXED
-
-.\xt_numstrdto_05_test.go:5527:42: cannot use 1000000000000000000000000000 (untyped int constant) as int64 value in argument to big.NewInt (overflows)

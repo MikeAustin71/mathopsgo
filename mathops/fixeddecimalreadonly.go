@@ -2,8 +2,9 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 // FixedDecimalReadOnly - encapsulates a Read Only
@@ -231,7 +232,7 @@ func (fDecRO *FixedDecimalReadOnly) NewFixedDecimal(
 			fmt.Errorf("%v\n"+
 				"Error returned by call to f2.fixedDecimal.CopyIn(fixedDecimal).\n"+
 				"Error='%v'\n",
-				err.Error())
+				ePrefix, err.Error())
 	}
 
 	return f2, err

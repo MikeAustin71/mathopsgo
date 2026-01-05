@@ -224,8 +224,11 @@ func (fdNthRoot *FixedDecimalNthRoot) BigIntFixedDecNthRoot(
 	nthRoot BigIntFixedDecimal,
 	maxPrecision uint) (root *big.Int, rootPrecision uint, err error) {
 
+	radicand = BigIntFixedDecimal{}
+	nthRoot = BigIntFixedDecimal{}
 	root = big.NewInt(0)
 	rootPrecision = 0
+	maxPrecision = 0
 	err = nil
 
 	return root, rootPrecision, err
