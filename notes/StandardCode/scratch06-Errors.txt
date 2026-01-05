@@ -56,7 +56,7 @@ Low-Level Error Prefix
 
 
 ************************************************
-    Input Parameter Pointer 'nil' Error
+    Standard Input Parameter Pointer 'nil' Error
 ************************************************
 
 	if bNum == nil {
@@ -70,7 +70,7 @@ Low-Level Error Prefix
 
 
 ************************************************
-        Multi-Level Error
+        Standard Multi-Level Error
 ************************************************
 
 	if err != nil {

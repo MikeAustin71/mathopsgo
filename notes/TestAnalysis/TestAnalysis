@@ -1,24 +1,19 @@
-Test Run: 2026-01-04 19:27-hours
+Test Run: 2026-01-05 02:08-hours
 
+D:\GoProjects\MikeAustin71\mathopsgo\mathops>go test -v > zzzzz_tests.txt
 # github.com/mikeaustin71/mathops
 # [github.com/mikeaustin71/mathops]
-FIXED
-.\errorscustom.go:84:21: fmt.Errorf format %w has arg e.Error() of wrong type string
-.\errorscustom.go:88:21: fmt.Errorf format %w has arg e.Error() of wrong type string
-.\errorscustom.go:149:21: fmt.Errorf format %w has arg i.Error() of wrong type string
-.\xt_numstrdto_05_test.go:5566:12: (*testing.common).Errorf format %v reads arg #2, but call has 1 arg
-.\fixeddecimalreadonly.go:231:15: fmt.Errorf format %v reads arg #2, but call has 1 arg
+Fixed
+.\fixeddecimalnthroot.go:387:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:401:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:416:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:936:21: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:968:20: non-constant format string in call to fmt.Errorf
 
-NOT FIXED
-
-.\fixeddecimalnthroot.go:384:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:398:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:413:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:933:21: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:965:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1270:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1384:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1403:21: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1442:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1814:15: non-constant format string in call to fmt.Errorf
-.\fixeddecimalreadonly.go:196:15: non-constant format string in call to fmt.Errorf
+Not Fixed
+.\fixeddecimalnthroot.go:1273:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:1387:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:1406:21: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:1445:20: non-constant format string in call to fmt.Errorf
+.\fixeddecimalnthroot.go:1817:15: non-constant format string in call to fmt.Errorf
+.\fixeddecimalreadonly.go:197:15: non-constant format string in call to fmt.Errorf
