@@ -505,16 +505,20 @@ func (bAdd *BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 			}
 	}
 
+	numSeps.SetDefaultsIfEmpty()
+
+	var decNStr string
+
 	for i := 0; i < lenDecs; i++ {
 
-		err = decs[i].IsValid(ePrefix + fmt.Sprintf("decs[%v]", i))
+		err = decs[i].IsValid(fmt.Sprintf("Validating decs[%v]", i))
 
 		if err != nil {
 
 			return BigIntNum{},
 				&FuncReturnError{
 					ErrPrefix:  ePrefix,
-					ReturnFunc: "err = decs[i].IsValid(ePrefix + fmt.Sprintf(\"decs[%v]\", i))",
+					ReturnFunc: "err = decs[i].IsValid(fmt.Sprintf(\"Validating decs[%v]\", i))",
 					ErrContext: fmt.Sprintf("decs[%v] Failed Validation Tests", i),
 					ErrMessage: err.Error(),
 				}
@@ -522,13 +526,22 @@ func (bAdd *BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
 		if i == 0 {
 
+			decNStr, err = decs[i].GetNumStr()
+
+			if err != nil {
+				return BigIntNum{},
+					&FuncReturnError{
+						ErrPrefix:  ePrefix,
+						ReturnFunc: fmt.Sprintf("decNStr, err = decs[%v].GetNumStr()", i),
+						ErrContext: "i==0",
+						ErrMessage: err.Error(),
+					}
+			}
+
 			// This method tests the validity of decs[i]
 			finalResult, err = new(BigIntNum).NewDecimal(decs[i])
 
 			if err != nil {
-
-				decNStr, _ := decs[i].GetNumStr()
-
 				return BigIntNum{},
 					&FuncReturnError{
 						ErrPrefix:  ePrefix,
@@ -541,6 +554,17 @@ func (bAdd *BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 			continue
 		}
 
+		decNStr, err = decs[i].GetNumStr()
+
+		if err != nil {
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: fmt.Sprintf("decNStr, err = decs[%v].GetNumStr()", i),
+					ErrContext: fmt.Sprintf("i== '%v'", i),
+					ErrMessage: err.Error(),
+				}
+		}
 		// This method tests the validity of decs[i]
 		bigINumNextAddend, err := new(BigIntNum).NewDecimal(decs[i])
 
@@ -550,7 +574,7 @@ func (bAdd *BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 				&FuncReturnError{
 					ErrPrefix:  ePrefix,
 					ReturnFunc: "bigINumNextAddend, err := new(BigIntNum).NewDecimal(decs[i])",
-					ErrContext: "",
+					ErrContext: fmt.Sprintf("decs[%v] = %v", i, decNStr),
 					ErrMessage: err.Error(),
 				}
 		}

@@ -1782,7 +1782,15 @@ func (bNum *BigIntNum) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
 	if err != nil {
 
-		return NumericSeparatorDto{}, err
+		return NumericSeparatorDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).isBigIntNumValid(\n" +
+					"bNum, \"Testing Validity of 'bNum'\"))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	return new(bigIntNumAtom).getNumericSeparatorsDto(
@@ -3336,14 +3344,6 @@ func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 		nil,
 		"BigIntNum.NewDecimal",
 		"")
-
-	if err != nil {
-		return BigIntNum{}, err
-	}
-
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
 		return BigIntNum{}, err
