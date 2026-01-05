@@ -2,9 +2,10 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryGluon struct {
@@ -246,79 +247,80 @@ func (iaGluon *intAryGluon) setIntAryWithBigInt(
 
 // setIntAryWithInt
 //
-//	Receives an IntAry instance ('intAry') and reconfigures the
-//	numeric values based on input parameters 'intDigits' and
-//	'precision'.
+//		Receives an IntAry instance ('intAry') and reconfigures the
+//		numeric values based on input parameters 'intDigits' and
+//		'precision'.
 //
-//	Input parameter 'precision' to indicate the number of digits to
-//	the right of the decimal place. Input parameter 'precision' is
-//	of type uint.
+//		Input parameter 'precision' to indicate the number of digits to
+//		the right of the decimal place. Input parameter 'precision' is
+//		of type uint.
 //
-//	The numeric sign (plus or minus) of the resulting intAry value
-//	is determined by the sign of input parameter,'intDigits'.
+//		The numeric sign (plus or minus) of the resulting intAry value
+//		is determined by the sign of input parameter,'intDigits'.
 //
-//	Example
-//	=======
+//		Example
+//		=======
 //
-//	intDigits      precision      result
-//	---------      ---------      ------
+//		intDigits      precision      result
+//		---------      ---------      ------
 //
-//	  946254            3          946.254
-//	  946254            0          946254
-//	 -946254            3         -946.254
-//	 -946254            0         -946254
+//		  946254            3          946.254
+//		  946254            0          946254
+//		 -946254            3         -946.254
+//		 -946254            0         -946254
 //
-//	IMPORTANT
-//	=========
+//		IMPORTANT
+//		=========
 //
-//	  In practice, the maximum limit for 'precision' will be
-//	  constrained by the maximum array size permitted by
-//	  your system. Type IntAry relies on arrays of 8-bit
-//	  integers for numeric value storage.
+//		  In practice, the maximum limit for 'precision' will be
+//		  constrained by the maximum array size permitted by
+//		  your system. Type IntAry relies on arrays of 8-bit
+//		  integers for numeric value storage.
 //
-//	Input Parameters
-//	================
+//		Input Parameters
+//		================
 //
-//	intAry                   *IntAry
-//	  A pointer to an IntAry object. This object will be
-//	  reconfigured with a new value based on the following
-//	  input parameters.
+//		intAry                   *IntAry
+//		  A pointer to an IntAry object. This object will be
+//		  reconfigured with a new value based on the following
+//		  input parameters.
 //
-//	numSepsSrcIntAry         *IntAry
-//	  This instance of IntAry may be populated by the calling
-//	  function as a source of Numeric Separators
+//		numSepsSrcIntAry         *IntAry
+//		  This instance of IntAry may be populated by the calling
+//		  function as a source of Numeric Separators
 //
-//	nsProfile                NumSepsProfileSelection
-//	 This struct contains all the prameters and options
-//	 necessary to generate the NumericSeparatorsDto which is
-//	 required for configuration of Numeric Separators in the
-//	 IntAry object returned by this method.
+//		nsProfile                NumSepsProfileSelection
+//		 This struct contains all the prameters and options
+//		 necessary to generate the NumericSeparatorsDto. This
+//	  Data Transfer Object (Dto) is required for configuration
+//	  of Numeric Separators in the IntAry object returned by
+//	  this method.
 //
-//	intDigits                int
-//	  The numeric digits contained in this value comprise both
-//	  the integer digits and the fractional digits which will be
-//	  configured in the final numeric value stored in parameter,
-//	  'intAry'.
+//		intDigits                int
+//		  The numeric digits contained in this value comprise both
+//		  the integer digits and the fractional digits which will be
+//		  configured in the final numeric value stored in parameter,
+//		  'intAry'.
 //
-//	precision                uint
-//	  'precision' specifies the number of fractional digits in the
-//	  final numeric value stored in 'intAry'
+//		precision                uint
+//		  'precision' specifies the number of fractional digits in the
+//		  final numeric value stored in 'intAry'
 //
-//	  In practice, the maximum limit for 'precision' will be
-//	  constrained by the maximum array size permitted by
-//	  your system. Type IntAry relies on arrays of 8-bit
-//	  integers for numeric value storage.
+//		  In practice, the maximum limit for 'precision' will be
+//		  constrained by the maximum array size permitted by
+//		  your system. Type IntAry relies on arrays of 8-bit
+//		  integers for numeric value storage.
 //
-//	validateResult           bool
-//	  When set to 'true', the final numeric value calculated by
-//	  this method will be subjected to validation testing.
+//		validateResult           bool
+//		  When set to 'true', the final numeric value calculated by
+//		  this method will be subjected to validation testing.
 //
-//	Return Values
-//	=============
+//		Return Values
+//		=============
 //
-//	error
-//	  If no errors are encountered during processing, this returned
-//	  value will be set to 'nil'
+//		error
+//		  If no errors are encountered during processing, this returned
+//		  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithInt(
 	intAry *IntAry,
 	numSepsSrcIntAry *IntAry,

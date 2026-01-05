@@ -2,9 +2,10 @@ package mathops
 
 import (
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntFixedDecNeutron struct {
@@ -110,11 +111,11 @@ func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTenToPower(
 	if err != nil {
 
 		return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
 	bigIFxDec2, err := new(bigIntFixedDecUtility).copyOut(

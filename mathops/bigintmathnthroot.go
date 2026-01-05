@@ -1,8 +1,9 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 // BigIntMathNthRoot - Used to extract square roots and nth roots of positive and negative

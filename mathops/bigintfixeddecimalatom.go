@@ -1,9 +1,10 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntFixedDecAtom struct {

@@ -1,8 +1,9 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type BigIntMathPower struct {

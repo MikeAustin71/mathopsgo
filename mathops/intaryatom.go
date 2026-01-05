@@ -3,8 +3,9 @@ package mathops
 import (
 	"bytes"
 	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
 	"sync"
+
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryAtom struct {

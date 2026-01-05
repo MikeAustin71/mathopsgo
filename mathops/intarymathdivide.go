@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+
 	ePref "github.com/MikeAustin71/errpref"
 )
 
