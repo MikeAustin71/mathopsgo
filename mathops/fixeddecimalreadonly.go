@@ -194,7 +194,12 @@ func (fDecRO *FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOn
 	if err != nil {
 
 		return fo2,
-			fmt.Errorf(ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := fo2.fixedDecimal.SetNumStr(numStr, '.')",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return fo2, nil

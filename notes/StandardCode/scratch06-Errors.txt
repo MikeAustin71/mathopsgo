@@ -68,6 +68,19 @@ Low-Level Error Prefix
 			}
 	}
 
+************************************************
+       Standard Sprintf Error
+************************************************
+
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("nthRootPrecision='%v'",
+					nthRootPrecision.Text(10)),
+				ErrMessage: "Error: INVALID INPUT! 'radicand' is Zero!\n",
+			}
+
 
 ************************************************
         Standard Multi-Level Error

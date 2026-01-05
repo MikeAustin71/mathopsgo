@@ -1,6 +1,7 @@
 
 Start Test cleanup here:
-TestBabylonianSqrRoot; examples/testmisc01.go
+Fix error returns
+fixeddecimalnthroot.go
 
 -------------------------------
 git protocol

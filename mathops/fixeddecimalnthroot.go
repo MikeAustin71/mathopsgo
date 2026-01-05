@@ -978,16 +978,24 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 
   if nthRtCmpZero == 0 {
 
-    err = fmt.Errorf(ePrefix +
-      "\nError: 'nthRoot' is Zero!\n")
-
-    return result, resultPrecision, err
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "",
+        ErrContext: "if nthRtCmpZero == 0",
+        ErrMessage: "Error: 'nthRoot' is Zero!",
+      }
   }
 
   if nthRtCmpZero == -1 {
-    err = fmt.Errorf(ePrefix+"Error 'nthRoot' is negative! "+
-      "nthRoot='%v'", maxPrecision.Text(10))
-    return result, resultPrecision, err
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("nthRoot='%v'", maxPrecision.Text(10)),
+        ErrMessage: "Error 'nthRoot' is negative!",
+      }
   }
 
   tempRadicand := big.NewInt(0).Set(radicand)
@@ -1161,14 +1169,26 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
   nthRtCmpZero := nthRoot.Cmp(bigZero)
 
   if nthRtCmpZero == 0 {
-    err = fmt.Errorf("%v\nError: 'nthRoot' is Zero!\n", ePrefix)
-    return result, resultPrecision, err
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "",
+        ErrContext: "if nthRtCmpZero == 0",
+        ErrMessage: "Error: 'nthRoot' is Zero!",
+      }
   }
 
   if nthRtCmpZero == -1 {
-    err = fmt.Errorf(ePrefix+"\nError 'nthRoot' is negative!\n"+
-      "nthRoot='%v'", maxPrecision.Text(10))
-    return result, resultPrecision, err
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("nthRoot='%v'",
+          maxPrecision.Text(10)),
+        ErrMessage: "Error 'nthRoot' is negative!\n",
+      }
   }
 
   // nthRoot is positive and fractional
@@ -1189,8 +1209,17 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
       fdNthRoot.maxInternalPrecision)
 
   if errx != nil {
-    err = fmt.Errorf(ePrefix+"\n%v\n", errx.Error())
-    return result, resultPrecision, errx
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix,
+        ReturnFunc: "tempFactor, tempFactorPrecision, errx :=\n" +
+          "new(BigIntMathPower).BigIntToPositiveIntegerPower(\n" +
+          "radicand, radicandPrecision, rat.Denom(), big.NewInt(0),\n" +
+          "fdNthRoot.maxInternalPrecision)",
+        ErrContext: "",
+        ErrMessage: errx.Error(),
+      }
   }
 
   result, resultPrecision, errx =
@@ -1202,10 +1231,20 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
       maxPrecision)
 
   if errx != nil {
-    err = fmt.Errorf(ePrefix+"%v", errx.Error())
+
     result = big.NewInt(0)
     resultPrecision = big.NewInt(0)
-    return result, resultPrecision, errx
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix,
+        ReturnFunc: "result, resultPrecision, errx =\n" +
+          "fdNthRoot.CalculatePositiveIntegerNthRoot(\n" +
+          "tempFactor, tempFactorPrecision, rat.Num(), \n" +
+          "big.NewInt(0), maxPrecision))",
+        ErrContext: "",
+        ErrMessage: errx.Error(),
+      }
   }
 
   fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
@@ -1366,10 +1405,20 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
       maxPrecision)
 
   if errx != nil {
-    err = fmt.Errorf(ePrefix+"\n%v\n", errx.Error())
+
     result = big.NewInt(0)
     resultPrecision = big.NewInt(0)
-    return result, resultPrecision, err
+
+    return result, resultPrecision,
+      &FuncReturnError{
+        ErrPrefix: ePrefix,
+        ReturnFunc: "result, resultPrecision, errx =\n" +
+          "new(BigIntMathDivide).BigIntFracQuotient(\n" +
+          "big.NewInt(1), big.NewInt(0), tempRoot, tempRootPrecision,\n" +
+          "maxPrecision)",
+        ErrContext: "",
+        ErrMessage: errx.Error(),
+      }
   }
 
   fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)

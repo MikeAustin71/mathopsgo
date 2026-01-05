@@ -1,19 +1,12 @@
-Test Run: 2026-01-05 02:08-hours
+Test Run: 2026-01-05 11:38-hours
 
-D:\GoProjects\MikeAustin71\mathopsgo\mathops>go test -v > zzzzz_tests.txt
 # github.com/mikeaustin71/mathops
 # [github.com/mikeaustin71/mathops]
-Fixed
-.\fixeddecimalnthroot.go:387:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:401:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:416:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:936:21: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:968:20: non-constant format string in call to fmt.Errorf
 
-Not Fixed
-.\fixeddecimalnthroot.go:1273:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1387:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1406:21: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1445:20: non-constant format string in call to fmt.Errorf
-.\fixeddecimalnthroot.go:1817:15: non-constant format string in call to fmt.Errorf
+FIXED
+
+NOT FIXED
+.\fixeddecimalnthroot.go:981:20: non-constant format string in call to fmt.Errorf
+
+
 .\fixeddecimalreadonly.go:197:15: non-constant format string in call to fmt.Errorf
