@@ -113,7 +113,7 @@
 === RUN   TestBigIntFixedDecimal_Cmp_02
 --- PASS: TestBigIntFixedDecimal_Cmp_02 (0.00s)
 === RUN   TestBigIntFixedDecimal_Cmp_03
---- PASS: TestBigIntFixedDecimal_Cmp_03 (0.00s)
+--- PASS: TestBigIntFixedDecimal_Cmp_03 (0.01s)
 === RUN   TestBigIntFixedDecimal_Cmp_04
 --- PASS: TestBigIntFixedDecimal_Cmp_04 (0.00s)
 === RUN   TestBigIntFixedDecimal_Cmp_05
@@ -467,7 +467,7 @@
 === RUN   TestBigIntPair_NewBase_02
 --- PASS: TestBigIntPair_NewBase_02 (0.00s)
 === RUN   TestBigIntPair_NewBigIntNum_01
---- PASS: TestBigIntPair_NewBigIntNum_01 (0.00s)
+--- PASS: TestBigIntPair_NewBigIntNum_01 (0.01s)
 === RUN   TestBigIntPair_NewBigIntNum_02
 --- PASS: TestBigIntPair_NewBigIntNum_02 (0.00s)
 === RUN   TestBigIntPair_NewNumStr_01
@@ -645,42 +645,37 @@
 === RUN   TestBigIntMathAdd_AddINumMgr_05
 --- PASS: TestBigIntMathAdd_AddINumMgr_05 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_01
-    xt_bigintmathadd_02_test.go:844: TestBigIntMathAdd_AddINumMgrArray_01
-        Error: Unexpected Result!
-        Expected totalNumstr = '158.14788'
-        Instead, totalNumstr = '113.80750'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrArray_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_02
-    xt_bigintmathadd_02_test.go:1040: TestBigIntMathAdd_AddINumMgrArray_02
+    xt_bigintmathadd_02_test.go:1058: TestBigIntMathAdd_AddINumMgrArray_02
         Error: Unexpected Result!
         Expected BNum Int = '-946671487941'
-        Instead, BNum Int = '65158381'
+        Instead, BNum Int = '-913300387941'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_03
-    xt_bigintmathadd_02_test.go:1237: TestBigIntMathAdd_AddINumMgrArray_03
+    xt_bigintmathadd_02_test.go:1255: TestBigIntMathAdd_AddINumMgrArray_03
         Error: Unexpected Result!
         Expected totalNumStr = '158,14788'
         Instead, totalNumStr = '17,47576'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_01
-    xt_bigintmathadd_02_test.go:1365: TestBigIntMathAdd_AddINumMgrOutputToArray_01
+    xt_bigintmathadd_02_test.go:1383: TestBigIntMathAdd_AddINumMgrOutputToArray_01
         Error: Unexpected Result!
         Expected result[0] = '10'
         Instead, result[0] = '60'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_02
-    xt_bigintmathadd_02_test.go:1478: TestBigIntMathAdd_AddINumMgrOutputToArray_02
+    xt_bigintmathadd_02_test.go:1496: TestBigIntMathAdd_AddINumMgrOutputToArray_02
         Error: Unexpected Result!
         Expected result[0] = '8.1'
         Instead, result[0] = '58.1'
         
 --- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_03
-    xt_bigintmathadd_02_test.go:1612: TestBigIntMathAdd_AddINumMgrOutputToArray_03
+    xt_bigintmathadd_02_test.go:1630: TestBigIntMathAdd_AddINumMgrOutputToArray_03
         Error: Unexpected Result!
         Expected result[0] = '10'
         Instead, result[0] = '60'
@@ -711,34 +706,34 @@
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
 --- FAIL: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
 panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
-[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff7a1e255a7]
+[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff6f0c25e07]
 
-goroutine 417 [running]:
-testing.tRunner.func1.2({0x7ff7a2e300e0, 0x7ff7a3516090})
+goroutine 414 [running]:
+testing.tRunner.func1.2({0x7ff6f1c300e0, 0x7ff6f2316090})
 	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
 testing.tRunner.func1()
 	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
-panic({0x7ff7a2e300e0?, 0x7ff7a3516090?})
+panic({0x7ff6f1c300e0?, 0x7ff6f2316090?})
 	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
 internal/sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/internal/sync/mutex.go:63
 sync.(*Mutex).Lock(...)
 	C:/Program Files/Go/src/sync/mutex.go:46
-github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff7a3580ec0?, 0xc00043e7c8, 0xc00043ecf0, 0x0, 0x0, 0x0?)
+github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff6f2380ec0?, 0xc0003087c8, 0xc000308cf0, 0x0, 0x0, 0x0?)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intaryproton.go:32 +0x67
-github.com/mikeaustin71/mathops.(*IntAry).NewBigInt(0xc00043ecf0, 0xc00043ecd0, _)
+github.com/mikeaustin71/mathops.(*IntAry).NewBigInt(0xc000308cf0, 0xc000308cd0, _)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:4265 +0x10d
-github.com/mikeaustin71/mathops.(*bigIntNumProton).bigIntNumGetIntAry(0xc00043f0b8, 0xc00043f320, _)
+github.com/mikeaustin71/mathops.(*bigIntNumProton).bigIntNumGetIntAry(0xc0003090b8, 0xc000309320, _)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnumproton.go:2062 +0x3a7
-github.com/mikeaustin71/mathops.(*BigIntNum).GetIntAry(0xc00043f320)
+github.com/mikeaustin71/mathops.(*BigIntNum).GetIntAry(0xc000309320)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnum.go:1591 +0x150
-github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc00043f928, {{0xc000275f78, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
+github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000309928, {{0xc0002f7b28, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathadd.go:1183 +0x6c5
-github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc000442a80)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathadd_02_test.go:3354 +0x70b
-testing.tRunner(0xc000442a80, 0x7ff7a2f73160)
+github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc000587a40)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathadd_02_test.go:3372 +0x70b
+testing.tRunner(0xc000587a40, 0x7ff6f1d73448)
 	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
 created by testing.(*T).Run in goroutine 1
 	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
 exit status 2
-FAIL	github.com/mikeaustin71/mathops	0.563s
+FAIL	github.com/mikeaustin71/mathops	0.566s

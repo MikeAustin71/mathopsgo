@@ -1,0 +1,61 @@
+
+************************************************
+         Standard Vanilla Error
+************************************************
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+
+************************************************
+       Standard Sprintf Error
+************************************************
+
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("nthRootPrecision='%v'",
+					nthRootPrecision.Text(10)),
+				ErrMessage: "Error: INVALID INPUT! 'radicand' is Zero!\n",
+			}
+
+
+************************************************
+    Standard Input Parameter Pointer 'nil' Error
+************************************************
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
+
+
+************************************************
+        Standard Multi-Level Error
+************************************************
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByThreeFracQuo(\n" +
+					"    bNum2, numSepsDto, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
