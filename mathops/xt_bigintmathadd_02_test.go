@@ -1330,11 +1330,10 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_01(t *testing.T) {
 
   lenArray := len(numMgrStrs)
   iNumMgrArray := make([]INumMgr, lenArray)
-  var nDto NumStrDto
 
   for i := 0; i < lenArray; i++ {
 
-    nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[i])
+    nDto, err := new(NumStrDto).NewNumStr(numMgrStrs[i])
 
     if err != nil {
       t.Errorf("%v\n"+
