@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"sync"
+  "sync"
 
-	ePref "github.com/MikeAustin71/errpref"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryProton struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // copy
@@ -23,110 +23,114 @@ type intAryProton struct {
 //	If input parameter 'copyToBackup' is set to 'true', a copy
 //	of 'iaSource' will be copied to 'iaDestination.BackUp'.
 func (iaProton *intAryProton) copy(
-	iaDestination *IntAry,
-	iaSource *IntAry,
-	validateSourceIntAry bool,
-	copyToBackup bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  iaDestination *IntAry,
+  iaSource *IntAry,
+  validateSourceIntAry bool,
+  copyToBackup bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaProton.lock.Lock()
+  if iaProton.lock == nil {
+    iaProton.lock = new(sync.Mutex)
+  }
 
-	defer iaProton.lock.Unlock()
+  iaProton.lock.Lock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaProton.lock.Unlock()
 
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryProton.copy()",
-		"")
+  var err error
 
-	if err != nil {
-		return err
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryProton.copy()",
+    "")
 
-	if iaDestination == nil {
+  if err != nil {
+    return err
+  }
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'iaDestination'",
-		}
-	}
+  if iaDestination == nil {
 
-	if iaSource == nil {
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'iaDestination'",
+    }
+  }
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'iaSource'",
-		}
-	}
+  if iaSource == nil {
 
-	if validateSourceIntAry {
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'iaSource'",
+    }
+  }
 
-		err = new(intAryElectron).isValidIntAry(
-			iaSource, ePrefix.XCpy("Validating 'iaSource'").String())
+  if validateSourceIntAry {
 
-		if err != nil {
+    err = new(intAryElectron).isValidIntAry(
+      iaSource, ePrefix.XCpy("Validating 'iaSource'").String())
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
-				ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
-					"'iaSource' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	} else {
+    if err != nil {
 
-		err = new(intAryNanobot).setInternalFlags(
-			iaSource, ePrefix)
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
+        ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
+          "'iaSource' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
+  } else {
 
-		if err != nil {
+    err = new(intAryNanobot).setInternalFlags(
+      iaSource, ePrefix)
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(iaSource, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+    if err != nil {
 
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryNanobot).setInternalFlags(iaSource, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-	new(intAryElectron).empty(iaDestination)
+  }
 
-	iaDestination.intAry = make([]uint8, iaSource.intAryLen)
+  new(intAryElectron).empty(iaDestination)
 
-	for i := 0; i < iaSource.intAryLen; i++ {
-		iaDestination.intAry[i] = iaSource.intAry[i]
-	}
+  iaDestination.intAry = make([]uint8, iaSource.intAryLen)
 
-	iaDestination.intAryLen = iaSource.intAryLen
-	iaDestination.integerLen = iaSource.integerLen
-	iaDestination.significantIntegerLen = iaSource.significantIntegerLen
-	iaDestination.significantFractionLen = iaSource.significantFractionLen
-	iaDestination.firstDigitIdx = iaSource.firstDigitIdx
-	iaDestination.lastDigitIdx = iaSource.lastDigitIdx
-	iaDestination.isZeroValue = iaSource.isZeroValue
-	iaDestination.isIntegerZeroValue = iaSource.isIntegerZeroValue
-	iaDestination.precision = iaSource.precision
-	iaDestination.signVal = iaSource.signVal
-	iaDestination.decimalSeparator = iaSource.decimalSeparator
-	iaDestination.thousandsSeparator = iaSource.thousandsSeparator
-	iaDestination.currencySymbol = iaSource.currencySymbol
+  for i := 0; i < iaSource.intAryLen; i++ {
+    iaDestination.intAry[i] = iaSource.intAry[i]
+  }
 
-	if copyToBackup {
+  iaDestination.intAryLen = iaSource.intAryLen
+  iaDestination.integerLen = iaSource.integerLen
+  iaDestination.significantIntegerLen = iaSource.significantIntegerLen
+  iaDestination.significantFractionLen = iaSource.significantFractionLen
+  iaDestination.firstDigitIdx = iaSource.firstDigitIdx
+  iaDestination.lastDigitIdx = iaSource.lastDigitIdx
+  iaDestination.isZeroValue = iaSource.isZeroValue
+  iaDestination.isIntegerZeroValue = iaSource.isIntegerZeroValue
+  iaDestination.precision = iaSource.precision
+  iaDestination.signVal = iaSource.signVal
+  iaDestination.decimalSeparator = iaSource.decimalSeparator
+  iaDestination.thousandsSeparator = iaSource.thousandsSeparator
+  iaDestination.currencySymbol = iaSource.currencySymbol
 
-		err = new(intAryLepton).copyToBackup(
-			iaDestination,
-			iaSource,
-			false,
-			ePrefix)
-	}
+  if copyToBackup {
 
-	return err
+    err = new(intAryLepton).copyToBackup(
+      iaDestination,
+      iaSource,
+      false,
+      ePrefix)
+  }
+
+  return err
 }
 
 // CopyOutDigits
@@ -144,143 +148,147 @@ func (iaProton *intAryProton) copy(
 // copy of the transformed IntAry oject ('iaDestination') will be
 // stored in the 'BackUp' Field of 'iaDestination'.
 func (iaProton *intAryProton) copyOutDigits(
-	iaSource *IntAry,
-	validateSourceIntAry bool,
-	digitsToCopy int,
-	copyToBackup bool,
-	errPrefDto *ePref.ErrPrefixDto) (iaDestination IntAry, err error) {
+  iaSource *IntAry,
+  validateSourceIntAry bool,
+  digitsToCopy int,
+  copyToBackup bool,
+  errPrefDto *ePref.ErrPrefixDto) (iaDestination IntAry, err error) {
 
-	iaProton.lock.Lock()
+  if iaProton.lock == nil {
+    iaProton.lock = new(sync.Mutex)
+  }
 
-	defer iaProton.lock.Unlock()
+  iaProton.lock.Lock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaProton.lock.Unlock()
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryProton.copyOutDigits()",
-		"")
+  var ePrefix *ePref.ErrPrefixDto
 
-	if err != nil {
-		return IntAry{}, err
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryProton.copyOutDigits()",
+    "")
 
-	if iaSource == nil {
+  if err != nil {
+    return IntAry{}, err
+  }
 
-		return IntAry{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'iaSource'",
-			}
-	}
+  if iaSource == nil {
 
-	iaElectron := new(intAryElectron)
+    return IntAry{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'iaSource'",
+      }
+  }
 
-	if validateSourceIntAry {
+  iaElectron := new(intAryElectron)
 
-		err = iaElectron.isValidIntAry(
-			iaSource, ePrefix.XCpy("Validating 'iaSource'").String())
+  if validateSourceIntAry {
 
-		if err != nil {
+    err = iaElectron.isValidIntAry(
+      iaSource, ePrefix.XCpy("Validating 'iaSource'").String())
 
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
-					ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
-						"'iaSource' FAILED Validation Tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+    if err != nil {
 
-	iaNanobot := new(intAryNanobot)
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
+          ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
+            "'iaSource' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	err = iaNanobot.setInternalFlags(
-		iaSource, ePrefix)
+  iaNanobot := new(intAryNanobot)
 
-	if err != nil {
+  err = iaNanobot.setInternalFlags(
+    iaSource, ePrefix)
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(iaSource, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	iaSrcAryLen := len(iaSource.intAry)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryNanobot).setInternalFlags(iaSource, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if digitsToCopy > iaSrcAryLen {
+  iaSrcAryLen := len(iaSource.intAry)
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "digitsToCopy > iaSrcAryLen",
-				ErrMessage: "Error: The number of digits to copy is greater\n" +
-					"than the length of the iaSource IntAry.",
-			}
-	}
+  if digitsToCopy > iaSrcAryLen {
 
-	iAry2 := iaElectron.newIntAry()
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "digitsToCopy > iaSrcAryLen",
+        ErrMessage: "Error: The number of digits to copy is greater\n" +
+          "than the length of the iaSource IntAry.",
+      }
+  }
 
-	iAry2.intAry = make([]uint8, digitsToCopy)
+  iAry2 := iaElectron.newIntAry()
 
-	for i := 0; i < digitsToCopy; i++ {
+  iAry2.intAry = make([]uint8, digitsToCopy)
 
-		iAry2.intAry[i] = iaSource.intAry[i]
+  for i := 0; i < digitsToCopy; i++ {
 
-	}
+    iAry2.intAry[i] = iaSource.intAry[i]
 
-	iAry2.intAryLen = digitsToCopy
+  }
 
-	if iaSource.integerLen < digitsToCopy {
+  iAry2.intAryLen = digitsToCopy
 
-		iAry2.precision = digitsToCopy - iaSource.integerLen
+  if iaSource.integerLen < digitsToCopy {
 
-	} else {
-		iAry2.precision = 0
-	}
+    iAry2.precision = digitsToCopy - iaSource.integerLen
 
-	iAry2.signVal = iaSource.signVal
-	iAry2.decimalSeparator = iaSource.decimalSeparator
-	iAry2.thousandsSeparator = iaSource.thousandsSeparator
-	iAry2.currencySymbol = iaSource.currencySymbol
-	iAry2.BackUp = new(BackUpIntAry).New()
+  } else {
+    iAry2.precision = 0
+  }
 
-	err = iaNanobot.setInternalFlags(
-		&iAry2, ePrefix)
+  iAry2.signVal = iaSource.signVal
+  iAry2.decimalSeparator = iaSource.decimalSeparator
+  iAry2.thousandsSeparator = iaSource.thousandsSeparator
+  iAry2.currencySymbol = iaSource.currencySymbol
+  iAry2.BackUp = new(BackUpIntAry).New()
 
-	if err != nil {
+  err = iaNanobot.setInternalFlags(
+    &iAry2, ePrefix)
 
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(&iAry2, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	if copyToBackup {
-		err = new(intAryLepton).copyToBackup(
-			&iAry2, &iAry2, false, ePrefix)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryNanobot).setInternalFlags(&iAry2, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		if err != nil {
+  if copyToBackup {
+    err = new(intAryLepton).copyToBackup(
+      &iAry2, &iAry2, false, ePrefix)
 
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNeutron).copyToBackup(\n" +
-						"  &iAry2, &iAry2, false, ePrefix)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+    if err != nil {
 
-	return iAry2, nil
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryNeutron).copyToBackup(\n" +
+            "  &iAry2, &iAry2, false, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  return iAry2, nil
 }

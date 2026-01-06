@@ -16,6 +16,17 @@ Main Error Prefix
 		return BigIntNum{}, err
 	}
 
+-------------------------------------------------------------------
+ Low-Level Lock Code
+-------------------------------------------------------------------
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
 
 -------------------------------------------------------------------
 Low-Level Error Prefix
@@ -86,7 +97,7 @@ Low-Level Error Prefix
 
 
 ===================================================================
-// Low-Level Code Comments
+ Low-Level Code Comments
 //
 ===================================================================
 

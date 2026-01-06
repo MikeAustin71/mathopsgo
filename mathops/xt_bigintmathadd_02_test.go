@@ -3365,16 +3365,14 @@ func TestBigIntMathAdd_AddIntAryOutputToArray_01(t *testing.T) {
     return
   }
 
-  var resultNumStr string
-
   for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+    resultNumStr, err := result[j].GetNumStr()
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "resultNumStr, err := result[%d].GetNumStr()\n"+
         "Error='%v'\n\n", ePrefix, j, err.Error())
       return
     }
