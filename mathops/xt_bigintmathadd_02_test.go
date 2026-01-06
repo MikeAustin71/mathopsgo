@@ -1338,7 +1338,7 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_01(t *testing.T) {
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[%d])\n"+
+        "nDto, err := new(NumStrDto).NewNumStr(numMgrStrs[%d])\n"+
         "numMgrStrs[%d]= '%v'\n"+
         "Error='%v'\n\n", ePrefix, i, i, numMgrStrs[i], err.Error())
       return
@@ -1358,16 +1358,14 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_01(t *testing.T) {
     return
   }
 
-  var resultNumStr string
-
   for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+    resultNumStr, err := result[j].GetNumStr()
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "resultNumStr, err := result[%d].GetNumStr()\n"+
         "Error='%v'\n\n", ePrefix, j, err.Error())
       return
     }
@@ -1441,16 +1439,15 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_02(t *testing.T) {
 
   lenArray := len(numMgrStrs)
   iNumMgrsArray := make([]INumMgr, lenArray)
-  var ia IntAry
 
   for i := 0; i < lenArray; i++ {
 
-    ia, err = new(IntAry).NewNumStr(numMgrStrs[i])
+    ia, err := new(IntAry).NewNumStr(numMgrStrs[i])
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "ia, err = new(IntAry).NewNumStr(numMgrStrs[%d])\n"+
+        "ia, err := new(IntAry).NewNumStr(numMgrStrs[%d])\n"+
         "numMgrStrs[%d]= '%v'\n"+
         "Error='%v'\n\n", ePrefix, i, i, numMgrStrs[i], err.Error())
       return
@@ -1471,16 +1468,14 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_02(t *testing.T) {
     return
   }
 
-  var resultNumStr string
-
   for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+    resultNumStr, err := result[j].GetNumStr()
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "resultNumStr, err := result[%d].GetNumStr()\n"+
         "Error='%v'\n\n", ePrefix, j, err.Error())
       return
     }
@@ -1575,16 +1570,15 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_03(t *testing.T) {
 
   lenArray := len(numMgrStrs)
   iNumMgrArray := make([]INumMgr, lenArray)
-  var nDto NumStrDto
 
   for i := 0; i < lenArray; i++ {
 
-    nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[i])
+    nDto, err := new(NumStrDto).NewNumStr(numMgrStrs[i])
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "nDto, err = new(NumStrDto).NewNumStr(numMgrStrs[%d])\n"+
+        "nDto, err := new(NumStrDto).NewNumStr(numMgrStrs[%d])\n"+
         "numMgrStrs[%d]= '%v'\n"+
         "Error='%v'\n\n", ePrefix, i, i, numMgrStrs[i], err.Error())
       return
@@ -1604,12 +1598,9 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_03(t *testing.T) {
     return
   }
 
-  var resultNumStr string
-  var actualNumSeps NumericSeparatorDto
-
   for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+    resultNumStr, err := result[j].GetNumStr()
 
     if err != nil {
       t.Errorf("%v\n"+
@@ -1634,12 +1625,12 @@ func TestBigIntMathAdd_AddINumMgrOutputToArray_03(t *testing.T) {
       return
     }
 
-    actualNumSeps, err = result[j].GetNumericSeparatorsDto()
+    actualNumSeps, err := result[j].GetNumericSeparatorsDto()
 
     if err != nil {
       t.Errorf("%v\n"+
         "Error returned by:\n"+
-        "actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
+        "actualNumSeps, err := result[%d].GetNumericSeparatorsDto()\n"+
         "Error='%v'\n\n", ePrefix, j, err.Error())
       return
     }
