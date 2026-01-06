@@ -1385,24 +1385,67 @@ func (bAdd *BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 	return finalResult, nil
 }
 
-// AddINumMgrArray - Adds an array of objects which implement the 'INumMgr'
-// interface. The combined total of the numeric values from these objects
-// is returned as an instance of Type, 'BigIntNum'.
+// AddINumMgrArray
 //
-// The INumMgr interface is implemented by types, BigIntNum, Decimal,
-// NumStrDto and IntAry. This allows the user to mix different types in
-// a single array and add their numeric values.
+//	Adds an array of objects which implement the 'INumMgr'
+//	interface. The combined total of the numeric values from these
+//	objects is returned as an instance of Type, 'BigIntNum'.
 //
-// The returned BigIntNum result of this addition operation will contain
-// numeric separators (decimal separator, thousands separator and currency
-// symbol) which were copied from the first element of the input parameter
-// array, nums (nums[0]).
+//	The INumMgr interface is implemented by types, BigIntNum, Decimal,
+//	NumStrDto and IntAry. This allows the user to mix different types in
+//	a single array and add their numeric values.
+//
+//	The returned BigIntNum result of this addition operation will contain
+//	numeric separators (decimal separator, thousands separator and currency
+//	symbol) which were copied from the first element of the input parameter
+//	array, nums (nums[0]).
+//
+//	BE CAREFUL - Arrays are tricky
+//
+//	-- THIS WORKS --
+//	for i:= 0; i < something; i++ {
+//
+//	dec, err := new(Decimal).NewNumStr(numStrAry[i])
+//
+//	if err != nil {
+//	  err := fmt.Errorf("Some Error")
+//	  return err
+//	}
+//
+//	inumMgrAry[i] = &dec
+//
+//	....
+//
+// }
+//
+//	-- THIS FAILS --
+//
+//	var dec Decimal
+//
+//	for i:= 0; i < something; i++ {
+//
+//	dec, err = new(Decimal).NewNumStr(numStrAry[i])
+//	// DON'T DO THIS!
+//
+//	if err != nil {
+//	  err := fmt.Errorf("Some Error")
+//	  return err
+//	}
+//
+//	inumMgrAry[i] = &dec
+//
+//	....
+//
+// }
 func (bAdd *BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgrArray() "
 
-	finalResult := new(BigIntNum).New()
+	var finalResultNumStr string
+
 	var err error
+
+	finalResult := new(BigIntNum).New()
 
 	lenNums := len(nums)
 
@@ -1447,6 +1490,32 @@ func (bAdd *BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 					}
 			}
 
+			err = finalResult.IsValid("Validating finalResult")
+
+			if err != nil {
+
+				return BigIntNum{},
+					&FuncReturnError{
+						ErrPrefix:  ePrefix,
+						ReturnFunc: "err = finalResult.IsValid(\"Validating finalResult\")",
+						ErrContext: fmt.Sprintf("i= '%v'", i),
+						ErrMessage: err.Error(),
+					}
+			}
+
+			finalResultNumStr, err = finalResult.GetNumStr()
+
+			if err != nil {
+
+				return BigIntNum{},
+					&FuncReturnError{
+						ErrPrefix:  ePrefix,
+						ReturnFunc: "finalResultNumStr, err = finalResult.GetNumStr()",
+						ErrContext: fmt.Sprintf("i= '%v'", i),
+						ErrMessage: err.Error(),
+					}
+			}
+
 			continue
 		}
 
@@ -1463,6 +1532,20 @@ func (bAdd *BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 				}
 		}
 
+		err = bPair.IsValid("Validating finalResult nums[i]")
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: "err = bPair.IsValid(\"Validating finalResult nums[i]\")",
+					ErrContext: fmt.Sprintf("i='%v'", i),
+					ErrMessage: "Error: bPair is INVALID!\n",
+				}
+
+		}
+
 		finalResult, err = bAdd.addPairNoNumSeps(bPair)
 
 		if err != nil {
@@ -1476,7 +1559,20 @@ func (bAdd *BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 				}
 		}
 
-	}
+		finalResultNumStr, err = finalResult.GetNumStr()
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: "finalResultNumStr, err = finalResult.GetNumStr()",
+					ErrContext: fmt.Sprintf("i= '%v'", i),
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} // End of 'for' statement
 
 	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
@@ -1487,6 +1583,19 @@ func (bAdd *BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
 				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = finalResult.IsValid("Validating finalResult")
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = finalResult.IsValid(\"Validating finalResult\")",
+				ErrContext: fmt.Sprintf("Final Validation finalResult= '%v'", finalResultNumStr),
 				ErrMessage: err.Error(),
 			}
 	}
