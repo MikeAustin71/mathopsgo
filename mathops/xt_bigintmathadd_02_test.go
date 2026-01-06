@@ -1154,20 +1154,17 @@ func TestBigIntMathAdd_AddINumMgrArray_03(t *testing.T) {
 
   inumMgrAry := make([]INumMgr, lenStrAry)
   var err error
-  var dec Decimal
-  var nDto NumStrDto
-  var ia IntAry
 
   for i := 0; i < lenStrAry; i++ {
 
     if i < 2 {
 
-      dec, err = new(Decimal).NewNumStr(numStrAry[i])
+      dec, err := new(Decimal).NewNumStr(numStrAry[i])
 
       if err != nil {
         t.Errorf("%v\n"+
           "Error returned by:\n"+
-          "dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
+          "dec, err := new(Decimal).NewNumStr(numStrAry[%d])\n"+
           "numStrAry[%d]= '%v'\n"+
           "Error='%v'\n\n", ePrefix, i, i, numStrAry[i], err.Error())
         return
@@ -1177,12 +1174,12 @@ func TestBigIntMathAdd_AddINumMgrArray_03(t *testing.T) {
 
     } else if i < 4 {
 
-      nDto, err = new(NumStrDto).NewNumStr(numStrAry[i])
+      nDto, err := new(NumStrDto).NewNumStr(numStrAry[i])
 
       if err != nil {
         t.Errorf("%v\n"+
           "Error returned by:\n"+
-          "nDto, err = new(NumStrDto).NewNumStr(numStrAry[%d])\n"+
+          "nDto, err := new(NumStrDto).NewNumStr(numStrAry[%d])\n"+
           "numStrAry[%d]= '%v'\n"+
           "Error='%v'\n\n", ePrefix, i, i, numStrAry[i], err.Error())
         return
@@ -1193,12 +1190,12 @@ func TestBigIntMathAdd_AddINumMgrArray_03(t *testing.T) {
     } else {
       // 'i' must be >= 4
 
-      ia, err = new(IntAry).NewNumStr(numStrAry[i])
+      ia, err := new(IntAry).NewNumStr(numStrAry[i])
 
       if err != nil {
         t.Errorf("%v\n"+
           "Error returned by:\n"+
-          "ia, err = new(IntAry).NewNumStr(numStrAry[%d])\n"+
+          "ia, err := new(IntAry).NewNumStr(numStrAry[%d])\n"+
           "numStrAry[%d]= '%v'\n"+
           "Error='%v'\n\n", ePrefix, i, i, numStrAry[i], err.Error())
         return
