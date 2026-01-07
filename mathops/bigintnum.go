@@ -4946,14 +4946,14 @@ func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
     return BigIntNum{}, err
   }
 
-  nDtoNumStr, err := nDto.GetNumStr()
+  err = nDto.IsValid("Validating input param nDto")
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nDtoNumStr, err := nDto.GetNumStr()",
+        ReturnFunc: "err = nDto.IsValid(\"Validating input param nDto\")",
         ErrContext: "",
         ErrMessage: err.Error(),
       }

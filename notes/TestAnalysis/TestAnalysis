@@ -21,7 +21,7 @@ at return on setBigInt bNum is good
 
 bigintnummolecule.go
 (bIntMolecule *bigIntNumMolecule) setNumStrDto(
-At line 2058 bINum2 is good == 45.8
+FIXED - Test is working!
 
 (bNum *BigIntNum) NewNumStrDto(
 At line 4983 bINum2 is bad = 0

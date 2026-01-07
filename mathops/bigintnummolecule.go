@@ -1959,15 +1959,14 @@ func (bIntMolecule *bigIntNumMolecule) setNumStrDto(
 	}
 
 	err = numStrDto.IsValid(ePrefix.XCpy(
-		"'numStrDto' INVALID! ").String())
+		"Validating input param 'numStrDto' ").String())
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = numStrDto.IsValid(ePrefix.XCpy(\"'numStrDto' INVALID! \").String())",
-			ErrContext: "Testing validity of input parameter 'numStrDto'.\n" +
-				"numStrDto is INVALID!",
+			ReturnFunc: "err = numStrDto.IsValid(ePrefix.XCpy(\"Validating input param 'numStrDto'\").String())",
+			ErrContext: "Input parameter 'numStrDto' is INVALID!\n",
 			ErrMessage: err.Error(),
 		}
 	}
