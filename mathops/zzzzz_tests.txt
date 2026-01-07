@@ -113,7 +113,7 @@
 === RUN   TestBigIntFixedDecimal_Cmp_02
 --- PASS: TestBigIntFixedDecimal_Cmp_02 (0.00s)
 === RUN   TestBigIntFixedDecimal_Cmp_03
---- PASS: TestBigIntFixedDecimal_Cmp_03 (0.01s)
+--- PASS: TestBigIntFixedDecimal_Cmp_03 (0.00s)
 === RUN   TestBigIntFixedDecimal_Cmp_04
 --- PASS: TestBigIntFixedDecimal_Cmp_04 (0.00s)
 === RUN   TestBigIntFixedDecimal_Cmp_05
@@ -467,7 +467,7 @@
 === RUN   TestBigIntPair_NewBase_02
 --- PASS: TestBigIntPair_NewBase_02 (0.00s)
 === RUN   TestBigIntPair_NewBigIntNum_01
---- PASS: TestBigIntPair_NewBigIntNum_01 (0.01s)
+--- PASS: TestBigIntPair_NewBigIntNum_01 (0.00s)
 === RUN   TestBigIntPair_NewBigIntNum_02
 --- PASS: TestBigIntPair_NewBigIntNum_02 (0.00s)
 === RUN   TestBigIntPair_NewNumStr_01
@@ -647,40 +647,15 @@
 === RUN   TestBigIntMathAdd_AddINumMgrArray_01
 --- PASS: TestBigIntMathAdd_AddINumMgrArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_02
-    xt_bigintmathadd_02_test.go:1058: TestBigIntMathAdd_AddINumMgrArray_02
-        Error: Unexpected Result!
-        Expected BNum Int = '-946671487941'
-        Instead, BNum Int = '-913300387941'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrArray_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrArray_03
-    xt_bigintmathadd_02_test.go:1255: TestBigIntMathAdd_AddINumMgrArray_03
-        Error: Unexpected Result!
-        Expected totalNumStr = '158,14788'
-        Instead, totalNumStr = '17,47576'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrArray_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_01
-    xt_bigintmathadd_02_test.go:1383: TestBigIntMathAdd_AddINumMgrOutputToArray_01
-        Error: Unexpected Result!
-        Expected result[0] = '10'
-        Instead, result[0] = '60'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_02
-    xt_bigintmathadd_02_test.go:1496: TestBigIntMathAdd_AddINumMgrOutputToArray_02
-        Error: Unexpected Result!
-        Expected result[0] = '8.1'
-        Instead, result[0] = '58.1'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrOutputToArray_03
-    xt_bigintmathadd_02_test.go:1630: TestBigIntMathAdd_AddINumMgrOutputToArray_03
-        Error: Unexpected Result!
-        Expected result[0] = '10'
-        Instead, result[0] = '60'
-        
---- FAIL: TestBigIntMathAdd_AddINumMgrOutputToArray_03 (0.00s)
+--- PASS: TestBigIntMathAdd_AddINumMgrOutputToArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrSeries_01
 --- PASS: TestBigIntMathAdd_AddINumMgrSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddINumMgrSeries_02
@@ -704,36 +679,395 @@
 === RUN   TestBigIntMathAdd_AddIntAryArray_03
 --- PASS: TestBigIntMathAdd_AddIntAryArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
---- FAIL: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
-panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
-[signal 0xc0000005 code=0x1 addr=0x0 pc=0x7ff6f0c25e07]
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddIntAryOutputToArray_02
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddIntAryOutputToArray_03
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddIntArySeries_01
+--- PASS: TestBigIntMathAdd_AddIntArySeries_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddIntArySeries_02
+--- PASS: TestBigIntMathAdd_AddIntArySeries_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddIntArySeries_03
+--- PASS: TestBigIntMathAdd_AddIntArySeries_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_01
+--- PASS: TestBigIntMathAdd_AddNumStr_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_02
+--- PASS: TestBigIntMathAdd_AddNumStr_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_03
+--- PASS: TestBigIntMathAdd_AddNumStr_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_04
+--- PASS: TestBigIntMathAdd_AddNumStr_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_05
+--- PASS: TestBigIntMathAdd_AddNumStr_05 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_06
+--- PASS: TestBigIntMathAdd_AddNumStr_06 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrOutputToArray_01
+--- PASS: TestBigIntMathAdd_AddNumStrOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrOutputToArray_02
+--- PASS: TestBigIntMathAdd_AddNumStrOutputToArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrOutputToArray_03
+--- PASS: TestBigIntMathAdd_AddNumStrOutputToArray_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_01
+--- PASS: TestBigIntMathAdd_AddNumStrArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_02
+--- PASS: TestBigIntMathAdd_AddNumStrArray_02 (0.01s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_03
+--- PASS: TestBigIntMathAdd_AddNumStrArray_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_04
+--- PASS: TestBigIntMathAdd_AddNumStrArray_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrSeries_01
+--- PASS: TestBigIntMathAdd_AddNumStrSeries_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrSeries_02
+--- PASS: TestBigIntMathAdd_AddNumStrSeries_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrSeries_03
+--- PASS: TestBigIntMathAdd_AddNumStrSeries_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrSeries_04
+--- PASS: TestBigIntMathAdd_AddNumStrSeries_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDto_01
+--- PASS: TestBigIntMathAdd_AddNumStrDto_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDto_02
+--- PASS: TestBigIntMathAdd_AddNumStrDto_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDto_03
+--- PASS: TestBigIntMathAdd_AddNumStrDto_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDto_04
+--- PASS: TestBigIntMathAdd_AddNumStrDto_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDto_05
+--- PASS: TestBigIntMathAdd_AddNumStrDto_05 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoArray_01
+    xt_bigintmathadd_03_test.go:2766: TestBigIntMathAdd_AddNumStrDtoArray_01
+        Error: Unexpected Result!
+        Expected total = '15814788'
+        Instead, total = '11234788'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoArray_02
+    xt_bigintmathadd_03_test.go:2873: TestBigIntMathAdd_AddNumStrDtoArray_02
+        Error: Unexpected Result!
+        Expected total = '-946671487941'
+        Instead, total = '31754161'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoArray_03
+    xt_bigintmathadd_03_test.go:2968: TestBigIntMathAdd_AddNumStrDtoArray_03
+        Error: Unexpected Result!
+        Expected total = '158,14788'
+        Instead, total = '112,34788'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoArray_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoOutputToArray_01
+    xt_bigintmathadd_04_test.go:89: 5
+        Error returned by:
+        result, err := new(BigIntMathAdd).AddNumStrDtoOutputToArray(nDtoAddend, nDtoArray)
+        nDtoAddend= 'TestBigIntMathAdd_AddNumStrDtoOutputToArray_01'
+        Error='BigIntMathAdd.AddNumStrDtoOutputToArray()
+        Error returned by: \n  err = result.SetNumericSeparatorsDto(numSeps)
+        nDtos[0].GetNumStr()='5'
+        Error: 
+          BigIntNum.GetNumStrDto
+        bigIntNumProton.bigIntNumDivide
+        Error returned by: \n  nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)
+        .Set(bNum.bigInt), uint(bNum.precision))
+        bNum.bigInt='10'
+        bNum.precision='0'
+        Error: 
+          NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+        Error: Numeric Separators input paramter ('numSeps') is INVALID!
+        'numSeps' FAILED Validation Tests.
+        Error: 
+          NumericSeparatorDto.IsValid
+        NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+         :  Validating 'numSeps'
+        numSepsDtoElectron.isValidNumStrDto
+        NumericSeparatorDto is Invalid!
+        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
+        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
+        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
+        
+        
+        
+        
+        
+        
+        
+        '
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoOutputToArray_02
+    xt_bigintmathadd_04_test.go:214: 3.1
+        Error returned by:
+        result, err := new(BigIntMathAdd).AddNumStrDtoOutputToArray(nDtoAddend, nDtoArray)
+        nDtoAddend= 'TestBigIntMathAdd_AddNumStrDtoOutputToArray_02'
+        Error='BigIntMathAdd.AddNumStrDtoOutputToArray()
+        Error returned by: \n  err = result.SetNumericSeparatorsDto(numSeps)
+        nDtos[0].GetNumStr()='5'
+        Error: 
+          BigIntNum.GetNumStrDto
+        bigIntNumProton.bigIntNumDivide
+        Error returned by: \n  nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)
+        .Set(bNum.bigInt), uint(bNum.precision))
+        bNum.bigInt='81'
+        bNum.precision='1'
+        Error: 
+          NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+        Error: Numeric Separators input paramter ('numSeps') is INVALID!
+        'numSeps' FAILED Validation Tests.
+        Error: 
+          NumericSeparatorDto.IsValid
+        NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+         :  Validating 'numSeps'
+        numSepsDtoElectron.isValidNumStrDto
+        NumericSeparatorDto is Invalid!
+        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
+        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
+        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
+        
+        
+        
+        
+        
+        
+        
+        '
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoOutputToArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoOutputToArray_03
+    xt_bigintmathadd_04_test.go:358: 5
+        Error returned by:
+        result, err := new(BigIntMathAdd).AddNumStrDtoOutputToArray(nDtoAddend, nDtoArray)
+        nDtoAddend= 'TestBigIntMathAdd_AddNumStrDtoOutputToArray_03'
+        Error='BigIntMathAdd.AddNumStrDtoOutputToArray()
+        Error returned by: \n  err = result.SetNumericSeparatorsDto(numSeps)
+        nDtos[0].GetNumStr()='5'
+        Error: 
+          BigIntNum.GetNumStrDto
+        bigIntNumProton.bigIntNumDivide
+        Error returned by: \n  nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)
+        .Set(bNum.bigInt), uint(bNum.precision))
+        bNum.bigInt='10'
+        bNum.precision='0'
+        Error: 
+          NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+        Error returned by: \n  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+        Error: Numeric Separators input paramter ('numSeps') is INVALID!
+        'numSeps' FAILED Validation Tests.
+        Error: 
+          NumericSeparatorDto.IsValid
+        NumStrDto.NewBigInt
+        numStrDtoMolecule.newBigInt()
+         :  Validating 'numSeps'
+        numSepsDtoElectron.isValidNumStrDto
+        NumericSeparatorDto is Invalid!
+        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
+        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
+        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
+        
+        
+        
+        
+        
+        
+        
+        '
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoOutputToArray_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoSeries_01
+    xt_bigintmathadd_04_test.go:535: TestBigIntMathAdd_AddNumStrDtoSeries_01
+        Error: Unexpected Result!
+        Expected total = '15814788'
+        Instead, total = '0'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoSeries_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoSeries_02
+    xt_bigintmathadd_04_test.go:668: TestBigIntMathAdd_AddNumStrDtoSeries_02
+        Error: Unexpected Result!
+        Expected total = '-946671487941'
+        Instead, total = '0'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoSeries_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoSeries_03
+    xt_bigintmathadd_04_test.go:782: TestBigIntMathAdd_AddNumStrDtoSeries_03
+        Error: Unexpected Result!
+        Expected total = '158,14788'
+        Instead, total = '0'
+        
+--- FAIL: TestBigIntMathAdd_AddNumStrDtoSeries_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_01
+--- PASS: TestBigIntMathAdd_AddPair_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_02
+--- PASS: TestBigIntMathAdd_AddPair_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_03
+--- PASS: TestBigIntMathAdd_AddPair_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_04
+--- PASS: TestBigIntMathAdd_AddPair_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_05
+--- PASS: TestBigIntMathAdd_AddPair_05 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_06
+--- PASS: TestBigIntMathAdd_AddPair_06 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_07
+--- PASS: TestBigIntMathAdd_AddPair_07 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_08
+--- PASS: TestBigIntMathAdd_AddPair_08 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_09
+--- PASS: TestBigIntMathAdd_AddPair_09 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_10
+--- PASS: TestBigIntMathAdd_AddPair_10 (0.00s)
+=== RUN   TestBigIntMathAdd_AddPair_11
+--- PASS: TestBigIntMathAdd_AddPair_11 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_01
+--- PASS: TestBigIntMathAdd_BigIntAdd_01 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_02
+--- PASS: TestBigIntMathAdd_BigIntAdd_02 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_03
+--- PASS: TestBigIntMathAdd_BigIntAdd_03 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_04
+--- PASS: TestBigIntMathAdd_BigIntAdd_04 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_05
+--- PASS: TestBigIntMathAdd_BigIntAdd_05 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_06
+--- PASS: TestBigIntMathAdd_BigIntAdd_06 (0.00s)
+=== RUN   TestBigIntMathAdd_BigIntAdd_07
+--- PASS: TestBigIntMathAdd_BigIntAdd_07 (0.00s)
+=== RUN   TestBigIntMathAdd_FixedDecimalAdd_01
+--- PASS: TestBigIntMathAdd_FixedDecimalAdd_01 (0.00s)
+=== RUN   TestBigIntMathAdd_FixedDecimalAdd_02
+--- PASS: TestBigIntMathAdd_FixedDecimalAdd_02 (0.00s)
+=== RUN   TestBigIntMathAdd_FixedDecimalAdd_03
+--- PASS: TestBigIntMathAdd_FixedDecimalAdd_03 (0.00s)
+=== RUN   TestBigIntMathAdd_FixedDecimalAdd_04
+--- PASS: TestBigIntMathAdd_FixedDecimalAdd_04 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_01
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_01 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_02
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_02 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_03
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_03 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_04
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_04 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_05
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_05 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_06
+--- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_06 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_01
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_01 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_02
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_02 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_03
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_03 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_04
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_04 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_05
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_05 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_06
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_06 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_07
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_07 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_08
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_08 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_09
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_09 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_10
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_10 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_11
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_11 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_12
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_12 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_13
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_13 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_14
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_14 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_15
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_15 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_16
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_16 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_17
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_17 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_18
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_18 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_19
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_19 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_20
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_20 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_21
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_21 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntFracQuotient_22
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_22 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_01
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_01 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_02
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_02 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_03
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_03 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_04
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_04 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_05
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_05 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_06
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_06 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_07
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_07 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_08
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_08 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_09
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_09 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_10
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_10 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_11
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_11 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_12
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_12 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_13
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_13 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_14
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_14 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_15
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_15 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_16
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_16 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumQuotientMod_17
+--- PASS: TestBigIntMathDivide_BigIntNumQuotientMod_17 (0.00s)
+=== RUN   TestBigIntMathDivide_BigIntNumIntQuotient_01
+fatal error: sync: unlock of unlocked mutex
 
-goroutine 414 [running]:
-testing.tRunner.func1.2({0x7ff6f1c300e0, 0x7ff6f2316090})
-	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
-testing.tRunner.func1()
-	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
-panic({0x7ff6f1c300e0?, 0x7ff6f2316090?})
-	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
-internal/sync.(*Mutex).Lock(...)
-	C:/Program Files/Go/src/internal/sync/mutex.go:63
-sync.(*Mutex).Lock(...)
-	C:/Program Files/Go/src/sync/mutex.go:46
-github.com/mikeaustin71/mathops.(*intAryProton).copy(0x7ff6f2380ec0?, 0xc0003087c8, 0xc000308cf0, 0x0, 0x0, 0x0?)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intaryproton.go:32 +0x67
-github.com/mikeaustin71/mathops.(*IntAry).NewBigInt(0xc000308cf0, 0xc000308cd0, _)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:4265 +0x10d
-github.com/mikeaustin71/mathops.(*bigIntNumProton).bigIntNumGetIntAry(0xc0003090b8, 0xc000309320, _)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnumproton.go:2062 +0x3a7
-github.com/mikeaustin71/mathops.(*BigIntNum).GetIntAry(0xc000309320)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintnum.go:1591 +0x150
-github.com/mikeaustin71/mathops.(*BigIntMathAdd).AddIntAryOutputToArray(0xc000309928, {{0xc0002f7b28, 0x2, 0x8}, 0x2, 0x2, 0x1, 0x0, 0x1, 0x1, ...}, ...)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathadd.go:1183 +0x6c5
-github.com/mikeaustin71/mathops.TestBigIntMathAdd_AddIntAryOutputToArray_01(0xc000587a40)
-	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathadd_02_test.go:3372 +0x70b
-testing.tRunner(0xc000587a40, 0x7ff6f1d73448)
+goroutine 546 [running]:
+internal/sync.fatal({0x7ff604e2da6b?, 0xc0003e31d0?})
+	C:/Program Files/Go/src/runtime/panic.go:1056 +0x18
+internal/sync.(*Mutex).unlockSlow(0xc000275ec8, 0xffffffff)
+	C:/Program Files/Go/src/internal/sync/mutex.go:204 +0x35
+internal/sync.(*Mutex).Unlock(...)
+	C:/Program Files/Go/src/internal/sync/mutex.go:198
+sync.(*Mutex).Unlock(...)
+	C:/Program Files/Go/src/sync/mutex.go:65
+github.com/mikeaustin71/mathops.(*bigIntMathDivideNanobot).pairIntQuotient(0xc0003e38b8, 0xc0003e3808, {0x2e, 0x2c, 0x24}, 0xc0003e7900)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathdividenanobot.go:405 +0xd09
+github.com/mikeaustin71/mathops.(*BigIntMathDivide).BigIntNumIntQuotient(0x0?, {0xc00053bf20, 0xc00053bf00, 0x0, 0xc00053bf40, 0xc00053bee0, 0x1, 0x2e, 0x2c, 0x24}, ...)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/bigintmathdivide.go:684 +0xa50
+github.com/mikeaustin71/mathops.TestBigIntMathDivide_BigIntNumIntQuotient_01(0xc000489a40)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_bigintmathdivide_02_test.go:3632 +0x47c
+testing.tRunner(0xc000489a40, 0x7ff604f238f0)
 	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
 created by testing.(*T).Run in goroutine 1
 	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+
+goroutine 1 [chan receive]:
+testing.(*T).Run(0xc0003f5dc0, {0x7ff604e4c447?, 0x7ffa17823fb0?}, 0x7ff604f238f0)
+	C:/Program Files/Go/src/testing/testing.go:2005 +0x469
+testing.runTests.func1(0xc0003f5dc0)
+	C:/Program Files/Go/src/testing/testing.go:2477 +0x37
+testing.tRunner(0xc0003f5dc0, 0xc000027c70)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+testing.runTests(0xc000008138, {0x7ff6054d2d00, 0xe38, 0xe38}, {0x7?, 0xc00009e880?, 0x7ff6054e91e0?})
+	C:/Program Files/Go/src/testing/testing.go:2475 +0x4b4
+testing.(*M).Run(0xc0000a21e0)
+	C:/Program Files/Go/src/testing/testing.go:2337 +0x63a
+main.main()
+	_testmain.go:7323 +0x9b
 exit status 2
-FAIL	github.com/mikeaustin71/mathops	0.566s
+FAIL	github.com/mikeaustin71/mathops	0.595s

@@ -487,6 +487,14 @@ func (bIntMolecule *bigIntNumMolecule) formatThousandsStr(
 	negValMode NegativeValueFmtMode,
 	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
 	var err error
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -688,6 +696,10 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (
 	numberOfDigits *big.Int, isZeroValue bool, err error) {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
 	bIntMolecule.lock.Lock()
 
@@ -1119,13 +1131,17 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
 	bIntMolecule.lock.Lock()
 
 	defer bIntMolecule.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-
 	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
 
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
@@ -1471,6 +1487,10 @@ func (bIntMolecule *bigIntNumMolecule) setBigRatNumSeps(
 	numSeps NumericSeparatorDto,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
 	bIntMolecule.lock.Lock()
 
 	defer bIntMolecule.lock.Unlock()
@@ -1739,17 +1759,6 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		}
 	}
 
-	if bNum.bigInt == nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'bNum' is invalid!\n" +
-				"bNum.bigInt is a 'nil' pointer.",
-		}
-	}
-
 	if inputNumSepsDto == nil {
 
 		return &InputPtrNilError{
@@ -1768,17 +1777,6 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	outputNumSepsDto.SetDefaultsIfEmpty()
 
-	if inputNumSepsDto.DecimalSeparator == 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'numStrNumSepsDto.DecimalSeparator' is INVALID!\n" +
-				"'numStrNumSepsDto.DecimalSeparator', of type 'rune', is equal to zero.",
-		}
-	}
-
 	inputNumSepsDto.SetDefaultsIfEmpty()
 
 	if len(numStr) == 0 {
@@ -1792,6 +1790,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	}
 
 	baseRunes := []rune(numStr)
+
 	lBaseRunes := len(baseRunes)
 
 	newSign := 1
@@ -1904,6 +1903,18 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		*outputNumSepsDto,
 		ePrefix)
 
+	err = bNum.IsValid("Validating final bNum Value")
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = bNum.IsValid(\"Validating final bNum Value\")",
+			ErrContext: "Final computed 'bNum' value is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
 	return nil
 }
 
@@ -1991,7 +2002,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStrDto(
 	// values.
 	nDtoNumSepsDto.SetDefaultsIfEmpty()
 
-	bINum2, err := new(bigIntNumMechanics).newZero(
+	*bNum, err = new(bigIntNumMechanics).newZero(
 		0,
 		ePrefix.XCpy("Setting bINum2"))
 
@@ -2000,22 +2011,54 @@ func (bIntMolecule *bigIntNumMolecule) setNumStrDto(
 	}
 
 	err = new(bigIntNumNanobot).setBigInt(
-		&bINum2,
+		bNum,
 		bigI,
 		uint(precision),
 		ePrefix.XCpy(fmt.Sprintf("Setting bINum2; bigI= '%v'  precision= '%v'",
 			bigI.Text(10), precision)))
 
 	if err != nil {
-		return err
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"  bNum, bigI, uint(precision), ePrefix)",
+			ErrContext: fmt.Sprintf("bigI= '%v'\n"+
+				"precision= '%v'", bigI.Text(10), uint(precision)),
+			ErrMessage: err.Error(),
+		}
 	}
 
 	err = new(bigIntNumAtom).setNumericSeparatorsDto(
-		&bINum2,
+		bNum,
 		nDtoNumSepsDto,
 		ePrefix.XCpy("Setting biNum2 <- nDtoNumSepsDto"))
 
-	return err
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"  bNum, nDtoNumSepsDto, ePrefix))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+
+	}
+
+	err = bNum.IsValid("Validating final bNum Value")
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = bNum.IsValid(\"Validating final bNum Value\")",
+			ErrContext: "Final computed 'bNum' value is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // setINumMgr

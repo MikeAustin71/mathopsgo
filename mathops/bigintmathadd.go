@@ -2241,19 +2241,45 @@ func (bAdd *BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, erro
 	return finalResult, nil
 }
 
-// AddNumStrDtoArray - Adds an array of 'NumStrDto' types and returns the combined total
-// as an instance of Type, 'BigIntNum'.
+// AddNumStrDtoArray
 //
-// The returned BigIntNum result of this addition operation will contain
-// numeric separators (decimal separator, thousands separator and currency
-// symbol) copied from the first element of the input array, nDtos[0].
+//	Adds an array of 'NumStrDto' types and returns the combined total
+//	as an instance of Type, 'BigIntNum'.
+//
+//	The returned BigIntNum result of this addition operation will contain
+//	numeric separators (decimal separator, thousands separator and currency
+//	symbol) copied from the first element of the input array, nDtos[0].
 func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddDecimalArray() "
-
-	finalResult := new(BigIntNum).New()
+	ePrefix := "BigIntMathAdd.AddNumStrDtoArray() "
 
 	var err error
+
+	finalResult, err := new(BigIntNum).NewZero(0)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "finalResult, err := new(BigIntNum).NewZero(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	finalResultNumStr, err := finalResult.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "finalResultNumStr, err := finalResult.GetNumStr()",
+				ErrContext: "1st Inigialization of finalResultNumStr",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	lenNDtos := len(nDtos)
 
@@ -2272,14 +2298,25 @@ func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, erro
 
 	for i := 0; i < lenNDtos; i++ {
 
+		numStr, err := nDtos[i].GetNumStr()
+
+		if err != nil {
+
+			return finalResult,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: fmt.Sprintf("numStr, err := nDtos[%v].GetNumStr()", i),
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
 		if i == 0 {
 
 			// This method will test the validity of 'nDtos[i]'
 			finalResult, err = new(BigIntNum).NewNumStrDto(nDtos[i])
 
 			if err != nil {
-
-				numStr, _ := nDtos[i].GetNumStr()
 
 				return finalResult,
 					&FuncReturnError{
@@ -2303,6 +2340,19 @@ func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, erro
 					}
 			}
 
+			finalResultNumStr, err = finalResult.GetNumStr()
+
+			if err != nil {
+
+				return BigIntNum{},
+					&FuncReturnError{
+						ErrPrefix:  ePrefix,
+						ReturnFunc: "finalResultNumStr, err = finalResult.GetNumStr()",
+						ErrContext: "Setting finalResultNumStr at index array Zero",
+						ErrMessage: err.Error(),
+					}
+			}
+
 			continue
 		}
 
@@ -2310,13 +2360,12 @@ func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, erro
 
 		if err != nil {
 
-			numStr, _ := nDtos[i].GetNumStr()
-
 			return finalResult,
 				&FuncReturnError{
 					ErrPrefix:  ePrefix,
 					ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(&finalResult, &nDtos[i])",
-					ErrContext: fmt.Sprintf("nDtos[%v].GetNumStr()='%v'", i, numStr),
+					ErrContext: fmt.Sprintf("nDtos[%v].GetNumStr()= '%v'\n"+
+						"finalResult= '%v'", i, numStr, finalResultNumStr),
 					ErrMessage: err.Error(),
 				}
 		}
@@ -2333,7 +2382,21 @@ func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, erro
 					ErrMessage: err.Error(),
 				}
 		}
-	}
+
+		finalResultNumStr, err = finalResult.GetNumStr()
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: "finalResultNumStr, err = finalResult.GetNumStr()",
+					ErrContext: fmt.Sprintf("Setting finalResultNumStr at array index= '%v'", i),
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} // End of 'for' loop
 
 	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
@@ -2343,7 +2406,7 @@ func (bAdd *BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, erro
 			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
+				ErrContext: fmt.Sprintf("finalResult= '%v'", finalResultNumStr),
 				ErrMessage: err.Error(),
 			}
 	}

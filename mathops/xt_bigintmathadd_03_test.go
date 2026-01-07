@@ -2719,7 +2719,7 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 
 	for i := 0; i < lenNStrAry; i++ {
 
-		numStrDtoAry[i], err = new(NumStrDto).NewNumStr(numStrAry[i])
+		numStrDtoI, err := new(NumStrDto).NewNumStr(numStrAry[i])
 
 		if err != nil {
 			t.Errorf("%v\n"+
@@ -2730,6 +2730,7 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 			return
 		}
 
+		numStrDtoAry[i] = numStrDtoI
 	}
 
 	total, err := new(BigIntMathAdd).AddNumStrDtoArray(numStrDtoAry)
@@ -2752,6 +2753,17 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 		return
 	}
 
+	if expectedResultNumStr != totalNumStr {
+
+		t.Errorf("%v\n"+
+			"Error: Expected VS Actual Totals DON'T MATCH!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+
+		return
+	}
+
 	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
 	if err != nil {
@@ -2771,14 +2783,6 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 			expectedBNum.bigInt.Text(10),
 			total.bigInt.Text(10))
 		return
-	}
-
-	if expectedResultNumStr != totalNumStr {
-		t.Errorf("%v\n"+
-			"Error: Unexpected Result!\n"+
-			"Expected total = '%v'\n"+
-			"Instead, total = '%v'\n\n",
-			ePrefix, expectedResultNumStr, totalNumStr)
 	}
 
 	return

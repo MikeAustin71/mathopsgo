@@ -9,7 +9,7 @@ import (
 )
 
 type numStrDtoBoson struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // addNumStrs
@@ -23,6 +23,10 @@ func (nStrDtoBoson *numStrDtoBoson) addNumStrs(
 	n2Dto *NumStrDto,
 	validateN2Dto bool,
 	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	if nStrDtoBoson.lock == nil {
+		nStrDtoBoson.lock = new(sync.Mutex)
+	}
 
 	nStrDtoBoson.lock.Lock()
 
@@ -300,6 +304,10 @@ func (nStrDtoBoson *numStrDtoBoson) getSignedBigIntPrecision(
 	errPrefDto *ePref.ErrPrefixDto) (
 	signedBIntNum *big.Int, precision uint, err error) {
 
+	if nStrDtoBoson.lock == nil {
+		nStrDtoBoson.lock = new(sync.Mutex)
+	}
+
 	nStrDtoBoson.lock.Lock()
 
 	defer nStrDtoBoson.lock.Unlock()
@@ -377,6 +385,10 @@ func (nStrDtoBoson *numStrDtoBoson) subtractNumStrs(
 	n2Dto *NumStrDto,
 	validateN2Dto bool,
 	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	if nStrDtoBoson.lock == nil {
+		nStrDtoBoson.lock = new(sync.Mutex)
+	}
 
 	nStrDtoBoson.lock.Lock()
 

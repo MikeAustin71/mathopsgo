@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	"math/big"
 	"sync"
 
@@ -284,6 +285,9 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 		}
 	}
 
+	bNumNumStr := fmt.Sprintf("bigI= '%v' precision= '%v'",
+		bigI.Text(10), precision)
+
 	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
 		bNum, ePrefix)
 
@@ -308,9 +312,14 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 
 	new(bigIntNumElectron).empty(bNum)
 
-	bNum.bigInt = big.NewInt(0).Set(bigI)
+	//bNum.bigInt = big.NewInt(0).Set(bigI)
+
+	bNum.bigInt.Set(bigI)
 
 	bNum.precision = precision
+
+	bNumNumStr = fmt.Sprintf("bNum.bigInt= '%v' bNum.precision= '%v'",
+		bNum.bigInt.Text(10), bNum.precision)
 
 	base10 := big.NewInt(0).SetInt64(int64(10))
 
@@ -353,6 +362,38 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 			ErrMessage: err.Error(),
 		}
 	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).isBigIntNumValid(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "Final bNum Validation",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bNumNumStr, err = new(bigIntNumAtom).getBigIntNumStr(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bNumNumStr, err := new(bigIntNumAtom).getBigIntNumStr(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "Final bNum Validation",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	fmt.Printf("bNumNumStr= '%v'\n", bNumNumStr)
 
 	return err
 }
