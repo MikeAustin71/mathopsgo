@@ -4954,7 +4954,7 @@ func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "err = nDto.IsValid(\"Validating input param nDto\")",
-        ErrContext: "",
+        ErrContext: "Input param 'nDto' is INVALID!",
         ErrMessage: err.Error(),
       }
   }
@@ -4976,44 +4976,7 @@ func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
       }
   }
 
-  // It's good now!
-  bINum2NumStr, err := new(bigIntNumAtom).getBigIntNumStr(
-    &bINum2, ePrefix)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINum2NumStr, err := bINum2.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  if bINum2NumStr == "" {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "bINum2NumStr is 'nil'",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  if nDtoNumStr == "" {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "bINum2NumStr is 'nil'",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  return bINum2, err
+  return bINum2, nil
 }
 
 // NewOne
