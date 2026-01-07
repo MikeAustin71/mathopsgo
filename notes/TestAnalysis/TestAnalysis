@@ -5,18 +5,12 @@ BigIntMathAdd) AddNumStrDtoArray(
 2317
 
 
-bigintnum.go
-(bNum *BigIntNum) NewNumStrDto(
-4949
-
 bigintnummolecule.go
 (bIntMolecule *bigIntNumMolecule) setNumStrDto(
+FIXED - Test is working!
 
-bigIntNumNanobot).setBigInt(
-At line 291- good bigI= 458
-At line 321- good bigI= 458
-At line 381- bood bNumNumStr = 45.8
-at return on setBigInt bNum is good
+bigIntNumNanobot).setBigInt()
+FIXED - Test is working!
 
 
 bigintnummolecule.go
@@ -24,5 +18,5 @@ bigintnummolecule.go
 FIXED - Test is working!
 
 (bNum *BigIntNum) NewNumStrDto(
-At line 4983 bINum2 is bad = 0
+FIXED - Test is working!
 

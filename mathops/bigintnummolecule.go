@@ -1943,7 +1943,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStrDto(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntNumMolecule.setNumStr()",
+		"bigIntNumMolecule.setNumStrDto()",
 		"")
 
 	if err != nil {
