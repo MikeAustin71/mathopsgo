@@ -220,6 +220,13 @@ func (bINumElectron *bigIntNumElectron) bigIntNumEqual(
 		return false, err
 	}
 
+	bNumBigIntNumStr := bNum.bigInt.Text(10)
+
+	b2BigIntNumStr := b2.bigInt.Text(10)
+
+	fmt.Printf("bNum.bigInt= '%v\nb2BigIntNumStr = '%v'\n",
+		bNumBigIntNumStr, b2BigIntNumStr)
+
 	if bNum.bigInt.Cmp(b2.bigInt) != 0 {
 		return false, nil
 	}

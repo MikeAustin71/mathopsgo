@@ -1,15 +1,15 @@
 package mathops
 
 import (
-  "fmt"
-  "math/big"
-  "sync"
+	"fmt"
+	"math/big"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntMathDivideNanobot struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // pairFracQuotient
@@ -82,142 +82,142 @@ type bigIntMathDivideNanobot struct {
 //	 The returned values ('quotient' and 'modulo') will be
 //	 configured with 'numSeps'.
 func (bIMathDivideNano *bigIntMathDivideNanobot) pairFracQuotient(
-  bPair *BigIntPair,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (fracQuotient BigIntNum, err error) {
+	bPair *BigIntPair,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (fracQuotient BigIntNum, err error) {
 
-  if bIMathDivideNano.lock == nil {
-    bIMathDivideNano.lock = new(sync.Mutex)
-  }
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
+	}
 
-  bIMathDivideNano.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-  defer bIMathDivideNano.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathDivideNanobot.pairFracQuotient",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathDivideNanobot.pairFracQuotient",
+		"")
 
-  if err != nil {
-    return fracQuotient, err
-  }
+	if err != nil {
+		return fracQuotient, err
+	}
 
-  if bPair == nil {
+	if bPair == nil {
 
-    return fracQuotient,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bPair'",
-      }
-  }
+		return fracQuotient,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bPair'",
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-  if err != nil {
+	if err != nil {
 
-    return fracQuotient,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-        ErrContext: "numSeps is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return fracQuotient,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+				ErrContext: "numSeps is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bPairBig2IsZero, err := bPair.Big2.IsZero()
+	bPairBig2IsZero, err := bPair.Big2.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if bPairBig2IsZero {
+	if bPairBig2IsZero {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "if bPairBig2IsZero {",
-        ErrMessage: "Attempted Divide by ZERO!\n" +
-          "'bPair.Big2' has a ZERO value.",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bPairBig2IsZero {",
+				ErrMessage: "Attempted Divide by ZERO!\n" +
+					"'bPair.Big2' has a ZERO value.",
+			}
+	}
 
-  err = bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bPair.MakePrecisionsEqual()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+	rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
 
-  rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+	rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
 
-  rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
-  numStr := rQuotient.FloatString(int(bPair.MaxPrecision))
+	numStr := rQuotient.FloatString(int(bPair.MaxPrecision))
 
-  fracQuotient, err =
-    new(BigIntNum).NewNumStr(numStr)
+	fracQuotient, err =
+		new(BigIntNum).NewNumStr(numStr)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "fracQuotient, err = new(BigIntNum).NewNumStr(numStr)",
-        ErrContext: fmt.Sprintf("numStr= '%v'", numStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewNumStr(numStr)",
+				ErrContext: fmt.Sprintf("numStr= '%v'", numStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = fracQuotient.TrimTrailingFracZeros()
+	err = fracQuotient.TrimTrailingFracZeros()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = fracQuotient.SetNumericSeparatorsDto(numSeps)
+	err = fracQuotient.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(\n" +
-          "    numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(\n" +
+					"    numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return fracQuotient, nil
+	return fracQuotient, nil
 }
 
 // PairIntQuotient
@@ -283,123 +283,123 @@ func (bIMathDivideNano *bigIntMathDivideNanobot) pairFracQuotient(
 //	The returned value 'intQuotient' will be configured with
 //	'numSeps'.
 func (bIMathDivideNano *bigIntMathDivideNanobot) pairIntQuotient(
-  bPair *BigIntPair,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (intQuotient BigIntNum, err error) {
+	bPair *BigIntPair,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (intQuotient BigIntNum, err error) {
 
-  if bIMathDivideNano.lock == nil {
-    bIMathDivideNano.lock = new(sync.Mutex)
-  }
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
+	}
 
-  bIMathDivideNano.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-  defer bIMathDivideNano.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathDivideNanobot.pairIntQuotient",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathDivideNanobot.pairIntQuotient",
+		"")
 
-  if err != nil {
-    return intQuotient, err
-  }
+	if err != nil {
+		return intQuotient, err
+	}
 
-  if bPair == nil {
+	if bPair == nil {
 
-    return intQuotient,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bPair'",
-      }
-  }
+		return intQuotient,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bPair'",
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-  if err != nil {
+	if err != nil {
 
-    return intQuotient,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-        ErrContext: "numSeps is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return intQuotient,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+				ErrContext: "numSeps is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bPairBig2IsZero, err := bPair.Big2.IsZero()
+	bPairBig2IsZero, err := bPair.Big2.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if bPairBig2IsZero {
+	if bPairBig2IsZero {
 
-    return intQuotient,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "if bPairBig2IsZero {",
-        ErrMessage: "Attempted Divide by ZERO!\n" +
-          "'bPair.Big2' has a ZERO value.",
-      }
-  }
+		return intQuotient,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bPairBig2IsZero {",
+				ErrMessage: "Attempted Divide by ZERO!\n" +
+					"'bPair.Big2' has a ZERO value.",
+			}
+	}
 
-  err = bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bPair.MakePrecisionsEqual()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigIQuotient := big.NewInt(0).Quo(bPair.Big1.bigInt, bPair.Big2.bigInt)
+	bigIQuotient := big.NewInt(0).Quo(bPair.Big1.bigInt, bPair.Big2.bigInt)
 
-  intQuotient, err = new(BigIntNum).NewBigInt(bigIQuotient, 0)
+	intQuotient, err = new(BigIntNum).NewBigInt(bigIQuotient, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "intQuotient, err = new(BigIntNum).\n" +
-          "    NewBigInt(bigIQuotient, 0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "intQuotient, err = new(BigIntNum).\n" +
+					"    NewBigInt(bigIQuotient, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = intQuotient.SetNumericSeparatorsDto(numSeps)
+	err = intQuotient.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = intQuotient.SetNumericSeparatorsDto(\n" +
-          "    numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = intQuotient.SetNumericSeparatorsDto(\n" +
+					"    numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return intQuotient, nil
+	return intQuotient, nil
 }
 
 // pairMod
@@ -481,166 +481,166 @@ func (bIMathDivideNano *bigIntMathDivideNanobot) pairIntQuotient(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIMathDivideNano *bigIntMathDivideNanobot) pairMod(
-  bPair *BigIntPair,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (modulo BigIntNum, err error) {
+	bPair *BigIntPair,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (modulo BigIntNum, err error) {
 
-  if bIMathDivideNano.lock == nil {
-    bIMathDivideNano.lock = new(sync.Mutex)
-  }
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
+	}
 
-  bIMathDivideNano.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-  defer bIMathDivideNano.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathDivideNanobot.pairMod",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathDivideNanobot.pairMod",
+		"")
 
-  if err != nil {
-    return modulo, err
-  }
+	if err != nil {
+		return modulo, err
+	}
 
-  if bPair == nil {
+	if bPair == nil {
 
-    return modulo,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bPair'",
-      }
-  }
+		return modulo,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bPair'",
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-  if err != nil {
+	if err != nil {
 
-    return modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-        ErrContext: "numSeps is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+				ErrContext: "numSeps is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bPairBig2IsZero, err := bPair.Big2.IsZero()
+	bPairBig2IsZero, err := bPair.Big2.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if bPairBig2IsZero {
+	if bPairBig2IsZero {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "if bPairBig2IsZero {",
-        ErrMessage: "Attempted Divide by ZERO!\n" +
-          "'bPair.Big2' has a ZERO value.",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bPairBig2IsZero {",
+				ErrMessage: "Attempted Divide by ZERO!\n" +
+					"'bPair.Big2' has a ZERO value.",
+			}
+	}
 
-  err = bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bPair.MakePrecisionsEqual()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  moduloBigI := big.NewInt(0).Rem(bPair.Big1.bigInt, bPair.Big2.bigInt)
+	moduloBigI := big.NewInt(0).Rem(bPair.Big1.bigInt, bPair.Big2.bigInt)
 
-  bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()
+	bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  modulo, err = new(BigIntNum).NewBigInt(moduloBigI, bPairBig2Precision)
+	modulo, err = new(BigIntNum).NewBigInt(moduloBigI, bPairBig2Precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(\n" +
-          "    moduloBigI, bPairBig2Precision)",
-        ErrContext: fmt.Sprintf("bPairBig2Precision= '%v'",
-          bPairBig2Precision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(\n" +
+					"    moduloBigI, bPairBig2Precision)",
+				ErrContext: fmt.Sprintf("bPairBig2Precision= '%v'",
+					bPairBig2Precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if modulo.precision > bPair.MaxPrecision {
+	if modulo.precision > bPair.MaxPrecision {
 
-    err = modulo.RoundToDecPlace(bPair.MaxPrecision)
+		err = modulo.RoundToDecPlace(bPair.MaxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = modulo.RoundToDecPlace(bPair.MaxPrecision)\n" +
-            fmt.Sprintf(" bPair.MaxPrecision= '%v'", bPair.MaxPrecision),
-          ErrContext: "if modulo.precision > bPair.MaxPrecision {",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = modulo.RoundToDecPlace(bPair.MaxPrecision)\n" +
+						fmt.Sprintf(" bPair.MaxPrecision= '%v'", bPair.MaxPrecision),
+					ErrContext: "if modulo.precision > bPair.MaxPrecision {",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  err = modulo.TrimTrailingFracZeros()
+	err = modulo.TrimTrailingFracZeros()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = modulo.TrimTrailingFracZeros()",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = modulo.TrimTrailingFracZeros()",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = modulo.SetNumericSeparatorsDto(numSeps)
+	err = modulo.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = modulo.SetNumericSeparatorsDto(\n" +
-          "    numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = modulo.SetNumericSeparatorsDto(\n" +
+					"    numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return modulo, err
+	return modulo, err
 }
 
 // pairQuotientMod
@@ -726,196 +726,196 @@ func (bIMathDivideNano *bigIntMathDivideNanobot) pairMod(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIMathDivideNano *bigIntMathDivideNanobot) pairQuotientMod(
-  bPair *BigIntPair,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (quotient BigIntNum, modulo BigIntNum, err error) {
+	bPair *BigIntPair,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-  if bIMathDivideNano.lock == nil {
-    bIMathDivideNano.lock = new(sync.Mutex)
-  }
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
+	}
 
-  bIMathDivideNano.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-  defer bIMathDivideNano.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathDivideNanobot.pairQuotientMod",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathDivideNanobot.pairQuotientMod",
+		"")
 
-  if err != nil {
-    return quotient, modulo, err
-  }
+	if err != nil {
+		return quotient, modulo, err
+	}
 
-  if bPair == nil {
+	if bPair == nil {
 
-    return quotient, modulo,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bPair'",
-      }
-  }
+		return quotient, modulo,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bPair'",
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-        ErrContext: "numSeps is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+				ErrContext: "numSeps is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bPairBig2IsZero, err := bPair.Big2.IsZero()
+	bPairBig2IsZero, err := bPair.Big2.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if bPairBig2IsZero {
+	if bPairBig2IsZero {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "if bPairBig2IsZero {",
-        ErrMessage: "Attempted Divide by ZERO!\n" +
-          "'bPair.Big2.bigInt' has a ZERO value.",
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bPairBig2IsZero {",
+				ErrMessage: "Attempted Divide by ZERO!\n" +
+					"'bPair.Big2.bigInt' has a ZERO value.",
+			}
+	}
 
-  err = bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bPair.MakePrecisionsEqual()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  scratch := big.NewInt(0)
+	scratch := big.NewInt(0)
 
-  quotientBigI, moduloBigI := big.NewInt(0).QuoRem(
-    bPair.Big1.bigInt,
-    bPair.Big2.bigInt,
-    scratch)
+	quotientBigI, moduloBigI := big.NewInt(0).QuoRem(
+		bPair.Big1.bigInt,
+		bPair.Big2.bigInt,
+		scratch)
 
-  quotient, err = new(BigIntNum).NewBigInt(quotientBigI, 0)
+	quotient, err = new(BigIntNum).NewBigInt(quotientBigI, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt\n" +
-          "    (quotientBigI, 0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt\n" +
+					"    (quotientBigI, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()
+	bPairBig2Precision, err := bPair.Big2.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bPairBig2Precision, err := \n" +
-          "    bPair.Big2.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bPairBig2Precision, err := \n" +
+					"    bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  modulo, err = new(BigIntNum).NewBigInt(moduloBigI, bPairBig2Precision)
+	modulo, err = new(BigIntNum).NewBigInt(moduloBigI, bPairBig2Precision)
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "modulo, err = new(BigIntNum).\n" +
-          "    NewBigInt(moduloBigI, bPairBig2Precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "modulo, err = new(BigIntNum).\n" +
+					"    NewBigInt(moduloBigI, bPairBig2Precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if modulo.precision > bPair.MaxPrecision {
+	if modulo.precision > bPair.MaxPrecision {
 
-    err = modulo.RoundToDecPlace(bPair.MaxPrecision)
+		err = modulo.RoundToDecPlace(bPair.MaxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return quotient, modulo,
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = modulo.RoundToDecPlace(bPair.MaxPrecision)",
-          ErrContext: "if modulo.precision > bPair.MaxPrecision {",
-          ErrMessage: err.Error(),
-        }
-    }
+			return quotient, modulo,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = modulo.RoundToDecPlace(bPair.MaxPrecision)",
+					ErrContext: "if modulo.precision > bPair.MaxPrecision {",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  }
+	}
 
-  err = modulo.TrimTrailingFracZeros()
+	err = modulo.TrimTrailingFracZeros()
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = modulo.TrimTrailingFracZeros()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = modulo.TrimTrailingFracZeros()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = quotient.SetNumericSeparatorsDto(numSeps)
+	err = quotient.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = modulo.SetNumericSeparatorsDto(numSeps)
+	err = modulo.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return quotient, modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return quotient, modulo, err
+	return quotient, modulo, err
 }

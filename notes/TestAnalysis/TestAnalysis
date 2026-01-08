@@ -1,22 +1,35 @@
 
----------------------------
-bigintmathadd.go
-BigIntMathAdd) AddNumStrDtoArray(
-DO CLEANUP!
+
+xt_bigintmathdivide_04_test.go.TestBigIntMathDivide_DecimalQuotientMod_07
+This test is broken
+xt_bigintmathdivide_04_test.go.
+ TestBigIntMathDivide_DecimalQuotientMod_07
+TestBigIntMathDivide_DecimalQuotientMod_07
+        Error: Unexpected Result!
+        Because expectedQuo.Equal(quotient) == 'false'
+        Expected 'quotient' = '-5'
+          Actual 'quotient' = '-5022'
+
+--- FAIL: TestBigIntMathDivide_DecimalQuotientMod_07 (0.00s)
+ Test 7 with USA and Euro NumSeps fails!
 
 
-bigintnummolecule.go
-(bIntMolecule *bigIntNumMolecule) setNumStrDto(
-FIXED - Test is working!
+TestBigIntMathDivide_DecimalQuotientMod_08
+ This new test was created to test effect of
+ USA Numeric Separators.
 
-bigIntNumNanobot).setBigInt()
-FIXED - Test is working!
+ Test 8 with USA NumSeps Passes.
+ Test 7 with USA and Euro NumSeps fails!
 
 
-bigintnummolecule.go
-(bIntMolecule *bigIntNumMolecule) setNumStrDto(
-FIXED - Test is working!
+ ----------------------------------------------------
+BigIntMathDivide.DecimalQuotientMod()
+bigintmathdivide.go
+This function temporarily modified to ensure that
+divisor and dividend have the same numseps.
+This method calls pairQuotientMod()
 
-(bNum *BigIntNum) NewNumStrDto(
-FIXED - Test is working!
 
+ ----------------------------------------------------
+bigIntMathDivideNanobot.pairQuotientMod()
+bigintmathdividenanobot.go

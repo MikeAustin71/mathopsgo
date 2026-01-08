@@ -2937,52 +2937,134 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 		"Testing dividend").String())
 
 	if err != nil {
-		return quotient, modulo, err
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dividend.IsValid(\"Testing dividend\")",
+				ErrContext: "Input parameter 'dividend' is INVALID!",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	err = divisor.IsValid(ePrefix.XCpy(
 		"Testing divisor").String())
 
 	if err != nil {
-		return quotient, modulo, err
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dividend.IsValid(\"Testing divisor\")",
+				ErrContext: "Input parameter 'divisor' is INVALID!",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	dividendNumStr, err := dividend.GetNumStr()
+	err = numSeps.IsValid("Validating NumSeps")
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(\"Validating NumSeps\")",
+				ErrContext: "Input Parameter 'numSeps' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	// Make certain both dividend and divisor use the same
+	// numseps.
+
+	dividend2, err := dividend.CopyOut()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "dividend2, err := dividend.CopyOut()",
+				ErrContext: "Error Copying dividend to dividend2",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = dividend2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dividend2.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "Error setting dividend2 Numeric Separators",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	dividend2NumStr, err := dividend2.GetNumStr()
 
 	if err != nil {
 
 		return quotient, modulo,
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+				ReturnFunc: "dividend2NumStr, err := dividend2.GetNumStr()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	divisorNumStr, err := divisor.GetNumStr()
+	divisor2, err := divisor.CopyOut()
 
 	if err != nil {
 
-		return quotient, modulo,
+		return BigIntNum{}, BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+				ReturnFunc: "divisor2, err := divisor.CopyOut()",
+				ErrContext: "Error Copying divisor to divisor2",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = divisor2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = divisor2.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "Error setting divisor2 Numeric Separators",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	divisor2NumStr, err := divisor2.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "divisor2NumStr, err := divisor2.GetNumStr()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
+	bPair, err := new(BigIntPair).NewDecimal(dividend2, divisor2)
 
 	if err != nil {
 
 		return quotient, modulo,
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-					dividendNumStr, divisorNumStr),
+				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend2, divisor2)",
+				ErrContext: fmt.Sprintf("dividend2 = '%v'; divisor2 = '%v'",
+					dividend2NumStr, divisor2NumStr),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -3025,8 +3107,8 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "quotient, modulo, err = new(bigIntMathDivideNanobot).\n" +
 					"    pairQuotientMod(&bPair, numSeps, ePrefix)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
+				ErrContext: fmt.Sprintf("dividend2 = '%v'; divisor2 = '%v'; maxPrecision='%v'",
+					dividend2NumStr, divisor2NumStr, maxPrecision),
 				ErrMessage: err.Error(),
 			}
 	}
