@@ -2280,7 +2280,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntNumProton.bigIntNumDivide",
+		"bigIntNumProton.bigIntNumGetNumStrDto()",
 		"")
 
 	if err != nil {
@@ -2303,7 +2303,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 		return NumStrDto{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)\n" +
+				ReturnFunc: "nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0)\n" +
 					".Set(bNum.bigInt), uint(bNum.precision))",
 				ErrContext: fmt.Sprintf("bNum.bigInt='%v'\nbNum.precision='%v'",
 					bNum.bigInt.Text(10), bNum.precision),
@@ -2316,8 +2316,18 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 		ePrefix)
 
 	if err != nil {
-		return NumStrDto{}, err
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSepDto, err := new(bigIntNumAtom).\n" +
+					"  getNumericSeparatorsDto(bNum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
+
+	numSepDto.SetDefaultsIfEmpty()
 
 	err = nDto.SetNumericSeparatorsDto(numSepDto)
 
@@ -2334,7 +2344,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 	err = nDto.IsValid(ePrefix.String() + "'nDto' FAILED Validation Test! ")
 
 	if err != nil {
-		return new(NumStrDto).New(), err
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = nDto.IsValid(ePrefix.String() + \"'nDto' FAILED Validation Test! \")",
+				ErrContext: "Final nDto instance is INVALID!",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return nDto, nil

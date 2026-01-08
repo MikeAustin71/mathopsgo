@@ -2840,8 +2840,27 @@ func (nDto *NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrD
 			}
 	}
 
-	return new(numStrDtoMolecule).newBigInt(
+	numSeps.SetDefaultsIfEmpty()
+
+	finalNumStrDto, err := new(numStrDtoMolecule).newBigInt(
 		numSeps, signedBigInt, precision, ePrefix)
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "finalNumStrDto, err := new(numStrDtoMolecule).\n" +
+					"  newBigInt(numSeps, signedBigInt, precision, ePrefix)",
+				ErrContext: fmt.Sprintf("numSeps= '%v'\n"+
+					"  signedBigInt= '%v'\n"+
+					"  precision= '%v'",
+					numSeps.String(), signedBigInt.Text(10), precision),
+				ErrMessage: "Error: INVALID INPUT! 'radicand' is Zero!\n",
+			}
+
+	}
+
+	return finalNumStrDto, nil
 }
 
 // NewBigIntNumSeps

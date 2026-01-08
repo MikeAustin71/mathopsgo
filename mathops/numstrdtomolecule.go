@@ -616,8 +616,9 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigInt(
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-					"'numSeps' FAILED Validation Tests.",
+				ErrContext: fmt.Sprintf("Error: Numeric Separators input paramter ('numSeps') is INVALID!\n"+
+					"'numSeps' FAILED Validation Tests.\n"+
+					"numSeps = '%v'", numSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}

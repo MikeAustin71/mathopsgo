@@ -91,8 +91,8 @@ func TestBigIntMathAdd_AddNumStrDtoOutputToArray_01(t *testing.T) {
 			"result, err := new(BigIntMathAdd).AddNumStrDtoOutputToArray(nDtoAddend, nDtoArray)\n"+
 			"nDtoAddend= '%v'\n"+
 			"Error='%v'\n\n",
-			nDtoAddendNumStr,
 			ePrefix,
+			nDtoAddendNumStr,
 			err.Error())
 		return
 	}

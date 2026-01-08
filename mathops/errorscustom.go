@@ -56,7 +56,7 @@ func (e *FuncReturnError) Error() string {
 	}
 
 	if e.ReturnFunc != "" {
-		errStr += "Error returned by: \\n  " + e.ReturnFunc + "\n"
+		errStr += "Error returned by: \n  " + e.ReturnFunc + "\n"
 		foundCnt++
 	}
 
