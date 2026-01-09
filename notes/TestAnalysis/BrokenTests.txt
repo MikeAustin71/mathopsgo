@@ -4,15 +4,6 @@ Broken Tests
 ***********************************************************
 
 
--------------------------------------------------
-zzzzz_Test Line 951
-=== RUN   TestBigIntMathDivide_BigIntNumModulo_15
-    xt_bigintmathdivide_03_test.go:2794: TestBigIntMathDivide_BigIntNumModulo_15
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected modulo = '55'
-          Actual modulo = '0,055'
-
 -----------------------------------------------
 zzzzz_Test Line  1137
  === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_01
