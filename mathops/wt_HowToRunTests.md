@@ -1,4 +1,4 @@
-# Running Tests StrOps
+# Running Tests mathopsgo
 
 Open a command prompt in this directory (*strmech*) and run the
 following commands.
