@@ -174,9 +174,9 @@ func (bIDivide *BigIntMathDivide) BigIntDividedByTwoToPower(
 //	 err                 error
 //
 //	 If an error is encountered, this function will
-//	 return a quotient set equal to zero and an error
-//	 object will be returned containing an appropriate
-//	 error message. If the function completes the division
+//	 return a quotient set equal to zero plus an error.
+//
+//	 If the function completes the division
 //	 operation successfully, the returned 'quotient' will
 //	 be populated with the correct result and 'err' will
 //	 be set equal to 'nil'.
@@ -348,14 +348,12 @@ func (bIDivide *BigIntMathDivide) BigIntFracQuotient(
 
 	} else {
 
-		//fmt.Println("before quotient: %v", quotient.Text(10))
 		quotient.Add(quotient, big.NewInt(5))
 
 		quotient.Quo(quotient, bigTen)
-		//fmt.Println("after quotient: %v", quotient.Text(10))
+
 		iMaxPrecision.Sub(iMaxPrecision, bigOne)
 
-		// = uint(i64MaxPrecision)
 		quotientPrecision.Set(iMaxPrecision)
 
 	}
@@ -1441,17 +1439,17 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
 
 // BigIntNumDivideByThreeQuoMod
 //
-// Performs a division operation on BigIntNum input parameter
-// 'dividend'. This method will divide 'dividend' by the integer
-// numeric value three ('3'). There are two BigIntNum return values:
-// 'quotient' and 'modulo'.
+//	Performs a division operation on BigIntNum input parameter
+//	'dividend'. This method will divide 'dividend' by the integer
+//	numeric value three ('3'). There are two BigIntNum return values:
+//	'quotient' and 'modulo'.
 //
-// The calculation of 'quotient' and 'modulo' is based on T-Division
-// (Truncate Division). See "Division and Modulus for Computer
-// Scientists", DAAN LEIJEN, University of Utrecht Dept. of Computer
-// Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
-// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
-// Also available at mathopsgo/notes/divmodnote-letter.pdf.
+//	The calculation of 'quotient' and 'modulo' is based on T-Division
+//	(Truncate Division). See "Division and Modulus for Computer
+//	Scientists", DAAN LEIJEN, University of Utrecht Dept. of Computer
+//	Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+//	https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+//	Also available at mathopsgo/notes/divmodnote-letter.pdf.
 //
 //	So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo':
 //
@@ -1464,11 +1462,11 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
 //	               division of one number by another.
 //	               (r = D mod d = D − d ·q)
 //
-// Input parameter 'maxPrecision' is used to control the maximum
-// precision of the resulting 'modulo'. Precision is defined as
-// the number of fractional digits to the right of the decimal
-// point. Be advised that these calculations can support very large
-// precision values.
+//	Input parameter 'maxPrecision' is used to control the maximum
+//	precision of the resulting 'modulo'. Precision is defined as
+//	the number of fractional digits to the right of the decimal
+//	point. Be advised that these calculations can support very large
+//	precision values.
 //
 //	Examples
 //	=========
@@ -1480,25 +1478,25 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
 //	   8         /           3     =      2            2
 //	  12         /           3     =      4            0
 //
-// The returned BigIntNum division 'result' (quotient and modulo) will
-// contain numeric separators (decimal separator, thousands separator
-// and currency symbol) copied from input parameter, 'dividend'
+//	The returned BigIntNum division 'result' (quotient and modulo) will
+//	contain numeric separators (decimal separator, thousands separator
+//	and currency symbol) copied from input parameter, 'dividend'
 //
-//			 Numeric Separators
-//			 ==================
+//	Numeric Separators
+//	==================
 //
-//	    Input parameter, 'numSeps' consits of a NumericSeparatorDto
-//	    instance. A NumericSeparatorDto contains symbols or characters
-//	    for the decimal separator, thousands separator and currency
-//	    symbol. These separators are used when presenting numeric
-//	    values in number strings.
+//	Input parameter, 'numSeps' consits of a NumericSeparatorDto.
+//	A NumericSeparatorDto contains symbols or characters for the
+//	decimal separator, thousands separator and currency symbol.
+//	These separators are used when presenting numeric values in
+//	number strings.
 //
-//	    If any of the 'numSeps' Numeric Separator Components are set
-//	    to zero, those components will be automatically reset to USA
-//	    default values.
+//	If any of the 'numSeps' Numeric Separator Components are set
+//	to zero, those components will be automatically reset to USA
+//	default values.
 //
-//	    The returned values ('quotient' and 'modulo') will be
-//	    configured with 'numSeps'.
+//	The returned values ('quotient' and 'modulo') will be
+//	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByThreeQuoMod(
 	dividend BigIntNum,
 	numSeps NumericSeparatorDto,
@@ -2947,6 +2945,45 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 			}
 	}
 
+	dividendNumStr, err := dividend.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	dividendBigInt, err := dividend.GetBigInt()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	dividendBigIntNumStr := dividendBigInt.Text(10)
+
+	if len(dividendBigIntNumStr) == 0 {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "dividendBigIntNumStr := dividendBigInt.Text(10)",
+				ErrContext: "dividendBigIntNumStr is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	err = divisor.IsValid(ePrefix.XCpy(
 		"Testing divisor").String())
 
@@ -2957,6 +2994,45 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "err = dividend.IsValid(\"Testing divisor\")",
 				ErrContext: "Input parameter 'divisor' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	divisorNumStr, err := divisor.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	divisorBigInt, err := divisor.GetBigInt()
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	divisorBigIntNumStr := divisorBigInt.Text(10)
+
+	if len(divisorBigIntNumStr) == 0 {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "divisorBigIntNumStr := divisorBigInt.Text(10)",
+				ErrContext: "divisorBigIntNumStr is INVALID!",
 				ErrMessage: err.Error(),
 			}
 	}
@@ -2974,88 +3050,7 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 			}
 	}
 
-	// Make certain both dividend and divisor use the same
-	// numseps.
-
-	dividend2, err := dividend.CopyOut()
-
-	if err != nil {
-
-		return BigIntNum{}, BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividend2, err := dividend.CopyOut()",
-				ErrContext: "Error Copying dividend to dividend2",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = dividend2.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-
-		return BigIntNum{}, BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dividend2.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "Error setting dividend2 Numeric Separators",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	dividend2NumStr, err := dividend2.GetNumStr()
-
-	if err != nil {
-
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividend2NumStr, err := dividend2.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	divisor2, err := divisor.CopyOut()
-
-	if err != nil {
-
-		return BigIntNum{}, BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisor2, err := divisor.CopyOut()",
-				ErrContext: "Error Copying divisor to divisor2",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = divisor2.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-
-		return BigIntNum{}, BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = divisor2.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "Error setting divisor2 Numeric Separators",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	divisor2NumStr, err := divisor2.GetNumStr()
-
-	if err != nil {
-
-		return BigIntNum{}, BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisor2NumStr, err := divisor2.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bPair, err := new(BigIntPair).NewDecimal(dividend2, divisor2)
+	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
 
 	if err != nil {
 
@@ -3064,7 +3059,7 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend2, divisor2)",
 				ErrContext: fmt.Sprintf("dividend2 = '%v'; divisor2 = '%v'",
-					dividend2NumStr, divisor2NumStr),
+					dividendNumStr, divisorNumStr),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -3108,7 +3103,7 @@ func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
 				ReturnFunc: "quotient, modulo, err = new(bigIntMathDivideNanobot).\n" +
 					"    pairQuotientMod(&bPair, numSeps, ePrefix)",
 				ErrContext: fmt.Sprintf("dividend2 = '%v'; divisor2 = '%v'; maxPrecision='%v'",
-					dividend2NumStr, divisor2NumStr, maxPrecision),
+					dividendNumStr, divisorNumStr, maxPrecision),
 				ErrMessage: err.Error(),
 			}
 	}

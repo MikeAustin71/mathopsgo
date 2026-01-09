@@ -1,19 +1,26 @@
 
+****************************************************
+Test Analysis
+****************************************************
 
+New Error # 2
 xt_bigintmathdivide_04_test.go.TestBigIntMathDivide_DecimalQuotientMod_07
-This test is broken
-xt_bigintmathdivide_04_test.go.
- TestBigIntMathDivide_DecimalQuotientMod_07
-TestBigIntMathDivide_DecimalQuotientMod_07
+=== RUN   TestBigIntMathDivide_DecimalQuotientMod_07
+bNum.bigInt= '-5
+b2BigIntNumStr = '-5'
+bNum.bigInt= '-55
+b2BigIntNumStr = '-55'
+    xt_bigintmathdivide_04_test.go:2593: TestBigIntMathDivide_DecimalQuotientMod_07
         Error: Unexpected Result!
-        Because expectedQuo.Equal(quotient) == 'false'
-        Expected 'quotient' = '-5'
-          Actual 'quotient' = '-5022'
+        Because expectedQuoNumSeps.Equal(quotientNumSeps) == 'false'
+        Expected Quotient Numeric Separators = 'Decimal Separator: '.'  Thousands Separator: ','  Currency Symbol: '$''
+          Actual Quotient Numeric Separators = 'Decimal Separator: ','  Thousands Separator: ' '  Currency Symbol: '€''
 
 --- FAIL: TestBigIntMathDivide_DecimalQuotientMod_07 (0.00s)
- Test 7 with USA and Euro NumSeps fails!
 
 
+
+----------------------------------------------------
 TestBigIntMathDivide_DecimalQuotientMod_08
  This new test was created to test effect of
  USA Numeric Separators.
@@ -29,7 +36,28 @@ This function temporarily modified to ensure that
 divisor and dividend have the same numseps.
 This method calls pairQuotientMod()
 
+Good Run
+dividendNumStr = -12.555
+dividendBigIntNumStr = -12555
+
+divisorNumStr  = 2.5
+divisorBigIntNumStr = 25
+
+Bad Run
+dividendNumStr = -12555  XXXXX THIS IS WRONG
+dividendBigIntNumStr = -12555
+
+divisorNumStr  = 2.5
+divisorBigIntNumStr = 25
 
  ----------------------------------------------------
 bigIntMathDivideNanobot.pairQuotientMod()
 bigintmathdividenanobot.go
+
+Good Run
+bPair.Big1.bigInt = 12555
+bPair.Big2.bigInt = 650
+
+Bad Run #7
+bPair.Big1.bigInt = -125550
+bPair.Big2.bigInt = 15
