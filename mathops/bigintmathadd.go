@@ -3240,6 +3240,7 @@ func (bAdd *BigIntMathAdd) AddPair(bPair BigIntPair) (BigIntNum, error) {
 //	=============
 //
 //	total           *big.Int
+//
 //	  The sum or total of 'b1' and 'b2' input values.
 //
 //	totalPrecision  *big.Int
@@ -3256,7 +3257,7 @@ func (bAdd *BigIntMathAdd) AddPair(bPair BigIntPair) (BigIntNum, error) {
 func (bAdd *BigIntMathAdd) BigIntAdd(
   b1,
   b1Precision,
-  b2,
+  b2 *big.Int,
   b2Precision *big.Int) (total *big.Int, totalPrecision *big.Int, err error) {
 
   total = big.NewInt(0)
@@ -3277,115 +3278,52 @@ func (bAdd *BigIntMathAdd) BigIntAdd(
 
   if b1 == nil {
 
-    b1 = big.NewInt(0)
+    return total, totalPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'b1'",
+      }
+  }
 
+  if b1Precision == nil {
+
+    return total, totalPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'b1'",
+      }
   }
 
   if b2 == nil {
 
-    b2 = big.NewInt(0)
-
+    return total, totalPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'b2'",
+      }
   }
 
-  bigZero := big.NewInt(0)
+  if b2Precision == nil {
 
-  if b1Precision.Cmp(bigZero) == -1 {
+    return total, totalPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'b2Precision'",
+      }
+  }
 
+  total, totalPrecision, err = new(bigIntMathAddNanobot).bigIntAdd(
+    b1, b1Precision, b2, b2Precision, ePrefix)
+
+  if err != nil {
     return total, totalPrecision,
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "",
-        ErrContext: fmt.Sprintf("b1Precision='%v'", b1Precision.Text(10)),
-        ErrMessage: "Error: Input parameter 'b1Precision' is LESS THAN ZERO!",
+        ErrContext: fmt.Sprintf("b1='%v'\nb1Precision='%v'\nb2='%v'\nb2Precision='%v' ",
+          b1.Text(10), b1Precision.Text(10), b2.Text(10), b2Precision.Text(10)),
+        ErrMessage: err.Error(),
       }
-  }
-
-  if b2Precision.Cmp(bigZero) == -1 {
-
-    return total, totalPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("b2Precision='%v'", b2Precision.Text(10)),
-        ErrMessage: "Error: Input parameter 'b2Precision' is LESS THAN ZERO!",
-      }
-  }
-
-  if b1.Cmp(bigZero) == 0 &&
-    b2.Cmp(bigZero) == 0 {
-
-    total = big.NewInt(0)
-
-    totalPrecision = big.NewInt(0)
-
-    return total, totalPrecision, nil
-  }
-
-  bigTen := big.NewInt(10)
-
-  delta := big.NewInt(0)
-
-  scale := big.NewInt(0)
-
-  if b1Precision.Cmp(b2Precision) == 0 {
-
-    total = big.NewInt(0).Add(b1, b2)
-
-    totalPrecision = big.NewInt(0).Set(b1Precision)
-
-  } else if b1Precision.Cmp(b2Precision) == 1 {
-    // b1Precision > b2Precision
-    delta = big.NewInt(0).Sub(b1Precision, b2Precision)
-
-    scale = big.NewInt(0).Exp(bigTen, delta, nil)
-
-    b2ToScale := big.NewInt(0).Mul(b2, scale)
-
-    total = big.NewInt(0).Add(b1, b2ToScale)
-
-    totalPrecision = big.NewInt(0).Set(b1Precision)
-
-  } else {
-    // b2Precision must be GREATER than b1Precision
-    delta = big.NewInt(0).Sub(b2Precision, b1Precision)
-
-    scale = big.NewInt(0).Exp(bigTen, delta, nil)
-
-    b1ToScale := big.NewInt(0).Mul(b1, scale)
-
-    total = big.NewInt(0).Add(b1ToScale, b2)
-
-    totalPrecision = big.NewInt(0).Set(b2Precision)
-
-  }
-
-  if total.Cmp(bigZero) == 0 {
-
-    totalPrecision = big.NewInt(0)
-  }
-
-  // Delete trailing fractional zeros
-  if totalPrecision.Cmp(bigZero) == 1 {
-    //totalPrecision > 0
-
-    scrap := big.NewInt(0)
-
-    biBase10 := big.NewInt(10)
-
-    biBaseZero := big.NewInt(0)
-
-    newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
-
-    bigOne := big.NewInt(1)
-
-    for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1 {
-
-      total.Set(newTotal)
-
-      totalPrecision.Sub(totalPrecision, bigOne)
-
-      newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
-    }
   }
 
   return total, totalPrecision, nil
@@ -3569,13 +3507,13 @@ func (bAdd *BigIntMathAdd) FixedDecimalAdd(
       }
   }
 
-  // TO DO Sub-Source BigIntMathAdd.BigIntAdd()
   bIResult, bIPrecision, err :=
-    new(BigIntMathAdd).BigIntAdd(
+    new(bigIntMathAddNanobot).bigIntAdd(
       b1BigIntValue,
       b1BigIntPrecision,
       b2BigIntValue,
-      b2BigIntPrecision)
+      b2BigIntPrecision,
+      ePrefix)
 
   if err != nil {
 
@@ -3606,84 +3544,3 @@ func (bAdd *BigIntMathAdd) FixedDecimalAdd(
 
   return total, err
 }
-
-// addPairNoNumSeps - Receives a BigIntPair and proceeds to add b1.BigIntNum to
-// b2.BigIntNum.
-//
-// The result is returned as type BigIntNum.
-//
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// default numeric separators (decimal separator, thousands separator and
-// currency symbol).
-/*func (bAdd *BigIntMathAdd) addPairNoNumSeps(bPair BigIntPair) (BigIntNum, error) {
-
-	ePrefix := "BigIntMathAdd.AddPairNoNumSeps()"
-
-	err := bPair.MakePrecisionsEqual()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err := bPair.MakePrecisionsEqual()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigI1, err := bPair.GetBig1BigInt()
-
-	if err != nil {
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigI1, err := bPair.GetBig1BigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigI2, err := bPair.GetBig2BigInt()
-
-	if err != nil {
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigI2, err := bPair.GetBig2BigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	b3 := big.NewInt(0).Add(bigI1, bigI2)
-
-	big2Precision, err := bPair.Big2.GetPrecisionUint()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return bResult, nil
-}
-*/
