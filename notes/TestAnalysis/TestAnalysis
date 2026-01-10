@@ -1,11 +1,17 @@
+************************************************************
+Test Analysis
+************************************************************
 
-1157
-TestBigIntMathDivide_IntAryModuloToIntAry_05 in xt_bigintmathdivide_06_test.go
-=== RUN   TestBigIntMathDivide_IntAryModuloToIntAry_05
-    xt_bigintmathdivide_06_test.go:7445: TestBigIntMathDivide_IntAryModuloToIntAry_05
+
+
+1191
+TestBigIntMathDivide_INumMgrFracQuotientArray_01 in xt_bigintmathdivide_07_test.go
+=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_01
+    xt_bigintmathdivide_07_test.go:3984: TestBigIntMathDivide_INumMgrFracQuotientArray_01
         Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '0055'
-          Actual Modulo = '0,055'
+        Because actualEqualsExpectedResults == 'false'
+        Cycle 'k' Value = '0'
+        Expected Results Value = '4.2'
+          Actual Results Value = '-4.2'
 
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_05 (0.00s)
+--- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_01 (0.01s)

@@ -3834,11 +3834,9 @@ func TestBigIntMathDivide_INumMgrFracQuotientArray_01(t *testing.T) {
 
 	expectedResults := make([]BigIntNum, lenDividends)
 
-	var dec Decimal
-
 	for i := 0; i < lenDividends; i++ {
 
-		dec, err = new(Decimal).NewNumStrWithNumSeps(dividendArrayStr[i], usaNumSeps)
+		dec, err := new(Decimal).NewNumStrWithNumSeps(dividendArrayStr[i], usaNumSeps)
 
 		if err != nil {
 			t.Errorf("%v\n"+
