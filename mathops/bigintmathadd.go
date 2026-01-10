@@ -69,15 +69,15 @@ func (bAdd *BigIntMathAdd) AddBigInts(
       }
   }
 
-  biNum, err := new(BigIntMathAdd).AddBigIntNums(b1BigInNum, b2BigInNum)
+  biNum, err := new(bigIntMathAddMacrobot).addBigIntNums(b1BigInNum, b2BigInNum, ePrefix)
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix: ePrefix.String(),
-        ReturnFunc: "biNum, err := new(BigIntMathAdd).\n" +
-          "    AddBigIntNums(b1BigInNum, b2BigInNum)",
+        ReturnFunc: "biNum, err := nnew(bigIntMathAddMacrobot).\n" +
+          "  addBigIntNums(b1BigInNum, b2BigInNum, ePrefix)",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
@@ -86,12 +86,15 @@ func (bAdd *BigIntMathAdd) AddBigInts(
   return biNum, nil
 }
 
-// AddBigIntNums - Adds two BigIntNums and returns the result in a new
-// BigIntNum instance
+// AddBigIntNums
 //
-// The BigIntNum 'result' returned by this addition operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// which were copied from input parameter 'b1'.
+//	Adds two BigIntNums and returns the result in a new BigIntNum
+//	instance.
+//
+//	The BigIntNum 'result' returned by this addition operation will
+//	contain numeric separators (decimal separator, thousands
+//	separator and currency symbol) which were copied from input
+//	parameter 'b1'.
 func (bAdd *BigIntMathAdd) AddBigIntNums(b1 BigIntNum, b2 BigIntNum) (BigIntNum, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -107,32 +110,22 @@ func (bAdd *BigIntMathAdd) AddBigIntNums(b1 BigIntNum, b2 BigIntNum) (BigIntNum,
     return BigIntNum{}, err
   }
 
-  bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)
+  finalResult, err := new(bigIntMathAddMacrobot).addBigIntNums(
+    b1, b2, ePrefix)
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "finalResult, err := new(bigIntMathAddMacrobot).\n" +
+          "  addBigIntNums(b1, b2, ePrefix)",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
 
-  addResult, err := new(bigIntMathAddMicrobot).addPair(bPair, ePrefix)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-  return addResult, err
+  return finalResult, err
 }
 
 // AddBigIntNumArray - Adds an Array of 'BigIntNum' types and returns the result
@@ -2274,15 +2267,15 @@ func (bAdd *BigIntMathAdd) AddNumStrArray(
         }
     }
 
-    // TO DO - bAdd.AddBigIntNums should be sub-sourced
-    finalResult, err = bAdd.AddBigIntNums(finalResult, b2Num)
+    finalResult, err = new(bigIntMathAddMacrobot).addBigIntNums(finalResult, b2Num, ePrefix)
 
     if err != nil {
 
       return finalResult,
         &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "finalResult, err = bAdd.AddBigIntNums(finalResult, b2Num)",
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathAddMacrobot).\n" +
+            "  addBigIntNums(finalResult, b2Num, ePrefix)",
           ErrContext: fmt.Sprintf("index= %d nNumStr='%v'", i, numStrs[i]),
           ErrMessage: err.Error(),
         }
@@ -2409,8 +2402,9 @@ func (bAdd *BigIntMathAdd) AddNumStrOutputToArray(
 
       return []string{},
         &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "result, err := bAdd.AddPair(bigPair)",
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, err := new(bigIntMathAddMicrobot).\n" +
+            "  addPair(bigPair, ePrefix)",
           ErrContext: fmt.Sprintf("i='%v' NumStr='%v'", i, numStrs[i]),
           ErrMessage: err.Error(),
         }
@@ -2533,21 +2527,21 @@ func (bAdd *BigIntMathAdd) AddNumStrSeries(
         }
     }
 
-    // TO DO - bAdd.AddBigIntNums should be sub-sourced
-    finalResult, err = bAdd.AddBigIntNums(finalResult, b2Num)
+    finalResult, err = new(bigIntMathAddMacrobot).addBigIntNums(finalResult, b2Num, ePrefix)
 
     if err != nil {
 
       return finalResult,
         &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "b2Num, err := new(BigIntNum).NewNumStrWithNumSeps(numStr, numSeps)",
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "b2Num, err := new(bigIntMathAddMacrobot).\n" +
+            "  addBigIntNums(finalResult, b2Num, ePrefix)",
           ErrContext: fmt.Sprintf("i='%v'\nNumStr='%v'", i, numStr),
           ErrMessage: err.Error(),
         }
     }
 
-  }
+  } // End of for i, numStr := range numStrs Loop
 
   err = finalResult.SetNumericSeparatorsToDefaultIfEmpty()
 
@@ -2603,16 +2597,18 @@ func (bAdd *BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, erro
       }
   }
 
-  // TO DO - bAdd.AddBigIntNums should be sub-sourced
-  finalResult, err := bAdd.AddPair(bPair)
+  finalResult, err := new(bigIntMathAddMicrobot).addPair(bPair, ePrefix)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by bAdd.AddPair(bPair).\n"+
-        "Error= %v\n",
-        ePrefix.String(),
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "finalResult, err := new(bigIntMathAddMicrobot).\n" +
+          "  addPair(bPair, ePrefix)",
+        ErrContext: "",
+        ErrMessage: "",
+      }
   }
 
   return finalResult, nil

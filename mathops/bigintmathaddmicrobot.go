@@ -38,7 +38,7 @@ func (bIMathAddMicro *bigIntMathAddMicrobot) addPair(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntMathAddNanobot.addPairNoNumSeps",
+		"bigIntMathAddMicrobot.addPair",
 		"")
 
 	if err != nil {
