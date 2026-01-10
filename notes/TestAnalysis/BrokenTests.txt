@@ -4,22 +4,6 @@ Broken Tests
 ***********************************************************
 
 
-1312
-=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
-    xt_bigintmathdivide_08_test.go:3413: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '0.055'
-          Actual Modulo = '0'
-
---- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03 (0.00s)
-=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
-    xt_bigintmathdivide_08_test.go:3712: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '2.5'
-          Actual Modulo = '0'
-
 --- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
     xt_bigintmathdivide_08_test.go:3904: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05

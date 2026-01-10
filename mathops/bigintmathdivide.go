@@ -7796,6 +7796,19 @@ func (bIDivide *BigIntMathDivide) NumStrDtoModuloToNumStrDto(
 			}
 	}
 
+	err = modulo.IsValid("Validating final modulo")
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = modulo.IsValid(\"Validating final modulo\")",
+				ErrContext: "Final validatin of result 'modulo' FAILED!",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	return modulo, nil
 }
 
