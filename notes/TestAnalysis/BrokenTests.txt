@@ -2,14 +2,7 @@
 Broken Tests
 
 ***********************************************************
-=== RUN   TestBigIntMathDivide_INumMgrModulo_05
-    xt_bigintmathdivide_07_test.go:5793: TestBigIntMathDivide_INumMgrModulo_05
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '55'
-          Actual Modulo = '0,055'
 
---- FAIL: TestBigIntMathDivide_INumMgrModulo_05 (0.00s)
 
 1258
 === RUN   TestBigIntMathDivide_NumStrFracQuotient_05
