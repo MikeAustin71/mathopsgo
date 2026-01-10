@@ -3780,38 +3780,38 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
   expectedModuloStr := "0,055"
   maxPrecision := uint(15)
 
-  expectedNumSeps := NumericSeparatorDto{}
+  frenchNumSeps := NumericSeparatorDto{}
   frenchDecSeparator := ','
   frenchThousandsSeparator := ' '
   frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+  frenchNumSeps.DecimalSeparator = frenchDecSeparator
+  frenchNumSeps.ThousandsSeparator = frenchThousandsSeparator
+  frenchNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+  err := frenchNumSeps.IsValid("Validating frenchNumSeps")
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+      "err = frenchNumSeps.IsValid('Validating frenchNumSeps')\n"+
+      "frenchNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, frenchNumSeps.String(), err.Error())
     return
   }
 
   usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
+  dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &frenchNumSeps)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)\n"+
+      "dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &frenchNumSeps)\n"+
       "dividendStr='%v'\n"+
-      "expectedNumSeps='%v'\n"+
+      "frenchNumSeps='%v'\n"+
       "Error='%v'\n\n",
-      ePrefix, dividendStr, expectedNumSeps.String(), err.Error())
+      ePrefix, dividendStr, frenchNumSeps.String(), err.Error())
     return
   }
 
@@ -3835,6 +3835,17 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
     return
   }
 
+  if dividendStr != dividendNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because dividendStr != dividendNumStr\n"+
+      "Expected dividendNumStr = '%v'\n"+
+      "  Actual dividendNumStr = '%v'\n\n",
+      ePrefix, dividendStr, dividendNumStr)
+
+    return
+  }
+
   dividendNumSeps, err := dividend.GetNumericSeparatorsDto()
 
   if err != nil {
@@ -3846,18 +3857,18 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
     return
   }
 
-  if !expectedNumSeps.Equal(dividendNumSeps) {
+  if !frenchNumSeps.Equal(dividendNumSeps) {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Because expectedNumSeps != dividendNumSeps\n"+
+      "Because frenchNumSeps != dividendNumSeps\n"+
       "Expected dividendNumSeps = '%v'\n"+
       "  Actual dividendNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), dividendNumSeps.String())
+      ePrefix, frenchNumSeps.String(), dividendNumSeps.String())
 
     return
   }
 
-  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(divisorStr, &usaNumSeps)
 
   if err != nil {
     t.Errorf("Error returned by:\n"+
@@ -3900,27 +3911,27 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
     return
   }
 
-  if !expectedNumSeps.Equal(divisorNumSeps) {
+  if !usaNumSeps.Equal(divisorNumSeps) {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Because expectedNumSeps != divisorNumSeps\n"+
+      "Because usaNumSeps != divisorNumSeps\n"+
       "Expected divisorNumSeps = '%v'\n"+
       "  Actual divisorNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), divisorNumSeps.String())
+      ePrefix, usaNumSeps.String(), divisorNumSeps.String())
 
     return
   }
 
-  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &expectedNumSeps)
+  expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(expectedModuloStr, &frenchNumSeps)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedModulo, err := new(NumStrDto).NewNumStrWithNumSeps(\n"+
-      "  expectedModuloStr, &expectedNumSeps)\n"+
+      "  expectedModuloStr, &frenchNumSeps)\n"+
       "expectedModuloStr= '%v'\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error= '%v'\n\n", ePrefix, expectedModuloStr, expectedNumSeps.String(), err.Error())
+      "frenchNumSeps= '%v'\n"+
+      "Error= '%v'\n\n", ePrefix, expectedModuloStr, frenchNumSeps.String(), err.Error())
     return
   }
 
@@ -3955,34 +3966,34 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
     return
   }
 
-  if !expectedNumSeps.Equal(expectedModuloNumSeps) {
+  if !frenchNumSeps.Equal(expectedModuloNumSeps) {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Because expectedNumSeps != expectedModuloNumSeps\n"+
+      "Because frenchNumSeps != expectedModuloNumSeps\n"+
       "Expected expectedModuloNumSeps = '%v'\n"+
       "  Actual expectedModuloNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), expectedModuloNumSeps.String())
+      ePrefix, frenchNumSeps.String(), expectedModuloNumSeps.String())
 
     return
   }
 
   moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(
-    dividend, divisor, expectedNumSeps, maxPrecision)
+    dividend, divisor, frenchNumSeps, maxPrecision)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "moduloNDto, err := new(BigIntMathDivide).NumStrDtoModuloToNumStrDto(\n"+
-      "  dividendStr, divisorStr, expectedNumSeps, maxPrecision)\n"+
+      "  dividendStr, divisorStr, frenchNumSeps, maxPrecision)\n"+
       "dividendStr= '%v'\n"+
       "divisorStr= '%v'\n"+
-      "expectedNumSeps= '%v'\n"+
+      "frenchNumSeps= '%v'\n"+
       "maxPrecision= '%v'\n"+
       "Error='%v'\n\n",
       ePrefix,
       dividendStr,
       divisorStr,
-      expectedNumSeps.String(),
+      frenchNumSeps.String(),
       maxPrecision,
       err.Error())
 
@@ -4045,12 +4056,12 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05(t *testing.T) {
     return
   }
 
-  expectedModuloNumSeps, err = expectedNumSeps.CopyOut(false)
+  expectedModuloNumSeps, err = frenchNumSeps.CopyOut(false)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
-      "expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+      "expectedModuloNumSeps, err := frenchNumSeps.CopyOut(false)\n"+
       "Error='%v'\n\n", ePrefix, err.Error())
 
     return

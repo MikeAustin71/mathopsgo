@@ -3,16 +3,6 @@ Broken Tests
 
 ***********************************************************
 
-
---- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04 (0.00s)
-=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
-    xt_bigintmathdivide_08_test.go:3904: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
-        Error: Unexpected Result!
-        Because expectedNumSeps != divisorNumSeps
-        Expected divisorNumSeps = 'Decimal Separator: ','  Thousands Separator: ' '  Currency Symbol: '€''
-          Actual divisorNumSeps = 'Decimal Separator: '.'  Thousands Separator: ','  Currency Symbol: '$''
-
---- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
     xt_bigintmathdivide_08_test.go:4315: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
         Error: Unexpected Result!
