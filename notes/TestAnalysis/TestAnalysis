@@ -2,12 +2,22 @@
 Test Analysis
 ************************************************************
 
-TestBigIntMathDivide_INumMgrModulo_05 in xt_bigintmathdivide_07_test.go
-=== RUN   TestBigIntMathDivide_INumMgrModulo_05
-    xt_bigintmathdivide_07_test.go:5793: TestBigIntMathDivide_INumMgrModulo_05
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '55'
-          Actual Modulo = '0,055'
 
---- FAIL: TestBigIntMathDivide_INumMgrModulo_05 (0.00s)
+TestBigIntMathDivide_NumStrFracQuotient_05  in xt_bigintmathdivide_07_test.go
+1258
+=== RUN   TestBigIntMathDivide_NumStrFracQuotient_05
+    xt_bigintmathdivide_07_test.go:8851: TestBigIntMathDivide_NumStrFracQuotient_05
+        Error returned by:
+        err = expectedNumSeps.IsValid('Validating expectedNumSeps')
+        expectedNumSeps= 'Decimal Separator: '\x00'  Thousands Separator: '\x00'  Currency Symbol: '\x00''
+        Error= 'NumericSeparatorDto.IsValid
+        Validating expectedNumSeps
+        numSepsDtoElectron.isValidNumStrDto
+        NumericSeparatorDto is Invalid!
+        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
+        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
+        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
+
+        '
+
+--- FAIL: TestBigIntMathDivide_NumStrFracQuotient_05 (0.00s)

@@ -4,24 +4,6 @@ Broken Tests
 ***********************************************************
 
 
-1258
-=== RUN   TestBigIntMathDivide_NumStrFracQuotient_05
-    xt_bigintmathdivide_07_test.go:8851: TestBigIntMathDivide_NumStrFracQuotient_05
-        Error returned by:
-        err = expectedNumSeps.IsValid('Validating expectedNumSeps')
-        expectedNumSeps= 'Decimal Separator: '\x00'  Thousands Separator: '\x00'  Currency Symbol: '\x00''
-        Error= 'NumericSeparatorDto.IsValid
-        Validating expectedNumSeps
-        numSepsDtoElectron.isValidNumStrDto
-        NumericSeparatorDto is Invalid!
-        ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!
-        ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!
-        ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
-
-        '
-
---- FAIL: TestBigIntMathDivide_NumStrFracQuotient_05 (0.00s)
-
 1312
 === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
     xt_bigintmathdivide_08_test.go:3413: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
