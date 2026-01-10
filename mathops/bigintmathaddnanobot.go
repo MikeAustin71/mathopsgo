@@ -1,15 +1,15 @@
 package mathops
 
 import (
-  "fmt"
-  "math/big"
-  "sync"
+	"fmt"
+	"math/big"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntMathAddNanobot struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // addPairNoNumSeps
@@ -23,122 +23,122 @@ type bigIntMathAddNanobot struct {
 //	will contain default numeric separators (decimal separator,
 //	thousands separator and currency symbol).
 func (bIMathAddNano *bigIntMathAddNanobot) addPairNoNumSeps(
-  bPair BigIntPair,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	bPair BigIntPair,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bIMathAddNano.lock == nil {
-    bIMathAddNano.lock = new(sync.Mutex)
-  }
+	if bIMathAddNano.lock == nil {
+		bIMathAddNano.lock = new(sync.Mutex)
+	}
 
-  bIMathAddNano.lock.Lock()
+	bIMathAddNano.lock.Lock()
 
-  defer bIMathAddNano.lock.Unlock()
+	defer bIMathAddNano.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathAddNanobot.addPairNoNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathAddNanobot.addPairNoNumSeps",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = bPair.IsValid("Validating 'bPair'")
+	err = bPair.IsValid("Validating 'bPair'")
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bPair.IsValid(\"Validating 'bPair'\")",
-        ErrContext: "Input parameter 'bPair' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.IsValid(\"Validating 'bPair'\")",
+				ErrContext: "Input parameter 'bPair' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err := bPair.MakePrecisionsEqual()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err := bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigI1, err := bPair.GetBig1BigInt()
+	bigI1, err := bPair.GetBig1BigInt()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bigI1, err := bPair.GetBig1BigInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bigI1, err := bPair.GetBig1BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigI2, err := bPair.GetBig2BigInt()
+	bigI2, err := bPair.GetBig2BigInt()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bigI2, err := bPair.GetBig2BigInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bigI2, err := bPair.GetBig2BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  b3 := big.NewInt(0).Add(bigI1, bigI2)
+	b3 := big.NewInt(0).Add(bigI1, bigI2)
 
-  big2Precision, err := bPair.Big2.GetPrecisionUint()
+	big2Precision, err := bPair.Big2.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)
+	bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(b3, big2Precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = bResult.IsValid("Validating 'bResult'")
+	err = bResult.IsValid("Validating 'bResult'")
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bResult.IsValid(\"Validating 'bResult'\")",
-        ErrContext: "Final result 'bResult' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bResult.IsValid(\"Validating 'bResult'\")",
+				ErrContext: "Final result 'bResult' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bResult, nil
+	return bResult, nil
 }
 
 // bigIntAdd
@@ -238,173 +238,173 @@ func (bIMathAddNano *bigIntMathAddNanobot) addPairNoNumSeps(
 //	Taken together, 'total' and 'totalPrecision' can define a fixed
 //	length floating point number.
 func (bIMathAddNano *bigIntMathAddNanobot) bigIntAdd(
-  b1 *big.Int,
-  b1Precision *big.Int,
-  b2 *big.Int,
-  b2Precision *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) (
-  total *big.Int, totalPrecision *big.Int, err error) {
+	b1 *big.Int,
+	b1Precision *big.Int,
+	b2 *big.Int,
+	b2Precision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (
+	total *big.Int, totalPrecision *big.Int, err error) {
 
-  if bIMathAddNano.lock == nil {
-    bIMathAddNano.lock = new(sync.Mutex)
-  }
+	if bIMathAddNano.lock == nil {
+		bIMathAddNano.lock = new(sync.Mutex)
+	}
 
-  bIMathAddNano.lock.Lock()
+	bIMathAddNano.lock.Lock()
 
-  defer bIMathAddNano.lock.Unlock()
+	defer bIMathAddNano.lock.Unlock()
 
-  total = big.NewInt(0)
+	total = big.NewInt(0)
 
-  totalPrecision = big.NewInt(0)
+	totalPrecision = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathAddNanobot.bigIntAdd",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathAddNanobot.bigIntAdd",
+		"")
 
-  if err != nil {
-    return total, totalPrecision, err
-  }
+	if err != nil {
+		return total, totalPrecision, err
+	}
 
-  if b1 == nil {
+	if b1 == nil {
 
-    return total, totalPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'b1'",
-      }
-  }
+		return total, totalPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'b1'",
+			}
+	}
 
-  if b1Precision == nil {
+	if b1Precision == nil {
 
-    return total, totalPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'b1'",
-      }
-  }
+		return total, totalPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'b1'",
+			}
+	}
 
-  if b2 == nil {
+	if b2 == nil {
 
-    return total, totalPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'b2'",
-      }
-  }
+		return total, totalPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'b2'",
+			}
+	}
 
-  if b2Precision == nil {
+	if b2Precision == nil {
 
-    return total, totalPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'b2Precision'",
-      }
-  }
+		return total, totalPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'b2Precision'",
+			}
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if b1Precision.Cmp(bigZero) == -1 {
+	if b1Precision.Cmp(bigZero) == -1 {
 
-    return total, totalPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("b1Precision='%v'", b1Precision.Text(10)),
-        ErrMessage: "Error: Input parameter 'b1Precision' is LESS THAN ZERO!",
-      }
-  }
+		return total, totalPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("b1Precision='%v'", b1Precision.Text(10)),
+				ErrMessage: "Error: Input parameter 'b1Precision' is LESS THAN ZERO!",
+			}
+	}
 
-  if b2Precision.Cmp(bigZero) == -1 {
+	if b2Precision.Cmp(bigZero) == -1 {
 
-    return total, totalPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("b2Precision='%v'", b2Precision.Text(10)),
-        ErrMessage: "Error: Input parameter 'b2Precision' is LESS THAN ZERO!",
-      }
-  }
+		return total, totalPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("b2Precision='%v'", b2Precision.Text(10)),
+				ErrMessage: "Error: Input parameter 'b2Precision' is LESS THAN ZERO!",
+			}
+	}
 
-  if b1.Cmp(bigZero) == 0 &&
-    b2.Cmp(bigZero) == 0 {
+	if b1.Cmp(bigZero) == 0 &&
+		b2.Cmp(bigZero) == 0 {
 
-    total = big.NewInt(0)
+		total = big.NewInt(0)
 
-    totalPrecision = big.NewInt(0)
+		totalPrecision = big.NewInt(0)
 
-    return total, totalPrecision, nil
-  }
+		return total, totalPrecision, nil
+	}
 
-  bigTen := big.NewInt(10)
+	bigTen := big.NewInt(10)
 
-  delta := big.NewInt(0)
+	delta := big.NewInt(0)
 
-  scale := big.NewInt(0)
+	scale := big.NewInt(0)
 
-  if b1Precision.Cmp(b2Precision) == 0 {
+	if b1Precision.Cmp(b2Precision) == 0 {
 
-    total = big.NewInt(0).Add(b1, b2)
+		total = big.NewInt(0).Add(b1, b2)
 
-    totalPrecision = big.NewInt(0).Set(b1Precision)
+		totalPrecision = big.NewInt(0).Set(b1Precision)
 
-  } else if b1Precision.Cmp(b2Precision) == 1 {
-    // b1Precision > b2Precision
-    delta = big.NewInt(0).Sub(b1Precision, b2Precision)
+	} else if b1Precision.Cmp(b2Precision) == 1 {
+		// b1Precision > b2Precision
+		delta = big.NewInt(0).Sub(b1Precision, b2Precision)
 
-    scale = big.NewInt(0).Exp(bigTen, delta, nil)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
-    b2ToScale := big.NewInt(0).Mul(b2, scale)
+		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
-    total = big.NewInt(0).Add(b1, b2ToScale)
+		total = big.NewInt(0).Add(b1, b2ToScale)
 
-    totalPrecision = big.NewInt(0).Set(b1Precision)
+		totalPrecision = big.NewInt(0).Set(b1Precision)
 
-  } else {
-    // b2Precision must be GREATER than b1Precision
-    delta = big.NewInt(0).Sub(b2Precision, b1Precision)
+	} else {
+		// b2Precision must be GREATER than b1Precision
+		delta = big.NewInt(0).Sub(b2Precision, b1Precision)
 
-    scale = big.NewInt(0).Exp(bigTen, delta, nil)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
-    b1ToScale := big.NewInt(0).Mul(b1, scale)
+		b1ToScale := big.NewInt(0).Mul(b1, scale)
 
-    total = big.NewInt(0).Add(b1ToScale, b2)
+		total = big.NewInt(0).Add(b1ToScale, b2)
 
-    totalPrecision = big.NewInt(0).Set(b2Precision)
+		totalPrecision = big.NewInt(0).Set(b2Precision)
 
-  }
+	}
 
-  if total.Cmp(bigZero) == 0 {
+	if total.Cmp(bigZero) == 0 {
 
-    totalPrecision = big.NewInt(0)
-  }
+		totalPrecision = big.NewInt(0)
+	}
 
-  // Delete trailing fractional zeros
-  if totalPrecision.Cmp(bigZero) == 1 {
-    //totalPrecision > 0
+	// Delete trailing fractional zeros
+	if totalPrecision.Cmp(bigZero) == 1 {
+		//totalPrecision > 0
 
-    scrap := big.NewInt(0)
+		scrap := big.NewInt(0)
 
-    biBase10 := big.NewInt(10)
+		biBase10 := big.NewInt(10)
 
-    biBaseZero := big.NewInt(0)
+		biBaseZero := big.NewInt(0)
 
-    newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
+		newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
 
-    bigOne := big.NewInt(1)
+		bigOne := big.NewInt(1)
 
-    for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1 {
+		for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1 {
 
-      total.Set(newTotal)
+			total.Set(newTotal)
 
-      totalPrecision.Sub(totalPrecision, bigOne)
+			totalPrecision.Sub(totalPrecision, bigOne)
 
-      newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
-    }
-  }
+			newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
+		}
+	}
 
-  return total, totalPrecision, nil
+	return total, totalPrecision, nil
 }

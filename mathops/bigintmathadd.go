@@ -120,7 +120,7 @@ func (bAdd *BigIntMathAdd) AddBigIntNums(b1 BigIntNum, b2 BigIntNum) (BigIntNum,
       }
   }
 
-  addResult, err := bAdd.AddPair(bPair)
+  addResult, err := new(bigIntMathAddMicrobot).addPair(bPair, ePrefix)
 
   if err != nil {
 
@@ -231,7 +231,7 @@ func (bAdd *BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) (BigIntNum, erro
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "finalResult, err = bAdd.addPairNoNumSeps(bPair, ePrefix)",
+          ReturnFunc: "finalResult, err = new(bigIntMathAddNanobot).addPairNoNumSeps(bPair, ePrefix)",
           ErrContext: "Addition Operation FAILED!",
           ErrMessage: err.Error(),
         }
@@ -2403,8 +2403,7 @@ func (bAdd *BigIntMathAdd) AddNumStrOutputToArray(
         }
     }
 
-    // TO DO - bAdd.AddBigIntNums should be sub-sourced
-    result, err := bAdd.AddPair(bigPair)
+    result, err := new(bigIntMathAddMicrobot).addPair(bigPair, ePrefix)
 
     if err != nil {
 

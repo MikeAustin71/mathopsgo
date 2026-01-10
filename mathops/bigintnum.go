@@ -2481,6 +2481,7 @@ func (bNum *BigIntNum) IsValid(callingMethodName string) error {
 		return err
 	}
 
+	// Also validates Numeric Separators
 	return new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
 		ePrefix)
