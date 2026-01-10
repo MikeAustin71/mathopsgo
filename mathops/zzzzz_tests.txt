@@ -679,15 +679,15 @@
 === RUN   TestBigIntMathAdd_AddIntAryArray_03
 --- PASS: TestBigIntMathAdd_AddIntAryArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
---- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.01s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_02
 --- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_03
 --- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_01
---- PASS: TestBigIntMathAdd_AddIntArySeries_01 (0.00s)
+--- PASS: TestBigIntMathAdd_AddIntArySeries_01 (0.02s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_02
---- PASS: TestBigIntMathAdd_AddIntArySeries_02 (0.00s)
+--- PASS: TestBigIntMathAdd_AddIntArySeries_02 (0.02s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_03
 --- PASS: TestBigIntMathAdd_AddIntArySeries_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStr_01
@@ -949,13 +949,7 @@
 === RUN   TestBigIntMathDivide_BigIntNumModulo_14
 --- PASS: TestBigIntMathDivide_BigIntNumModulo_14 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_15
-    xt_bigintmathdivide_03_test.go:2794: TestBigIntMathDivide_BigIntNumModulo_15
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected modulo = '55'
-          Actual modulo = '0,055'
-        
---- FAIL: TestBigIntMathDivide_BigIntNumModulo_15 (0.00s)
+--- PASS: TestBigIntMathDivide_BigIntNumModulo_15 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_16
 --- PASS: TestBigIntMathDivide_BigIntNumModulo_16 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_17
@@ -1097,7 +1091,7 @@
 === RUN   TestBigIntMathDivide_FixedDecimalFracQuotient_16
 --- PASS: TestBigIntMathDivide_FixedDecimalFracQuotient_16 (0.00s)
 === RUN   TestBigIntMathDivide_FixedDecimalFracQuotient_17
---- PASS: TestBigIntMathDivide_FixedDecimalFracQuotient_17 (0.00s)
+--- PASS: TestBigIntMathDivide_FixedDecimalFracQuotient_17 (0.01s)
 === RUN   TestBigIntMathDivide_FixedDecimalFracQuotient_18
 --- PASS: TestBigIntMathDivide_FixedDecimalFracQuotient_18 (0.00s)
 === RUN   TestBigIntMathDivide_FixedDecimalFracQuotient_19
@@ -1135,36 +1129,15 @@
 === RUN   TestBigIntMathDivide_IntAryFracQuotient_07
 --- PASS: TestBigIntMathDivide_IntAryFracQuotient_07 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_01
-    xt_bigintmathdivide_06_test.go:4232: TestBigIntMathDivide_IntAryFracQuotientArray_01
-        Error: Unexpected Result!
-        Because actualEqualsExpectedResults == 'false'
-        Cycle 'k' Value = '0'
-        Expected Results Value = '04.2'
-          Actual Results Value = '4.2'
-        
---- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_01 (0.01s)
+--- PASS: TestBigIntMathDivide_IntAryFracQuotientArray_01 (0.01s)
 === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_02
-    xt_bigintmathdivide_06_test.go:4484: TestBigIntMathDivide_IntAryFracQuotientArray_02
-        Error: Unexpected Result!
-        Because actualEqualsExpectedResults == 'false'
-        Cycle 'k' Value = '0'
-        Expected Results Value = '04,2'
-          Actual Results Value = '4,2'
-        
---- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_02 (0.01s)
+--- PASS: TestBigIntMathDivide_IntAryFracQuotientArray_02 (0.01s)
 === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_03
-    xt_bigintmathdivide_06_test.go:4732: TestBigIntMathDivide_IntAryFracQuotientArray_03
-        Error: Unexpected Result!
-        Because actualEqualsExpectedResults == 'false'
-        Cycle 'k' Value = '0'
-        Expected Results Value = '04.2'
-          Actual Results Value = '4.2'
-        
---- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_03 (0.01s)
+--- PASS: TestBigIntMathDivide_IntAryFracQuotientArray_03 (0.02s)
 === RUN   TestBigIntMathDivide_IntAryModulo_01
 --- PASS: TestBigIntMathDivide_IntAryModulo_01 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModulo_02
---- PASS: TestBigIntMathDivide_IntAryModulo_02 (0.01s)
+--- PASS: TestBigIntMathDivide_IntAryModulo_02 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModulo_03
 --- PASS: TestBigIntMathDivide_IntAryModulo_03 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModulo_04
@@ -1174,53 +1147,23 @@
 === RUN   TestBigIntMathDivide_IntAryModulo_06
 --- PASS: TestBigIntMathDivide_IntAryModulo_06 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_01
-    xt_bigintmathdivide_06_test.go:6446: TestBigIntMathDivide_IntAryModuloToIntAry_01
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '00.055'
-          Actual Modulo = '0.055'
-        
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_01 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryModuloToIntAry_01 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_02
-    xt_bigintmathdivide_06_test.go:6679: TestBigIntMathDivide_IntAryModuloToIntAry_02
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '-00.055'
-          Actual Modulo = '-0.055'
-        
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_02 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryModuloToIntAry_02 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_03
-    xt_bigintmathdivide_06_test.go:6912: TestBigIntMathDivide_IntAryModuloToIntAry_03
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '00.055'
-          Actual Modulo = '0.055'
-        
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_03 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryModuloToIntAry_03 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_04
-    xt_bigintmathdivide_06_test.go:7177: TestBigIntMathDivide_IntAryModuloToIntAry_04
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '02.5'
-          Actual Modulo = '2.5'
-        
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_04 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryModuloToIntAry_04 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_05
     xt_bigintmathdivide_06_test.go:7445: TestBigIntMathDivide_IntAryModuloToIntAry_05
         Error: Unexpected Result!
         Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '00055'
+        Expected Modulo = '0055'
           Actual Modulo = '0,055'
         
 --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_05 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_06
-    xt_bigintmathdivide_06_test.go:7709: TestBigIntMathDivide_IntAryModuloToIntAry_05
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected Modulo = '00.055'
-          Actual Modulo = '0.055'
-        
---- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_06 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryModuloToIntAry_06 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrQuotientMod_01
 --- PASS: TestBigIntMathDivide_INumMgrQuotientMod_01 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrQuotientMod_02
@@ -1236,7 +1179,7 @@
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_01
 --- PASS: TestBigIntMathDivide_INumMgrFracQuotient_01 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_02
---- PASS: TestBigIntMathDivide_INumMgrFracQuotient_02 (0.00s)
+--- PASS: TestBigIntMathDivide_INumMgrFracQuotient_02 (0.01s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_03
 --- PASS: TestBigIntMathDivide_INumMgrFracQuotient_03 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_04
@@ -1357,9 +1300,9 @@
 === RUN   TestBigIntMathDivide_NumStrDtoFracQuotient_07
 --- PASS: TestBigIntMathDivide_NumStrDtoFracQuotient_07 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoFracQuotientArray_01
---- PASS: TestBigIntMathDivide_NumStrDtoFracQuotientArray_01 (0.01s)
+--- PASS: TestBigIntMathDivide_NumStrDtoFracQuotientArray_01 (0.02s)
 === RUN   TestBigIntMathDivide_NumStrDtoFracQuotientArray_02
---- PASS: TestBigIntMathDivide_NumStrDtoFracQuotientArray_02 (0.02s)
+--- PASS: TestBigIntMathDivide_NumStrDtoFracQuotientArray_02 (0.01s)
 === RUN   TestBigIntMathDivide_NumStrDtoFracQuotientArray_03
 --- PASS: TestBigIntMathDivide_NumStrDtoFracQuotientArray_03 (0.01s)
 === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_01
@@ -1543,11 +1486,11 @@
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_06
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_01
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_01 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_02
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_02 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_03
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_03 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
@@ -1556,9 +1499,9 @@
                  Expected Number String = '1199582666426376575446779648'.
                    Result Number String = '11995826664,26376575446779648'.
         Original Expected Number String = '11995826664,26376575446779648'
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.00s)
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_03
@@ -1568,65 +1511,40 @@
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_06
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_06 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_06 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_01
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_02
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_02 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_03
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_04
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_04 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumSeries_04 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
     xt_bigintmathmultiply_03_test.go:1431: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
         Error: Expected BigIntNum='22123521767579232'.
         Instead, BigIntNum= '22123521767579232'.
         
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05 (0.00s)
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_01
-    xt_bigintmathmultiply_03_test.go:1613: TestBigIntMathMultiply_MultiplyDecimal_01
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='123.32' 
-        Converted IntAry Multiplier= '0123.32'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimal_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_02
-    xt_bigintmathmultiply_03_test.go:1953: TestBigIntMathMultiply_MultiplyDecimal_02
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='57638422123.327890123' 
-        Converted IntAry Multiplier= '057638422123.327890123'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_02 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimal_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_03
-    xt_bigintmathmultiply_03_test.go:2295: TestBigIntMathMultiply_MultiplyDecimal_03
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='57638422123.327890123' 
-        Converted IntAry Multiplier= '057638422123.327890123'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_03 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimal_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_04
-    xt_bigintmathmultiply_03_test.go:2640: TestBigIntMathMultiply_MultiplyDecimal_04
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='-89637.9876' 
-        Converted IntAry Multiplier= '-089637.9876'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_04 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimal_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_05
-    xt_bigintmathmultiply_03_test.go:2983: TestBigIntMathMultiply_MultiplyDecimal_05
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='-89637.9876' 
-        Converted IntAry Multiplier= '-089637.9876'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_05 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimal_05 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_06
-    xt_bigintmathmultiply_03_test.go:3376: TestBigIntMathMultiply_MultiplyDecimal_06
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='123.32' 
-        Converted IntAry Multiplier= '0123.32'
+    xt_bigintmathmultiply_03_test.go:3576: TestBigIntMathMultiply_MultiplyDecimal_06
+        Error: Expected Decimal and Actual Result Decimal are unequal!
+        Expected Decimal= '287594572'.
+        Result Decimal  = '287594572'.
+        
 --- FAIL: TestBigIntMathMultiply_MultiplyDecimal_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalArray_01
---- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_01 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_01 (0.03s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_02 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalArray_03
@@ -1640,9 +1558,9 @@
         
 --- FAIL: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01
---- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02
---- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_03
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_04
@@ -1650,95 +1568,55 @@
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_05
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_05 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_06
---- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_06 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_01
-    xt_bigintmathmultiply_04_test.go:2585: TestBigIntMathMultiply_MultiplyDecimalSeries_01
-        Error: Expected iaNumStr='2'.
-        Instead, iaNumStr='02'.
-        
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_02
-    xt_bigintmathmultiply_04_test.go:2971: TestBigIntMathMultiply_MultiplyDecimalSeries_02
-        Error: Expected iaNumStr='37.9876'.
-        Instead, iaNumStr='037.9876'.
-        
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_02 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_02 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_03
-    xt_bigintmathmultiply_04_test.go:3356: TestBigIntMathMultiply_MultiplyDecimalSeries_03
-        Error: Expected iaNumStr='10.1'.
-        Instead, iaNumStr='010.1'.
-        
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_03 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_03 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_04
-    xt_bigintmathmultiply_04_test.go:3741: TestBigIntMathMultiply_MultiplyDecimalSeries_04
-        Error: Expected iaNumStr='-5.123456'.
-        Instead, iaNumStr='-05.123456'.
-        
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_04 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_04 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
-    xt_bigintmathmultiply_04_test.go:4147: TestBigIntMathMultiply_MultiplyDecimalSeries_05
-        Error: Expected iaNumStr='10.1'.
-        Instead, iaNumStr='010.1'.
+    xt_bigintmathmultiply_04_test.go:4346: TestBigIntMathMultiply_MultiplyDecimalSeries_05
+        Error: Expected BigIntNum='22123521767579232'.
+        Instead, BigIntNum= '22123521767579232'.
         
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_05 (0.00s)
+--- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_01
-    xt_bigintmathmultiply_05_test.go:218: TestBigIntMathMultiply_MultiplyIntAry_01
-        Error: Unexpected Result!
-        Because!!!!
-        Expected resultNumStr = '02875.94572'
-          Actual resultNumStr = '2875.94572'
-        
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAry_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_02
-    xt_bigintmathmultiply_05_test.go:486: TestBigIntMathMultiply_MultiplyIntAry_02
-        Error: Unexpected Result!
-        Because expectedIntAryNumStr != resultNumStr
-        Expected resultNumStr = '030987680500513189125.14259702468435'
-          Actual resultNumStr = '30987680500513189125.14259702468435'
-        
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_02 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAry_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_03
-    xt_bigintmathmultiply_05_test.go:754: TestBigIntMathMultiply_MultiplyIntAry_03
-        Error: Unexpected Result!
-        Because!!!!
-        Expected resultNumStr = '-030987680500513189125.14259702468435'
-          Actual resultNumStr = '-30987680500513189125.14259702468435'
-        
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_03 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAry_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_04
-    xt_bigintmathmultiply_05_test.go:1022: TestBigIntMathMultiply_MultiplyIntAry_04
-        Error: Unexpected Result!
-        Because expectedIntAryNumStr != resultNumStr
-        Expected resultNumStr = '022197234145.3632'
-          Actual resultNumStr = '22197234145.3632'
-        
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_04 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAry_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_05
 --- PASS: TestBigIntMathMultiply_MultiplyIntAry_05 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_06
     xt_bigintmathmultiply_05_test.go:1654: TestBigIntMathMultiply_MultiplyIntAry_06
         Error: Unexpected Result!
         Because!!!!
-        Expected resultNumStr = '022197234145,3632'
+        Expected resultNumStr = '22197234145,3632'
           Actual resultNumStr = '8034968820,97775376'
         
 --- FAIL: TestBigIntMathMultiply_MultiplyIntAry_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryArray_01
---- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_01 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_01 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_02 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryArray_03
---- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_03 (0.03s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_03 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_04 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryArray_05
---- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_05 (0.04s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAryArray_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryOutputToArray_01
---- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_01 (0.03s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryOutputToArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_02 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryOutputToArray_03
---- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_03 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_03 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryOutputToArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyIntAryOutputToArray_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntAryOutputToArray_05
@@ -1754,7 +1632,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyIntArySeries_04
 --- PASS: TestBigIntMathMultiply_MultiplyIntArySeries_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyIntArySeries_05
---- PASS: TestBigIntMathMultiply_MultiplyIntArySeries_05 (0.03s)
+--- PASS: TestBigIntMathMultiply_MultiplyIntArySeries_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_01
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_02
@@ -1764,21 +1642,21 @@
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_05
---- PASS: TestBigIntMathMultiply_MultiplyNumStrs_05 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrs_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_06
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_07
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_07 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_01
---- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_01 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_01 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_02
---- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_02 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_02 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_03
---- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_03 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_03 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_05
---- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_05 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrArray_06
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_06 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01
@@ -1800,7 +1678,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_03
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_03 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_04
---- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_04 (0.02s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_05
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDto_01
@@ -1844,7 +1722,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03
---- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_05
@@ -1906,7 +1784,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_16
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_16 (0.01s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_17
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_17 (0.02s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_17 (0.01s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_18
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_18 (0.01s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_19
@@ -1938,7 +1816,7 @@
         Expected resultNumStr = '0.53944021275349493325378163087104'
           Actual resultNumStr = '0.04958106061648387328804455293999'
         
---- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.07s)
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.06s)
 === RUN   TestBigIntMathPower_BigIntPwrIteration_01
 --- PASS: TestBigIntMathPower_BigIntPwrIteration_01 (0.00s)
 === RUN   TestBigIntMathPower_BigIntPwrIteration_02
@@ -2010,7 +1888,7 @@
 === RUN   TestBigIntMathPower_BigIntToNegativeIntegerPower_15
 --- PASS: TestBigIntMathPower_BigIntToNegativeIntegerPower_15 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_01
---- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_01 (0.01s)
+--- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_01 (0.02s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_02
 --- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_02 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_03
@@ -2020,9 +1898,9 @@
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_05
 --- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_05 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_06
---- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_06 (0.01s)
+--- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_06 (0.02s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_07
---- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_07 (0.02s)
+--- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_07 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_08
 --- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_08 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_09
@@ -2048,7 +1926,7 @@
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_03
 --- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_03 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_04
---- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_04 (0.04s)
+--- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_04 (0.03s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_05
 --- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_05 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_06
@@ -2179,7 +2057,7 @@
         
 --- FAIL: TestBigIntMathPower_Pwr_21 (0.02s)
 === RUN   TestBigIntMathPower_Pwr_22
---- PASS: TestBigIntMathPower_Pwr_22 (28.07s)
+--- PASS: TestBigIntMathPower_Pwr_22 (27.69s)
 === RUN   TestBigIntMathPower_Pwr_23
     xt_bigintmathpower_03_test.go:5142: TestBigIntMathPower_Pwr_23
         Error: Unexpected Result!
@@ -2419,7 +2297,7 @@
 === RUN   TestBigIntMathSubtract_SubtractDecimalOutputToArray_04
 --- PASS: TestBigIntMathSubtract_SubtractDecimalOutputToArray_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractDecimalOutputToArray_05
---- PASS: TestBigIntMathSubtract_SubtractDecimalOutputToArray_05 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractDecimalOutputToArray_05 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractDecimalOutputToArray_06
 --- PASS: TestBigIntMathSubtract_SubtractDecimalOutputToArray_06 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractDecimalSeries_01
@@ -2433,171 +2311,171 @@
 === RUN   TestBigIntMathSubtract_SubtractDecimalSeries_05
 --- PASS: TestBigIntMathSubtract_SubtractDecimalSeries_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAry_01
-    xt_bigintmathsubtract_02_test.go:3692: TestBigIntMathSubtract_SubtractIntAry_01
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '123.32'
-          Actual iaMinuendNumStr = '0123.32'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAry_01 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAry_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAry_02
-    xt_bigintmathsubtract_02_test.go:3998: TestBigIntMathSubtract_SubtractIntAry_02
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '949321.6712'
-          Actual iaMinuendNumStr = '0949321.6712'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAry_02 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAry_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAry_03
-    xt_bigintmathsubtract_02_test.go:4303: TestBigIntMathSubtract_SubtractIntAry_03
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '-5876458.56789012'
-          Actual iaMinuendNumStr = '-05876458.56789012'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAry_03 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAry_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAry_04
-    xt_bigintmathsubtract_02_test.go:4608: TestBigIntMathSubtract_SubtractIntAry_04
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '-289.673849'
-          Actual iaMinuendNumStr = '-0289.673849'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAry_04 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAry_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAry_05
-    xt_bigintmathsubtract_02_test.go:4935: TestBigIntMathSubtract_SubtractIntAry_05
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '123.32'
-          Actual iaMinuendNumStr = '0123.32'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAry_05 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAry_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryArray_01
-    xt_bigintmathsubtract_02_test.go:5272: TestBigIntMathSubtract_SubtractIntAryArray_01
-        Error: Number String Values Not Equal
-        Because minuendStr != decMinuendNumStr 
-        Expected iaMinuendNumStr = '7328941.123456'
-          Actual iaMinuendNumStr = '07328941.123456'
+    xt_bigintmathsubtract_02_test.go:5380: TestBigIntMathSubtract_SubtractIntAryArray_01
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '7328941.123456'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by: 
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error: 
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error: 
+          This BigIntNum Instance is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        bNum.bigInt was reset to zero.
+        
+        
+        
+        '
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryArray_02
-    xt_bigintmathsubtract_02_test.go:5590: TestBigIntMathSubtract_SubtractIntAryArray_02
-        Error: Number String Values Not Equal
-        Because minuendStr != decMinuendNumStr 
-        Expected iaMinuendNumStr = '-18973642.1234567'
-          Actual iaMinuendNumStr = '-018973642.1234567'
+    xt_bigintmathsubtract_02_test.go:5697: TestBigIntMathSubtract_SubtractIntAryArray_02
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '-18973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by: 
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error: 
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error: 
+          This BigIntNum Instance is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        bNum.bigInt was reset to zero.
+        
+        
+        
+        '
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryArray_03
-    xt_bigintmathsubtract_02_test.go:5907: TestBigIntMathSubtract_SubtractIntAryArray_03
-        Error: Number String Values Not Equal
-        Because minuendStr != decMinuendNumStr 
-        Expected iaMinuendNumStr = '1718973642.1234567'
-          Actual iaMinuendNumStr = '01718973642.1234567'
+    xt_bigintmathsubtract_02_test.go:6014: TestBigIntMathSubtract_SubtractIntAryArray_03
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by: 
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error: 
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error: 
+          This BigIntNum Instance is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        bNum.bigInt was reset to zero.
+        
+        
+        
+        '
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryArray_04
-    xt_bigintmathsubtract_02_test.go:6224: TestBigIntMathSubtract_SubtractIntAryArray_04
-        Error: Number String Values Not Equal
-        Because minuendStr != decMinuendNumStr 
-        Expected iaMinuendNumStr = '-1718973642.1234567'
-          Actual iaMinuendNumStr = '-01718973642.1234567'
+    xt_bigintmathsubtract_02_test.go:6331: TestBigIntMathSubtract_SubtractIntAryArray_04
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '-1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by: 
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error: 
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error: 
+          This BigIntNum Instance is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        bNum.bigInt was reset to zero.
+        
+        
+        
+        '
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryArray_05
-    xt_bigintmathsubtract_02_test.go:6563: TestBigIntMathSubtract_SubtractIntAryArray_05
-        Error: Number String Values Not Equal
-        Because minuendStr != decMinuendNumStr 
-        Expected iaMinuendNumStr = '7328941.123456'
-          Actual iaMinuendNumStr = '07328941.123456'
+    xt_bigintmathsubtract_02_test.go:6673: TestBigIntMathSubtract_SubtractIntAryArray_05
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '7328941.123456'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by: 
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error: 
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error: 
+          This BigIntNum Instance is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        bNum.bigInt was reset to zero.
+        
+        
+        
+        '
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_01
-    xt_bigintmathsubtract_02_test.go:6880: TestBigIntMathSubtract_SubtractIntAryOutputToArray_01
-        Error: Number String Values Not Equal
-        Because minuendStr != minuendIntAryNumStr 
-        Expected minuendIntAryNumStr = '100'
-          Actual minuendIntAryNumStr = '0100'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_01 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_02
-    xt_bigintmathsubtract_02_test.go:7167: TestBigIntMathSubtract_SubtractIntAryOutputToArray_02
-        Error: Number String Values Not Equal
-        Because minuendStr != minuendIntAryNumStr 
-        Expected minuendIntAryNumStr = '5051'
-          Actual minuendIntAryNumStr = '05051'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_02 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_02 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_03
-    xt_bigintmathsubtract_02_test.go:7454: TestBigIntMathSubtract_SubtractIntAryOutputToArray_03
-        Error: Number String Values Not Equal
-        Because minuendStr != minuendIntAryNumStr 
-        Expected minuendIntAryNumStr = '-20051.974578'
-          Actual minuendIntAryNumStr = '-020051.974578'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_03 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_03 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_04
-    xt_bigintmathsubtract_02_test.go:7836: TestBigIntMathSubtract_SubtractIntAryOutputToArray_04
-        Error: Number String Values NOT Equal
-        Because expectedStrs[0] != expectedResultsNumStr 
-        Expected expectedResultsNumStr = '-476.543798'
-          Actual expectedResultsNumStr = '-0476.543798'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_04 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_04 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_05
-    xt_bigintmathsubtract_02_test.go:8028: TestBigIntMathSubtract_SubtractIntAryOutputToArray_05
-        Error: Number String Values Not Equal
-        Because minuendStr != minuendIntAryNumStr 
-        Expected minuendIntAryNumStr = '98.2'
-          Actual minuendIntAryNumStr = '098.2'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_05 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_05 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntAryOutputToArray_06
-    xt_bigintmathsubtract_02_test.go:8337: TestBigIntMathSubtract_SubtractIntAryOutputToArray_06
-        Error: Number String Values Not Equal
-        Because minuendStr != minuendIntAryNumStr 
-        Expected minuendIntAryNumStr = '100'
-          Actual minuendIntAryNumStr = '0100'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntAryOutputToArray_06 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntAryOutputToArray_06 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractIntArySeries_01
-    xt_bigintmathsubtract_03_test.go:64: TestBigIntMathSubtract_SubtractIntArySeries_01
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '7328941.123456'
-          Actual iaMinuendNumStr = '07328941.123456'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntArySeries_01 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntArySeries_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntArySeries_02
-    xt_bigintmathsubtract_03_test.go:420: TestBigIntMathSubtract_SubtractIntArySeries_02
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '-18973642.1234567'
-          Actual iaMinuendNumStr = '-018973642.1234567'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntArySeries_02 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntArySeries_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntArySeries_03
-    xt_bigintmathsubtract_03_test.go:776: TestBigIntMathSubtract_SubtractIntArySeries_03
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '1718973642.1234567'
-          Actual iaMinuendNumStr = '01718973642.1234567'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntArySeries_03 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntArySeries_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntArySeries_04
-    xt_bigintmathsubtract_03_test.go:1132: TestBigIntMathSubtract_SubtractIntArySeries_04
-        Error: Number String Values Not Equal
-        Because minuendStr != iaMinuendNumStr
-        Expected iaMinuendNumStr = '-1718973642.1234567'
-          Actual iaMinuendNumStr = '-01718973642.1234567'
-        
---- FAIL: TestBigIntMathSubtract_SubtractIntArySeries_04 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractIntArySeries_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractIntArySeries_05
     xt_bigintmathsubtract_03_test.go:1526: TestBigIntMathSubtract_SubtractIntArySeries_05
         Error: Number String Values Not Equal
         Because minuendStr != iaMinuendNumStr
         Expected iaMinuendNumStr = '7328941.123456'
-          Actual iaMinuendNumStr = '07328941,123456'
+          Actual iaMinuendNumStr = '7328941,123456'
         
 --- FAIL: TestBigIntMathSubtract_SubtractIntArySeries_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractINumMgr_01
@@ -2745,13 +2623,7 @@
 === RUN   TestBigIntMathSubtract_SubtractINumMgrOutputToArray_02
 --- PASS: TestBigIntMathSubtract_SubtractINumMgrOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractINumMgrOutputToArray_03
-    xt_bigintmathsubtract_03_test.go:5706: TestBigIntMathSubtract_SubtractINumMgrOutputToArray_03
-        Error: Number String Values NOT Equal
-        Because expectedStrs[0] != ia2NumStr 
-        Expected ia2NumStr[0] = '-20528.518376'
-          Actual ia2NumStr[0] = '-020528.518376'
-        
---- FAIL: TestBigIntMathSubtract_SubtractINumMgrOutputToArray_03 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractINumMgrOutputToArray_03 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractINumMgrOutputToArray_04
 --- PASS: TestBigIntMathSubtract_SubtractINumMgrOutputToArray_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractINumMgrOutputToArray_05
@@ -2959,7 +2831,7 @@
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_04
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_04 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05
---- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05 (0.00s)
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05 (0.01s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_06
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_06 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoSeries_01
@@ -3568,13 +3440,7 @@
 === RUN   TestBigIntNum_GetNumStrDto_01
 --- PASS: TestBigIntNum_GetNumStrDto_01 (0.00s)
 === RUN   TestBigIntNum_GetIntAry_01
-    xt_bigintnum_03_test.go:2686: TestBigIntNum_GetIntAry_01
-        Error: Expected bI Number String Values NOT Equal
-        Because expectedNumStr != intAryNumberStr 
-        Expected intAryNumberStr = '-847921684.347'
-          Actual intAryNumberStr = '-0847921684.347'
-        
---- FAIL: TestBigIntNum_GetIntAry_01 (0.00s)
+--- PASS: TestBigIntNum_GetIntAry_01 (0.00s)
 === RUN   TestBigIntNum_GetIntegerPart_01
     xt_bigintnum_03_test.go:2885: TestBigIntNum_GetIntegerPart_01
         Error: Big Int Values ARE NOT EQUAL!
@@ -3722,19 +3588,19 @@
 === RUN   TestBigIntNum_IsZero_05
 --- PASS: TestBigIntNum_IsZero_05 (0.00s)
 === RUN   TestBigIntNum_IntAry_01
-    xt_bigintnum_03_test.go:9948: TestBigIntNum_IntAry_01
-        Error: Expected ia Number String Values ARE NOT Equal!
-        Because expectedNumStr != iaNumberStr 
-        Expected iaNumberStr = '123.456'
-          Actual iaNumberStr = '0123.456'
+    xt_bigintnum_03_test.go:10015: TestBigIntNum_IntAry_01
+        Error: expected & ia Scale Factors ARE NOT EQUAL!
+        Because expectedScale != iaScaleFactor
+        Expected iaScaleFactor = '1000'
+          Actual iaScaleFactor = '1000'
         
 --- FAIL: TestBigIntNum_IntAry_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_02
-    xt_bigintnum_03_test.go:10492: TestBigIntNum_IntAry_02
-        Error: Expected ia Number String Values ARE NOT Equal!
-        Because expectedNumStr != iaNumberStr 
-        Expected iaNumberStr = '-123.456'
-          Actual iaNumberStr = '-0123.456'
+    xt_bigintnum_03_test.go:10559: TestBigIntNum_IntAry_02
+        Error: expected & ia Scale Factors ARE NOT EQUAL!
+        Because expectedScale != iaScaleFactor
+        Expected iaScaleFactor = '1000'
+          Actual iaScaleFactor = '1000'
         
 --- FAIL: TestBigIntNum_IntAry_02 (0.00s)
 === RUN   TestBigIntNum_Multiply_01
@@ -3878,13 +3744,7 @@
 === RUN   TestBigIntNum_NewINumMgr_01
 --- PASS: TestBigIntNum_NewINumMgr_01 (0.00s)
 === RUN   TestBigIntNum_NewINumMgr_02
-    xt_bigintnum_04_test.go:10148: TestBigIntNum_NewINumMgr_02
-        Error: Original Number String Values ARE NOT Equal
-        Because expectedNumberStr != iaNumberStr 
-        Expected iaNumberStr = '123.456'
-          Actual iaNumberStr = '0123.456'
-        
---- FAIL: TestBigIntNum_NewINumMgr_02 (0.00s)
+--- PASS: TestBigIntNum_NewINumMgr_02 (0.00s)
 === RUN   TestBigIntNum_NewINumMgr_03
 --- PASS: TestBigIntNum_NewINumMgr_03 (0.00s)
 === RUN   TestBigIntNum_NewINumMgr_04
@@ -4174,7 +4034,7 @@
 === RUN   TestBigIntNum_SetNumStr_16
 --- PASS: TestBigIntNum_SetNumStr_16 (0.00s)
 === RUN   TestBigIntNum_SetNumStr_17
---- PASS: TestBigIntNum_SetNumStr_17 (0.15s)
+--- PASS: TestBigIntNum_SetNumStr_17 (0.16s)
 === RUN   TestBigIntNum_SetNumStr_18
 --- PASS: TestBigIntNum_SetNumStr_18 (0.00s)
 === RUN   TestBigIntNum_ShiftPrecisionLeft_01
@@ -4588,21 +4448,9 @@
 === RUN   TestDecimal_Inverse_01
 --- PASS: TestDecimal_Inverse_01 (0.00s)
 === RUN   TestDecimal_MakeDecimalFromIntAry_01
-    xt_decimal_02_test.go:50: TestDecimal_MakeDecimalFromIntAry_01
-        Error: Unexpected Result!
-        Because expectedNumberStr != intArrayNumberStr
-        Expected intArrayNumberStr = '982.123456'
-          Actual intArrayNumberStr = '0982.123456'
-        
---- FAIL: TestDecimal_MakeDecimalFromIntAry_01 (0.00s)
+--- PASS: TestDecimal_MakeDecimalFromIntAry_01 (0.00s)
 === RUN   TestDecimal_MakeDecimalFromIntAry_02
-    xt_decimal_02_test.go:197: TestDecimal_MakeDecimalFromIntAry_02
-        Error: Unexpected Result!
-        Because expectedNumberStr != intArrayNumberStr
-        Expected intArrayNumberStr = '-982.123456'
-          Actual intArrayNumberStr = '-0982.123456'
-        
---- FAIL: TestDecimal_MakeDecimalFromIntAry_02 (0.00s)
+--- PASS: TestDecimal_MakeDecimalFromIntAry_02 (0.00s)
 === RUN   TestDecimal_Multiply_01
 --- PASS: TestDecimal_Multiply_01 (0.00s)
 === RUN   TestDecimal_Multiply_02
@@ -5827,7 +5675,7 @@
         Expected decNumFinalResultNumberStr = '646.70558582734148834284281249154'
           Actual decNumFinalResultNumberStr = '21023577110067451559.55504976997313011304987362231'
         
---- FAIL: TestDecimal_Pow_02 (0.04s)
+--- FAIL: TestDecimal_Pow_02 (0.05s)
 === RUN   TestDecimal_Pow_03
     xt_decimal_04_test.go:584: TestDecimal_Pow_03
         Error: Original and Decimal Number String Values ARE NOT Equal
@@ -5993,7 +5841,7 @@
 === RUN   TestDecimal_ShiftPrecisionRight_03
 --- PASS: TestDecimal_ShiftPrecisionRight_03 (0.00s)
 === RUN   TestDecimal_SquareRoot_01
---- PASS: TestDecimal_SquareRoot_01 (0.02s)
+--- PASS: TestDecimal_SquareRoot_01 (0.01s)
 === RUN   TestDecimal_SquareRoot_02
 --- PASS: TestDecimal_SquareRoot_02 (0.01s)
 === RUN   TestDecimal_SquareRoot_03
@@ -6021,75 +5869,63 @@
 === RUN   TestFracIntAry_GetRationalValue_04
 --- PASS: TestFracIntAry_GetRationalValue_04 (0.21s)
 === RUN   TestFracIntAry_GetRationalValue_05
-    xt_fintary_01_test.go:468: TestFracIntAry_GetRationalValue_05
-        Error: Original and IntArray Numerator Number String Values ARE NOT Equal
-        Because numeratorNumStr != intAryNumeratorNumberStr 
-        Expected intAryNumeratorNumberStr = '3'
-          Actual intAryNumeratorNumberStr = '03'
-        
---- FAIL: TestFracIntAry_GetRationalValue_05 (0.00s)
+--- PASS: TestFracIntAry_GetRationalValue_05 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_06
-    xt_fintary_01_test.go:655: TestFracIntAry_GetRationalValue_06
-        Error: Original and IntArray Numerator Number String Values ARE NOT Equal
-        Because numeratorNumStr != intAryNumeratorNumberStr 
-        Expected intAryNumeratorNumberStr = '-3'
-          Actual intAryNumeratorNumberStr = '-03'
-        
---- FAIL: TestFracIntAry_GetRationalValue_06 (0.00s)
+--- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
-    xt_fintary_01_test.go:844: TestFracIntAry_GetRationalValue_07
-        Error: Original and IntArray Numerator Number String Values ARE NOT Equal
-        Because numeratorNumStr != intAryNumeratorNumberStr 
-        Expected intAryNumeratorNumberStr = '3.1'
-          Actual intAryNumeratorNumberStr = '03.1'
+    xt_fintary_01_test.go:945: TestFracIntAry_GetRationalValue_07
+        Error: Expected and Actual Numerator Number Strings ARE NOT Equal
+        Because numeratorNumStr != numerartorPtrIntNumberStr 
+        Expected numerartorPtrIntNumberStr = '3.1'
+          Actual numerartorPtrIntNumberStr = '147619047619'
         
---- FAIL: TestFracIntAry_GetRationalValue_07 (0.00s)
+--- FAIL: TestFracIntAry_GetRationalValue_07 (0.08s)
 === RUN   TestFracIntAry_NewFracIntAry_01
-    xt_fintary_01_test.go:1029: TestFracIntAry_NewFracIntAry_01
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '3.1'
-          Actual intAryNumberNumStr = '03.1'
+    xt_fintary_01_test.go:1093: TestFracIntAry_NewFracIntAry_01
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '10'
+          Actual fracIntAryDenominatorNumStr = '31'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_01 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_02
-    xt_fintary_01_test.go:1149: TestFracIntAry_NewFracIntAry_02
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '50'
-          Actual intAryNumberNumStr = '050'
+    xt_fintary_01_test.go:1213: TestFracIntAry_NewFracIntAry_02
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '1'
+          Actual fracIntAryDenominatorNumStr = '50'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_02 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_03
-    xt_fintary_01_test.go:1269: TestFracIntAry_NewFracIntAry_03
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '-50'
-          Actual intAryNumberNumStr = '-050'
+    xt_fintary_01_test.go:1333: TestFracIntAry_NewFracIntAry_03
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '1'
+          Actual fracIntAryDenominatorNumStr = '-50'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_03 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_04
-    xt_fintary_01_test.go:1389: TestFracIntAry_NewFracIntAry_04
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '50.72589'
-          Actual intAryNumberNumStr = '050.72589'
+    xt_fintary_01_test.go:1453: TestFracIntAry_NewFracIntAry_04
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '100000'
+          Actual fracIntAryDenominatorNumStr = '5072589'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_04 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_05
-    xt_fintary_01_test.go:1509: TestFracIntAry_NewFracIntAry_05
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '5072589'
-          Actual intAryNumberNumStr = '05072589'
+    xt_fintary_01_test.go:1573: TestFracIntAry_NewFracIntAry_05
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '1'
+          Actual fracIntAryDenominatorNumStr = '5072589'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_05 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_06
-    xt_fintary_01_test.go:1629: TestFracIntAry_NewFracIntAry_06
-        Error: Original and IntArray Number String Values ARE NOT Equal
-        Because originalNumberStr != intAryNumberNumStr 
-        Expected intAryNumberNumStr = '-50.72589'
-          Actual intAryNumberNumStr = '-050.72589'
+    xt_fintary_01_test.go:1693: TestFracIntAry_NewFracIntAry_06
+        Error: Unexpected Result!
+        Because expectedDenominatorNumStr != fracIntAryDenominatorNumStr
+        Expected fracIntAryDenominatorNumStr = '100000'
+          Actual fracIntAryDenominatorNumStr = '-5072589'
         
 --- FAIL: TestFracIntAry_NewFracIntAry_06 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_01
@@ -6195,7 +6031,7 @@
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.26s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.27s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04
     xt_fixeddecimalnthroot_02_test.go:2476: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04
         Error: Unexpected Result!
@@ -6209,7 +6045,7 @@
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_07
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_07 (0.00s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_07 (0.01s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_08
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_08 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_09
@@ -6270,26 +6106,26 @@
 --- FAIL: TestIntAry_AddMultipleToThis_01 (0.00s)
 panic: runtime error: index out of range [8] with length 4 [recovered, repanicked]
 
-goroutine 1983 [running]:
-testing.tRunner.func1.2({0x7ff763f646c0, 0xc000014150})
+goroutine 1959 [running]:
+testing.tRunner.func1.2({0x7ff6617666c0, 0xc000014210})
 	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
 testing.tRunner.func1()
 	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
-panic({0x7ff763f646c0?, 0xc000014150?})
+panic({0x7ff6617666c0?, 0xc000014210?})
 	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
-github.com/mikeaustin71/mathops.(*intAryMathAddUtility).addToSubtract(0xc0002a29a8, 0xc0002a3820, 0x0, 0xc0002a3568, 0x0, 0x1, 0x1, 0x0, 0x0, 0xc0001e0500)
+github.com/mikeaustin71/mathops.(*intAryMathAddUtility).addToSubtract(0xc0002e49a8, 0xc0002e5820, 0x0, 0xc0002e5568, 0x0, 0x1, 0x1, 0x0, 0x0, 0xc0002b5b80)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathaddutility.go:172 +0x1471
-github.com/mikeaustin71/mathops.(*intAryMathAddMechanics).runTotal(0x0?, 0xc0002a3820, 0x0, 0xc0002a3568, 0x0, 0x0?)
+github.com/mikeaustin71/mathops.(*intAryMathAddMechanics).runTotal(0x0?, 0xc0002e5820, 0x0, 0xc0002e5568, 0x0, 0x0?)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathaddmechanics.go:239 +0xa56
-github.com/mikeaustin71/mathops.(*IntAryMathAdd).RunTotal(0x0?, 0xc0002a3820, 0xc0002a3568)
+github.com/mikeaustin71/mathops.(*IntAryMathAdd).RunTotal(0x0?, 0xc0002e5820, 0xc0002e5568)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathadd.go:205 +0xb7
-github.com/mikeaustin71/mathops.(*IntAry).AddMultipleToThis(0xc0002a3820, {0xc0002a3ee8, 0x5, 0x1f?})
+github.com/mikeaustin71/mathops.(*IntAry).AddMultipleToThis(0xc0002e5820, {0xc0002e5ee8, 0x5, 0x1f?})
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:626 +0x108
-github.com/mikeaustin71/mathops.TestIntAry_AddMultipleToThis_01(0xc00049d500)
+github.com/mikeaustin71/mathops.TestIntAry_AddMultipleToThis_01(0xc00041ec40)
 	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_intary_01_test.go:210 +0x63c
-testing.tRunner(0xc00049d500, 0x7ff76408ea50)
+testing.tRunner(0xc00041ec40, 0x7ff661892220)
 	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
 created by testing.(*T).Run in goroutine 1
 	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
 exit status 2
-FAIL	github.com/mikeaustin71/mathops	32.012s
+FAIL	github.com/mikeaustin71/mathops	31.851s

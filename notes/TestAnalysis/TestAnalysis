@@ -1,11 +1,36 @@
 
-****************************************************
-Test Analysis
-****************************************************
-=== RUN   TestBigIntMathDivide_BigIntNumModulo_15
-    xt_bigintmathdivide_03_test.go:2794: TestBigIntMathDivide_BigIntNumModulo_15
-        Error: Unexpected Result!
-        Because expectedModuloEqualsActualModulo == 'false'
-        Expected modulo = '55'
-          Actual modulo = '0,055'
---- FAIL: TestBigIntMathDivide_BigIntNumModulo_15 (0.00s)
+-----------------------------------------------
+zzzzz_Test Line  1137
+ === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_01
+     xt_bigintmathdivide_06_test.go:4232: TestBigIntMathDivide_IntAryFracQuotientArray_01
+         Error: Unexpected Result!
+         Because actualEqualsExpectedResults == 'false'
+         Cycle 'k' Value = '0'
+         Expected Results Value = '04.2'
+           Actual Results Value = '4.2'
+
+ --- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_01 (0.01s)
+
+Set up test to understand why one method produces
+'04.2' and the other '4.2'
+
+Both Produce Bad Results
+(IntAry) NewNumStrWithNumSeps(
+
+IntAry) NewNumStr()
+
+-------------------------------------------
+intAryQuark.setIntAryWithNumStr()
+
+-------------------------------------
+intAryUtility.selectIntAryValidation()
+
+--------------------------------------
+intAryNanobot).setInternalFlags()
+
+------------------------------------
+intAryElectron.setSignificantDigitIdxs()
+Problem is this method set empty
+IntAry's by adding and empty element
+one element ia.intAry[0] = 0
+

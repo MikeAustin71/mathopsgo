@@ -1,51 +1,51 @@
 package mathops
 
 import (
-	"sync"
+  "sync"
 
-	ePref "github.com/MikeAustin71/errpref"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryElectron struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // Empty - Basically resets all the fields of the intAry
 // structure to their 'zero' values.
 func (iAryElectron *intAryElectron) empty(
-	intAry *IntAry) {
+  intAry *IntAry) {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	if intAry == nil {
-		return
-	}
+  if intAry == nil {
+    return
+  }
 
-	intAry.intAry = []uint8{}
-	intAry.intAryLen = 0
-	intAry.integerLen = 0
-	intAry.significantIntegerLen = 0
-	intAry.significantFractionLen = 0
-	intAry.firstDigitIdx = -1
-	intAry.lastDigitIdx = -1
-	intAry.isZeroValue = true
-	intAry.isIntegerZeroValue = true
-	intAry.precision = 0
-	intAry.signVal = 1
+  intAry.intAry = []uint8{}
+  intAry.intAryLen = 0
+  intAry.integerLen = 0
+  intAry.significantIntegerLen = 0
+  intAry.significantFractionLen = 0
+  intAry.firstDigitIdx = -1
+  intAry.lastDigitIdx = -1
+  intAry.isZeroValue = true
+  intAry.isIntegerZeroValue = true
+  intAry.precision = 0
+  intAry.signVal = 1
 
-	intAry.decimalSeparator = '.'
-	intAry.thousandsSeparator = ','
-	intAry.currencySymbol = '$'
+  intAry.decimalSeparator = '.'
+  intAry.thousandsSeparator = ','
+  intAry.currencySymbol = '$'
 
-	intAry.BackUp = new(BackUpIntAry).New()
+  intAry.BackUp = new(BackUpIntAry).New()
 
-	return
+  return
 }
 
 // equals
@@ -63,37 +63,37 @@ func (iAryElectron *intAryElectron) empty(
 //	If any errors are encountered, a boolean value of 'false' is
 //	returned
 func (iAryElectron *intAryElectron) equals(
-	iAry1 *IntAry,
-	iAry2 *IntAry) bool {
+  iAry1 *IntAry,
+  iAry2 *IntAry) bool {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	if iAry1 == nil || iAry2 == nil {
-		return false
-	}
+  if iAry1 == nil || iAry2 == nil {
+    return false
+  }
 
-	iaNanobot := new(intAryNanobot)
-	var err error
+  iaNanobot := new(intAryNanobot)
+  var err error
 
-	err = iaNanobot.setInternalFlags(iAry1, nil)
+  err = iaNanobot.setInternalFlags(iAry1, nil)
 
-	if err != nil {
-		return false
-	}
+  if err != nil {
+    return false
+  }
 
-	err = iaNanobot.setInternalFlags(iAry2, nil)
+  err = iaNanobot.setInternalFlags(iAry2, nil)
 
-	if err != nil {
-		return false
-	}
+  if err != nil {
+    return false
+  }
 
-	return new(intAryBoson).dataFieldEqualityTest(iAry1, iAry2)
+  return new(intAryBoson).dataFieldEqualityTest(iAry1, iAry2)
 }
 
 // newIntAry
@@ -101,32 +101,32 @@ func (iAryElectron *intAryElectron) equals(
 // Generates a new instance of IntAry
 func (iAryElectron *intAryElectron) newIntAry() IntAry {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	iAry := IntAry{}
-	iAry.intAry = []uint8{}
-	iAry.intAryLen = 0
-	iAry.integerLen = 0
-	iAry.significantIntegerLen = 0
-	iAry.significantFractionLen = 0
-	iAry.firstDigitIdx = -1
-	iAry.lastDigitIdx = -1
-	iAry.isZeroValue = true
-	iAry.isIntegerZeroValue = true
-	iAry.precision = 0
-	iAry.signVal = 1
-	iAry.decimalSeparator = '.'
-	iAry.thousandsSeparator = ','
-	iAry.currencySymbol = '$'
-	iAry.BackUp = new(BackUpIntAry).New()
+  iAry := IntAry{}
+  iAry.intAry = []uint8{}
+  iAry.intAryLen = 0
+  iAry.integerLen = 0
+  iAry.significantIntegerLen = 0
+  iAry.significantFractionLen = 0
+  iAry.firstDigitIdx = -1
+  iAry.lastDigitIdx = -1
+  iAry.isZeroValue = true
+  iAry.isIntegerZeroValue = true
+  iAry.precision = 0
+  iAry.signVal = 1
+  iAry.decimalSeparator = '.'
+  iAry.thousandsSeparator = ','
+  iAry.currencySymbol = '$'
+  iAry.BackUp = new(BackUpIntAry).New()
 
-	return iAry
+  return iAry
 }
 
 // isValidIntAry
@@ -151,43 +151,43 @@ func (iAryElectron *intAryElectron) newIntAry() IntAry {
 //	 To call both isValidIntAry and isValidNumSeps, call
 //	 'intAryLepton.isValidIntary'
 func (iAryElectron *intAryElectron) isValidIntAry(
-	intAry *IntAry,
-	errName string) error {
+  intAry *IntAry,
+  errName string) error {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		errName,
-		"intAryElectron.isValidIntAry()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    errName,
+    "intAryElectron.isValidIntAry()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	var iaLepton = new(intAryLepton)
+  var iaLepton = new(intAryLepton)
 
-	err = iaLepton.isValidNumericValues(
-		intAry, ePrefix.XCpy("Testing Numeric Values").String())
+  err = iaLepton.isValidNumericValues(
+    intAry, ePrefix.XCpy("Testing Numeric Values").String())
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	err = iaLepton.isValidNumSeps(
-		intAry, ePrefix.XCpy("Testing Numeric Separators").String())
+  err = iaLepton.isValidNumSeps(
+    intAry, ePrefix.XCpy("Testing Numeric Separators").String())
 
-	return err
+  return err
 }
 
 // setIntAryLength
@@ -195,41 +195,41 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 //	Calculates the current IntAry string length and sets internal
 //	variable 'ia.intAryLen'.
 func (iAryElectron *intAryElectron) setIntAryLength(
-	intAry *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryElectron.setIntAryLength()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryElectron.setIntAryLength()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	intAry.intAryLen = len(intAry.intAry)
+  intAry.intAryLen = len(intAry.intAry)
 
-	return nil
+  return nil
 }
 
 // setSignificantDigitIdxs - Finds the first
@@ -242,131 +242,146 @@ func (iAryElectron *intAryElectron) setIntAryLength(
 // in the intAry) and records that index in the
 // local field variable, 'lastDigitIdx'.
 func (iAryElectron *intAryElectron) setSignificantDigitIdxs(
-	ia *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  ia *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryElectron.setSignificantDigitIdxs()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryElectron.setSignificantDigitIdxs()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if ia == nil {
+  if ia == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
 
-	err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
-		ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
+  err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
+    ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(\n" +
-				"ia, ePrefix.XCpy(Set 'ia' Numeric Separators))",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(\n" +
+        "ia, ePrefix.XCpy(Set 'ia' Numeric Separators))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	ia.intAryLen = len(ia.intAry)
+  ia.intAryLen = len(ia.intAry)
 
-	if ia.intAryLen == ia.precision {
+  if ia.intAryLen == 0 {
 
-		ia.intAry = append([]uint8{0}, ia.intAry...)
+    ia.firstDigitIdx = -1
+    ia.lastDigitIdx = -1
 
-		ia.intAryLen++
-	}
+    ia.integerLen = 0
+    ia.significantIntegerLen = 0
+    ia.significantFractionLen = 0
+    ia.isZeroValue = true
+    ia.isIntegerZeroValue = true
+    ia.precision = 0
 
-	if ia.intAryLen < ia.precision {
+    return nil
+  }
 
-		deltaZeros := ia.precision - ia.intAryLen + 1
+  if ia.intAryLen == ia.precision {
 
-		zeroAry := make([]uint8, deltaZeros)
+    ia.intAry = append([]uint8{0}, ia.intAry...)
 
-		ia.intAry = append(zeroAry, ia.intAry...)
+    ia.intAryLen++
+  }
 
-		ia.intAryLen += deltaZeros
-	}
+  if ia.intAryLen < ia.precision {
 
-	ia.firstDigitIdx = -1
-	ia.lastDigitIdx = -1
+    deltaZeros := ia.precision - ia.intAryLen + 1
 
-	ia.integerLen = 0
-	ia.significantIntegerLen = 0
-	ia.significantFractionLen = 0
+    zeroAry := make([]uint8, deltaZeros)
 
-	lastIntIdx := ia.intAryLen - ia.precision - 1
-	ia.isZeroValue = true
-	ia.isIntegerZeroValue = true
-	ia.integerLen = ia.intAryLen - ia.precision
+    ia.intAry = append(zeroAry, ia.intAry...)
 
-	for i := 0; i < ia.intAryLen; i++ {
-		if ia.intAry[i] > 0 {
+    ia.intAryLen += deltaZeros
+  }
 
-			ia.isZeroValue = false
+  ia.firstDigitIdx = -1
+  ia.lastDigitIdx = -1
 
-			if i < ia.integerLen {
+  ia.integerLen = 0
+  ia.significantIntegerLen = 0
+  ia.significantFractionLen = 0
 
-				ia.isIntegerZeroValue = false
-			}
-		}
+  lastIntIdx := ia.intAryLen - ia.precision - 1
+  ia.isZeroValue = true
+  ia.isIntegerZeroValue = true
+  ia.integerLen = ia.intAryLen - ia.precision
 
-		// At minimum, there should be a single
-		// leading zero before the decimal point.
-		// Example 0.000.
-		if i == lastIntIdx && ia.intAry[i] == 0 {
+  for i := 0; i < ia.intAryLen; i++ {
+    if ia.intAry[i] > 0 {
 
-			if ia.firstDigitIdx == -1 {
+      ia.isZeroValue = false
 
-				ia.firstDigitIdx = i
-			}
+      if i < ia.integerLen {
 
-		}
+        ia.isIntegerZeroValue = false
+      }
+    }
 
-		if ia.intAry[i] > 0 {
+    // At minimum, there should be a single
+    // leading zero before the decimal point.
+    // Example 0.000.
+    if i == lastIntIdx && ia.intAry[i] == 0 {
 
-			if ia.firstDigitIdx == -1 {
+      if ia.firstDigitIdx == -1 {
 
-				ia.firstDigitIdx = i
-			}
+        ia.firstDigitIdx = i
+      }
 
-			ia.lastDigitIdx = i
-		}
+    }
 
-	}
+    if ia.intAry[i] > 0 {
 
-	ia.significantIntegerLen = ia.intAryLen - ia.precision - ia.firstDigitIdx
+      if ia.firstDigitIdx == -1 {
 
-	if ia.lastDigitIdx >= ia.integerLen {
+        ia.firstDigitIdx = i
+      }
 
-		ia.significantFractionLen = ia.lastDigitIdx - ia.integerLen + 1
-	} else {
+      ia.lastDigitIdx = i
+    }
 
-		ia.significantFractionLen = 0
-	}
+  }
 
-	return nil
+  ia.significantIntegerLen = ia.intAryLen - ia.precision - ia.firstDigitIdx
+
+  if ia.lastDigitIdx >= ia.integerLen {
+
+    ia.significantFractionLen = ia.lastDigitIdx - ia.integerLen + 1
+  } else {
+
+    ia.significantFractionLen = 0
+  }
+
+  return nil
 }
 
 // setSignificantDigitIdxsNoErrors
@@ -387,109 +402,109 @@ func (iAryElectron *intAryElectron) setSignificantDigitIdxs(
 //	If any of the Numeric Separators are invalid, theu will be
 //	reset to USA Defaults.
 func (iAryElectron *intAryElectron) setSignificantDigitIdxsNoErrors(
-	ia *IntAry) {
+  ia *IntAry) {
 
-	if iAryElectron.lock == nil {
-		iAryElectron.lock = new(sync.Mutex)
-	}
+  if iAryElectron.lock == nil {
+    iAryElectron.lock = new(sync.Mutex)
+  }
 
-	iAryElectron.lock.Lock()
+  iAryElectron.lock.Lock()
 
-	defer iAryElectron.lock.Unlock()
+  defer iAryElectron.lock.Unlock()
 
-	if ia == nil {
+  if ia == nil {
 
-		return
-	}
+    return
+  }
 
-	ia.intAryLen = len(ia.intAry)
+  ia.intAryLen = len(ia.intAry)
 
-	if ia.intAryLen == ia.precision {
+  if ia.intAryLen == ia.precision {
 
-		ia.intAry = append([]uint8{0}, ia.intAry...)
+    ia.intAry = append([]uint8{0}, ia.intAry...)
 
-		ia.intAryLen++
-	}
+    ia.intAryLen++
+  }
 
-	if ia.intAryLen < ia.precision {
+  if ia.intAryLen < ia.precision {
 
-		deltaZeros := ia.precision - ia.intAryLen + 1
+    deltaZeros := ia.precision - ia.intAryLen + 1
 
-		zeroAry := make([]uint8, deltaZeros)
+    zeroAry := make([]uint8, deltaZeros)
 
-		ia.intAry = append(zeroAry, ia.intAry...)
+    ia.intAry = append(zeroAry, ia.intAry...)
 
-		ia.intAryLen += deltaZeros
-	}
+    ia.intAryLen += deltaZeros
+  }
 
-	ia.firstDigitIdx = -1
-	ia.lastDigitIdx = -1
+  ia.firstDigitIdx = -1
+  ia.lastDigitIdx = -1
 
-	ia.integerLen = 0
-	ia.significantIntegerLen = 0
-	ia.significantFractionLen = 0
+  ia.integerLen = 0
+  ia.significantIntegerLen = 0
+  ia.significantFractionLen = 0
 
-	lastIntIdx := ia.intAryLen - ia.precision - 1
-	ia.isZeroValue = true
-	ia.isIntegerZeroValue = true
-	ia.integerLen = ia.intAryLen - ia.precision
+  lastIntIdx := ia.intAryLen - ia.precision - 1
+  ia.isZeroValue = true
+  ia.isIntegerZeroValue = true
+  ia.integerLen = ia.intAryLen - ia.precision
 
-	for i := 0; i < ia.intAryLen; i++ {
-		if ia.intAry[i] > 0 {
+  for i := 0; i < ia.intAryLen; i++ {
+    if ia.intAry[i] > 0 {
 
-			ia.isZeroValue = false
+      ia.isZeroValue = false
 
-			if i < ia.integerLen {
+      if i < ia.integerLen {
 
-				ia.isIntegerZeroValue = false
-			}
-		}
+        ia.isIntegerZeroValue = false
+      }
+    }
 
-		// At minimum, there should be a single
-		// leading zero before the decimal point.
-		// Example 0.000.
-		if i == lastIntIdx && ia.intAry[i] == 0 {
+    // At minimum, there should be a single
+    // leading zero before the decimal point.
+    // Example 0.000.
+    if i == lastIntIdx && ia.intAry[i] == 0 {
 
-			if ia.firstDigitIdx == -1 {
+      if ia.firstDigitIdx == -1 {
 
-				ia.firstDigitIdx = i
-			}
+        ia.firstDigitIdx = i
+      }
 
-		}
+    }
 
-		if ia.intAry[i] > 0 {
+    if ia.intAry[i] > 0 {
 
-			if ia.firstDigitIdx == -1 {
+      if ia.firstDigitIdx == -1 {
 
-				ia.firstDigitIdx = i
-			}
+        ia.firstDigitIdx = i
+      }
 
-			ia.lastDigitIdx = i
-		}
+      ia.lastDigitIdx = i
+    }
 
-	}
+  }
 
-	ia.significantIntegerLen = ia.intAryLen - ia.precision - ia.firstDigitIdx
+  ia.significantIntegerLen = ia.intAryLen - ia.precision - ia.firstDigitIdx
 
-	if ia.lastDigitIdx >= ia.integerLen {
+  if ia.lastDigitIdx >= ia.integerLen {
 
-		ia.significantFractionLen = ia.lastDigitIdx - ia.integerLen + 1
-	} else {
+    ia.significantFractionLen = ia.lastDigitIdx - ia.integerLen + 1
+  } else {
 
-		ia.significantFractionLen = 0
-	}
+    ia.significantFractionLen = 0
+  }
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+  if ia.decimalSeparator == 0 {
+    ia.decimalSeparator = '.'
+  }
 
-	if ia.thousandsSeparator == 0 {
-		ia.thousandsSeparator = '.'
-	}
+  if ia.thousandsSeparator == 0 {
+    ia.thousandsSeparator = '.'
+  }
 
-	if ia.currencySymbol == 0 {
-		ia.currencySymbol = '$'
-	}
+  if ia.currencySymbol == 0 {
+    ia.currencySymbol = '$'
+  }
 
-	return
+  return
 }

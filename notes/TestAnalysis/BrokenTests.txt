@@ -3,124 +3,54 @@ Broken Tests
 
 ***********************************************************
 
+1157
+=== RUN   TestBigIntMathDivide_IntAryModuloToIntAry_05
+    xt_bigintmathdivide_06_test.go:7445: TestBigIntMathDivide_IntAryModuloToIntAry_05
+        Error: Unexpected Result!
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '0055'
+          Actual Modulo = '0,055'
 
------------------------------------------------
-zzzzz_Test Line  1137
- === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_01
-     xt_bigintmathdivide_06_test.go:4232: TestBigIntMathDivide_IntAryFracQuotientArray_01
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '04.2'
-           Actual Results Value = '4.2'
+--- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_05 (0.00s)
 
- --- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_01 (0.01s)
- === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_02
-     xt_bigintmathdivide_06_test.go:4484: TestBigIntMathDivide_IntAryFracQuotientArray_02
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '04,2'
-           Actual Results Value = '4,2'
+1191
+=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_01
+    xt_bigintmathdivide_07_test.go:3984: TestBigIntMathDivide_INumMgrFracQuotientArray_01
+        Error: Unexpected Result!
+        Because actualEqualsExpectedResults == 'false'
+        Cycle 'k' Value = '0'
+        Expected Results Value = '4.2'
+          Actual Results Value = '-4.2'
 
- --- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_02 (0.01s)
- === RUN   TestBigIntMathDivide_IntAryFracQuotientArray_03
-     xt_bigintmathdivide_06_test.go:4732: TestBigIntMathDivide_IntAryFracQuotientArray_03
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '04.2'
-           Actual Results Value = '4.2'
+--- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_01 (0.01s)
+=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_02
+    xt_bigintmathdivide_07_test.go:4281: TestBigIntMathDivide_INumMgrFracQuotientArray_02
+        Error: Unexpected Result!
+        Because actualEqualsExpectedResults == 'false'
+        Cycle 'k' Value = '0'
+        Expected Results Value = '4,2'
+          Actual Results Value = '-4,2'
 
- --- FAIL: TestBigIntMathDivide_IntAryFracQuotientArray_03 (0.01s)
-  === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_01
-     xt_bigintmathdivide_06_test.go:6446: TestBigIntMathDivide_IntAryModuloToIntAry_01
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '00.055'
-           Actual Modulo = '0.055'
+--- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_02 (0.01s)
+=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_03
+    xt_bigintmathdivide_07_test.go:4574: TestBigIntMathDivide_INumMgrFracQuotientArray_03
+        Error: Unexpected Result!
+        Because actualEqualsExpectedResults == 'false'
+        Cycle 'k' Value = '0'
+        Expected Results Value = '4.2'
+          Actual Results Value = '-4.2'
 
- --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_01 (0.00s)
- === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_02
-     xt_bigintmathdivide_06_test.go:6679: TestBigIntMathDivide_IntAryModuloToIntAry_02
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '-00.055'
-           Actual Modulo = '-0.055'
+--- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_03 (0.01s)
+=== RUN   TestBigIntMathDivide_INumMgrModulo_05
+    xt_bigintmathdivide_07_test.go:5793: TestBigIntMathDivide_INumMgrModulo_05
+        Error: Unexpected Result!
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '55'
+          Actual Modulo = '0,055'
 
- --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_02 (0.00s)
- === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_03
-     xt_bigintmathdivide_06_test.go:6912: TestBigIntMathDivide_IntAryModuloToIntAry_03
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '00.055'
-           Actual Modulo = '0.055'
+--- FAIL: TestBigIntMathDivide_INumMgrModulo_05 (0.00s)
 
- --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_03 (0.00s)
- === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_04
-     xt_bigintmathdivide_06_test.go:7177: TestBigIntMathDivide_IntAryModuloToIntAry_04
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '02.5'
-           Actual Modulo = '2.5'
-
- --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_04 (0.00s)
- === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_05
-     xt_bigintmathdivide_06_test.go:7445: TestBigIntMathDivide_IntAryModuloToIntAry_05
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '00055'
-           Actual Modulo = '0,055'
-
- --- FAIL: TestBigIntMathDivide_IntAryModuloToIntAry_05 (0.00s)
- === RUN   TestBigIntMathDivide_IntAryModuloToIntAry_06
-     xt_bigintmathdivide_06_test.go:7709: TestBigIntMathDivide_IntAryModuloToIntAry_05
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '00.055'
-           Actual Modulo = '0.055'
-
- -------------------------------------------
- zzzzz_Test Line 1248
- === RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_01
-     xt_bigintmathdivide_07_test.go:3984: TestBigIntMathDivide_INumMgrFracQuotientArray_01
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '4.2'
-           Actual Results Value = '-4.2'
-
- --- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_01 (0.01s)
- === RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_02
-     xt_bigintmathdivide_07_test.go:4281: TestBigIntMathDivide_INumMgrFracQuotientArray_02
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '4,2'
-           Actual Results Value = '-4,2'
-
- --- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_02 (0.01s)
- === RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_03
-     xt_bigintmathdivide_07_test.go:4574: TestBigIntMathDivide_INumMgrFracQuotientArray_03
-         Error: Unexpected Result!
-         Because actualEqualsExpectedResults == 'false'
-         Cycle 'k' Value = '0'
-         Expected Results Value = '4.2'
-           Actual Results Value = '-4.2'
-
- --- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_03 (0.01s)
-
- === RUN   TestBigIntMathDivide_INumMgrModulo_05
-     xt_bigintmathdivide_07_test.go:5793: TestBigIntMathDivide_INumMgrModulo_05
-         Error: Unexpected Result!
-         Because expectedModuloEqualsActualModulo == 'false'
-         Expected Modulo = '55'
-           Actual Modulo = '0,055'
-
- --- FAIL: TestBigIntMathDivide_INumMgrModulo_05 (0.00s)
-
---------------------------------------------------------------
-zzzzz_Test Line 1315
+1258
 === RUN   TestBigIntMathDivide_NumStrFracQuotient_05
     xt_bigintmathdivide_07_test.go:8851: TestBigIntMathDivide_NumStrFracQuotient_05
         Error returned by:
@@ -135,195 +65,48 @@ zzzzz_Test Line 1315
         ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!
 
         '
-  ---------------------------------------------------------
 
-zzzzz_Test Line  1369
+--- FAIL: TestBigIntMathDivide_NumStrFracQuotient_05 (0.00s)
 
-  === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
-      xt_bigintmathdivide_08_test.go:3413: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
-          Error: Unexpected Result!
-          Because expectedModuloEqualsActualModulo == 'false'
-          Expected Modulo = '0.055'
-            Actual Modulo = '0'
-
-  --- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03 (0.00s)
-  === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
-      xt_bigintmathdivide_08_test.go:3712: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
-          Error: Unexpected Result!
-          Because expectedModuloEqualsActualModulo == 'false'
-          Expected Modulo = '2.5'
-            Actual Modulo = '0'
-
-  --- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04 (0.00s)
-  === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
-      xt_bigintmathdivide_08_test.go:3904: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
-          Error: Unexpected Result!
-          Because expectedNumSeps != divisorNumSeps
-          Expected divisorNumSeps = 'Decimal Separator: ','  Thousands Separator: ' '  Currency Symbol: '€''
-            Actual divisorNumSeps = 'Decimal Separator: '.'  Thousands Separator: ','  Currency Symbol: '$''
-
-  --- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05 (0.00s)
-  === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
-      xt_bigintmathdivide_08_test.go:4315: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
-          Error: Unexpected Result!
-          Because expectedModuloEqualsActualModulo == 'false'
-          Expected Modulo = '0.055'
-            Actual Modulo = '0'
-
- ------------------------------------------------------------------
-zzzzz_Test Line  1553
-
- === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
-     xt_bigintmathmultiply_02_test.go:3607: TestBigIntMathMultiply_MultiplyBigIntNumArray_05
-         Error: BigIntNum Number Strings are unequal!
-                  Expected Number String = '1199582666426376575446779648'.
-                    Result Number String = '11995826664,26376575446779648'.
-         Original Expected Number String = '11995826664,26376575446779648'
- --- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.00s)
-
- ------------------------------------------------------------------
-zzzzz_Test Line  1580
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
-    xt_bigintmathmultiply_03_test.go:1431: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
-        Error: Expected BigIntNum='22123521767579232'.
-        Instead, BigIntNum= '22123521767579232'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_01
-    xt_bigintmathmultiply_03_test.go:1613: TestBigIntMathMultiply_MultiplyDecimal_01
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='123.32'
-        Converted IntAry Multiplier= '0123.32'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_01 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_02
-    xt_bigintmathmultiply_03_test.go:1953: TestBigIntMathMultiply_MultiplyDecimal_02
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='57638422123.327890123'
-        Converted IntAry Multiplier= '057638422123.327890123'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_02 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_03
-    xt_bigintmathmultiply_03_test.go:2295: TestBigIntMathMultiply_MultiplyDecimal_03
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='57638422123.327890123'
-        Converted IntAry Multiplier= '057638422123.327890123'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_03 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_04
-    xt_bigintmathmultiply_03_test.go:2640: TestBigIntMathMultiply_MultiplyDecimal_04
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='-89637.9876'
-        Converted IntAry Multiplier= '-089637.9876'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_04 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_05
-    xt_bigintmathmultiply_03_test.go:2983: TestBigIntMathMultiply_MultiplyDecimal_05
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='-89637.9876'
-        Converted IntAry Multiplier= '-089637.9876'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_05 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimal_06
-    xt_bigintmathmultiply_03_test.go:3376: TestBigIntMathMultiply_MultiplyDecimal_06
-        Error: Converted IntAry Multiplier and Original Multiplier String,
-        are NOT equal!
-              originalMultiplierStr='123.32'
-        Converted IntAry Multiplier= '0123.32'
---- FAIL: TestBigIntMathMultiply_MultiplyDecimal_06 (0.00s)
-
- ------------------------------------------------------------------
-zzzzz_Test Line 1636
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalArray_05
-    xt_bigintmathmultiply_04_test.go:1562: TestBigIntMathMultiply_MultiplyDecimalArray_05
-        Error: Expected BigIntNum='-204085138429311978576052224'.
-        Instead, BigIntNum= '-204085138429311978576052224'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.02s)
-
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_01
-    xt_bigintmathmultiply_04_test.go:2585: TestBigIntMathMultiply_MultiplyDecimalSeries_01
-        Error: Expected iaNumStr='2'.
-        Instead, iaNumStr='02'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_01 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_02
-    xt_bigintmathmultiply_04_test.go:2971: TestBigIntMathMultiply_MultiplyDecimalSeries_02
-        Error: Expected iaNumStr='37.9876'.
-        Instead, iaNumStr='037.9876'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_02 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_03
-    xt_bigintmathmultiply_04_test.go:3356: TestBigIntMathMultiply_MultiplyDecimalSeries_03
-        Error: Expected iaNumStr='10.1'.
-        Instead, iaNumStr='010.1'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_03 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_04
-    xt_bigintmathmultiply_04_test.go:3741: TestBigIntMathMultiply_MultiplyDecimalSeries_04
-        Error: Expected iaNumStr='-5.123456'.
-        Instead, iaNumStr='-05.123456'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_04 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
-    xt_bigintmathmultiply_04_test.go:4147: TestBigIntMathMultiply_MultiplyDecimalSeries_05
-        Error: Expected iaNumStr='10.1'.
-        Instead, iaNumStr='010.1'.
-
-
- ------------------------------------------------------------------
-zzzzz_Test Line 1654
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_05 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyIntAry_01
-    xt_bigintmathmultiply_05_test.go:218: TestBigIntMathMultiply_MultiplyIntAry_01
+1312
+=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
+    xt_bigintmathdivide_08_test.go:3413: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03
         Error: Unexpected Result!
-        Because!!!!
-        Expected resultNumStr = '02875.94572'
-          Actual resultNumStr = '2875.94572'
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '0.055'
+          Actual Modulo = '0'
 
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_01 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyIntAry_02
-    xt_bigintmathmultiply_05_test.go:486: TestBigIntMathMultiply_MultiplyIntAry_02
+--- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
+    xt_bigintmathdivide_08_test.go:3712: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04
         Error: Unexpected Result!
-        Because expectedIntAryNumStr != resultNumStr
-        Expected resultNumStr = '030987680500513189125.14259702468435'
-          Actual resultNumStr = '30987680500513189125.14259702468435'
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '2.5'
+          Actual Modulo = '0'
 
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_02 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyIntAry_03
-    xt_bigintmathmultiply_05_test.go:754: TestBigIntMathMultiply_MultiplyIntAry_03
+--- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
+    xt_bigintmathdivide_08_test.go:3904: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05
         Error: Unexpected Result!
-        Because!!!!
-        Expected resultNumStr = '-030987680500513189125.14259702468435'
-          Actual resultNumStr = '-30987680500513189125.14259702468435'
+        Because expectedNumSeps != divisorNumSeps
+        Expected divisorNumSeps = 'Decimal Separator: ','  Thousands Separator: ' '  Currency Symbol: '€''
+          Actual divisorNumSeps = 'Decimal Separator: '.'  Thousands Separator: ','  Currency Symbol: '$''
 
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_03 (0.00s)
-=== RUN   TestBigIntMathMultiply_MultiplyIntAry_04
-    xt_bigintmathmultiply_05_test.go:1022: TestBigIntMathMultiply_MultiplyIntAry_04
+--- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_05 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
+    xt_bigintmathdivide_08_test.go:4315: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
         Error: Unexpected Result!
-        Because expectedIntAryNumStr != resultNumStr
-        Expected resultNumStr = '022197234145.3632'
-          Actual resultNumStr = '22197234145.3632'
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '0.055'
+          Actual Modulo = '0'
 
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_04 (0.01s)
+--- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06 (0.00s)
 
-=== RUN   TestBigIntMathMultiply_MultiplyIntAry_06
-    xt_bigintmathmultiply_05_test.go:1654: TestBigIntMathMultiply_MultiplyIntAry_06
-        Error: Unexpected Result!
-        Because!!!!
-        Expected resultNumStr = '022197234145,3632'
-          Actual resultNumStr = '8034968820,97775376'
-
---- FAIL: TestBigIntMathMultiply_MultiplyIntAry_06 (0.00s)
-
---------------------------------------------------------------
-zzzzz_Test Line 1864
-
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-    xt_bigintmathmultiply_08_test.go:4604: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-        Error: Number String Values Not Equal
-        Because expectedStr != resultNumStr
-        Expected resultNumStr = '35,000'
-          Actual resultNumStr = '35000'
-
+1496
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+    xt_bigintmathmultiply_02_test.go:3607: TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+        Error: BigIntNum Number Strings are unequal!
+                 Expected Number String = '1199582666426376575446779648'.
+                   Result Number String = '11995826664,26376575446779648'.
+        Original Expected Number String = '11995826664,26376575446779648'
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.01s)
