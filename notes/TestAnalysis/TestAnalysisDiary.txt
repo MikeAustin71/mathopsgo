@@ -6,6 +6,20 @@ Diary - Test Analysis
 
 
 -----------------------------------------------
+2026-01-09 20:35
+xt_bigintmathdivide_07_test.go in xt_bigintmathdivide_07_test.go
+=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_02
+    xt_bigintmathdivide_07_test.go:4281: TestBigIntMathDivide_INumMgrFracQuotientArray_02
+        Error: Unexpected Result!
+        Because actualEqualsExpectedResults == 'false'
+        Cycle 'k' Value = '0'
+        Expected Results Value = '4,2'
+          Actual Results Value = '-4,2'
+
+--- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_02 (0.01s)
+
+
+-----------------------------------------------
 2026-01-09 20:13
 -----------------------------------------------
 zzzzz_Test Line  1137

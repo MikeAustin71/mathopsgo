@@ -1,17 +1,3 @@
 ************************************************************
 Test Analysis
 ************************************************************
-
-
-
-1191
-TestBigIntMathDivide_INumMgrFracQuotientArray_01 in xt_bigintmathdivide_07_test.go
-=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_01
-    xt_bigintmathdivide_07_test.go:3984: TestBigIntMathDivide_INumMgrFracQuotientArray_01
-        Error: Unexpected Result!
-        Because actualEqualsExpectedResults == 'false'
-        Cycle 'k' Value = '0'
-        Expected Results Value = '4.2'
-          Actual Results Value = '-4.2'
-
---- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_01 (0.01s)

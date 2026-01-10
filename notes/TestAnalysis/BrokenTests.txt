@@ -2,15 +2,7 @@
 Broken Tests
 
 ***********************************************************
-=== RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_02
-    xt_bigintmathdivide_07_test.go:4281: TestBigIntMathDivide_INumMgrFracQuotientArray_02
-        Error: Unexpected Result!
-        Because actualEqualsExpectedResults == 'false'
-        Cycle 'k' Value = '0'
-        Expected Results Value = '4,2'
-          Actual Results Value = '-4,2'
 
---- FAIL: TestBigIntMathDivide_INumMgrFracQuotientArray_02 (0.01s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_03
     xt_bigintmathdivide_07_test.go:4574: TestBigIntMathDivide_INumMgrFracQuotientArray_03
         Error: Unexpected Result!
