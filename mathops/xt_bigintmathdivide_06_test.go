@@ -7245,38 +7245,38 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
 	expectedModuloStr := "0,055"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
+	frenchNumSeps := NumericSeparatorDto{}
 	frenchDecSeparator := ','
 	frenchThousandsSeparator := ' '
 	frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	frenchNumSeps.DecimalSeparator = frenchDecSeparator
+	frenchNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	frenchNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+	err := frenchNumSeps.IsValid("Validating frenchNumSeps")
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
-			"expectedNumSeps= '%v'\n"+
-			"Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+			"err = frenchNumSeps.IsValid('Validating frenchNumSeps')\n"+
+			"frenchNumSeps= '%v'\n"+
+			"Error= '%v'\n\n", ePrefix, frenchNumSeps.String(), err.Error())
 		return
 	}
 
 	usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	iaDividend, err := new(IntAry).NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	iaDividend, err := new(IntAry).NewNumStrWithNumSeps(dividendStr, frenchNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by\n"+
 			"iaDividend, err := new(IntAry).NewNumStrWithNumSeps("+
-			"  dividendStr,expectedNumSeps)"+
+			"  dividendStr,frenchNumSeps)"+
 			"dividendStr= '%v'\n"+
-			"expectedNumSeps= '%v'\n"+
+			"frenchNumSeps= '%v'\n"+
 			"Error= '%v'\n\n",
-			dividendStr, expectedNumSeps, err.Error())
+			dividendStr, frenchNumSeps, err.Error())
 		return
 	}
 
@@ -7321,13 +7321,13 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
 		return
 	}
 
-	if !expectedNumSeps.Equal(iaDividendNumSeps) {
+	if !frenchNumSeps.Equal(iaDividendNumSeps) {
 		t.Errorf("%v\n"+
 			"Error: Unexpected Result!\n"+
 			"Because!!!!\n"+
 			"Expected iaDividendNumSeps = '%v'\n"+
 			"  Actual iaDividendNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), iaDividendNumSeps.String())
+			ePrefix, frenchNumSeps.String(), iaDividendNumSeps.String())
 
 		return
 	}
@@ -7364,13 +7364,17 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
 		return
 	}
 
-	expectedModulo, err := new(IntAry).NewNumStr(expectedModuloStr)
+	expectedModulo, err := new(IntAry).NewNumStrWithNumSeps(expectedModuloStr, frenchNumSeps)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"expectedModulo, err := new(IntAry).NewNumStr(expectedModuloStr)\n"+
-			"Error='%v'\n\n", ePrefix, err.Error())
+			"expectedModulo, err := new(IntAry).\n"+
+			"  NewNumStrWithNumSeps(expectedModuloStr, frenchNumSeps)\n"+
+			"expectedModuloStr= '%v'\n"+
+			"frenchNumSeps= '%v'\n"+
+			"Error= '%v'\n\n",
+			ePrefix, expectedModuloStr, frenchNumSeps.String(), err.Error())
 		return
 	}
 
@@ -7394,19 +7398,19 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
 		return
 	}
 
-	iaModulo, err := new(BigIntMathDivide).IntAryModuloToIntAry(iaDividend, iaDivisor, expectedNumSeps, maxPrecision)
+	iaModulo, err := new(BigIntMathDivide).IntAryModuloToIntAry(iaDividend, iaDivisor, frenchNumSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"iaModulo, err := new(BigIntMathDivide).IntAryModuloToIntAry(\n"+
-			"  iaDividend, iaDivisor, expectedNumSeps, maxPrecision)\n"+
+			"  iaDividend, iaDivisor, frenchNumSeps, maxPrecision)\n"+
 			"iaDividend= '%v'\n"+
 			"iaDivisor= '%v'\n"+
-			"expectedNumSeps= '%v'\n"+
+			"frenchNumSeps= '%v'\n"+
 			"maxPrecision= '%v'\n"+
 			"Error='%v'\n\n", ePrefix, iaDividendNumStr, iaDivisorNumStr,
-			expectedNumSeps.String(), maxPrecision, err.Error())
+			frenchNumSeps.String(), maxPrecision, err.Error())
 		return
 	}
 
@@ -7475,12 +7479,12 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
 		return
 	}
 
-	expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)
+	expectedModuloNumSeps, err := frenchNumSeps.CopyOut(false)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"expectedModuloNumSeps, err := expectedNumSeps.CopyOut(false)\n"+
+			"expectedModuloNumSeps, err := frenchNumSeps.CopyOut(false)\n"+
 			"Error='%v'\n\n", ePrefix, err.Error())
 
 		return
