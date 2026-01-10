@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  "sync"
+	"fmt"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type numSepsDtoElectron struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // emptyNumSepsDto
@@ -16,93 +16,93 @@ type numSepsDtoElectron struct {
 // Sets all member variables in 'numSepsDto' to their 'inital'
 // states.
 func (nSepsDtoElectron *numSepsDtoElectron) emptyNumSepsDto(
-  numSepsDto *NumericSeparatorDto) {
+	numSepsDto *NumericSeparatorDto) {
 
-  if nSepsDtoElectron.lock == nil {
-    nSepsDtoElectron.lock = new(sync.Mutex)
-  }
+	if nSepsDtoElectron.lock == nil {
+		nSepsDtoElectron.lock = new(sync.Mutex)
+	}
 
-  nSepsDtoElectron.lock.Lock()
+	nSepsDtoElectron.lock.Lock()
 
-  defer nSepsDtoElectron.lock.Unlock()
+	defer nSepsDtoElectron.lock.Unlock()
 
-  if numSepsDto == nil {
-    return
-  }
+	if numSepsDto == nil {
+		return
+	}
 
-  numSepsDto.DecimalSeparator = 0
+	numSepsDto.DecimalSeparator = 0
 
-  numSepsDto.ThousandsSeparator = 0
+	numSepsDto.ThousandsSeparator = 0
 
-  numSepsDto.CurrencySymbol = 0
+	numSepsDto.CurrencySymbol = 0
 
-  return
+	return
 }
 
 // isValidNumStrDto
 //
 // Returns an error if 'numSepsDto' is found to be invalid.
 func (nSepsDtoElectron *numSepsDtoElectron) isValidNumStrDto(
-  numSepsDto *NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	numSepsDto *NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if nSepsDtoElectron.lock == nil {
-    nSepsDtoElectron.lock = new(sync.Mutex)
-  }
+	if nSepsDtoElectron.lock == nil {
+		nSepsDtoElectron.lock = new(sync.Mutex)
+	}
 
-  nSepsDtoElectron.lock.Lock()
+	nSepsDtoElectron.lock.Lock()
 
-  defer nSepsDtoElectron.lock.Unlock()
+	defer nSepsDtoElectron.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numSepsDtoElectron.isValidNumStrDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numSepsDtoElectron.isValidNumStrDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if numSepsDto == nil {
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'numSepsDto'",
-    }
-  }
+	if numSepsDto == nil {
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'numSepsDto'",
+		}
+	}
 
-  var errStr string
+	var errStr string
 
-  if numSepsDto.DecimalSeparator == 0 {
+	if numSepsDto.DecimalSeparator == 0 {
 
-    errStr = "ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!\n"
-  }
+		errStr = "ERROR: NumericSeparatorDto DecimalSeparator value is ZERO!\n"
+	}
 
-  if numSepsDto.ThousandsSeparator == 0 {
+	if numSepsDto.ThousandsSeparator == 0 {
 
-    errStr += "ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!\n"
+		errStr += "ERROR: NumericSeparatorDto ThousandsSeparator value is ZERO!\n"
 
-  }
+	}
 
-  if numSepsDto.CurrencySymbol == 0 {
-    errStr += "ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!\n"
-  }
+	if numSepsDto.CurrencySymbol == 0 {
+		errStr += "ERROR: NumericSeparatorDto CurrencySymbol value is ZERO!\n"
+	}
 
-  if len(errStr) > 0 {
+	if len(errStr) > 0 {
 
-    return fmt.Errorf("%v\n"+
-      "NumericSeparatorDto is Invalid!\n"+
-      "%v",
-      ePrefix.String(),
-      errStr)
+		return fmt.Errorf("%v\n"+
+			"NumericSeparatorDto is Invalid!\n"+
+			"%v",
+			ePrefix.String(),
+			errStr)
 
-  }
+	}
 
-  return nil
+	return nil
 }
 
 // newUSADefaults
@@ -117,15 +117,15 @@ func (nSepsDtoElectron *numSepsDtoElectron) isValidNumStrDto(
 //	Currency Symbol     = '$' (dollar sign)
 func (nSepsDtoElectron *numSepsDtoElectron) newUSADefaults() NumericSeparatorDto {
 
-  usaNumSepsDto := NumericSeparatorDto{}
+	usaNumSepsDto := NumericSeparatorDto{}
 
-  usaNumSepsDto.DecimalSeparator = '.'
+	usaNumSepsDto.DecimalSeparator = '.'
 
-  usaNumSepsDto.ThousandsSeparator = ','
+	usaNumSepsDto.ThousandsSeparator = ','
 
-  usaNumSepsDto.CurrencySymbol = '$'
+	usaNumSepsDto.CurrencySymbol = '$'
 
-  return usaNumSepsDto
+	return usaNumSepsDto
 
 }
 
@@ -134,25 +134,25 @@ func (nSepsDtoElectron *numSepsDtoElectron) newUSADefaults() NumericSeparatorDto
 // If any of the NumericSeparatorDto member elements are invalid,
 // this method will reset those member elements to USA Defaults.
 func (nSepsDtoElectron *numSepsDtoElectron) setNumSepDtoDefaultsIfEmpty(
-  numSepsDto *NumericSeparatorDto) {
+	numSepsDto *NumericSeparatorDto) {
 
-  if numSepsDto == nil {
-    return
-  }
+	if numSepsDto == nil {
+		return
+	}
 
-  if numSepsDto.DecimalSeparator == 0 {
-    numSepsDto.DecimalSeparator = '.'
-  }
+	if numSepsDto.DecimalSeparator == 0 {
+		numSepsDto.DecimalSeparator = '.'
+	}
 
-  if numSepsDto.ThousandsSeparator == 0 {
-    numSepsDto.ThousandsSeparator = ','
-  }
+	if numSepsDto.ThousandsSeparator == 0 {
+		numSepsDto.ThousandsSeparator = ','
+	}
 
-  if numSepsDto.CurrencySymbol == 0 {
-    numSepsDto.CurrencySymbol = '$'
-  }
+	if numSepsDto.CurrencySymbol == 0 {
+		numSepsDto.CurrencySymbol = '$'
+	}
 
-  return
+	return
 }
 
 // setNumSepDtoToUSADefaults
@@ -168,17 +168,17 @@ func (nSepsDtoElectron *numSepsDtoElectron) setNumSepDtoDefaultsIfEmpty(
 //	 Thousands Separator = ',' (comma)
 //	 Currency Symbol     = '$' (dollar sign)
 func (nSepsDtoElectron *numSepsDtoElectron) setNumSepDtoToUSADefaults(
-  numSepsDto *NumericSeparatorDto) {
+	numSepsDto *NumericSeparatorDto) {
 
-  if numSepsDto == nil {
-    return
-  }
+	if numSepsDto == nil {
+		return
+	}
 
-  numSepsDto.DecimalSeparator = '.'
+	numSepsDto.DecimalSeparator = '.'
 
-  numSepsDto.ThousandsSeparator = ','
+	numSepsDto.ThousandsSeparator = ','
 
-  numSepsDto.CurrencySymbol = '$'
+	numSepsDto.CurrencySymbol = '$'
 
-  return
+	return
 }

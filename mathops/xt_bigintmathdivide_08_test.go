@@ -3554,11 +3554,11 @@ func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04(t *testing.T) {
     return
   }
 
-  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)
+  divisor, err := new(NumStrDto).NewNumStrWithNumSeps(divisorStr, &usaNumSeps)
 
   if err != nil {
     t.Errorf("Error returned by:\n"+
-      "new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &usaNumSeps)\n"+
+      "new(NumStrDto).NewNumStrWithNumSeps(divisorStr, &usaNumSeps)\n"+
       "divisorStr='%v'\n"+
       "usaNumSeps='%v'\n"+
       "Error='%v'\n\n",
