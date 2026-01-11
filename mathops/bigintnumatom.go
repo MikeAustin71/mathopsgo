@@ -56,7 +56,7 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
       ErrPrefix:  ePrefix.String(),
       ReturnFunc: "",
       ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+      ErrMessage: "This BigIntNum input parameter 'bNum' is Invalid!\n" +
         "'bNum.bigInt' is 'nil'!\n" +
         "FATAL ERROR!",
     }
