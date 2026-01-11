@@ -52,59 +52,6 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
     intAryName = "intAry"
   }
 
-<<<<<<< HEAD
-  var tagLine1, tagLine2, retFuncName string
-
-  if !validateIntAry {
-
-    tagLine1 = fmt.Sprintf("Setting '%s' Flags", intAryName)
-
-    tagLine2 = fmt.Sprintf("Error Setting Flags on '%s'", intAryName)
-
-    retFuncName = fmt.Sprintf("err = new(intAryNanobot).setInternalFlags(\n"+
-      "  %s, ePrefix.XCpy(Setting '%s' Flags))", intAryName, intAryName)
-
-    err = new(intAryNanobot).setInternalFlags(
-      intAry, ePrefix.XCpy(tagLine1))
-
-    if err != nil {
-
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: retFuncName,
-        ErrContext: tagLine2,
-        ErrMessage: err.Error(),
-      }
-    }
-
-    return nil
-  } // End Of if !validateIntAry
-
-  // We need to validate the IntAry Object.
-  tagLine1 = fmt.Sprintf("Validating '%s'", intAryName)
-
-  tagLine2 = fmt.Sprintf("Input parameter '%s' is INVALID!\n"+
-    "'%s' FAILED Validation Tests.", intAryName, intAryName)
-
-  retFuncName = fmt.Sprintf("err = new(intAryElectron).isValidIntAry(\n"+
-    "%s, ePrefix.XCpy(Validating '%s').String())", intAryName, intAryName)
-
-  // This sets internal flags
-  err = new(intAryElectron).isValidIntAry(
-    intAry,
-    ePrefix.XCpy(tagLine1).String())
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: retFuncName,
-      ErrContext: tagLine2,
-      ErrMessage: err.Error(),
-    }
-  }
-
-=======
   if !validateIntAry {
 
     err = new(intAryElectron).setSignificantDigitIdxs(
@@ -145,7 +92,6 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
     }
   }
 
->>>>>>> 2c4d0b0 (Refactored intAryUtility.selectIntAryValidation())
   return nil
 }
 
