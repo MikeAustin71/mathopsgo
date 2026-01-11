@@ -1,15 +1,18 @@
 package mathops
 
-import "fmt"
+import (
+  "fmt"
+  "strings"
+)
 
 // FuncReturnError
 // Custom error message used to specify the
 // function returning the error message
 type FuncReturnError struct {
-	ErrPrefix  string
-	ReturnFunc string
-	ErrContext string
-	ErrMessage string
+  ErrPrefix  string
+  ReturnFunc string
+  ErrContext string
+  ErrMessage string
 }
 
 // Error
@@ -47,50 +50,54 @@ type FuncReturnError struct {
 //	Element 'ErrContext' is optional
 func (e *FuncReturnError) Error() string {
 
-	var errStr string
-	foundCnt := 0
+  var errStr string
+  foundCnt := 0
 
-	if e.ErrPrefix != "" {
-		errStr = e.ErrPrefix + "\n"
-		foundCnt++
-	}
+  if e.ErrPrefix != "" {
+    errStr = e.ErrPrefix + "\n"
+    foundCnt++
+  }
 
-	if e.ReturnFunc != "" {
-		errStr += "Error returned by: \n  " + e.ReturnFunc + "\n"
-		foundCnt++
-	}
+  if e.ReturnFunc != "" {
+    errStr += "Error returned by: \n  " + e.ReturnFunc + "\n"
+    foundCnt++
+  }
 
-	if e.ErrContext != "" {
-		errStr += e.ErrContext + "\n"
-		foundCnt++
-	}
+  if e.ErrContext != "" {
+    errStr += e.ErrContext + "\n"
+    foundCnt++
+  }
 
-	if e.ErrMessage != "" {
-		errStr += "Error: \n  " + e.ErrMessage + "\n"
-		foundCnt++
-	}
+  if e.ErrMessage != "" {
+    errStr += "Error: \n  " + e.ErrMessage + "\n"
+    foundCnt++
+  }
 
-	if foundCnt == 0 {
-		errStr = "No Error parameters provided!\n"
-	} else {
+  if foundCnt == 0 {
 
-		errStr += "\n"
-	}
+    errStr = "No Error parameters provided!\n"
 
-	// TODO Only 1-new line needed
-	//  Ensure that only 1-new line is
-	//  appended to end of errStr
-	return errStr
+  } else {
+
+    if len(errStr) > 0 {
+
+      errStr = strings.TrimRight(errStr, "\n")
+
+      errStr += "\n"
+    }
+  }
+
+  return errStr
 }
 
 func (e *FuncReturnError) GetError() error {
-	//return fmt.Errorf("%w", e.Error())
-	return fmt.Errorf("%s", e.Error())
+  //return fmt.Errorf("%w", e.Error())
+  return fmt.Errorf("%s", e.Error())
 }
 
 func (e *FuncReturnError) Unwrap() error {
 
-	return fmt.Errorf("%s", e.Error())
+  return fmt.Errorf("%s", e.Error())
 }
 
 // InputPtrNilError
@@ -105,51 +112,51 @@ func (e *FuncReturnError) Unwrap() error {
 //		ParameterName: "'bNum'",
 //	}
 type InputPtrNilError struct {
-	ErrPrefix     string
-	ErrContext    string
-	ParameterName string
+  ErrPrefix     string
+  ErrContext    string
+  ParameterName string
 }
 
 func (i *InputPtrNilError) Error() string {
 
-	var errStr string
-	foundCnt := 0
+  var errStr string
+  foundCnt := 0
 
-	if i.ErrPrefix != "" {
-		errStr = i.ErrPrefix + "\n"
-		foundCnt++
-	}
+  if i.ErrPrefix != "" {
+    errStr = i.ErrPrefix + "\n"
+    foundCnt++
+  }
 
-	if i.ErrContext != "" {
-		errStr += i.ErrContext + "\n"
-		foundCnt++
-	}
+  if i.ErrContext != "" {
+    errStr += i.ErrContext + "\n"
+    foundCnt++
+  }
 
-	var isParameterName = false
+  var isParameterName = false
 
-	if len(i.ParameterName) > 0 {
-		isParameterName = true
-	}
+  if len(i.ParameterName) > 0 {
+    isParameterName = true
+  }
 
-	if foundCnt == 0 {
-		errStr = "No Error parameters provided!\n"
-	} else {
+  if foundCnt == 0 {
+    errStr = "No Error parameters provided!\n"
+  } else {
 
-		var parmName string
+    var parmName string
 
-		if isParameterName {
-			parmName = i.ParameterName
-		} else {
-			parmName = "unknown parameter"
-		}
+    if isParameterName {
+      parmName = i.ParameterName
+    } else {
+      parmName = "unknown parameter"
+    }
 
-		errStr += fmt.Sprintf("FATAL ERROR: Input parameter '%v' is a nil pointer.\n",
-			parmName)
-	}
+    errStr += fmt.Sprintf("FATAL ERROR: Input parameter '%v' is a nil pointer.\n",
+      parmName)
+  }
 
-	return errStr
+  return errStr
 }
 
 func (i *InputPtrNilError) Unwrap() error {
-	return fmt.Errorf("%s", i.Error())
+  return fmt.Errorf("%s", i.Error())
 }
