@@ -1,13 +1,13 @@
 package mathops
 
 import (
-  "sync"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntMathAddMacrobot struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // addBigIntNums
@@ -20,57 +20,57 @@ type bigIntMathAddMacrobot struct {
 //	separator and currency symbol) which were copied from input
 //	parameter 'b1'.
 func (bIMathAddMacro *bigIntMathAddMacrobot) addBigIntNums(
-  b1 BigIntNum,
-  b2 BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	b1 BigIntNum,
+	b2 BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bIMathAddMacro.lock == nil {
-    bIMathAddMacro.lock = new(sync.Mutex)
-  }
+	if bIMathAddMacro.lock == nil {
+		bIMathAddMacro.lock = new(sync.Mutex)
+	}
 
-  bIMathAddMacro.lock.Lock()
+	bIMathAddMacro.lock.Lock()
 
-  defer bIMathAddMacro.lock.Unlock()
+	defer bIMathAddMacro.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathAddMacrobot.addBigIntNums",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathAddMacrobot.addBigIntNums",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  // NewBigIntNum validates b1 and b2
-  bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)
+	// NewBigIntNum validates b1 and b2
+	bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  addResult, err := new(bigIntMathAddMicrobot).addPair(bPair, ePrefix)
+	addResult, err := new(bigIntMathAddMicrobot).addPair(bPair, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(b1, b2)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return addResult, nil
+	return addResult, nil
 }

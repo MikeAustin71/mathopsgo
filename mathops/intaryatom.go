@@ -354,8 +354,11 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 
 // setEqualArrayLengths
 //
-//	Compares an intAry object to the current intAry and ensures
-//	that the lengths of both IntArrays are equal.
+//		Compares an intAry object to the current intAry and ensures
+//		that the lengths of both IntArrays are equal.
+//
+//	 Note that either or both IntAry's (ia and iAry2) may be modified
+//	 by this method.
 func (iaAtom *intAryAtom) setEqualArrayLengths(
 	ia *IntAry,
 	validateIa bool,

@@ -1,3 +1,33 @@
 ************************************************************
 Test Analysis
 ************************************************************
+
+xt_intary_01_test.go:210
+
+=== RUN   TestIntAry_AddMultipleToThis_01
+--- FAIL: TestIntAry_AddMultipleToThis_01 (0.00s)
+panic: runtime error: index out of range [8] with length 4 [recovered, repanicked]
+
+goroutine 1959 [running]:
+testing.tRunner.func1.2({0x7ff6617666c0, 0xc000014210})
+	C:/Program Files/Go/src/testing/testing.go:1872 +0x239
+testing.tRunner.func1()
+	C:/Program Files/Go/src/testing/testing.go:1875 +0x35b
+panic({0x7ff6617666c0?, 0xc000014210?})
+	C:/Program Files/Go/src/runtime/panic.go:783 +0x132
+github.com/mikeaustin71/mathops.(*intAryMathAddUtility).addToSubtract(0xc0002e49a8, 0xc0002e5820, 0x0, 0xc0002e5568, 0x0, 0x1, 0x1, 0x0, 0x0, 0xc0002b5b80)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathaddutility.go:172 +0x1471
+github.com/mikeaustin71/mathops.(*intAryMathAddMechanics).runTotal(0x0?, 0xc0002e5820, 0x0, 0xc0002e5568, 0x0, 0x0?)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathaddmechanics.go:239 +0xa56
+github.com/mikeaustin71/mathops.(*IntAryMathAdd).RunTotal(0x0?, 0xc0002e5820, 0xc0002e5568)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intarymathadd.go:205 +0xb7
+github.com/mikeaustin71/mathops.(*IntAry).AddMultipleToThis(0xc0002e5820, {0xc0002e5ee8, 0x5, 0x1f?})
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/intary.go:626 +0x108
+github.com/mikeaustin71/mathops.TestIntAry_AddMultipleToThis_01(0xc00041ec40)
+	D:/GoProjects/MikeAustin71/mathopsgo/mathops/xt_intary_01_test.go:210 +0x63c
+testing.tRunner(0xc00041ec40, 0x7ff661892220)
+	C:/Program Files/Go/src/testing/testing.go:1934 +0xc3
+created by testing.(*T).Run in goroutine 1
+	C:/Program Files/Go/src/testing/testing.go:1997 +0x44b
+exit status 2
+FAIL	github.com/mikeaustin71/mathops	31.851s

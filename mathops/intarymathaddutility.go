@@ -1,13 +1,14 @@
 package mathops
 
 import (
-	"sync"
+  "fmt"
+  "sync"
 
-	ePref "github.com/MikeAustin71/errpref"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type intAryMathAddUtility struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // addToSubtract
@@ -15,228 +16,245 @@ type intAryMathAddUtility struct {
 //	Adds or subtracts two IntAry instances and returns the result
 //	in the first IntAry parameter.
 func (iaAddUtil *intAryMathAddUtility) addToSubtract(
-	ia1 *IntAry,
-	validateIa1 bool,
-	ia2 *IntAry,
-	validateIa2 bool,
-	newSignVal int,
-	doAdd bool,
-	isZeroResult bool,
-	doReverseNums bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  ia1 *IntAry,
+  validateIa1 bool,
+  ia2 *IntAry,
+  validateIa2 bool,
+  newSignVal int,
+  doAdd bool,
+  isZeroResult bool,
+  doReverseNums bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if iaAddUtil.lock == nil {
-		iaAddUtil.lock = new(sync.Mutex)
-	}
+  if iaAddUtil.lock == nil {
+    iaAddUtil.lock = new(sync.Mutex)
+  }
 
-	iaAddUtil.lock.Lock()
+  iaAddUtil.lock.Lock()
 
-	defer iaAddUtil.lock.Unlock()
+  defer iaAddUtil.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryMathAddUtility.addToSubtract",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryMathAddUtility.addToSubtract",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if ia1 == nil {
+  if ia1 == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia1'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia1'",
+    }
+  }
 
-	if ia2 == nil {
+  if ia2 == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia2'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia2'",
+    }
+  }
 
-	if validateIa1 {
+  if validateIa1 {
 
-		err = ia1.IsValid(ePrefix.XCpy("Validating 'ia1'").String())
+    err = ia1.IsValid(ePrefix.XCpy("Validating 'ia1'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia1.IsValid(ePrefix.XCpy(Validating 'ia1').String())",
-				ErrContext: "Input parameter 'ia1' is INVALID!\n" +
-					"'ia1' FAILED Validatin Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia1.IsValid(ePrefix.XCpy(Validating 'ia1').String())",
+        ErrContext: "Input parameter 'ia1' is INVALID!\n" +
+          "'ia1' FAILED Validatin Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
 
-	} else {
+  } else {
 
-		err = ia1.SetInternalFlags()
+    err = ia1.SetInternalFlags()
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia1.SetInternalFlags()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia1.SetInternalFlags()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	if validateIa2 {
+  if validateIa2 {
 
-		err = ia2.IsValid(ePrefix.XCpy("Validating 'ia2'").String())
+    err = ia2.IsValid(ePrefix.XCpy("Validating 'ia2'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia2.IsValid(ePrefix.XCpy(Validating 'ia2').String())",
-				ErrContext: "Input parameter 'ia2' is INVALID!\n" +
-					"'ia2' FAILED Validatin Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia2.IsValid(ePrefix.XCpy(Validating 'ia2').String())",
+        ErrContext: "Input parameter 'ia2' is INVALID!\n" +
+          "'ia2' FAILED Validatin Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
 
-	} else {
+  } else {
 
-		err = ia2.SetInternalFlags()
+    err = ia2.SetInternalFlags()
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia2.SetInternalFlags()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia2.SetInternalFlags()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	var ia1PrecisionUint uint
+  var ia1PrecisionUint uint
 
-	if isZeroResult {
+  if isZeroResult {
 
-		ia1PrecisionUint, err = ia1.GetPrecisionUint()
+    ia1PrecisionUint, err = ia1.GetPrecisionUint()
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "ia1PrecisionUint, err = ia1.GetPrecisionUint()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "ia1PrecisionUint, err = ia1.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-		err = ia1.SetIntAryToZero(ia1PrecisionUint)
+    err = ia1.SetIntAryToZero(ia1PrecisionUint)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia1.SetIntAryToZero(ia1PrecisionUint)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia1.SetIntAryToZero(ia1PrecisionUint)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	ia1.signVal = newSignVal
+  /*	return new(intAryAtom).setEqualArrayLengths(
+  	ia1, false, ia2, false, false, ePrefix)
+  */
 
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
+  if len(ia1.intAry) != len(ia2.intAry) {
 
-	for j := ia1.intAryLen - 1; j >= 0; j-- {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = ia1.SetIntAryToZero(ia1PrecisionUint)",
+      ErrContext: "len(ia1.intAry) != len(ia2.intAry)\n" +
+        fmt.Sprintf("len(ia1.intAry) = %d, len(ia2.intAry) = %d",
+          len(ia1.intAry), len(ia2.intAry)),
+      ErrMessage: "Lengths of ia1.intAry & ia2.intAry ARE NOT EQUAL!",
+    }
 
-		if doReverseNums {
+  }
 
-			n2 = int(ia1.intAry[j])
-			n1 = int(ia2.intAry[j])
+  ia1.signVal = newSignVal
 
-		} else {
-			n1 = int(ia1.intAry[j])
-			n2 = int(ia2.intAry[j])
+  carry := 0
+  n1 := 0
+  n2 := 0
+  n3 := 0
 
-		}
+  for j := ia1.intAryLen - 1; j >= 0; j-- {
 
-		if doAdd {
-			// doAdd == true
-			// Do Addition
+    if doReverseNums {
 
-			n3 = n1 + n2 + carry
+      n2 = int(ia1.intAry[j])
+      n1 = int(ia2.intAry[j])
 
-			if n3 > 9 {
-				n3 = n1 + n2 + carry - 10
-				carry = 1
+    } else {
+      n1 = int(ia1.intAry[j])
+      n2 = int(ia2.intAry[j])
 
-			} else {
-				carry = 0
-			}
+    }
 
-		} else {
-			// doAdd == false
-			// Do Subtraction
-			n3 = n1 - n2 - carry
+    if doAdd {
+      // doAdd == true
+      // Do Addition
 
-			if n3 < 0 {
-				n3 = n1 + 10 - n2 - carry
-				carry = 1
-			} else {
-				carry = 0
-			}
-		}
+      n3 = n1 + n2 + carry
 
-		ia1.intAry[j] = uint8(n3)
+      if n3 > 9 {
+        n3 = n1 + n2 + carry - 10
+        carry = 1
 
-	}
+      } else {
+        carry = 0
+      }
 
-	if carry > 0 {
-		ia1.intAry = append([]uint8{1}, ia1.intAry...)
-		ia1.intAryLen++
-	}
+    } else {
+      // doAdd == false
+      // Do Subtraction
+      n3 = n1 - n2 - carry
 
-	if ia1.intAry[0] == 0 {
+      if n3 < 0 {
+        n3 = n1 + 10 - n2 - carry
+        carry = 1
+      } else {
+        carry = 0
+      }
+    }
 
-		err = ia1.SetSignificantDigitIdxs()
+    ia1.intAry[j] = uint8(n3)
 
-		if err != nil {
+  }
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = ia1.SetSignificantDigitIdxs()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+  if carry > 0 {
+    ia1.intAry = append([]uint8{1}, ia1.intAry...)
+    ia1.intAryLen++
+  }
 
-		ia1.intAry = ia1.intAry[ia1.firstDigitIdx:]
-	}
+  if ia1.intAry[0] == 0 {
 
-	err = ia1.SetInternalFlags()
+    err = ia1.SetSignificantDigitIdxs()
 
-	if err != nil {
+    if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = ia1.SetInternalFlags()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ia1.SetSignificantDigitIdxs()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-	return nil
+    ia1.intAry = ia1.intAry[ia1.firstDigitIdx:]
+  }
+
+  err = ia1.SetInternalFlags()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = ia1.SetInternalFlags()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
