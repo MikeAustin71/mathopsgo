@@ -308,7 +308,14 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 		ePrefix.XCpy("Validating 'intAry' on Startup"))
 
 	if err != nil {
-		return err
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"intAry, intAryName=\"intAry\", validateIntAry, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
 	if intAry.isZeroValue {

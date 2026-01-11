@@ -16,7 +16,7 @@
 
 
 ************************************************
-       Standard Sprintf Error
+       Standard Sprintf Error 1-Param
 ************************************************
 
 		return result, resultPrecision,
