@@ -24,16 +24,14 @@ func TestIntAry_AddMultipleToThis_01(t *testing.T) {
 
 	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-	ia0 := new(IntAry).New()
-
-	err := ia0.SetIntAryToZero(0)
+	ia0, err := new(IntAry).NewZero(0)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err := ia0.SetIntAryToZero(0)\n"+
-			"Error= '%v'\n\n",
-			ePrefix, err.Error())
+			"ia0, err := new(IntAry).NewZero(0)\n"+
+			"precision= '0'\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
@@ -2354,10 +2352,6 @@ func TestIntAry_AddToThis_08(t *testing.T) {
 	}
 
 	ia1Stats := ia1.GetIntAryStats()
-
-	if lenExpectedIntAry != ia1Stats.IntAryLen {
-		t.Errorf("Error: Expected IntArray Length= '%v'. Instead received IntArry Length= '%v'", lenExpectedIntAry, ia1Stats.IntAryLen)
-	}
 
 	if lenExpectedIntAry != ia1Stats.IntAryLen {
 		t.Errorf("%v\n"+

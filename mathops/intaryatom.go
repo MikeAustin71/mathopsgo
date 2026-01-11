@@ -435,7 +435,9 @@ func (iaAtom *intAryAtom) setEqualArrayLengths(
 
 		//iAry2.AddArrayLengthLeft(iaIntLen - iAry2IntLen)
 
-		err = new(intAryNeutron).addArrayLengthLeft(iAry2, false, iaIntLen-iAry2IntLen, false, ePrefix)
+		iAry2IntAryLengthDelta := iaIntLen - iAry2IntLen
+
+		err = new(intAryNeutron).addArrayLengthLeft(iAry2, false, iAry2IntAryLengthDelta, false, ePrefix)
 
 		if err != nil {
 
@@ -443,7 +445,7 @@ func (iaAtom *intAryAtom) setEqualArrayLengths(
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(intAryNeutron).addArrayLengthLeft(\n" +
 					"iAry2, validateIa=false, iaIntLen - iAry2IntLen, validateResult=false, ePrefix )",
-				ErrContext: "",
+				ErrContext: fmt.Sprintf("iAry2IntAryLengthDelta= '%v'", iAry2IntAryLengthDelta),
 				ErrMessage: err.Error(),
 			}
 		}
@@ -452,15 +454,17 @@ func (iaAtom *intAryAtom) setEqualArrayLengths(
 	if iAry2IntLen > iaIntLen {
 		//ia.AddArrayLengthLeft(iAry2IntLen - iaIntLen)
 
-		err = new(intAryNeutron).addArrayLengthLeft(ia, false, iAry2IntLen-iaIntLen, false, ePrefix)
+		iaIntAryLengthDelta := iAry2IntLen - iaIntLen
+
+		err = new(intAryNeutron).addArrayLengthLeft(ia, false, iaIntAryLengthDelta, false, ePrefix)
 
 		if err != nil {
 
 			return &FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(intAryNeutron).addArrayLengthLeft(\n" +
-					"ia, validateIa=false, iAry2IntLen - iaIntLen, validateResult=false, ePrefix )",
-				ErrContext: "",
+					"ia, validateIa=false, iaIntAryLengthDelta, validateResult=false, ePrefix )",
+				ErrContext: fmt.Sprintf("iaIntAryLengthDelta= '%v'", iaIntAryLengthDelta),
 				ErrMessage: err.Error(),
 			}
 		}
@@ -469,16 +473,17 @@ func (iaAtom *intAryAtom) setEqualArrayLengths(
 	if ia.precision > iAry2.precision {
 
 		//iAry2.AddArrayLengthRight(ia.precision - iAry2.precision)
+		iAry2PrecisionDelta := ia.precision - iAry2.precision
 
-		err = new(intAryNeutron).addArrayLengthRight(ia, false, ia.precision-iAry2.precision, false, ePrefix)
+		err = new(intAryNeutron).addArrayLengthRight(iAry2, false, iAry2PrecisionDelta, false, ePrefix)
 
 		if err != nil {
 
 			return &FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(intAryNeutron).addArrayLengthRight(\n" +
-					"ia, validateIa=false, ia.precision - iAry2.precision, validateResult=false, ePrefix)",
-				ErrContext: "",
+					"iAry2, validateIAry2=false, iAry2PrecisionDelta, validateResult=false, ePrefix)",
+				ErrContext: fmt.Sprintf("iAry2PrecisionDelta= '%v'", iAry2PrecisionDelta),
 				ErrMessage: err.Error(),
 			}
 		}
@@ -489,16 +494,17 @@ func (iaAtom *intAryAtom) setEqualArrayLengths(
 	if iAry2.precision > ia.precision {
 
 		//ia.AddArrayLengthRight(iAry2.precision - ia.precision)
+		iaPrecisionDelta := iAry2.precision - ia.precision
 
-		err = new(intAryNeutron).addArrayLengthRight(ia, false, iAry2.precision-ia.precision, false, ePrefix)
+		err = new(intAryNeutron).addArrayLengthRight(ia, false, iaPrecisionDelta, false, ePrefix)
 
 		if err != nil {
 
 			return &FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(intAryNeutron).addArrayLengthRight(\n" +
-					"ia, validateIa=false, iAry2.precision - ia.precision, validateResult=false, ePrefix)",
-				ErrContext: "",
+					"ia, validateIa=false, iaPrecisionDelta, validateResult=false, ePrefix)",
+				ErrContext: fmt.Sprintf("iaPrecisionDelta= '%v'", iaPrecisionDelta),
 				ErrMessage: err.Error(),
 			}
 		}

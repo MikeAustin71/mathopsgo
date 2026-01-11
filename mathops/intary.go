@@ -598,14 +598,17 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 	return nil
 }
 
-// AddMultipleToThis - Add the values of  multiple intAry objects to the current
-// intAry value.
+// AddMultipleToThis
 //
-// convertToNumStr - boolean value determines whether the current intAry
+//		Add the values of  multiple intAry objects to the current intAry
+//		value.
 //
-//	object will convert the intAry value to a number string.
-//	Set this parameter to 'false' if this method is called
-//	multiple times in order to improve performance.
+//	 This method is defined as a variadic function in that 'iaMany'
+//	 is configured as an input parameter which will let you pass
+//	 variable number of IntAry arguments.
+//
+//	 However, if zero IntAry instances are passed through 'iaMany',
+//	 an error will be returned.
 func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -621,15 +624,46 @@ func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 		return err
 	}
 
+	// Validate the current IntAry instance
+	err = new(intAryElectron).isValidIntAry(
+		ia,
+		"Validating 'ia'")
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+				"ia, \"Validating 'ia'\")",
+			ErrContext: "The current IntAry instance ('ia') is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	if len(iaMany) == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(iaMany) == 0\n",
+			ErrMessage: "Input parameter 'iaMany' is empty",
+		}
+
+	}
+
+	intAryMathAddMech := new(intAryMathAddMechanics)
+
 	for idx, iAry := range iaMany {
 
-		err = new(IntAryMathAdd).RunTotal(ia, iAry)
+		err = intAryMathAddMech.runTotal(
+			ia, false, iAry, true, ePrefix)
 
 		if err != nil {
 
 			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, iAry)",
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: " intAryMathAddMechanics.runTotal(\n" +
+					"  ia, validate ia=false, iAry, validate iAry=true, ePrefix)",
 				ErrContext: fmt.Sprintf("Error occurred on cycle= '%v'", idx),
 				ErrMessage: err.Error(),
 			}

@@ -2,6 +2,51 @@
 Test Analysis
 ************************************************************
 
+In intarymathaddutility.go I added
+  error checking for IntAry Lengths.
+
+  Both IntArys still need to be resized.
+  May have to copy to temp variables.
+--------------------------------------------
+Focus Switched
+intAryMathAddMechanics.runTotal()
+
+
+intAryNeutron.addArrayLengthLeft() - This is good
+
+Problem:
+intAryNeutron.addArrayLengthRight()
+--------------------------------------------
+=== RUN   TestIntAry_AddMultipleToThis_01
+    xt_intary_01_test.go:211: TestIntAry_AddMultipleToThis_01
+        Error returned by:
+        err = ia0.AddMultipleToThis(&ia1, &ia2, &ia3, &ia4, &ia5)
+        ia1= '457.3'
+        ia2= '82.975'
+        ia3= '94'
+        ia4= '697.21589'
+        ia5= '9648.37'
+        Error= 'IntAry.AddMultipleToThis
+        Error returned by:
+          err = new(IntAryMathAdd).RunTotal(ia, iAry)
+        Error occurred on cycle= '2'
+        Error:
+          IntAryMathAdd.RunTotal()
+        intAryMathAddMechanics.runTotal()
+        Error:
+          ia1 & ia2 intAry lengths ARE NOT EQUAL!
+        After running new(intAryAtom).setEqualArrayLengths()
+        Array lengths are not equal.
+        ia1 len = 9
+        ia2 len = 4
+
+
+
+        '
+
+--- FAIL: TestIntAry_AddMultipleToThis_01 (0.01s)
+
+---------------------------------------------
 xt_intary_01_test.go:210
 
 === RUN   TestIntAry_AddMultipleToThis_01

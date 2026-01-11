@@ -77,6 +77,9 @@ func (e *FuncReturnError) Error() string {
 		errStr += "\n"
 	}
 
+	// TODO Only 1-new line needed
+	//  Ensure that only 1-new line is
+	//  appended to end of errStr
 	return errStr
 }
 
