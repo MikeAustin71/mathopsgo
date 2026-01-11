@@ -230,13 +230,29 @@ func (iaAddUtil *intAryMathAddUtility) addToSubtract(
 		ia1.intAry = ia1.intAry[ia1.firstDigitIdx:]
 	}
 
-	err = ia1.SetInternalFlags()
+	err = new(intAryNanobot).setInternalFlags(
+		ia1, ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = ia1.SetInternalFlags()",
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+				"ia1, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(intAryNanobot).setInternalFlags(
+		ia2, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+				"ia2, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

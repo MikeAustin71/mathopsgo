@@ -2158,7 +2158,7 @@ func TestIntAry_AddToThis_08(t *testing.T) {
 
 	expectedNumberStr := "472"
 
-	expectedFinalIntAry := []uint8{0, 1, 2, 5}
+	expectedFinalIntAry := []uint8{4, 7, 2}
 
 	lenExpectedIntAry := len(expectedFinalIntAry)
 
@@ -6045,7 +6045,7 @@ func TestIntAry_AddToThis_23(t *testing.T) {
 
 	expectedPrecisionUint := uint(0)
 
-	expectedSignVal := -1
+	expectedSignVal := 1
 
 	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
