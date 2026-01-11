@@ -3205,7 +3205,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 				}
 		}
 
-		err = new(intAryAtom).optimizeIntArrayLen(&iaFracPart, false, false, false, ePrefix.XCpy("Optimize iaFracPart"))
+		err = new(intAryAtom).optimizeIntArrayLen(&iaFracPart, false, false, ePrefix.XCpy("Optimize iaFracPart"))
 
 		if err != nil {
 
@@ -3214,7 +3214,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "err = new(intAryAtom).optimizeIntArrayLen(\n" +
 						"  &iaFracPart, validateIntAry=false, optimizeFracDigits=false,\n" +
-						"  validateResult=false ePrefix.XCpy(Optimize iaFracPart))",
+						"  ePrefix.XCpy(Optimize iaFracPart))",
 					ErrContext: "",
 					ErrMessage: err.Error(),
 				}
@@ -7018,7 +7018,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) error {
 		return err
 	}
 
-	err = new(intAryAtom).optimizeIntArrayLen(ia, true, optimizeFracDigits, false, ePrefix)
+	err = new(intAryAtom).optimizeIntArrayLen(ia, true, optimizeFracDigits, ePrefix)
 
 	if err != nil {
 
@@ -7026,7 +7026,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) error {
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: fmt.Sprintf("err = new(intAryAtom).optimizeIntArrayLen(\n"+
 				"  ia, validateIntAry=true, optimizeFracDigits=%v,\n"+
-				"   validateResult=false, ePrefix)",
+				"   ePrefix)",
 				optimizeFracDigits),
 			ErrContext: "",
 			ErrMessage: err.Error(),

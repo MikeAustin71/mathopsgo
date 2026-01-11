@@ -21,11 +21,11 @@
 
 		return result, resultPrecision,
 			&FuncReturnError{
-				ErrPrefix:  ePrefix,
+				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: fmt.Sprintf("nthRootPrecision='%v'",
 					nthRootPrecision.Text(10)),
-				ErrMessage: "Error: INVALID INPUT! 'radicand' is Zero!",
+				ErrMessage: err.Error(),
 			}
 
 

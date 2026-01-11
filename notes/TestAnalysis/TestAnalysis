@@ -3,41 +3,7 @@ Test Analysis
 ************************************************************
 
 
- xt_intary_01_test.go TestIntAry_AddToThis_01
- Line 334
-intAryNeutron.addIntAryToThis
-<<<<<<< HEAD
 
-
-
-
-=== RUN   TestProbability_PermutationsINumMgr_25
-    xt_probability_09_test.go:14808: TestProbability_PermutationsINumMgr_25
-        Error returned by:
-        decimalNumOfItems, err := new(Decimal).
-          NewInt(numOfItemsInt, 0)
-        numOfItemsInt= '15'
-        numOfItemsPrecisionUint= '0'
-        Error= 'Decimal.NewInt()
-        Error returned by:
-          numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
-        Error:
-          BigIntNum.GetNumericSeparatorsDto
-        Error returned by:
-          err = new(bigIntNumAtom).isBigIntNumValid(
-        bNum, "Testing Validity of 'bNum'"))
-        Error:
-          BigIntNum.GetNumericSeparatorsDto
-         :  Testing Validity of 'bNum'
-        bigIntNumAtom.isBigIntNumValid
-        Error:
-          This BigIntNum Instance is Invalid!
-        'bNum.bigInt' is 'nil'!
-        FATAL ERROR!
-        bNum.bigInt was reset to zero.
-=======
-xt_intary_05_test.go
->>>>>>> 2c4d0b0 (Refactored intAryUtility.selectIntAryValidation())
 
 
 

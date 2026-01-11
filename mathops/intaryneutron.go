@@ -326,7 +326,7 @@ func (iaNeutron *intAryNeutron) addIntAryToThis(
 		}
 	}
 
-	err = new(intAryAtom).optimizeIntArrayLen(ia2, false, true, true, ePrefix)
+	err = new(intAryAtom).optimizeIntArrayLen(ia2, false, true, ePrefix)
 
 	if err != nil {
 
@@ -334,7 +334,7 @@ func (iaNeutron *intAryNeutron) addIntAryToThis(
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "err = new(intAryAtom).optimizeIntArrayLen(\n" +
 				"  ia2, validateIntAry=false, optimizeFracDigits=true,\n" +
-				"  validateResult=true, ePrefix)",
+				"  ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

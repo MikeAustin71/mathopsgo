@@ -268,7 +268,6 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 	intAry *IntAry,
 	validateIntAry bool,
 	optimizeFracDigits bool,
-	validateResult bool,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if iaAtom.lock == nil {
@@ -301,21 +300,43 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 		}
 	}
 
-	err = new(intAryUtility).selectIntAryValidation(
-		intAry,
-		"intAry",
-		validateIntAry,
-		ePrefix.XCpy("Validating 'intAry' on Startup"))
+	if validateIntAry {
 
-	if err != nil {
+		err = new(intAryUtility).selectIntAryValidation(
+			intAry,
+			"intAry",
+			validateIntAry,
+			ePrefix.XCpy("Validating 'intAry' on Startup"))
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
-				"intAry, intAryName=\"intAry\", validateIntAry, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+					"intAry, intAryName=\"intAry\", validateIntAry, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 		}
+
+	} else {
+
+		err = new(intAryElectron).setSignificantDigitIdxs(
+			intAry,
+			ePrefix)
+
+		if err != nil {
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: fmt.Sprintf("err = new(intAryElectron).\n"+
+					"  setSignificantDigitIdxs(\n"+
+					"  intAryName=%s, ePrefix)", "intAry"),
+				ErrContext: fmt.Sprintf(
+					"Error Setting Internal Flags on '%s'", "intAry"),
+				ErrMessage: err.Error(),
+			}
+		}
+
 	}
 
 	if intAry.isZeroValue {
@@ -326,13 +347,15 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 		intAry.intAryLen - intAry.precision - intAry.firstDigitIdx
 
 	if optimizeFracDigits {
-
+		// Yes, optimize Fractional Digits
 		intAry.intAry = intAry.intAry[intAry.firstDigitIdx : intAry.lastDigitIdx+1]
+
 		intAry.intAryLen = intAry.lastDigitIdx - intAry.firstDigitIdx + 1
 
 	} else {
-
+		// DO NOT optimize Fractional Digits
 		intAry.intAry = intAry.intAry[intAry.firstDigitIdx:]
+
 		intAry.intAryLen = intAry.intAryLen - intAry.firstDigitIdx
 	}
 
@@ -341,15 +364,15 @@ func (iaAtom *intAryAtom) optimizeIntArrayLen(
 	err = new(intAryUtility).selectIntAryValidation(
 		intAry,
 		"intAry",
-		validateResult,
+		true,
 		ePrefix.XCpy("Final Result Validation"))
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
-			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
-				"intAry, \"intAry\", validateResult='%v' ePrefix", validateResult),
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"intAry, \"intAry\", validateResult='true' ePrefix",
 			ErrContext: "Error: The Final Result is INVALID!\n" +
 				"Final Result 'ia' FAILED Validation Tests",
 			ErrMessage: err.Error(),

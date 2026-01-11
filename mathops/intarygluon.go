@@ -1081,10 +1081,14 @@ func (iaGluon *intAryGluon) setIntAryWithUint8Ary(
 
 	if intAry.isIntegerZeroValue && intAry.integerLen > 1 {
 
-		err = new(intAryAtom).optimizeIntArrayLen(intAry, false, false, false, ePrefix)
+		err = new(intAryAtom).optimizeIntArrayLen(intAry, false, false, ePrefix)
 
-		if err != nil {
-			return err
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryAtom).optimizeIntArrayLen(\n" +
+				"intAry, validateIntAry=false, optimizeFracDigits=false, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
 	}
 
