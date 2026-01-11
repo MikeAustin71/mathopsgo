@@ -52,6 +52,7 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
     intAryName = "intAry"
   }
 
+<<<<<<< HEAD
   var tagLine1, tagLine2, retFuncName string
 
   if !validateIntAry {
@@ -103,6 +104,48 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
     }
   }
 
+=======
+  if !validateIntAry {
+
+    err = new(intAryElectron).setSignificantDigitIdxs(
+      intAry,
+      ePrefix)
+
+    if err != nil {
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: fmt.Sprintf("err = new(intAryElectron).\n"+
+          "  setSignificantDigitIdxs(\n"+
+          "  intAryName=%s, ePrefix)", intAryName),
+        ErrContext: fmt.Sprintf(
+          "Error Setting Internal Flags on '%s'", intAryName),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    return nil
+  } // End Of if !validateIntAry
+
+  // We need to validate the IntAry Object.
+
+  // This sets internal flags
+  err = new(intAryElectron).isValidIntAry(
+    intAry,
+    "Validating "+intAryName)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: fmt.Sprintf("err = new(intAryElectron).isValidIntAry(\n"+
+        "Validating '%s')", intAryName),
+      ErrContext: fmt.Sprintf("Input parameter '%s' is INVALID!\n"+
+        "'%s' FAILED Validation Tests.", intAryName, intAryName),
+      ErrMessage: err.Error(),
+    }
+  }
+
+>>>>>>> 2c4d0b0 (Refactored intAryUtility.selectIntAryValidation())
   return nil
 }
 
