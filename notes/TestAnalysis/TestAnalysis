@@ -3,21 +3,10 @@ Test Analysis
 ************************************************************
 
 
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
-    xt_bigintmathmultiply_03_test.go:1431: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
-        Error: Expected BigIntNum='22123521767579232'.
-        Instead, BigIntNum= '22123521767579232'.
+=== RUN   TestBigIntMathMultiply_MultiplyDecimal_06
+    xt_bigintmathmultiply_03_test.go:3576: TestBigIntMathMultiply_MultiplyDecimal_06
+        Error: Expected Decimal and Actual Result Decimal are unequal!
+        Expected Decimal= '287594572'.
+        Result Decimal  = '287594572'.
 
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05 (0.01s)
-
-Good at BigIntMathMultiply.MultiplyBigIntNumSeries()
-bigintmathmultiply.go
-finalResult, err = multiplier.CopyOut()
-bPair, err = new(BigIntPair).NewBigIntNum(
-new(bigIntMathMultiplyNanobot).multiplyPairWithNumSeps(bPair, numSeps,
-
-
-fix typo 1485
-if originalExpectedBigINumStr != expectedBigINumStr ||
-         		originalExpectedBigINumStr != resultNumStr
-
+--- FAIL: TestBigIntMathMultiply_MultiplyDecimal_06 (0.00s)
