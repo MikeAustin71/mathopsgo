@@ -3,13 +3,6 @@ Broken Tests
 
 ***********************************************************
 
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalArray_05
-    xt_bigintmathmultiply_04_test.go:1562: TestBigIntMathMultiply_MultiplyDecimalArray_05
-        Error: Expected BigIntNum='-204085138429311978576052224'.
-        Instead, BigIntNum= '-204085138429311978576052224'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.01s)
-
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
     xt_bigintmathmultiply_04_test.go:4346: TestBigIntMathMultiply_MultiplyDecimalSeries_05
         Error: Expected BigIntNum='22123521767579232'.
