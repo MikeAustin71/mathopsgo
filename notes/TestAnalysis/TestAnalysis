@@ -3,20 +3,10 @@ Test Analysis
 ************************************************************
 
 
-
-=== RUN   TestBigIntMathAdd_AddIntAry_05
-    xt_bigintmathadd_02_test.go:2783: TestBigIntMathAdd_AddIntAry_05
-        Error: Unexpected Result!
-        Expected actualResultNumStr = '124443,912456'
-        Instead, actualResultNumStr = '124443.912456'
-
---- FAIL: TestBigIntMathAdd_AddIntAry_05 (0.00s)
-
-Problem occurs at
-
-Line 63 bigintmathaddnanobot.go
-bigIntMathAddNanobot.addPairNoNumSeps()
-err = bPair.MakePrecisionsEqual()
-
-
-
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+    xt_bigintmathmultiply_02_test.go:3607: TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+        Error: BigIntNum Number Strings are unequal!
+                 Expected Number String = '1199582666426376575446779648'.
+                   Result Number String = '11995826664,26376575446779648'.
+        Original Expected Number String = '11995826664,26376575446779648'
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.02s)

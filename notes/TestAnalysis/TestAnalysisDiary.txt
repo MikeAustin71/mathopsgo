@@ -3,6 +3,15 @@ Diary - Test Analysis
 ******************************************************
 
 
+=== RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
+    xt_bigintmathdivide_08_test.go:4326: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
+        Error: Unexpected Result!
+        Because expectedModuloEqualsActualModulo == 'false'
+        Expected Modulo = '0.055'
+          Actual Modulo = '0'
+
+--- FAIL: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06 (0.00s)
+
 Fixed Custom Error
 === RUN   TestProbability_PermutationsINumMgr_25
     xt_probability_09_test.go:14808: TestProbability_PermutationsINumMgr_25
