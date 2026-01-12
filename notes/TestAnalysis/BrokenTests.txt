@@ -3,13 +3,6 @@ Broken Tests
 
 ***********************************************************
 
-=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
-    xt_bigintmathmultiply_04_test.go:4346: TestBigIntMathMultiply_MultiplyDecimalSeries_05
-        Error: Expected BigIntNum='22123521767579232'.
-        Instead, BigIntNum= '22123521767579232'.
-
---- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_05 (0.01s)
-
 === RUN   TestBigIntMathMultiply_MultiplyIntAry_06
     xt_bigintmathmultiply_05_test.go:1654: TestBigIntMathMultiply_MultiplyIntAry_06
         Error: Unexpected Result!

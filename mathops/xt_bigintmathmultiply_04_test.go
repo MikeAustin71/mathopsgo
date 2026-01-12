@@ -1792,7 +1792,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -1829,7 +1829,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01(t *testing.T) {
         ePrefix, j, originalExpectedNumStrs[j], j, resultNumStr)
     }
 
-  } // End of 2nd for loop
+  } // End of the 2nd for loop
 
   return
 }
@@ -1924,7 +1924,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -1961,7 +1961,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02(t *testing.T) {
         ePrefix, j, originalExpectedNumStrs[j], j, resultNumStr)
     }
 
-  } // End of 2nd for loop
+  } // End of the 2nd for loop
 
   return
 }
@@ -2056,7 +2056,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_03(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -2093,7 +2093,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_03(t *testing.T) {
         ePrefix, j, originalExpectedNumStrs[j], j, resultNumStr)
     }
 
-  } // End of 2nd for loop
+  } // End of the 2nd for loop
 
   return
 }
@@ -2187,7 +2187,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_04(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -2224,7 +2224,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_04(t *testing.T) {
         ePrefix, j, originalExpectedNumStrs[j], j, resultNumStr)
     }
 
-  } // End of 2nd for loop
+  } // End of the 2nd for loop
 
 }
 
@@ -2317,7 +2317,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_05(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -2354,7 +2354,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_05(t *testing.T) {
         ePrefix, j, originalExpectedNumStrs[j], j, resultNumStr)
     }
 
-  } // End of 2nd for loop
+  } // End of the 2nd for loop
 
   return
 }
@@ -2467,7 +2467,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_06(t *testing.T) {
       return
     }
 
-  } // End of first for loop
+  } // End of the first for loop
 
   result, err := new(BigIntMathMultiply).MultiplyDecimalOutputToArray(multiplierDecimal, decimalArray)
 
@@ -4271,15 +4271,28 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_05(t *testing.T) {
 
   } // End of for loop
 
-  expectedBigINum, err := new(BigIntNum).NewNumStr(originalExpectedNumStr)
+  // iaResult is expected to display frenchNumSeps
+  err = iaResult.SetNumericSeparatorsDto(frenchNumSeps)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = iaResult.SetNumericSeparatorsDto(frenchNumSeps)\n"+
+      "Error= '%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBigINum, err := new(BigIntNum).NewNumStrWithNumSeps(originalExpectedNumStr, &frenchNumSeps)
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "expectedBigINum, err := new(BigIntNum).\n"+
-      "  NewNumStr(originalExpectedNumStr)\n"+
-      "originalExpectedNumStr='%v'\nError='%v'\n\n",
-      ePrefix, originalExpectedNumStr, err.Error())
+      "  NewNumStrWithNumSeps(originalExpectedNumStr, &frenchNumSeps)\n"+
+      "originalExpectedNumStr='%v'\n"+
+      "frenchNumSeps='%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix, originalExpectedNumStr, frenchNumSeps.String(), err.Error())
     return
   }
 
@@ -4373,10 +4386,12 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_05(t *testing.T) {
 
   if !expectedBigINumEqualResultBigINum {
     t.Errorf("%v\n"+
-      "Error: Expected BigIntNum='%s'.\n"+
-      "Instead, BigIntNum= '%s'.\n\n",
-      ePrefix,
-      expectedBigINumBigInt.Text(10), resultBigInt.Text(10))
+      "Error: Unexpected Result!\n"+
+      "Because expectedBigINumEqualResultBigINum==false\n"+
+      "Expected result = '%v'\n"+
+      "  Actual result = '%v'\n\n",
+      ePrefix, expectedBigINumStr, result)
+
     return
   }
 
@@ -4410,32 +4425,47 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_05(t *testing.T) {
     return
   }
 
-  if originalExpectedNumStr != expectedBigINumStr ||
-    originalExpectedNumStr != resultNumStr {
+  if originalExpectedNumStr != expectedBigINumStr {
     t.Errorf("%v\n"+
-      "Error: BigIntNum Number Strings are unequal!\n"+
-      "         Expected Number String = '%s'.\n"+
-      "           Result Number String = '%s'.\n"+
-      "Original Expected Number String = '%s'",
-      ePrefix,
-      expectedBigINumStr,
-      resultNumStr,
-      originalExpectedNumStr)
-    return
+      "Error: Unexpected Result!\n"+
+      "Because originalExpectedNumStr != expectedBigINumStr\n"+
+      "Expected expectedBigINumStr = '%v'\n"+
+      "  Actual expectedBigINumStr = '%v'\n\n",
+      ePrefix, originalExpectedNumStr, expectedBigINumStr)
 
+    return
   }
 
-  if originalExpectedNumSignValue != resultSignValue ||
-    originalExpectedNumSignValue != expectedBigINumSign {
+  if originalExpectedNumStr != resultNumStr {
     t.Errorf("%v\n"+
-      "Error: Expected Number Signs do NOT match!\n"+
-      "originalExpectedBigINumSign sign='%v'.\n"+
-      "            resultSignValue sign='%v'\n"+
-      "             expectedBigINumSign='%v'\n",
-      ePrefix,
-      originalExpectedNumSignValue,
-      resultSignValue,
-      expectedBigINumSign)
+      "Error: Unexpected Result!\n"+
+      "Because originalExpectedNumStr != resultNumStr\n"+
+      "Expected resultNumStr = '%v'\n"+
+      "  Actual resultNumStr = '%v'\n\n",
+      ePrefix, originalExpectedNumStr, resultNumStr)
+
+    return
+  }
+
+  if originalExpectedNumSignValue != resultSignValue {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExpectedNumSignValue != resultSignValue\n"+
+      "Expected resultSignValue = '%v'\n"+
+      "  Actual resultSignValue = '%v'\n\n",
+      ePrefix, originalExpectedNumSignValue, resultSignValue)
+
+    return
+  }
+
+  if originalExpectedNumSignValue != expectedBigINumSign {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Because originalExpectedNumSignValue != expectedBigINumSign\n"+
+      "Expected expectedBigINumSign = '%v'\n"+
+      "  Actual expectedBigINumSign = '%v'\n\n",
+      ePrefix, originalExpectedNumSignValue, expectedBigINumSign)
+
     return
   }
 

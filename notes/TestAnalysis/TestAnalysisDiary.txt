@@ -3,6 +3,20 @@ Diary - Test Analysis
 ******************************************************
 
 
+=== RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
+    xt_bigintmathmultiply_04_test.go:4346: TestBigIntMathMultiply_MultiplyDecimalSeries_05
+        Error: Expected BigIntNum='22123521767579232'.
+        Instead, BigIntNum= '22123521767579232'.
+
+--- FAIL: TestBigIntMathMultiply_MultiplyDecimalSeries_05 (0.01s)
+
+=== RUN   TestBigIntMathMultiply_MultiplyDecimalArray_05
+    xt_bigintmathmultiply_04_test.go:1562: TestBigIntMathMultiply_MultiplyDecimalArray_05
+        Error: Expected BigIntNum='-204085138429311978576052224'.
+        Instead, BigIntNum= '-204085138429311978576052224'.
+
+--- FAIL: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.01s)
+
 === RUN   TestBigIntMathMultiply_MultiplyDecimal_06
     xt_bigintmathmultiply_03_test.go:3576: TestBigIntMathMultiply_MultiplyDecimal_06
         Error: Expected Decimal and Actual Result Decimal are unequal!
