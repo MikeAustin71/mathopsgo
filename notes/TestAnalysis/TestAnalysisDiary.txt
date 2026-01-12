@@ -3,6 +3,14 @@ Diary - Test Analysis
 ******************************************************
 
 
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+    xt_bigintmathmultiply_02_test.go:3607: TestBigIntMathMultiply_MultiplyBigIntNumArray_05
+        Error: BigIntNum Number Strings are unequal!
+                 Expected Number String = '1199582666426376575446779648'.
+                   Result Number String = '11995826664,26376575446779648'.
+        Original Expected Number String = '11995826664,26376575446779648'
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.02s)
+
 === RUN   TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
     xt_bigintmathdivide_08_test.go:4326: TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_06
         Error: Unexpected Result!

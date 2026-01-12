@@ -3,10 +3,21 @@ Test Analysis
 ************************************************************
 
 
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_05
-    xt_bigintmathmultiply_02_test.go:3607: TestBigIntMathMultiply_MultiplyBigIntNumArray_05
-        Error: BigIntNum Number Strings are unequal!
-                 Expected Number String = '1199582666426376575446779648'.
-                   Result Number String = '11995826664,26376575446779648'.
-        Original Expected Number String = '11995826664,26376575446779648'
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumArray_05 (0.02s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
+    xt_bigintmathmultiply_03_test.go:1431: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05
+        Error: Expected BigIntNum='22123521767579232'.
+        Instead, BigIntNum= '22123521767579232'.
+
+--- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumSeries_05 (0.01s)
+
+Good at BigIntMathMultiply.MultiplyBigIntNumSeries()
+bigintmathmultiply.go
+finalResult, err = multiplier.CopyOut()
+bPair, err = new(BigIntPair).NewBigIntNum(
+new(bigIntMathMultiplyNanobot).multiplyPairWithNumSeps(bPair, numSeps,
+
+
+fix typo 1485
+if originalExpectedBigINumStr != expectedBigINumStr ||
+         		originalExpectedBigINumStr != resultNumStr
+
