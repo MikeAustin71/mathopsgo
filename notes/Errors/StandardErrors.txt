@@ -19,14 +19,36 @@
        Standard Sprintf Error 1-Param
 ************************************************
 
-		return result, resultPrecision,
+	if err != nil {
+
+		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("nthRootPrecision='%v'",
-					nthRootPrecision.Text(10)),
+				ReturnFunc: "err = bResult.SetNumericSeparatorsDto(param1)",
+				ErrContext: fmt.Sprintf("param1='%v'",
+					param1),
 				ErrMessage: err.Error(),
 			}
+
+	}
+
+************************************************
+  Standard Sprintf Error 2-Param
+************************************************
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bResult.SetNumericSeparatorsDto(param1)",
+				ErrContext: fmt.Sprintf("param1= '%v'\n" +
+				"  param2= '%v'",
+					param1, param2),
+				ErrMessage: err.Error(),
+			}
+
+	}
 
 
 ************************************************

@@ -2692,6 +2692,15 @@ func TestBigIntMathAdd_AddIntAry_05(t *testing.T) {
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
 	ia1, err := new(IntAry).NewNumStr(n1Str)
 
 	if err != nil {
@@ -2700,6 +2709,27 @@ func TestBigIntMathAdd_AddIntAry_05(t *testing.T) {
 			"ia1, err := new(IntAry).NewNumStr(n1Str)\n"+
 			"n1Str= '%v'\n"+
 			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
+
+	err = ia1.IsValid("Validating 'ia1'")
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = ia1.IsValid(\"Validating 'ia1'\")\n"+
+			"Error= '%v'\n\n",
+			ePrefix, err.Error())
+		return
+	}
+
+	err = ia1.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = ia1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
 		return
 	}
 
@@ -2713,22 +2743,25 @@ func TestBigIntMathAdd_AddIntAry_05(t *testing.T) {
 		return
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
-
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	err = ia1.SetNumericSeparatorsDto(expectedNumSeps)
+	ia1NumSeps, err := ia1.GetNumericSeparatorsDto()
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = ia1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-			"Error='%v'\n\n", ePrefix, err.Error())
+			"ia1NumSeps, err := ia1.GetNumericSeparatorsDto()\n"+
+			"ia1= '%v'\n"+
+			"Error= '%v'\n\n", ePrefix, ia1NumStr, err.Error())
+		return
+	}
+
+	if !expectedNumSeps.Equal(ia1NumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Because ia1NumSeps are INVALID!\n"+
+			"Expected ia1NumSeps = '%v'\n"+
+			"  Actual ia1NumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), ia1NumSeps.String())
+
 		return
 	}
 

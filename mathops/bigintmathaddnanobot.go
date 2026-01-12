@@ -73,6 +73,21 @@ func (bIMathAddNano *bigIntMathAddNanobot) addPairNoNumSeps(
 			}
 	}
 
+	numSeps, err := bPair.Big1.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := \n" +
+					"  bPair.Big1.GetNumericSeparatorsDto()",
+				ErrContext: "Extraction of bPair.Big1 BigIntNum\n" +
+					"  Numeric Separtors FAILED!",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	bigI1, err := bPair.GetBig1BigInt()
 
 	if err != nil {
@@ -123,6 +138,21 @@ func (bIMathAddNano *bigIntMathAddNanobot) addPairNoNumSeps(
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
+	}
+
+	err = bResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bResult.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: fmt.Sprintf("numSeps='%v'",
+					numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	err = bResult.IsValid("Validating 'bResult'")

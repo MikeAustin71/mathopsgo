@@ -4,7 +4,19 @@ Test Analysis
 
 
 
+=== RUN   TestBigIntMathAdd_AddIntAry_05
+    xt_bigintmathadd_02_test.go:2783: TestBigIntMathAdd_AddIntAry_05
+        Error: Unexpected Result!
+        Expected actualResultNumStr = '124443,912456'
+        Instead, actualResultNumStr = '124443.912456'
 
+--- FAIL: TestBigIntMathAdd_AddIntAry_05 (0.00s)
+
+Problem occurs at
+
+Line 63 bigintmathaddnanobot.go
+bigIntMathAddNanobot.addPairNoNumSeps()
+err = bPair.MakePrecisionsEqual()
 
 
 
