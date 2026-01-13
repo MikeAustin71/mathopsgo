@@ -1415,7 +1415,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 
 	ePrefix := "TestBigIntMathMultiply_MultiplyIntAry_06"
 
-	// multiplier = 89637.9876
+	// multiplier = -89637.9876
 	multiplierStr := "-89637.9876"
 
 	// multiplicand = -247632
@@ -1424,23 +1424,23 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 	// product = 22197234145.3632
 	expectedNumStr := "22197234145,3632"
 
-	expectedNumSeps := NumericSeparatorDto{}
+	frenchNumSeps := NumericSeparatorDto{}
 	frenchDecSeparator := ','
 	frenchThousandsSeparator := ' '
 	frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	frenchNumSeps.DecimalSeparator = frenchDecSeparator
+	frenchNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	frenchNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	err := expectedNumSeps.IsValid("Validating expectedNumSeps")
+	err := frenchNumSeps.IsValid("Validating frenchNumSeps")
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = expectedNumSeps.IsValid('Validating expectedNumSeps')\n"+
-			"expectedNumSeps= '%v'\n"+
-			"Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+			"err = frenchNumSeps.IsValid('Validating frenchNumSeps')\n"+
+			"frenchNumSeps= '%v'\n"+
+			"Error= '%v'\n\n", ePrefix, frenchNumSeps.String(), err.Error())
 		return
 	}
 
@@ -1480,7 +1480,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 		return
 	}
 
-	multiplicandIntAry, err := new(IntAry).NewNumStrWithNumSeps(multiplierStr, usaNumSeps)
+	multiplicandIntAry, err := new(IntAry).NewNumStrWithNumSeps(multiplicandStr, usaNumSeps)
 
 	if err != nil {
 		t.Errorf("%v\n"+
@@ -1561,14 +1561,14 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 		return
 	}
 
-	err = iaResult.SetNumericSeparatorsDto(expectedNumSeps)
+	err = iaResult.SetNumericSeparatorsDto(frenchNumSeps)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
-			"err = iaResult.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-			"expectedNumSeps= '%v'\n"+
-			"Error= '%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+			"err = iaResult.SetNumericSeparatorsDto(frenchNumSeps)\n"+
+			"frenchNumSeps= '%v'\n"+
+			"Error= '%v'\n\n", ePrefix, frenchNumSeps.String(), err.Error())
 		return
 	}
 
@@ -1582,7 +1582,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 		return
 	}
 
-	expectedIntAry, err := new(IntAry).NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
+	expectedIntAry, err := new(IntAry).NewNumStrWithNumSeps(expectedNumStr, frenchNumSeps)
 
 	if err != nil {
 		t.Errorf("%v\n"+
@@ -1590,9 +1590,9 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 			"expectedIntAry, err := new(IntAry).\n"+
 			"  NewNumStr(expectedNumStr)\n"+
 			"expectedNumStr='%v'\n"+
-			"expectedNumSeps='%v'\n"+
+			"frenchNumSeps='%v'\n"+
 			"Error='%v'\n\n",
-			ePrefix, expectedNumStr, expectedNumSeps.String(), err.Error())
+			ePrefix, expectedNumStr, frenchNumSeps.String(), err.Error())
 		return
 	}
 
@@ -1616,17 +1616,29 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 		return
 	}
 
-	result, err := new(BigIntMathMultiply).MultiplyIntAry(multiplierIntAry, multiplicandIntAry, expectedNumSeps)
+	result, err := new(BigIntMathMultiply).MultiplyIntAry(multiplierIntAry, multiplicandIntAry, frenchNumSeps)
 
 	if err != nil {
 		t.Errorf("%v\n"+
 			"Error returned by:\n"+
 			"result, err := new(BigIntMathMultiply).MultiplyIntAry(\n"+
-			" multiplierIntAry, multiplicandIntAry, expectedNumSeps)\n"+
+			" multiplierIntAry, multiplicandIntAry, frenchNumSeps)\n"+
 			"multiplierIntAry= '%v'\n"+
 			"multiplicandIntAry= '%v'\n"+
 			"Error= '%v'\n\n", ePrefix, multiplierIntAryNumStr,
 			multiplicandIntAryNumStr, err.Error())
+		return
+	}
+
+	// 'result' is expected to display french number separators
+	err = result.SetNumericSeparatorsDto(frenchNumSeps)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = result.SetNumericSeparatorsDto(frenchNumSeps)\n"+
+			"frenchNumSeps= '%v'\n"+
+			"Error= '%v'\n\n", ePrefix, frenchNumSeps.String(), err.Error())
 		return
 	}
 
@@ -1682,13 +1694,13 @@ func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
 		return
 	}
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
+	if !frenchNumSeps.Equal(actualNumSeps) {
 		t.Errorf("%v\n"+
 			"Error: Unexpected Result!\n"+
-			"Because !expectedNumSeps.Equal(actualNumSeps)\n"+
+			"Because !frenchNumSeps.Equal(actualNumSeps)\n"+
 			"Expected actualNumSeps = '%v'\n"+
 			"  Actual actualNumSeps = '%v'\n\n",
-			ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+			ePrefix, frenchNumSeps.String(), actualNumSeps.String())
 
 		return
 	}
