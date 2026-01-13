@@ -2,19 +2,3 @@
 Test Analysis
 ************************************************************
 
-
-=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_25
-    xt_bigintmathnthroot_01_test.go:2920: TestBigIntMathNthRoot_GetNthRootBigNum_25
-        Error: Number String Values Not Equal
-        Because expectedStr != resultNumStr
-        Expected resultNumStr = '0.5181233574858042598812721854708'
-          Actual resultNumStr = '0.2523092491254898770621700885425'
-
---- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_25 (0.01s)
-
-bigIntMathNthRootNeutron.calcNthRootGateway
-nthRoot must be a positive number
-
-newRadicand= 3707398432
-
-16

@@ -5,55 +5,6 @@ RoadMap - 01
 Items to address in the next release.
 
 
---------------------------------
-NumStrDto
-Fix new(NumStrDto).NewInt
-    in xt_numstrdto_06_test.go
-    add error return
-
-Fix NumStrDto.GetPrecision()
-    Add Error return
---------------------------------
-
-
---------------------------------
-IntAry
-
-Add Get Methods for
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetAbsPureNumStr (from NumStrDto)
-  FormatCurrencyStr
-  FormatThousandsStr
---------------------------------
-
---------------------------------
-BigIntNum
-
-Add Get Methods for
-  GetAbsPurNumStr
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetMagnitude
-  GetAbsPureNumStr (from NumStrDto)
-
---------------------------------
-
---------------------------------
-Decimal
-
-Add Get Methods for
-  GetAbsPurNumStr
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetMagnitude
-  GetAbsPureNumStr (from NumStrDto)
-  FormatCurrencyStr
-  FormatThousandsStr
---------------------------------
 
 #1 Calculation Error
 --------------------------------
@@ -93,3 +44,33 @@ NOTE: All the tests previous to TestBigIntMathNthRoot_GetNthRootBigNum_25
           Actual resultNumStr = '0.2523092491254898770621700885425'
 
 --- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_25 (0.01s)
+
+------------------------------------------------------------
+#2 Calculation Error
+TestBigIntMathNthRoot_GetNthRootBigNum_27
+xt_bigintmathnthroot_01_test.go
+
+	/*
+		This Fails
+		radicand := "5.967"
+
+		nthRoot := "-2.894"
+
+		//              0.12345678901234567890123456789012
+		expectedStr := "0.53944021275349493325378163087104"
+
+		maxPrecision := uint(32)
+
+	*/
+
+	// This Succeeds
+	radicand := "5"
+
+	nthRoot := "-2.894"
+
+	//                         1         2         3
+	//              0.12345678901234567890123456789012
+	expectedStr := "0.5734243831463882071934739402416"
+
+	maxPrecision := uint(31)
+

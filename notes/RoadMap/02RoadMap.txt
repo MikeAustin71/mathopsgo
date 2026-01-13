@@ -1,0 +1,55 @@
+=====================================================
+RoadMap - 02 - New Methods
+=====================================================
+These methods should be added  in the next release.
+
+
+--------------------------------
+NumStrDto
+Fix new(NumStrDto).NewInt
+    in xt_numstrdto_06_test.go
+    add error return
+
+Fix NumStrDto.GetPrecision()
+    Add Error return
+--------------------------------
+
+
+--------------------------------
+IntAry
+
+Add Get Methods for
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
+--------------------------------
+
+--------------------------------
+BigIntNum
+
+Add Get Methods for
+  GetAbsPurNumStr
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
+
+--------------------------------
+
+--------------------------------
+Decimal
+
+Add Get Methods for
+  GetAbsPurNumStr
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
+--------------------------------
