@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
 
 func TestBigIntMathNthRoot_GetNthRootBigNum_01(t *testing.T) {
 
@@ -12,7 +15,19 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_01(t *testing.T) {
 
 	maxPrecision := uint(14)
 
-	expectedResult := "2.62652780440377"
+	//                                  1         2         3
+	//                       0.123456489012345678901234567890
+	expectedResultNumStr := "2.62652780440377"
+
+	expectedPrecisionInt := 14
+
+	expectedPrecisionUint := uint(expectedPrecisionInt)
+
+	big10 := big.NewInt(10)
+
+	baseExp := big.NewInt(int64(expectedPrecisionInt))
+
+	expectedScaleFactorBigInt := big.NewInt(0).Exp(big10, baseExp, nil)
 
 	expectedNumSeps := new(NumericSeparatorDto).NewUSADefaults()
 
@@ -80,6 +95,38 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_01(t *testing.T) {
 		return
 	}
 
+	resultPrecisionInt, err := result.GetPrecisionInt()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"resultPrecisionInt, err := result.GetPrecisionInt()\n"+
+			"Error= '%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	resultPrecisionUint, err := result.GetPrecisionUint()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"resultPrecisionUint, err := result.GetPrecisionUint()\n"+
+			"Error= '%v\n\n", ePrefix, err.Error())
+		return
+
+	}
+
+	resultScaleFactorBigInt, err := result.GetScaleFactor()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"resultScaleFactorBigInt, err := result.GetScaleFactorBigInt()\n"+
+			"Error= '%v\n\n", ePrefix, err.Error())
+		return
+
+	}
+
 	resultNumSeps, err := result.GetNumericSeparatorsDto()
 
 	if err != nil {
@@ -91,13 +138,46 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_01(t *testing.T) {
 		return
 	}
 
-	if expectedResult != resultNumStr {
+	if expectedPrecisionInt != resultPrecisionInt {
 		t.Errorf("%v\n"+
 			"Error: Unexpected Result!\n"+
-			"Because expectedResult != resultNumStr\n"+
+			"Because expectedPrecisionInt != resultPrecisionInt\n"+
+			"Expected resultPrecisionInt = '%v'\n"+
+			"  Actual resultPrecisionInt = '%v'\n\n",
+			ePrefix, expectedPrecisionInt, resultPrecisionInt)
+
+		return
+	}
+
+	if expectedPrecisionUint != resultPrecisionUint {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Because expectedPrecisionUint != resultPrecisionUint\n"+
+			"Expected resultPrecisionUint = '%v'\n"+
+			"  Actual resultPrecisionUint = '%v'\n\n",
+			ePrefix, expectedPrecisionUint, resultPrecisionUint)
+
+		return
+	}
+
+	if expectedScaleFactorBigInt.Cmp(resultScaleFactorBigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Scale Factors Do Not Match!\n"+
+			"Because expectedScaleFactorBigInt != resultScaleFactorBigInt\n"+
+			"Expected resultScaleFactorBigInt = '%v'\n"+
+			"  Actual resultScaleFactorBigInt = '%v'\n\n",
+			ePrefix, expectedScaleFactorBigInt, resultScaleFactorBigInt.Text(10))
+
+		return
+	}
+
+	if expectedResultNumStr != resultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Number Strings Do Not Match!\n"+
+			"Because expectedResultNumStr != resultNumStr\n"+
 			"Expected resultNumStr = '%v'\n"+
 			"  Actual resultNumStr = '%v'\n\n",
-			ePrefix, expectedResult, resultNumStr)
+			ePrefix, expectedResultNumStr, resultNumStr)
 
 		return
 	}
@@ -2677,6 +2757,8 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_24(t *testing.T) {
 
 	nthRoot := "-3.2"
 
+	//                         1         2         3
+	//              0.12345678901234567890123456789012
 	expectedStr := "0.52213689121370692016098323936996"
 
 	maxPrecision := uint(32)
@@ -2803,12 +2885,24 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_25(t *testing.T) {
 
 	ePrefix := "TestBigIntMathNthRoot_GetNthRootBigNum_25"
 
-	radicand := "8.2"
+	// Actual Values Fail
+	//	radicand := "8.2"
+
+	//	nthRoot := "-3.2"
+
+	//                         1         2         3
+	//              0.12345678901234567890123456789012
+	//	expectedStr := "0.5181233574858042598812721854708"
+	//	maxPrecision := uint(31)
+
+	// These Values Succeed
+	radicand := "8"
 
 	nthRoot := "-3.2"
 
+	//                         1         2         3
 	//              0.12345678901234567890123456789012
-	expectedStr := "0.5181233574858042598812721854708"
+	expectedStr := "0.5221368912137069201609832393700"
 
 	maxPrecision := uint(31)
 

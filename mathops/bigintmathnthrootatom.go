@@ -9,7 +9,7 @@ import (
 )
 
 type bigIntMathNthRootAtom struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // calcPositiveFractionalNthRoot
@@ -36,6 +36,10 @@ func (bIMathNthrtAtom *bigIntMathNthRootAtom) calcPositiveFractionalNthRoot(
 	validateNthRoot bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathNthrtAtom.lock == nil {
+		bIMathNthrtAtom.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtAtom.lock.Lock()
 

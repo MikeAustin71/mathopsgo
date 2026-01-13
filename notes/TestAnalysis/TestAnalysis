@@ -3,25 +3,18 @@ Test Analysis
 ************************************************************
 
 
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-    xt_bigintmathmultiply_08_test.go:4604: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_25
+    xt_bigintmathnthroot_01_test.go:2920: TestBigIntMathNthRoot_GetNthRootBigNum_25
         Error: Number String Values Not Equal
         Because expectedStr != resultNumStr
-        Expected resultNumStr = '35,000'
-          Actual resultNumStr = '35000'
+        Expected resultNumStr = '0.5181233574858042598812721854708'
+          Actual resultNumStr = '0.2523092491254898770621700885425'
 
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01 (0.00s)
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_25 (0.01s)
 
-After Fixing
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-    xt_bigintmathmultiply_08_test.go:4616: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-        Error: Number String Values Not Equal
-        Because expectedStr != resultNumStr
-        Expected resultNumStr = '35,000'
-          Actual resultNumStr = '35000'
+bigIntMathNthRootNeutron.calcNthRootGateway
+nthRoot must be a positive number
 
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01 (0.00s)
+newRadicand= 3707398432
 
-FAIL
-
-Process finished with the exit code 1
+16

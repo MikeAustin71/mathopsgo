@@ -8,7 +8,7 @@ import (
 )
 
 type bigIntMathNthRootNeutron struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // calcNthRootGateway
@@ -35,6 +35,10 @@ func (bIMathNthrtNeutron *bigIntMathNthRootNeutron) calcNthRootGateway(
 	validateNthRoot bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathNthrtNeutron.lock == nil {
+		bIMathNthrtNeutron.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtNeutron.lock.Lock()
 

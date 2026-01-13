@@ -14,37 +14,37 @@ type bigIntNumMolecule struct {
 
 // formatCurrencyStr - Formats the current BigIntNum numeric value as a currency string.
 //
-// If the Currency Symbol was not previously set for this BigIntNum, the currency symbol
-// is defaulted to the USA standard dollar sign, ('$'). To use other currency symbols, see
-// method BigIntNum.SetCurrencySymbol(). For a list of Major Currency Unicode Symbols, see
-// constants located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//	If the Currency Symbol was not previously set for this BigIntNum, the currency symbol
+//	is defaulted to the USA standard dollar sign, ('$'). To use other currency symbols, see
+//	the method BigIntNum.SetCurrencySymbol(). For a list of Major Currency Unicode Symbols, see
+//	constants located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 //
-// If the Decimal Separator was not previously set for this BigIntNum, the Decimal Separator
-// is defaulted to the USA standard period ('.'). To use another character for Decimal
-// Separator, see method BigIntNum.SetDecimalSeparator().
+//	If the Decimal Separator was not previously set for this BigIntNum, the Decimal Separator
+//	is defaulted to the USA standard period ('.'). To use another character for Decimal
+//	Separator, see method BigIntNum.SetDecimalSeparator().
 //
-// If the Thousands Separator was not previously set for this BigIntNum, the Thousands
-// Separator is defaulted to the USA standard comma (','). To use another character for
-// Thousands Separator, see method BigIntNum.SetThousandsSeparator().
+//	If the Thousands Separator was not previously set for this BigIntNum, the Thousands
+//	Separator is defaulted to the USA standard comma (','). To use another character for
+//	Thousands Separator, see method BigIntNum.SetThousandsSeparator().
 //
-// Input Parameters
-// ================
+//	Input Parameters
+//	================
 //
-// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//	negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
 //
-//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//													 		a leading minus sign.
-//															Example: -$123,456.78
+//		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//														 		a leading minus sign.
+//																Example: -$123,456.78
 //
-//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//															surrounding parentheses.
-//															Example: ($123,456.78)
+//		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//																surrounding parentheses.
+//																Example: ($123,456.78)
 //
 //
-//	ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
-//															absolute (positive) integer value
-//															and no decimal place separator.
-//															Example: ($12,345,678)
+//		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																absolute (positive) integer value
+//																and no decimal place separator.
+//																Example: ($12,345,678)
 func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
 	bNum *BigIntNum,
 	negValMode NegativeValueFmtMode,

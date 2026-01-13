@@ -2042,17 +2042,17 @@ func (bNum *BigIntNum) GetPrecisionUint() (uint, error) {
 
 // GetScaleFactor
 //
-// Returns the scale value of the current instance of
-// BigIntNum.  Scale value is a function of 'precision' or
-// the number of digits to the right of the decimal place.
-// Therefore, scale factor is defined by 10 raised to the
-// power BigIntNum precision.
+//	Returns the scale value of the current instance of
+//	BigIntNum.  Scale value is a function of 'precision' or
+//	the number of digits to the right of the decimal place.
+//	Therefore, a scale factor is defined by 10 raised to the
+//	power BigIntNum precision.
 //
-// Example:
-// precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
-// precision = 1		Scale Factor = 10^1			Scale Factor =   10
-// precision = 2		Scale Factor = 10^2			Scale Factor =  100
-// precision = 3    Scale Factor = 10^3			Scale Factor = 1000
+//	Example:
+//	  precision = 0  Scale Factor = 10^0  Scale Factor = 1
+//	  precision = 1  Scale Factor = 10^1  Scale Factor = 10
+//	  precision = 2  Scale Factor = 10^2  Scale Factor = 100
+//	  precision = 3  Scale Factor = 10^3  Scale Factor = 1000
 func (bNum *BigIntNum) GetScaleFactor() (*big.Int, error) {
 
 	var ePrefix *ePref.ErrPrefixDto

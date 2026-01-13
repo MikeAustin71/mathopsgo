@@ -121,10 +121,10 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 //
 //	nthRoot                  BigIntNum
 //	  Specifies the root which will be calculated for parameter,
-//	  'radicand'. Examples: square root, cube root, 4th root, 9th root
-//	  etc.
+//	  'radicand'. Examples: square root, cube root, 4th root, 9th
+//	  root, etc.
 //
-//	  'nthRoot' is a BigIntNum Type which may be a positive or
+//	  'nthRoot' is a BigIntNum Type, which may be a positive or
 //	  negative number. In addition, the nthRoot may be either an
 //	  integer number or a fractional number.
 //

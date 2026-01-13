@@ -3,11 +3,303 @@ Broken Tests
 
 ***********************************************************
 
-=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
-    xt_bigintmathmultiply_08_test.go:4604: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
+    xt_bigintmathnthroot_01_test.go:3141: TestBigIntMathNthRoot_GetNthRootBigNum_27
         Error: Number String Values Not Equal
         Because expectedStr != resultNumStr
-        Expected resultNumStr = '35,000'
-          Actual resultNumStr = '35000'
+        Expected resultNumStr = '0.53944021275349493325378163087104'
+          Actual resultNumStr = '0.04958106061648387328804455293999'
 
---- FAIL: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01 (0.00s)
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.06s)
+
+=== RUN   TestBigIntMathPower_MinimumRequiredPrecision_05
+    xt_bigintmathpower_03_test.go:2551: TestBigIntMathPower_MinimumRequiredPrecision_04
+        Error returned by:
+        result, err := new(BigIntMathPower).
+        BigIntNumMinRequiredPrecision(base, exponent)
+        base= '3.12345'
+        exponent= '12345678901234567890'
+        Error= 'BigIntMathPower.BigIntNumMinRequiredPrecision
+        bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision
+        Error returned by:
+          minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
+        Error:
+          BigIntNum.GetUInt
+        bigIntNumProton.bigIntNumGetUInt
+        if bNum.bigInt.Cmp(bIMaxUint) == 1
+        Error:
+          BigIntNum is GREATER THAN maximum 'uint' value.
+        '
+
+--- FAIL: TestBigIntMathPower_MinimumRequiredPrecision_05 (0.00s)
+
+=== RUN   TestBigIntMathPower_Pwr_03
+    xt_bigintmathpower_03_test.go:2908: TestBigIntMathPower_Pwr_03
+        Error: Unexpected Result!
+        Because  expectedNumStr != resultNumStr
+        Expected resultNumStr = '3699735472699.4101912057680101525'
+          Actual resultNumStr = '3699735472699410191205768010152534721'
+
+--- FAIL: TestBigIntMathPower_Pwr_03 (0.00s)
+
+=== RUN   TestBigIntMathPower_Pwr_21
+    xt_bigintmathpower_03_test.go:4955: TestBigIntMathPower_Pwr_21
+        Error: Unexpected Result!
+        Because  expectedNumStr != resultNumStr
+        Expected resultNumStr = '0.00000491261243811417457984700270545'
+          Actual resultNumStr = '0.00000000309964889841288729152228069'
+
+--- FAIL: TestBigIntMathPower_Pwr_21 (0.02s)
+
+=== RUN   TestBigIntMathPower_Pwr_23
+    xt_bigintmathpower_03_test.go:5142: TestBigIntMathPower_Pwr_23
+        Error: Unexpected Result!
+        Because  expectedNumStr != resultNumStr
+        Expected resultNumStr = '0.02307838042845159759046157465153'
+          Actual resultNumStr = '0.00000000000000002307838042845160'
+
+--- FAIL: TestBigIntMathPower_Pwr_23 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_01
+    xt_bigintmathsubtract_01_test.go:5930: TestBigIntMathSubtract_SubtractBigIntNumSeries_01
+        Error: Expected and 'result' values NOT Equal
+        Because expectedEqualsResult = 'false'
+        Expected result = '6805998.231036'
+          Actual result = '7328913.123456'
+
+--- FAIL: TestBigIntMathSubtract_SubtractBigIntNumSeries_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_02
+    xt_bigintmathsubtract_01_test.go:6231: TestBigIntMathSubtract_SubtractBigIntNumSeries_02
+        Error: Expected and 'result' values NOT Equal
+        Because expectedEqualsResult = 'false'
+        Expected result = '153035620.80650965'
+          Actual result = '-26612574.24744435'
+
+--- FAIL: TestBigIntMathSubtract_SubtractBigIntNumSeries_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_03
+    xt_bigintmathsubtract_01_test.go:6532: TestBigIntMathSubtract_SubtractBigIntNumSeries_03
+        Error: Expected and 'result' values NOT Equal
+        Because expectedEqualsResult = 'false'
+        Expected result = '2757547756.287792379'
+          Actual result = '1728612574.4944567'
+
+--- FAIL: TestBigIntMathSubtract_SubtractBigIntNumSeries_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_04
+    xt_bigintmathsubtract_01_test.go:6833: TestBigIntMathSubtract_SubtractBigIntNumSeries_04
+        Error: Expected and 'result' values NOT Equal
+        Because expectedEqualsResult = 'false'
+        Expected result = '-680399527.959121021'
+          Actual result = '-1709334709.7524567'
+
+--- FAIL: TestBigIntMathSubtract_SubtractBigIntNumSeries_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_05
+    xt_bigintmathsubtract_01_test.go:7192: TestBigIntMathSubtract_SubtractBigIntNumSeries_05
+        Error: Expected and 'result' values NOT Equal
+        Because expectedEqualsResult = 'false'
+        Expected result = '6805998,231036'
+          Actual result = '7328913,123456'
+
+--- FAIL: TestBigIntMathSubtract_SubtractBigIntNumSeries_05 (0.00s)
+
+--- FAIL: TestBigIntMathSubtract_SubtractDecimalArray_01 (0.00s)
+
+=== RUN   TestBigIntMathSubtract_SubtractDecimalArray_02
+    xt_bigintmathsubtract_01_test.go:9266: TestBigIntMathSubtract_SubtractDecimalArray_02
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractDecimalArray(
+          decMinuend, subtrahendAry[...])
+        decMinuend= '-18973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractDecimalArray
+        bigIntMathSubtractMacrobot.subtractDecimalArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractDecimalArray_02 (0.00s)
+
+=== RUN   TestBigIntMathSubtract_SubtractDecimalArray_03
+    xt_bigintmathsubtract_01_test.go:9584: TestBigIntMathSubtract_SubtractDecimalArray_03
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractDecimalArray(
+          decMinuend, subtrahendAry[...])
+        decMinuend= '1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractDecimalArray
+        bigIntMathSubtractMacrobot.subtractDecimalArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractDecimalArray_03 (0.00s)
+
+=== RUN   TestBigIntMathSubtract_SubtractDecimalArray_04
+    xt_bigintmathsubtract_01_test.go:9901: TestBigIntMathSubtract_SubtractDecimalArray_04
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractDecimalArray(
+          decMinuend, subtrahendAry[...])
+        decMinuend= '-1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractDecimalArray
+        bigIntMathSubtractMacrobot.subtractDecimalArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractDecimalArray_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractDecimalArray_05
+    xt_bigintmathsubtract_01_test.go:10241: TestBigIntMathSubtract_SubtractDecimalArray_05
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractDecimalArray(
+          decMinuend, subtrahendAry[...])
+        decMinuend= '7328941.123456'
+        Error= 'BigIntMathSubtract.SubtractDecimalArray
+        bigIntMathSubtractMacrobot.subtractDecimalArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractDecimalArray_05 (0.00s)
+
+=== RUN   TestBigIntMathSubtract_SubtractIntAryArray_01
+    xt_bigintmathsubtract_02_test.go:5380: TestBigIntMathSubtract_SubtractIntAryArray_01
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '7328941.123456'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractIntAryArray_02
+    xt_bigintmathsubtract_02_test.go:5697: TestBigIntMathSubtract_SubtractIntAryArray_02
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '-18973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractIntAryArray_03
+    xt_bigintmathsubtract_02_test.go:6014: TestBigIntMathSubtract_SubtractIntAryArray_03
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractIntAryArray_04
+    xt_bigintmathsubtract_02_test.go:6331: TestBigIntMathSubtract_SubtractIntAryArray_04
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '-1718973642.1234567'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractIntAryArray_05
+    xt_bigintmathsubtract_02_test.go:6673: TestBigIntMathSubtract_SubtractIntAryArray_05
+        Error returned by:
+        result, err := new(BigIntMathSubtract).SubtractIntAryArray(
+          iaMinuend, subtrahendAry[...])
+        iaMinuend= '7328941.123456'
+        Error= 'BigIntMathSubtract.SubtractIntAryArray
+        bigIntMathSubtractMacrobot.subtractIntAryArray
+        Error returned by:
+          subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
+        bigINumSubtrahend[0]
+        Error:
+          BigIntNum.GetNumStr
+         :  Validating 'bNum'
+        bigIntNumAtom.isBigIntNumValid
+        Error:
+          This BigIntNum input parameter 'bNum' is Invalid!
+        'bNum.bigInt' is 'nil'!
+        FATAL ERROR!
+        '
+
+--- FAIL: TestBigIntMathSubtract_SubtractIntAryArray_05 (0.00s)

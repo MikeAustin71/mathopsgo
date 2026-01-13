@@ -9,7 +9,7 @@ import (
 )
 
 type bigIntMathNthRootBoson struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // Experimental 2
@@ -23,6 +23,10 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) setupBundles(
 	fracBundleRadicand BigIntNum,
 	precisionAdjustment *big.Int,
 	err error) {
+
+	if bIMathNthrtBoson.lock == nil {
+		bIMathNthrtBoson.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtBoson.lock.Lock()
 
@@ -547,6 +551,10 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) calcBundleLength(
 	errPrefDto *ePref.ErrPrefixDto) (totalBundleLength *big.Int,
 	fracBundleLength *big.Int, err error) {
 
+	if bIMathNthrtBoson.lock == nil {
+		bIMathNthrtBoson.lock = new(sync.Mutex)
+	}
+
 	bIMathNthrtBoson.lock.Lock()
 
 	defer bIMathNthrtBoson.lock.Unlock()
@@ -768,6 +776,10 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) calcBundleLength(
 func (bIMathNthrtBoson *bigIntMathNthRootBoson) findNextRoot(
 	nthrt *BigIntMathNthRoot,
 	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIMathNthrtBoson.lock == nil {
+		bIMathNthrtBoson.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtBoson.lock.Lock()
 

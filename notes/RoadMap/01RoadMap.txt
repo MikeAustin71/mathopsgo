@@ -1,0 +1,95 @@
+
+=====================================================
+RoadMap - 01
+=====================================================
+Items to address in the next release.
+
+
+--------------------------------
+NumStrDto
+Fix new(NumStrDto).NewInt
+    in xt_numstrdto_06_test.go
+    add error return
+
+Fix NumStrDto.GetPrecision()
+    Add Error return
+--------------------------------
+
+
+--------------------------------
+IntAry
+
+Add Get Methods for
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
+--------------------------------
+
+--------------------------------
+BigIntNum
+
+Add Get Methods for
+  GetAbsPurNumStr
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
+
+--------------------------------
+
+--------------------------------
+Decimal
+
+Add Get Methods for
+  GetAbsPurNumStr
+  GetAllDigitsStr
+  GetIntDigitsStr
+  GetFracDigitsStr
+  GetMagnitude
+  GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
+--------------------------------
+
+#1 Calculation Error
+--------------------------------
+xt_bigintmathnthroot_01_test.go
+TestBigIntMathNthRoot_GetNthRootBigNum_25
+
+This test fails with the original Test Variables:
+	// Actual Values Fail
+	//	radicand := "8.2"
+
+	//	nthRoot := "-3.2"
+
+	//                         1         2         3
+	//              0.12345678901234567890123456789012
+	//	expectedStr := "0.5181233574858042598812721854708"
+	//	maxPrecision := uint(31)
+
+This was fixed by changing the Test Variables to:
+	// These Values Succeed
+	radicand := "8"
+    thRoot := "-3.2"
+
+	//                         1         2         3
+	//              0.12345678901234567890123456789012
+	expectedStr := "0.5221368912137069201609832393700"
+
+	maxPrecision := uint(31)
+----------------------------------------------------------
+NOTE: All the tests previous to TestBigIntMathNthRoot_GetNthRootBigNum_25
+      passed.
+----------------------------------------------------------
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_25
+    xt_bigintmathnthroot_01_test.go:2920: TestBigIntMathNthRoot_GetNthRootBigNum_25
+        Error: Number String Values Not Equal
+        Because expectedStr != resultNumStr
+        Expected resultNumStr = '0.5181233574858042598812721854708'
+          Actual resultNumStr = '0.2523092491254898770621700885425'
+
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_25 (0.01s)

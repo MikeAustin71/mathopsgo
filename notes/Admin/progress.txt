@@ -1,3 +1,6 @@
+0.5181233574858042598812721854708
+0.2523092491254898770621700885425
+
 
 Start Test cleanup here:
 Fix error returns
@@ -10,54 +13,3 @@ git add -A
 git commit -m "Modified README"
 git status
 git push origin dev
-
---------------------------------
-NumStrDto
-Fix new(NumStrDto).NewInt
-    in xt_numstrdto_06_test.go
-    add error return
-
-Fix NumStrDto.GetPrecision()
-    Add Error return
---------------------------------
-
-
---------------------------------
-IntAry
-
-Add Get Methods for
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetAbsPureNumStr (from NumStrDto)
-  FormatCurrencyStr
-  FormatThousandsStr
---------------------------------
-
---------------------------------
-BigIntNum
-
-Add Get Methods for
-  GetAbsPurNumStr
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetMagnitude
-  GetAbsPureNumStr (from NumStrDto)
-
---------------------------------
-
---------------------------------
-Decimal
-
-Add Get Methods for
-  GetAbsPurNumStr
-  GetAllDigitsStr
-  GetIntDigitsStr
-  GetFracDigitsStr
-  GetMagnitude
-  GetAbsPureNumStr (from NumStrDto)
-  FormatCurrencyStr
-  FormatThousandsStr
---------------------------------
-

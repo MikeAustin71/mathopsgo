@@ -8,7 +8,7 @@ import (
 )
 
 type bigIntMathNthRootMacrobot struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 //                             Stage 1                                             //
@@ -26,6 +26,10 @@ func (bIMathNthrtMacrobot *bigIntMathNthRootMacrobot) calcNegativeNthRoot(
 	validateNthRoot bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathNthrtMacrobot.lock == nil {
+		bIMathNthrtMacrobot.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtMacrobot.lock.Lock()
 
@@ -318,6 +322,10 @@ func (bIMathNthrtMacrobot *bigIntMathNthRootMacrobot) calcPositiveNthRoot(
 	validateNthRoot bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathNthrtMacrobot.lock == nil {
+		bIMathNthrtMacrobot.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtMacrobot.lock.Lock()
 

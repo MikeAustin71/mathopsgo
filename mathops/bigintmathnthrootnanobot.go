@@ -8,7 +8,7 @@ import (
 )
 
 type bigIntMathNthRootNanobot struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 //                             Stage 2                                             //
@@ -22,6 +22,10 @@ func (bIMathNthrtNanobot *bigIntMathNthRootNanobot) calcPositiveIntegerNthRoot(
 	validateNthRoot bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathNthrtNanobot.lock == nil {
+		bIMathNthrtNanobot.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtNanobot.lock.Lock()
 

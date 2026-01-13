@@ -9,7 +9,7 @@ import (
 )
 
 type bigIntMathNthRootProton struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // initializeBigIntMathNthRoot
@@ -24,6 +24,10 @@ func (bIMathNthrtProton *bigIntMathNthRootProton) initializeBigIntMathNthRoot(
 	nthRoot *BigIntNum,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (setupRadicand BigIntNum, err error) {
+
+	if bIMathNthrtProton.lock == nil {
+		bIMathNthrtProton.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtProton.lock.Lock()
 
@@ -331,6 +335,10 @@ func (bIMathNthrtProton *bigIntMathNthRootProton) initializeBigIntMathNthRoot(
 func (bIMathNthrtProton *bigIntMathNthRootProton) doRootExtraction(
 	nthrt *BigIntMathNthRoot,
 	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIMathNthrtProton.lock == nil {
+		bIMathNthrtProton.lock = new(sync.Mutex)
+	}
 
 	bIMathNthrtProton.lock.Lock()
 
