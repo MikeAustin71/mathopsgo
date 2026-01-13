@@ -896,25 +896,27 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntsBigIntNum(
 		ePrefix)
 }
 
-// MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
-// performs a 'multiplication' operation on these BigIntNum's.
+// MultiplyBigIntNums
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+//	Receives two BigIntNum types as input parameters and then
+//	performs a 'multiplication' operation on these BigIntNum's.
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//	In the multiplication operation, the number to be multiplied is called the
+//	"multiplicand", while the number of times the multiplicand is to be multiplied
+//	comes from the "multiplier". Usually the multiplier is placed first and the
+//	multiplicand is placed second.
 //
-//	multiplier x multiplicand = product or result
+//	For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+//	3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-// This method performs the multiplication operation and afterward returns the
-// result or 'product' as a BigIntNum type.
+//		multiplier x multiplicand = product or result
 //
-// The returned BigIntNum multiplication 'result' will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from
-// input parameter, 'multiplier'.
+//	This method performs the multiplication operation and afterward returns the
+//	result or 'product' as a BigIntNum type.
+//
+//	The returned BigIntNum multiplication 'result' will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol) copied from
+//	 the input parameter, 'multiplier'.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 	multiplier BigIntNum,
 	multiplicand BigIntNum) (BigIntNum, error) {

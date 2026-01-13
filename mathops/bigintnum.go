@@ -935,45 +935,52 @@ func (bNum *BigIntNum) FormatNumStr(
 		ePrefix)
 }
 
-// FormatThousandsStr - Returns the number string delimited with the
-// BigIntNum ThousandsSeparator character plus the Decimal Separator
-// character if applicable. See methods BigIntNum.SetThousandsSeparator()
-// and BigIntNum.SetDecimalSeparator().
+// FormatThousandsStr
 //
-// If the Decimal Separator was not previously set for this BigIntNum,
-// the Decimal Separator is defaulted to the USA standard period ('.').
-// To use another character for Decimal Separator, see method
-// BigIntNum.SetDecimalSeparator().
+//		Returns the number string delimited with the BigIntNum
+//		ThousandsSeparator character plus the Decimal Separator
+//		character if applicable. See methods BigIntNum.SetThousandsSeparator()
+//		and BigIntNum.SetDecimalSeparator().
 //
-// If the Thousands Separator was not previously set for this BigIntNum,
-// the Thousands Separator is defaulted to the USA standard comma (',').
-// To use another character for Thousands Separator, see method
-// BigIntNum.SetThousandsSeparator().
+//		If the Decimal Separator was not previously set for this
+//		BigIntNum, the Decimal Separator is defaulted to the USA
+//		standard period ('.'). To use another character for Decimal
+//		Separator, see method BigIntNum.SetDecimalSeparator().
 //
-// Example:
-// numStr = 1000000.234 converted to 1,000,000.234
+//		If the Thousands Separator was not previously set for this
+//		BigIntNum, the Thousands Separator is defaulted to the USA
+//		standard comma (',').
 //
-// Input Parameters
-// ================
+//		To use another character for Thousands Separator, see the
+//		method BigIntNum.SetThousandsSeparator().
 //
-// Input Parameters
-// ================
+//		Example:
+//		numStr = 1000000.234 converted to 1,000,000.234
 //
-// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//	 BE ADVISED
+//	 ==========
 //
-//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//													 		a leading minus sign.
-//															Example: -123,456.78
+//	 If thousands separators are NOT desired in the returned
+//	 number string, see method BigIntNum.GetNumStr().
 //
-//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//															surrounding parentheses.
-//															Example: (123,456.78)
+//		Input Parameters
+//		================
+//
+//		negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//
+//		 LEADMINUSNEGVALFMTMODE -	Negative values formatted with
+//		                          a leading minus sign.
+//		                          Example: -123,456.78
+//
+//		 PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//		                            surrounding parentheses.
+//		                            Example: (123,456.78)
 //
 //
-//	ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
-//															absolute (positive) integer value
-//															and no decimal place separator.
-//															Example: (12,345,678)
+//		 ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//		                             absolute (positive) integer value
+//		                             and no decimal place separator.
+//		                             Example: (12,345,678)
 func (bNum *BigIntNum) FormatThousandsStr(
 	negValMode NegativeValueFmtMode) (string, error) {
 
@@ -1800,9 +1807,27 @@ func (bNum *BigIntNum) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
 // GetNumStr
 //
-// Converts the current BigIntNum value to string of numbers
-// which includes the decimal place and decimal digits, if
-// they exist.
+//	Converts the current BigIntNum value to a string of numbers
+//	which includes the decimal place and decimal digits if
+//	they exist.
+//
+//	BE ADVISED
+//	==========
+//
+//	The returned number string	will not contain 'thousands'
+//	separators or 'currency' symbols.
+//
+//	If thousands separators should be included in the returned
+//	number string, see method BigIntNum.FormatThousandsStr().
+//
+//	Likewise, if currency symbols should be included in the
+//	returned number string, see method BigIntNum.FormatCurrencyStr().
+//
+//	Validation Testing
+//	==================
+//
+//	This method will perform validation testing on the current
+//	instance of IntAry.
 func (bNum *BigIntNum) GetNumStr() (string, error) {
 
 	var ePrefix *ePref.ErrPrefixDto

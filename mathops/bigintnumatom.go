@@ -1,141 +1,141 @@
 package mathops
 
 import (
-  "fmt"
-  "math/big"
-  "sync"
+	"fmt"
+	"math/big"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntNumAtom struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // isBigIntNumValid - returns a boolean value signaling
 // whether the current BigIntNum object is valid.
 func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.isBigIntNumValid",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.isBigIntNumValid",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    err = &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
+		err = &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 
-    return err
-  }
+		return err
+	}
 
-  if bNum.bigInt == nil {
+	if bNum.bigInt == nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum input parameter 'bNum' is Invalid!\n" +
-        "'bNum.bigInt' is 'nil'!\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum input parameter 'bNum' is Invalid!\n" +
+				"'bNum.bigInt' is 'nil'!\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  if bNum.sign != -1 && bNum.sign != 1 {
+	if bNum.sign != -1 && bNum.sign != 1 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.sign' is NOT equal to +1 or -1 !\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.sign' is NOT equal to +1 or -1 !\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  if bNum.absBigInt == nil {
+	if bNum.absBigInt == nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.absBigInt' is 'nil'!\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.absBigInt' is 'nil'!\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  if bNum.scaleFactor == nil {
+	if bNum.scaleFactor == nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.scaleFactor' is 'nil'!\n" +
-        "FATAL ERROR!",
-    }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.scaleFactor' is 'nil'!\n" +
+				"FATAL ERROR!",
+		}
 
-  }
+	}
 
-  if bNum.decimalSeparator == 0 {
+	if bNum.decimalSeparator == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.decimalSeparator' is empty with a Zero value.\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.decimalSeparator' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  if bNum.thousandsSeparator == 0 {
+	if bNum.thousandsSeparator == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.thousandsSeparator' is empty with a Zero value.\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.thousandsSeparator' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  if bNum.currencySymbol == 0 {
+	if bNum.currencySymbol == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "This BigIntNum Instance is Invalid!\n" +
-        "'bNum.currencySymbol' is empty with a Zero value.\n" +
-        "FATAL ERROR!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.currencySymbol' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // getIntegerPart
@@ -162,116 +162,125 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 //	instance of type BigIntNum. The calling method must
 //	do this!
 func (bIntNumAtom *bigIntNumAtom) getIntegerPart(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.getIntegerPart",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getIntegerPart",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
 
-    return new(bigIntNumMechanics).newBigInt(
-      big.NewInt(0), 0, ePrefix)
-  }
+		return new(bigIntNumMechanics).newBigInt(
+			big.NewInt(0), 0, ePrefix)
+	}
 
-  scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-    big.NewInt(int64(bNum.precision)), nil)
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+		big.NewInt(int64(bNum.precision)), nil)
 
-  quotient := big.NewInt(0).Quo(bNum.bigInt, scaleVal)
+	quotient := big.NewInt(0).Quo(bNum.bigInt, scaleVal)
 
-  bNum2, err := new(bigIntNumMechanics).
-    newBigInt(quotient, 0, ePrefix)
+	bNum2, err := new(bigIntNumMechanics).
+		newBigInt(quotient, 0, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{}, err
-  }
+		return BigIntNum{}, err
+	}
 
-  return bNum2, nil
+	return bNum2, nil
 }
 
-// getBigIntNumStr - Converts a BigIntNum value to string of
-// numbers which includes the decimal place and decimal digits
-// if they exist.
+// getBigIntNumStr
 //
-//	NOTE:
+//	Converts a BigIntNum value to a string of numbers which
+//	includes the decimal place and decimal digits if they
+//	exist.
 //
-// This method does NOT test the validity of 'bNum', an
-// instance of type BigIntNum. The calling method must do this!
+//	BE ADVISED
+//	==========
+//
+//	The returned number string	will not contain 'thousands'
+//	separators or 'currency' symbols.
+//
+//	NOTE
+//	====
+//
+//	This method does NOT test the validity of 'bNum', an
+//	instance of type BigIntNum. The calling method must do this!
 func (bIntNumAtom *bigIntNumAtom) getBigIntNumStr(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.getBigIntNumStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getBigIntNumStr()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  numStr, err := new(bigIntNumMolecule).formatBigIntNumStr(
-    bNum,
-    LEADMINUSNEGVALFMTMODE,
-    ePrefix)
+	numStr, err := new(bigIntNumMolecule).formatBigIntNumStr(
+		bNum,
+		LEADMINUSNEGVALFMTMODE,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  return numStr, nil
+	return numStr, nil
 }
 
 // GetNumericSeparatorsDto - Returns a structure containing the
@@ -284,46 +293,46 @@ func (bIntNumAtom *bigIntNumAtom) getBigIntNumStr(
 // This method does NOT test the validity of 'bNumDestination'
 // BigIntNum instance. The calling method must do this!
 func (bIntNumAtom *bigIntNumAtom) getNumericSeparatorsDto(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.getBigIntNumStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getBigIntNumStr()",
+		"")
 
-  if err != nil {
-    return NumericSeparatorDto{}, err
-  }
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return NumericSeparatorDto{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return NumericSeparatorDto{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  numSeps := NumericSeparatorDto{}
-  numSeps.DecimalSeparator = bNum.decimalSeparator
-  numSeps.ThousandsSeparator = bNum.thousandsSeparator
-  numSeps.CurrencySymbol = bNum.currencySymbol
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.decimalSeparator
+	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+	numSeps.CurrencySymbol = bNum.currencySymbol
 
-  return numSeps, nil
+	return numSeps, nil
 }
 
 // getSciNotationStr
@@ -350,64 +359,64 @@ func (bIntNumAtom *bigIntNumAtom) getNumericSeparatorsDto(
 //												mantissa		= significand factional digits = '.652'
 //	 										exponent    = '8'  (10^8)
 func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
-  bNum *BigIntNum,
-  mantissaLen uint,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	bNum *BigIntNum,
+	mantissaLen uint,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.getSciNotationStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getSciNotationStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  //sciNotation, err := bNum.GetSciNotationNumber(mantissaLen)
+	//sciNotation, err := bNum.GetSciNotationNumber(mantissaLen)
 
-  sciNotation, err := new(bigIntNumProton).
-    bigIntNumGetSciNotationNumber(bNum, mantissaLen, ePrefix)
+	sciNotation, err := new(bigIntNumProton).
+		bigIntNumGetSciNotationNumber(bNum, mantissaLen, ePrefix)
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  result, err := sciNotation.GetSciNotationStr(mantissaLen)
+	result, err := sciNotation.GetSciNotationStr(mantissaLen)
 
-  if err != nil {
-    return "",
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "  result, err := sciNotation.\n" +
-          "    GetSciNotationStr(mantissaLen)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "  result, err := sciNotation.\n" +
+					"    GetSciNotationStr(mantissaLen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // setNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
@@ -433,80 +442,80 @@ func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
-  bNum *BigIntNum,
-  decimalSeparator rune,
-  thousandsSeparator rune,
-  currencySymbol rune,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	decimalSeparator rune,
+	thousandsSeparator rune,
+	currencySymbol rune,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.setNumericSeparators",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparators",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if decimalSeparator == 0 {
+	if decimalSeparator == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'decimalSeparator' is set to '0' - Invalid rune!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'decimalSeparator' is set to '0' - Invalid rune!",
+		}
+	}
 
-  if thousandsSeparator == 0 {
+	if thousandsSeparator == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'thousandsSeparator' is set to '0' - Invalid rune!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'thousandsSeparator' is set to '0' - Invalid rune!",
+		}
+	}
 
-  if currencySymbol == 0 {
+	if currencySymbol == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'currencySymbol' is set to '0' - Invalid rune!",
-    }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'currencySymbol' is set to '0' - Invalid rune!",
+		}
 
-  }
+	}
 
-  bNum.decimalSeparator = decimalSeparator
+	bNum.decimalSeparator = decimalSeparator
 
-  bNum.thousandsSeparator = thousandsSeparator
+	bNum.thousandsSeparator = thousandsSeparator
 
-  bNum.currencySymbol = currencySymbol
+	bNum.currencySymbol = currencySymbol
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsDto - Sets the values of numeric separators:
@@ -524,71 +533,71 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 // This is a low-level operation. It is assumed that 'bNum'
 // has already been validated.
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
-  bNum *BigIntNum,
-  customSeparators NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	customSeparators NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.setNumericSeparatorsDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ErrContext:    "",
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if customSeparators.DecimalSeparator == 0 {
+	if customSeparators.DecimalSeparator == 0 {
 
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter 'customSeparators.DecimalSeparator' is set to '0' - Invalid rune!\n",
-      ePrefix.String())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.DecimalSeparator' is set to '0' - Invalid rune!\n",
+			ePrefix.String())
+	}
 
-  if customSeparators.ThousandsSeparator == 0 {
+	if customSeparators.ThousandsSeparator == 0 {
 
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter 'customSeparators.ThousandsSeparator' is set to '0' - Invalid rune!\n",
-      ePrefix.String())
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.ThousandsSeparator' is set to '0' - Invalid rune!\n",
+			ePrefix.String())
 
-  }
+	}
 
-  if customSeparators.CurrencySymbol == 0 {
+	if customSeparators.CurrencySymbol == 0 {
 
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
-      ePrefix.String())
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
+			ePrefix.String())
 
-  }
+	}
 
-  bNum.decimalSeparator = customSeparators.DecimalSeparator
+	bNum.decimalSeparator = customSeparators.DecimalSeparator
 
-  bNum.thousandsSeparator = customSeparators.ThousandsSeparator
+	bNum.thousandsSeparator = customSeparators.ThousandsSeparator
 
-  bNum.currencySymbol = customSeparators.CurrencySymbol
+	bNum.currencySymbol = customSeparators.CurrencySymbol
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsToDefaultIfEmpty - If numeric separators are
@@ -604,53 +613,53 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 // Effectively, this method ensures that numeric separators
 // are set to valid values.
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.setNumericSeparatorsToDefaultIfEmpty",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsToDefaultIfEmpty",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ErrContext:    "",
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if bNum.decimalSeparator == 0 {
-    bNum.decimalSeparator = '.'
-  }
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
 
-  if bNum.thousandsSeparator == 0 {
-    bNum.thousandsSeparator = ','
-  }
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
 
-  if bNum.currencySymbol == 0 {
-    bNum.currencySymbol = '$'
-  }
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsToUSADefault - Sets Numeric separators:
@@ -668,44 +677,44 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
 //	bNum.SetThousandsSeparator()
 //	bNum.SetCurrencySymbol()
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToUSADefault(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntNumAtom.lock == nil {
-    bIntNumAtom.lock = new(sync.Mutex)
-  }
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
 
-  bIntNumAtom.lock.Lock()
+	bIntNumAtom.lock.Lock()
 
-  defer bIntNumAtom.lock.Unlock()
+	defer bIntNumAtom.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumAtom.setNumericSeparatorsToUSADefault",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsToUSADefault",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  bNum.decimalSeparator = '.'
+	bNum.decimalSeparator = '.'
 
-  bNum.thousandsSeparator = ','
+	bNum.thousandsSeparator = ','
 
-  bNum.currencySymbol = '$'
+	bNum.currencySymbol = '$'
 
-  return nil
+	return nil
 }

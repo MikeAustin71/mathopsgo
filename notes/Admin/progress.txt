@@ -30,6 +30,8 @@ Add Get Methods for
   GetIntDigitsStr
   GetFracDigitsStr
   GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
 --------------------------------
 
 --------------------------------
@@ -55,5 +57,7 @@ Add Get Methods for
   GetFracDigitsStr
   GetMagnitude
   GetAbsPureNumStr (from NumStrDto)
+  FormatCurrencyStr
+  FormatThousandsStr
 --------------------------------
 

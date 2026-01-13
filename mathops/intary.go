@@ -2643,8 +2643,13 @@ func (ia *IntAry) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 //
 //	The number string returned by this method will contain a
 //	decimal separator to separate integer and fractional
-//	components of the numeric value. The returned number string
-//	will not contain 'thousands' separators or 'currency' symbols.
+//	components of the numeric value.
+//
+//	BE ADVISED
+//	==========
+//
+//	The returned number string	will not contain 'thousands'
+//	separators or 'currency' symbols.
 //
 //	Validation Testing
 //	==================

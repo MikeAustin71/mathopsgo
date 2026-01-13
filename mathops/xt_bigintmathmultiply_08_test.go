@@ -4579,7 +4579,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01(t *testing.T) {
 		return
 	}
 
-	resultNumStr, err := result.GetNumStr()
+	resultNumStr, err := result.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
 
 	if err != nil {
 		t.Errorf("%v\n"+

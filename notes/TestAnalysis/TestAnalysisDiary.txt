@@ -3,6 +3,16 @@ Diary - Test Analysis
 ******************************************************
 
 
+=== RUN   TestBigIntMathMultiply_MultiplyIntAry_06
+    xt_bigintmathmultiply_05_test.go:1654: TestBigIntMathMultiply_MultiplyIntAry_06
+        Error: Unexpected Result!
+        Because!!!!
+        Expected resultNumStr = '22197234145,3632'
+          Actual resultNumStr = '8034968820,97775376'
+
+--- FAIL: TestBigIntMathMultiply_MultiplyIntAry_06 (0.00s)
+
+
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_05
     xt_bigintmathmultiply_04_test.go:4346: TestBigIntMathMultiply_MultiplyDecimalSeries_05
         Error: Expected BigIntNum='22123521767579232'.
