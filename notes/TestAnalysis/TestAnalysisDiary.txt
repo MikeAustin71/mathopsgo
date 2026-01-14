@@ -3,6 +3,16 @@ Diary - Test Analysis
 ******************************************************
 
 
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
+    xt_bigintmathnthroot_01_test.go:3141: TestBigIntMathNthRoot_GetNthRootBigNum_27
+        Error: Number String Values Not Equal
+        Because expectedStr != resultNumStr
+        Expected resultNumStr = '0.53944021275349493325378163087104'
+          Actual resultNumStr = '0.04958106061648387328804455293999'
+
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.06s)
+
+
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
     xt_bigintmathmultiply_08_test.go:4604: TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01
         Error: Number String Values Not Equal

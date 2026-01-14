@@ -3,36 +3,6 @@ Broken Tests
 
 ***********************************************************
 
-=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
-    xt_bigintmathnthroot_01_test.go:3141: TestBigIntMathNthRoot_GetNthRootBigNum_27
-        Error: Number String Values Not Equal
-        Because expectedStr != resultNumStr
-        Expected resultNumStr = '0.53944021275349493325378163087104'
-          Actual resultNumStr = '0.04958106061648387328804455293999'
-
---- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.06s)
-
-=== RUN   TestBigIntMathPower_MinimumRequiredPrecision_05
-    xt_bigintmathpower_03_test.go:2551: TestBigIntMathPower_MinimumRequiredPrecision_04
-        Error returned by:
-        result, err := new(BigIntMathPower).
-        BigIntNumMinRequiredPrecision(base, exponent)
-        base= '3.12345'
-        exponent= '12345678901234567890'
-        Error= 'BigIntMathPower.BigIntNumMinRequiredPrecision
-        bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision
-        Error returned by:
-          minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
-        Error:
-          BigIntNum.GetUInt
-        bigIntNumProton.bigIntNumGetUInt
-        if bNum.bigInt.Cmp(bIMaxUint) == 1
-        Error:
-          BigIntNum is GREATER THAN maximum 'uint' value.
-        '
-
---- FAIL: TestBigIntMathPower_MinimumRequiredPrecision_05 (0.00s)
-
 === RUN   TestBigIntMathPower_Pwr_03
     xt_bigintmathpower_03_test.go:2908: TestBigIntMathPower_Pwr_03
         Error: Unexpected Result!

@@ -2,3 +2,24 @@
 Test Analysis
 ************************************************************
 
+
+=== RUN   TestBigIntMathPower_MinimumRequiredPrecision_05
+    xt_bigintmathpower_03_test.go:2551: TestBigIntMathPower_MinimumRequiredPrecision_04
+        Error returned by:
+        result, err := new(BigIntMathPower).
+        BigIntNumMinRequiredPrecision(base, exponent)
+        base= '3.12345'
+        exponent= '12345678901234567890'
+        Error= 'BigIntMathPower.BigIntNumMinRequiredPrecision
+        bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision
+        Error returned by:
+          minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
+        Error:
+          BigIntNum.GetUInt
+        bigIntNumProton.bigIntNumGetUInt
+        if bNum.bigInt.Cmp(bIMaxUint) == 1
+        Error:
+          BigIntNum is GREATER THAN maximum 'uint' value.
+        '
+
+--- FAIL: TestBigIntMathPower_MinimumRequiredPrecision_05 (0.00s)

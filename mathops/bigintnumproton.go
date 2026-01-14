@@ -3024,7 +3024,24 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 			}
 	}
 
+	if bNum.bigInt == nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Input parameter 'bNum' is INVALID!\n" +
+					"bNum.bigInt == nil",
+			}
+
+	}
+
+	bNumBigIntNumStr := bNum.bigInt.Text(10)
+
 	bIMaxUint := big.NewInt(int64(math.MaxUint32))
+
+	bIMaxUintNumStr := bIMaxUint.Text(10)
 
 	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
 
@@ -3033,10 +3050,12 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "if bNum.bigInt.Cmp(big.NewInt(0)) == -1",
-				ErrMessage: "BigIntNum is LESS THAN minimum 'uint' value of zero.",
+				ErrMessage: "BigIntNum is LESS THAN minimum 'uint' value of zero.\n" +
+					fmt.Sprintf("bNum.bigInt= '%v'\n", bNumBigIntNumStr),
 			}
 	}
 
+	// Maximum Uint Value is 4,294,967,295
 	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
 
 		return math.MaxUint32,
@@ -3044,7 +3063,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "if bNum.bigInt.Cmp(bIMaxUint) == 1",
-				ErrMessage: "BigIntNum is GREATER THAN maximum 'uint' value.",
+				ErrMessage: "bNum is GREATER THAN maximum 'uint' value.\n" +
+					fmt.Sprintf("bNum.bigInt= '%v'\n"+
+						"Max 'Uint32' Value= '%v'", bNumBigIntNumStr, bIMaxUintNumStr),
 			}
 	}
 
