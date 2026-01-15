@@ -2914,9 +2914,11 @@ func TestBigIntMathPower_Pwr_03(t *testing.T) {
 
   exponentStr := "8"
 
-  expectedNumStr := "3699735472699.4101912057680101525"
+  //                                        1         2         3
+  //                             0.123456789012345678901234567890
+  expectedNumStr := "3699735472699.410191205768010152534721"
 
-  maxPrecision := uint(19)
+  maxPrecision := uint(24)
 
   bINumBase, err := new(BigIntNum).NewNumStr(baseStr)
 
@@ -3142,7 +3144,9 @@ func TestBigIntMathPower_Pwr_05(t *testing.T) {
 
   exponentStr := "-3.25"
 
-  expectedNumStr := "0.0000080046877744411952288377104402677"
+  //                            1         2         3         4         5
+  //                 0.12345678901234567890123456789012345678901234567890
+  expectedNumStr := "0.0000080046877744411952288377104402677000000"
 
   maxPrecision := uint(37)
 

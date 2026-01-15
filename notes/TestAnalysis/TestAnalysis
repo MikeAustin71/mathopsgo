@@ -2,24 +2,11 @@
 Test Analysis
 ************************************************************
 
+=== RUN   TestBigIntMathPower_Pwr_23
+    xt_bigintmathpower_03_test.go:5142: TestBigIntMathPower_Pwr_23
+        Error: Unexpected Result!
+        Because  expectedNumStr != resultNumStr
+        Expected resultNumStr = '0.02307838042845159759046157465153'
+          Actual resultNumStr = '0.00000000000000002307838042845160'
 
-=== RUN   TestBigIntMathPower_MinimumRequiredPrecision_05
-    xt_bigintmathpower_03_test.go:2551: TestBigIntMathPower_MinimumRequiredPrecision_04
-        Error returned by:
-        result, err := new(BigIntMathPower).
-        BigIntNumMinRequiredPrecision(base, exponent)
-        base= '3.12345'
-        exponent= '12345678901234567890'
-        Error= 'BigIntMathPower.BigIntNumMinRequiredPrecision
-        bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision
-        Error returned by:
-          minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
-        Error:
-          BigIntNum.GetUInt
-        bigIntNumProton.bigIntNumGetUInt
-        if bNum.bigInt.Cmp(bIMaxUint) == 1
-        Error:
-          BigIntNum is GREATER THAN maximum 'uint' value.
-        '
-
---- FAIL: TestBigIntMathPower_MinimumRequiredPrecision_05 (0.00s)
+--- FAIL: TestBigIntMathPower_Pwr_23 (0.00s)
