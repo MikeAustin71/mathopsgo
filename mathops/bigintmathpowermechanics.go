@@ -42,7 +42,7 @@ type bigIntMathPowerMechanics struct {
 //
 //	This returned BigIntNum 'result' will contain numeric separators
 //	(decimal separator, thousands separator and currency symbol)
-//	copied from input parameter,'base'.
+//	copied from input parameter, 'base'.
 func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntNumPwr(
 	base *BigIntNum,
 	validateBase bool,

@@ -16,6 +16,20 @@ Main Error Prefix
 		return BigIntNum{}, err
 	}
 
+
+-------------------------------------------------------------------
+ Low-Level Method Signature
+-------------------------------------------------------------------
+func (bigFloatPwr *bigFloatRaiseToPower) raiseToPowerMul(
+  base *big.Float,
+  power int64,
+  mode big.RoundingMode,
+  errPrefDto *ePref.ErrPrefixDto) (*big.Float, error) {
+
+    ...
+}
+
+
 -------------------------------------------------------------------
  Low-Level Lock Code
 -------------------------------------------------------------------

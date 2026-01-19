@@ -850,7 +850,7 @@ func (bIPwr *BigIntMathPower) BigIntNumMinRequiredPrecision(
 //
 //	This returned BigIntNum 'result' will contain numeric separators
 //	(decimal separator, thousands separator and currency symbol)
-//	copied from input parameter,'base'.
+//	copied from input parameter, 'base'.
 func (bIPwr *BigIntMathPower) BigIntNumPwr(
 	base BigIntNum, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 

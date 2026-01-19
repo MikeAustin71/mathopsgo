@@ -9,7 +9,7 @@ import (
 )
 
 type bigIntMathPowerMolecule struct {
-	lock sync.Mutex
+	lock *sync.Mutex
 }
 
 // bigIntNumRaiseToNegativeFractionalPower - Assumes that input parameter 'exponent' is negative and a
@@ -26,6 +26,10 @@ func (bIMathPwrMolecule *bigIntMathPowerMolecule) bigIntNumRaiseToNegativeFracti
 	validateExponent bool,
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIMathPwrMolecule.lock == nil {
+		bIMathPwrMolecule.lock = new(sync.Mutex)
+	}
 
 	bIMathPwrMolecule.lock.Lock()
 
@@ -289,6 +293,10 @@ func (bIMathPwrMolecule *bigIntMathPowerMolecule) bigIntNumRaiseToNegativeIntege
 	maxPrecision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
+	if bIMathPwrMolecule.lock == nil {
+		bIMathPwrMolecule.lock = new(sync.Mutex)
+	}
+
 	bIMathPwrMolecule.lock.Lock()
 
 	defer bIMathPwrMolecule.lock.Unlock()
@@ -428,9 +436,11 @@ func (bIMathPwrMolecule *bigIntMathPowerMolecule) bigIntNumRaiseToNegativeIntege
 			}
 	}
 
-	bigIBasePrecision := big.NewInt(int64(exponentPredisionUint))
+	//bigIBasePrecision := big.NewInt(int64(exponentPredisionUint))
 
-	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.absBigInt)
+	//bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.absBigInt)
+
+	bigINewPrecision := big.NewInt(0).Mul(base.bigInt, exponent.absBigInt)
 
 	newPrecision := uint(bigINewPrecision.Int64())
 
