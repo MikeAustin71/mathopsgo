@@ -1,0 +1,8 @@
+
+============================
+Add and push to 'dev' branch
+============================
+git add -A
+git commit -m"Modified README"
+git status
+git push origin dev

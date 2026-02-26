@@ -440,22 +440,48 @@ func (bIMathPwrMolecule *bigIntMathPowerMolecule) bigIntNumRaiseToNegativeIntege
 
 	//bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.absBigInt)
 
+	baseBigIntNumStr := base.bigInt.Text(10)
+
+	exponentAbsBigIntNumStr := exponent.absBigInt.Text(10)
+
 	bigINewPrecision := big.NewInt(0).Mul(base.bigInt, exponent.absBigInt)
 
-	newPrecision := uint(bigINewPrecision.Int64())
+	bigINewPrecisionNumStr := bigINewPrecision.Text(10)
 
-	result := big.NewInt(0).Exp(base.bigInt, exponent.absBigInt, nil)
+	fmt.Printf("baseBigIntNumStr='%v'\n"+
+		"exponentAbsBigIntNumStr='%v'\n"+
+		"bigINewPrecisionNumStr='%v'\n", baseBigIntNumStr, exponentAbsBigIntNumStr, bigINewPrecisionNumStr)
 
-	bINumResult1, err := new(BigIntNum).NewBigInt(result, newPrecision)
+	//newPrecision := uint(bigINewPrecision.Int64())
+
+	//result := big.NewInt(0).Exp(base.bigInt, exponent.absBigInt, nil)
+	_, result, err := new(BigIntMathUtility).BigIntInverse(base.bigInt)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: " _, result, err := new(BigIntMathUtility).\n" +
+					"BigIntInverse(base.bigInt)\n",
+				ErrContext: fmt.Sprintf("base.bigInt= '%v'",
+					base.bigInt.Text(10)),
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	bINumResult1, err := new(BigIntNum).NewBigInt(result, uint(bigINewPrecision.Uint64()))
+
+	if err != nil {
+
+		//goland:noinspection ALL
+		return BigIntNum{},
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "bINumResult1, err := new(BigIntNum).NewBigInt(result, newPrecision)",
-				ErrContext: fmt.Sprintf("result= '%v'\n newPrecision= '%v'",
-					result.Text(10), newPrecision),
+				ErrContext: fmt.Sprintf("result= '%v'\nnewPrecision= '%v'",
+					result.Text(10), bigINewPrecision.Uint64()),
 				ErrMessage: err.Error(),
 			}
 	}
