@@ -1,6 +1,7 @@
 package mathops
 
 import (
+  "fmt"
   "sync"
 
   ePref "github.com/MikeAustin71/errpref"
@@ -118,7 +119,9 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
 
   if !powerCalcProfile.BaseIsZero {
 
-    powerCalcProfile.BaseIsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(
+    var isBaseAbsOne bool
+
+    isBaseAbsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(
       base,
       ePrefix)
 
@@ -127,7 +130,7 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
       return BigIntMathPowerProfile{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "powerCalcProfile.BaseIsOne, err = new(bigIntNumMolecule).isBIntNumOne(\n" +
+          ReturnFunc: "isBaseAbsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(\n" +
             "  base, ePrefix)",
           ErrContext: "Error returned while testing 'base' for a value of one (1)!",
           ErrMessage: err.Error(),
@@ -135,6 +138,34 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
 
     }
 
+    if isBaseAbsOne && base.sign == 1 {
+      powerCalcProfile.BaseIsPlusOne = true
+
+    } else if isBaseAbsOne && base.sign == -1 {
+      powerCalcProfile.BaseIsMinusOne = true
+
+    } else {
+
+      err = fmt.Errorf("%v\n"+
+        "base is INVALID. base.sign is NOT set to 1 or -1!\n"+
+        "base.sign = %v\n",
+        ePrefix,
+        base.sign)
+
+      return BigIntMathPowerProfile{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: base.sign is NOT set to 1 or -1!",
+          ErrMessage: err.Error(),
+        }
+
+    }
+
+  }
+
+  if powerCalcProfile.BaseIsPlusOne || powerCalcProfile.BaseIsMinusOne {
+    powerCalcProfile.BaseIsAbsOne = true
   }
 
   if base.precision == 0 {
@@ -164,7 +195,9 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
 
   if !powerCalcProfile.ExponentIsZero {
 
-    powerCalcProfile.ExponentIsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(
+    var isExponentAbsOne bool
+
+    isExponentAbsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(
       exponent,
       ePrefix)
 
@@ -173,7 +206,7 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
       return BigIntMathPowerProfile{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "powerCalcProfile.ExponentIsOne, err = new(bigIntNumMolecule).isBIntNumOne(\n" +
+          ReturnFunc: "isExponentAbsOne, err = new(bigIntNumMolecule).isBIntNumAbsOne(\n" +
             "  exponent, ePrefix)",
           ErrContext: "Error returned while testing 'exponent' for a value of one (1)!",
           ErrMessage: err.Error(),
@@ -181,6 +214,34 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
 
     }
 
+    if isExponentAbsOne && exponent.sign == 1 {
+      powerCalcProfile.ExponentIsPlusOne = true
+
+    } else if isExponentAbsOne && exponent.sign == -1 {
+      powerCalcProfile.ExponentIsMinusOne = true
+
+    } else {
+
+      err = fmt.Errorf("%v\n"+
+        "exponent is INVALID. exponent.sign is NOT set to 1 or -1!\n"+
+        "exponent.sign = %v\n",
+        ePrefix,
+        exponent.sign)
+
+      return BigIntMathPowerProfile{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: exponent.sign is NOT set to 1 or -1!",
+          ErrMessage: err.Error(),
+        }
+
+    }
+
+  }
+
+  if powerCalcProfile.ExponentIsPlusOne || powerCalcProfile.ExponentIsMinusOne {
+    powerCalcProfile.ExponentIsAbsOne = true
   }
 
   if exponent.precision == 0 {
@@ -191,55 +252,22 @@ func (bIntPwrDiag *bigIntMathPowerDiagnostics) profilePowerCalc(
     powerCalcProfile.ExponentIsNegative = true
   }
 
-  // Calc Type # 1
-  if !powerCalcProfile.BaseIsNegative &&
-    powerCalcProfile.BaseIsInteger &&
-    !powerCalcProfile.ExponentIsNegative &&
-    powerCalcProfile.ExponentIsInteger {
+  // Set Exponent Calculation Type Code
 
-    powerCalcProfile.ExpoCalcTypeCode = ExpoCalcBasePlusIntExpoPlusInt
+  pwrCalcClassify := new(bigIntMathPowerCalcClassify)
 
+  err = pwrCalcClassify.classifyExponentCalcType(&powerCalcProfile, ePrefix)
+
+  if err != nil {
+
+    return BigIntMathPowerProfile{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = pwrCalcClassify.classifyExponentCalcType(&powerCalcProfile, ePrefix)",
+        ErrContext: "Error returned while classifying the type of exponentiation calculation!",
+        ErrMessage: err.Error(),
+      }
   }
 
-  // Calc Type # 2
-  if !powerCalcProfile.BaseIsNegative &&
-    powerCalcProfile.BaseIsInteger &&
-    !powerCalcProfile.ExponentIsNegative &&
-    !powerCalcProfile.ExponentIsInteger {
-
-    powerCalcProfile.ExpoCalcTypeCode = ExpoCalcBasePlusIntExpoPlusFrac
-
-  }
-
-  // Calc Type # 3
-  if !powerCalcProfile.BaseIsNegative &&
-    powerCalcProfile.BaseIsInteger &&
-    powerCalcProfile.ExponentIsNegative &&
-    powerCalcProfile.ExponentIsInteger {
-
-    powerCalcProfile.ExpoCalcTypeCode = ExpoCalcBasePlusIntExpoMinusInt
-
-  }
-
-  // Calc Type # 4
-  if !powerCalcProfile.BaseIsNegative &&
-    powerCalcProfile.BaseIsInteger &&
-    powerCalcProfile.ExponentIsNegative &&
-    !powerCalcProfile.ExponentIsInteger {
-
-    powerCalcProfile.ExpoCalcTypeCode = ExpoCalcBasePlusIntExpoMinusFrac
-
-  }
- 
-  // Calc Type # 5
-  if !powerCalcProfile.BaseIsNegative &&
-    !powerCalcProfile.BaseIsInteger &&
-    !powerCalcProfile.ExponentIsNegative &&
-    powerCalcProfile.ExponentIsInteger {
-
-    powerCalcProfile.ExpoCalcTypeCode = ExpoCalcBasePlusFracExpoPlusInt
-
-  }
-
-  return powerCalcProfile, err
+  return powerCalcProfile, nil
 }
