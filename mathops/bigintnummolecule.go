@@ -826,6 +826,85 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 	return false, nil
 }
 
+// isBIntNumAbsOne
+//
+//	 Returns a boolean signaling whether the absolute value
+//	 of a BigIntNum value is one.
+//
+//	 If the absolute value of the BigIntNum is one, the actual
+//	 value of the BigIntNum may be +1 or -1.
+//
+//	 Examples:
+//	 =========
+//
+//	 'bNum'
+//
+//	   Absolute
+//		   Value         Result
+//
+//				 1						true
+//				 2					  false
+//	     -1            true
+//	     -2            false
+//	      0            false
+//
+//		IMPORTANT NOTE
+//		==============
+//
+//	 This method does NOT test the validity of 'bNum', an
+//	 instance of type BigIntNum. The calling method must
+//	 do this!
+func (bIntMolecule *bigIntNumMolecule) isBIntNumAbsOne(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.isBIntNumOne",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if bNum == nil {
+
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bNum.bigInt == nil {
+
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum.bigInt'",
+		}
+	}
+
+	if bNum.absBigInt.Cmp(big.NewInt(1)) == 0 &&
+		bNum.precision == 0 {
+
+		return true, nil
+	}
+
+	return false, nil
+}
+
 // newOne - Returns a BigIntNum Type with a value equal to '1' (one).
 // The number of zeros created after the decimal placeholder
 // (fractional digits) is determined by the input parameter 'precision'.

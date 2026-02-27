@@ -1,15 +1,15 @@
 package mathops
 
 import (
-	"fmt"
-	"math/big"
-	"sync"
+  "fmt"
+  "math/big"
+  "sync"
 
-	ePref "github.com/MikeAustin71/errpref"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntMathPowerMechanics struct {
-	lock sync.Mutex
+  lock *sync.Mutex
 }
 
 // bigIntNumPwr
@@ -44,412 +44,416 @@ type bigIntMathPowerMechanics struct {
 //	(decimal separator, thousands separator and currency symbol)
 //	copied from input parameter, 'base'.
 func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntNumPwr(
-	base *BigIntNum,
-	validateBase bool,
-	exponent *BigIntNum,
-	validateExponent bool,
-	maxPrecision uint,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
-
-	bIMathPwrMech.lock.Lock()
-
-	defer bIMathPwrMech.lock.Unlock()
-
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntMathPowerMechanics.bigIntNumPwr",
-		"")
-
-	if err != nil {
-		return BigIntNum{}, err
-	}
-
-	if base == nil {
-
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'base'",
-			}
-	}
-
-	if exponent == nil {
-
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'exponent'",
-			}
-	}
-
-	if validateBase {
-
-		err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = base.IsValid(\n" +
-						"  ePrefix.XCpy(\"Validating 'base'\").String()",
-					ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
-						"'base' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
-
-	if validateExponent {
-
-		err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = exponent.IsValid(\n" +
-						"  ePrefix.XCpy(\"Validating 'exponent'\").String()",
-					ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
-						"'exponent' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
-
-	baseNumSeps, err := base.GetNumericSeparatorsDto()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "baseNumSeps, err := base.GetNumericSeparatorsDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	if !validateBase {
-
-		err = baseNumSeps.IsValid(ePrefix.XCpy("baseNumSeps").String())
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "",
-					ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
-						"'base' Numeric Separators FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
-
-	result, err := new(BigIntNum).NewWithNumSeps(baseNumSeps)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	baseNumStr, err := base.GetNumStr()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "baseNumStr, err := base.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	exponentNumStr, err := exponent.GetNumStr()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	baseIsZero, err := base.IsZero()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "baseIsZero, err := base.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	if baseIsZero {
-		// If 'base' is zero, return zero value.
-		return result, nil
-	}
-
-	exponentIsZero, err := exponent.IsZero()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "exponentIsZero, err := exponent.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	if exponentIsZero {
-
-		result, err = new(BigIntNum).NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "result, err = new(BigIntNum).\n" +
-						"  NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return result, nil
-	}
-
-	exponentPrecisionUint, err := exponent.GetPrecisionUint()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "exponentPrecisionUint, err := exponent.GetPrecisionUint()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigOne, err := new(BigIntNum).NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigOne, err := new(BigIntNum).\n" +
-					"  NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	exponentIsEqualBigOne, err := exponent.Equal(bigOne)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	if exponentIsEqualBigOne {
-
-		result, err = base.CopyOut()
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "result, err = base.CopyOut()",
-					ErrContext: "exponent == bigOne",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return result, nil
-	}
-
-	exponentSignValue, err := exponent.GetSign()
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "exponentSignValue, err := exponent.GetSign()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	if exponentPrecisionUint == uint(0) {
-
-		if exponentSignValue > 0 {
-
-			// exponent is a positive number
-			result, err = new(bigIntMathPowerNeutron).
-				bigIntNumRaiseToPositiveIntegerPower(base, false, exponent, false, ePrefix)
-
-			if err != nil {
-
-				return BigIntNum{},
-					&FuncReturnError{
-						ErrPrefix: ePrefix.String(),
-						ReturnFunc: "result, err =new(bigIntMathPowerNeutron).\n" +
-							"  bigIntNumRaiseToPositiveIntegerPower(\n" +
-							"  base, false, exponent, false, ePrefix)",
-						ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'",
-							baseNumStr, exponentNumStr),
-						ErrMessage: err.Error(),
-					}
-			}
-
-		} else {
-			// exponent must be a negative number
-			result, err = new(bigIntMathPowerMolecule).
-				bigIntNumRaiseToNegativeIntegerPower(
-					base, false, exponent, false, maxPrecision, ePrefix)
-
-			if err != nil {
-
-				return BigIntNum{},
-					&FuncReturnError{
-						ErrPrefix: ePrefix.String(),
-						ReturnFunc: "result, err = new(bigIntMathPowerMolecule).\n" +
-							"  bigIntNumRaiseToNegativeIntegerPower(\n" +
-							"  base, false, exponent, false, maxPrecision, ePrefix)",
-						ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
-							"maxPrecision='%v'",
-							baseNumStr, exponentNumStr, maxPrecision),
-						ErrMessage: err.Error(),
-					}
-			}
-		}
-
-	} else {
-		// precision must be greater than zero. exponent is a fractional number
-
-		if exponentSignValue > 0 {
-			// fractional exponent is a positive number
-
-			result, err = new(bigIntMathPowerAtom).
-				bigIntNumRaiseToPositiveFractionalPower(
-					base, false, exponent, false, maxPrecision, ePrefix)
-
-			if err != nil {
-
-				return BigIntNum{},
-					&FuncReturnError{
-						ErrPrefix: ePrefix.String(),
-						ReturnFunc: "result, err = new(bigIntMathPowerAtom).\n" +
-							"  bigIntNumRaiseToPositiveFractionalPower(\n" +
-							"  base, false, exponent, false, maxPrecision, ePrefix)",
-						ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
-							"maxPrecision='%v'",
-							baseNumStr, exponentNumStr, maxPrecision),
-						ErrMessage: err.Error(),
-					}
-			}
-
-		} else {
-			// fractional exponent must be a negative number
-
-			result, err = new(bigIntMathPowerMolecule).bigIntNumRaiseToNegativeFractionalPower(base, false, exponent, false, maxPrecision, ePrefix)
-
-			if err != nil {
-
-				return BigIntNum{},
-					&FuncReturnError{
-						ErrPrefix: ePrefix.String(),
-						ReturnFunc: "result, err = new(bigIntMathPowerMolecule).\n" +
-							"  bigIntNumRaiseToNegativeFractionalPower(\n" +
-							"  base, false, exponent, false, maxPrecision, ePrefix)",
-						ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
-							"maxPrecision='%v'",
-							baseNumStr, exponentNumStr, maxPrecision),
-						ErrMessage: err.Error(),
-					}
-			}
-		}
-	}
-
-	if result.precision > maxPrecision {
-
-		err = result.SetPrecision(maxPrecision)
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = result.SetPrecision(maxPrecision)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
-
-	err = result.SetNumericSeparatorsDto(baseNumSeps)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = result.SetNumericSeparatorsDto(baseNumSeps)",
-				ErrContext: fmt.Sprintf("baseNumSeps= '%v'", baseNumSeps.String()),
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = result.IsValid(ePrefix.XCpy("Validating 'result'").String())
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = result.IsValid(\n" +
-					"  ePrefix.XCpy(\"Validating 'result'\").String()",
-				ErrContext: "Error: Final calculated 'result' is INVALID!\n" +
-					"'result' FAILED validation tests.",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return result, nil
+  base *BigIntNum,
+  validateBase bool,
+  exponent *BigIntNum,
+  validateExponent bool,
+  maxPrecision uint,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+  if bIMathPwrMech.lock == nil {
+    bIMathPwrMech.lock = new(sync.Mutex)
+  }
+
+  bIMathPwrMech.lock.Lock()
+
+  defer bIMathPwrMech.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntMathPowerMechanics.bigIntNumPwr",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  if base == nil {
+
+    return BigIntNum{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'base'",
+      }
+  }
+
+  if exponent == nil {
+
+    return BigIntNum{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'exponent'",
+      }
+  }
+
+  if validateBase {
+
+    err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = base.IsValid(\n" +
+            "  ePrefix.XCpy(\"Validating 'base'\").String()",
+          ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+            "'base' FAILED validation tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  if validateExponent {
+
+    err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = exponent.IsValid(\n" +
+            "  ePrefix.XCpy(\"Validating 'exponent'\").String()",
+          ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
+            "'exponent' FAILED validation tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  baseNumSeps, err := base.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseNumSeps, err := base.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if !validateBase {
+
+    err = baseNumSeps.IsValid(ePrefix.XCpy("baseNumSeps").String())
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+            "'base' Numeric Separators FAILED validation tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  result, err := new(BigIntNum).NewWithNumSeps(baseNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  baseNumStr, err := base.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseNumStr, err := base.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  exponentNumStr, err := exponent.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  baseIsZero, err := base.IsZero()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseIsZero, err := base.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if baseIsZero {
+    // If 'base' is zero, return zero value.
+    return result, nil
+  }
+
+  exponentIsZero, err := exponent.IsZero()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentIsZero, err := exponent.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if exponentIsZero {
+
+    result, err = new(BigIntNum).NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, err = new(BigIntNum).\n" +
+            "  NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    return result, nil
+  }
+
+  exponentPrecisionUint, err := exponent.GetPrecisionUint()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentPrecisionUint, err := exponent.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  bigOne, err := new(BigIntNum).NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigOne, err := new(BigIntNum).\n" +
+          "  NewBigIntNumSeps(big.NewInt(1), 0, baseNumSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  exponentIsEqualBigOne, err := exponent.Equal(bigOne)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if exponentIsEqualBigOne {
+
+    result, err = base.CopyOut()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "result, err = base.CopyOut()",
+          ErrContext: "exponent == bigOne",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    return result, nil
+  }
+
+  exponentSignValue, err := exponent.GetSign()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentSignValue, err := exponent.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if exponentPrecisionUint == uint(0) {
+
+    if exponentSignValue > 0 {
+
+      // exponent is a positive number
+      result, err = new(bigIntMathPowerNeutron).
+        bigIntNumRaiseToPositiveIntegerPower(base, false, exponent, false, ePrefix)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "result, err =new(bigIntMathPowerNeutron).\n" +
+              "  bigIntNumRaiseToPositiveIntegerPower(\n" +
+              "  base, false, exponent, false, ePrefix)",
+            ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'",
+              baseNumStr, exponentNumStr),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    } else {
+      // exponent must be a negative number
+      result, err = new(bigIntMathPowerMolecule).
+        bigIntNumRaiseToNegativeIntegerPower(
+          base, false, exponent, false, maxPrecision, ePrefix)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "result, err = new(bigIntMathPowerMolecule).\n" +
+              "  bigIntNumRaiseToNegativeIntegerPower(\n" +
+              "  base, false, exponent, false, maxPrecision, ePrefix)",
+            ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
+              "maxPrecision='%v'",
+              baseNumStr, exponentNumStr, maxPrecision),
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+
+  } else {
+    // precision must be greater than zero. exponent is a fractional number
+
+    if exponentSignValue > 0 {
+      // fractional exponent is a positive number
+
+      result, err = new(bigIntMathPowerAtom).
+        bigIntNumRaiseToPositiveFractionalPower(
+          base, false, exponent, false, maxPrecision, ePrefix)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "result, err = new(bigIntMathPowerAtom).\n" +
+              "  bigIntNumRaiseToPositiveFractionalPower(\n" +
+              "  base, false, exponent, false, maxPrecision, ePrefix)",
+            ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
+              "maxPrecision='%v'",
+              baseNumStr, exponentNumStr, maxPrecision),
+            ErrMessage: err.Error(),
+          }
+      }
+
+    } else {
+      // fractional exponent must be a negative number
+
+      result, err = new(bigIntMathPowerMolecule).bigIntNumRaiseToNegativeFractionalPower(base, false, exponent, false, maxPrecision, ePrefix)
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix: ePrefix.String(),
+            ReturnFunc: "result, err = new(bigIntMathPowerMolecule).\n" +
+              "  bigIntNumRaiseToNegativeFractionalPower(\n" +
+              "  base, false, exponent, false, maxPrecision, ePrefix)",
+            ErrContext: fmt.Sprintf("base='%v'\nexponent='%v'\n"+
+              "maxPrecision='%v'",
+              baseNumStr, exponentNumStr, maxPrecision),
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+  }
+
+  if result.precision > maxPrecision {
+
+    err = result.SetPrecision(maxPrecision)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = result.SetPrecision(maxPrecision)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  err = result.SetNumericSeparatorsDto(baseNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = result.SetNumericSeparatorsDto(baseNumSeps)",
+        ErrContext: fmt.Sprintf("baseNumSeps= '%v'", baseNumSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = result.IsValid(ePrefix.XCpy("Validating 'result'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = result.IsValid(\n" +
+          "  ePrefix.XCpy(\"Validating 'result'\").String()",
+        ErrContext: "Error: Final calculated 'result' is INVALID!\n" +
+          "'result' FAILED validation tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return result, nil
 }
 
 // bigIntPwr
@@ -461,245 +465,249 @@ func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntNumPwr(
 //	This method uses the exponent method ('Exp') provided by the go
 //	"math/big" package.
 func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntPwr(
-	base *big.Int,
-	basePrecision *big.Int,
-	exponent *big.Int,
-	exponentPrecision *big.Int,
-	maxPrecision *big.Int,
-	errPrefDto *ePref.ErrPrefixDto) (result *big.Int, resultPrecision *big.Int, err error) {
+  base *big.Int,
+  basePrecision *big.Int,
+  exponent *big.Int,
+  exponentPrecision *big.Int,
+  maxPrecision *big.Int,
+  errPrefDto *ePref.ErrPrefixDto) (result *big.Int, resultPrecision *big.Int, err error) {
 
-	bIMathPwrMech.lock.Lock()
+  if bIMathPwrMech.lock == nil {
+    bIMathPwrMech.lock = new(sync.Mutex)
+  }
 
-	defer bIMathPwrMech.lock.Unlock()
+  bIMathPwrMech.lock.Lock()
 
-	result = big.NewInt(0)
-	resultPrecision = big.NewInt(0)
+  defer bIMathPwrMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  result = big.NewInt(0)
+  resultPrecision = big.NewInt(0)
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntMathPowerMechanics.bigIntNumPwr",
-		"")
+  var ePrefix *ePref.ErrPrefixDto
 
-	if err != nil {
-		return result, resultPrecision, err
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntMathPowerMechanics.bigIntNumPwr",
+    "")
 
-	if base == nil {
+  if err != nil {
+    return result, resultPrecision, err
+  }
 
-		return result, resultPrecision,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'base'",
-			}
-	}
+  if base == nil {
 
-	if basePrecision == nil {
+    return result, resultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'base'",
+      }
+  }
 
-		return result, resultPrecision,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'basePrecision'",
-			}
-	}
+  if basePrecision == nil {
 
-	if exponent == nil {
+    return result, resultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'basePrecision'",
+      }
+  }
 
-		return result, resultPrecision,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'exponent'",
-			}
-	}
+  if exponent == nil {
 
-	if maxPrecision == nil {
+    return result, resultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'exponent'",
+      }
+  }
 
-		return result, resultPrecision,
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'maxPrecision'",
-			}
-	}
+  if maxPrecision == nil {
 
-	bigZero := big.NewInt(0)
+    return result, resultPrecision,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'maxPrecision'",
+      }
+  }
 
-	if base.Cmp(bigZero) == 0 {
-		// zero to any power is zero
-		return result, resultPrecision, err
-	}
+  bigZero := big.NewInt(0)
 
-	isZeroExponentPrecision := false
+  if base.Cmp(bigZero) == 0 {
+    // zero to any power is zero
+    return result, resultPrecision, err
+  }
 
-	if exponentPrecision.Cmp(bigZero) == 0 {
+  isZeroExponentPrecision := false
 
-		isZeroExponentPrecision = true
-	}
+  if exponentPrecision.Cmp(bigZero) == 0 {
 
-	exponentCmpZero := exponent.Cmp(bigZero)
+    isZeroExponentPrecision = true
+  }
 
-	if exponentCmpZero == 0 {
+  exponentCmpZero := exponent.Cmp(bigZero)
 
-		result = big.NewInt(1)
+  if exponentCmpZero == 0 {
 
-		return result, resultPrecision, err
-	}
+    result = big.NewInt(1)
 
-	exponentIsNegative := false
+    return result, resultPrecision, err
+  }
 
-	if exponentCmpZero == -1 {
+  exponentIsNegative := false
 
-		exponentIsNegative = true
-	}
+  if exponentCmpZero == -1 {
 
-	if exponentIsNegative == false &&
-		isZeroExponentPrecision == true {
+    exponentIsNegative = true
+  }
 
-		result, resultPrecision, err =
-			new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(
-				base,
-				basePrecision,
-				exponent,
-				exponentPrecision,
-				maxPrecision,
-				ePrefix)
+  if exponentIsNegative == false &&
+    isZeroExponentPrecision == true {
 
-		if err != nil {
+    result, resultPrecision, err =
+      new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(
+        base,
+        basePrecision,
+        exponent,
+        exponentPrecision,
+        maxPrecision,
+        ePrefix)
 
-			return result, resultPrecision,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "result, resultPrecision, err =\n" +
-						"  new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(\n" +
-						"  base, basePrecision, exponent, exponentPrecision,\n" +
-						"  maxPrecision, ePrefix)",
-					ErrContext: fmt.Sprintf("base= '%v'\n"+
-						"basePrecision= '%v'\n"+
-						"exponent= '%v'\n"+
-						"exponentPrecision= '%v'\n"+
-						"maxPrecision= '%v'",
-						base.Text(10),
-						basePrecision.Text(10),
-						exponent.Text(10),
-						exponentPrecision.Text(10),
-						maxPrecision.Text(10)),
-					ErrMessage: err.Error(),
-				}
-		}
-	} else if exponentIsNegative == true &&
-		isZeroExponentPrecision == true {
+    if err != nil {
 
-		result, resultPrecision, err =
-			//new(BigIntMathPower).BigIntToNegativeIntegerPower(
-			new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
-				base,
-				basePrecision,
-				exponent,
-				exponentPrecision,
-				maxPrecision,
-				ePrefix)
+      return result, resultPrecision,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, resultPrecision, err =\n" +
+            "  new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(\n" +
+            "  base, basePrecision, exponent, exponentPrecision,\n" +
+            "  maxPrecision, ePrefix)",
+          ErrContext: fmt.Sprintf("base= '%v'\n"+
+            "basePrecision= '%v'\n"+
+            "exponent= '%v'\n"+
+            "exponentPrecision= '%v'\n"+
+            "maxPrecision= '%v'",
+            base.Text(10),
+            basePrecision.Text(10),
+            exponent.Text(10),
+            exponentPrecision.Text(10),
+            maxPrecision.Text(10)),
+          ErrMessage: err.Error(),
+        }
+    }
+  } else if exponentIsNegative == true &&
+    isZeroExponentPrecision == true {
 
-		if err != nil {
+    result, resultPrecision, err =
+    //new(BigIntMathPower).BigIntToNegativeIntegerPower(
+      new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
+        base,
+        basePrecision,
+        exponent,
+        exponentPrecision,
+        maxPrecision,
+        ePrefix)
 
-			return result, resultPrecision,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "result, resultPrecision, err =\n" +
-						"  new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(\n" +
-						"  base, basePrecision, exponent, exponentPrecision,\n" +
-						"  maxPrecision, ePrefix)",
-					ErrContext: fmt.Sprintf("base= '%v'\n"+
-						"basePrecision= '%v'\n"+
-						"exponent= '%v'\n"+
-						"exponentPrecision= '%v'\n"+
-						"maxPrecision= '%v'",
-						base.Text(10),
-						basePrecision.Text(10),
-						exponent.Text(10),
-						exponentPrecision.Text(10),
-						maxPrecision.Text(10)),
-					ErrMessage: err.Error(),
-				}
-		}
-	} else if exponentIsNegative == false {
+    if err != nil {
 
-		//} else if exponentIsNegative == false &&
-		//	isZeroExponentPrecision == false {
+      return result, resultPrecision,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, resultPrecision, err =\n" +
+            "  new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(\n" +
+            "  base, basePrecision, exponent, exponentPrecision,\n" +
+            "  maxPrecision, ePrefix)",
+          ErrContext: fmt.Sprintf("base= '%v'\n"+
+            "basePrecision= '%v'\n"+
+            "exponent= '%v'\n"+
+            "exponentPrecision= '%v'\n"+
+            "maxPrecision= '%v'",
+            base.Text(10),
+            basePrecision.Text(10),
+            exponent.Text(10),
+            exponentPrecision.Text(10),
+            maxPrecision.Text(10)),
+          ErrMessage: err.Error(),
+        }
+    }
+  } else if exponentIsNegative == false {
 
-		result, resultPrecision, err =
-			//new(BigIntMathPower).BigIntToPositiveFractionalPower(
-			new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
-				base,
-				basePrecision,
-				exponent,
-				exponentPrecision,
-				maxPrecision,
-				ePrefix)
+    //} else if exponentIsNegative == false &&
+    //	isZeroExponentPrecision == false {
 
-		if err != nil {
+    result, resultPrecision, err =
+    //new(BigIntMathPower).BigIntToPositiveFractionalPower(
+      new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
+        base,
+        basePrecision,
+        exponent,
+        exponentPrecision,
+        maxPrecision,
+        ePrefix)
 
-			return result, resultPrecision,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "result, resultPrecision, err =\n" +
-						"  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
-						"  base, basePrecision, exponent, exponentPrecision,\n" +
-						"  maxPrecision, ePrefix)",
-					ErrContext: fmt.Sprintf("base= '%v'\n"+
-						"basePrecision= '%v'\n"+
-						"exponent= '%v'\n"+
-						"exponentPrecision= '%v'\n"+
-						"maxPrecision= '%v'",
-						base.Text(10),
-						basePrecision.Text(10),
-						exponent.Text(10),
-						exponentPrecision.Text(10),
-						maxPrecision.Text(10)),
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-		//} else if exponentIsNegative == true &&
-		//	isZeroExponentPrecision == false {
+    if err != nil {
 
-		result, resultPrecision, err =
-			// new(BigIntMathPower).BigIntToNegativeFractionalPower(
-			new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
-				base,
-				basePrecision,
-				exponent,
-				exponentPrecision,
-				maxPrecision,
-				ePrefix)
+      return result, resultPrecision,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, resultPrecision, err =\n" +
+            "  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
+            "  base, basePrecision, exponent, exponentPrecision,\n" +
+            "  maxPrecision, ePrefix)",
+          ErrContext: fmt.Sprintf("base= '%v'\n"+
+            "basePrecision= '%v'\n"+
+            "exponent= '%v'\n"+
+            "exponentPrecision= '%v'\n"+
+            "maxPrecision= '%v'",
+            base.Text(10),
+            basePrecision.Text(10),
+            exponent.Text(10),
+            exponentPrecision.Text(10),
+            maxPrecision.Text(10)),
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+    //} else if exponentIsNegative == true &&
+    //	isZeroExponentPrecision == false {
 
-		if err != nil {
+    result, resultPrecision, err =
+    // new(BigIntMathPower).BigIntToNegativeFractionalPower(
+      new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
+        base,
+        basePrecision,
+        exponent,
+        exponentPrecision,
+        maxPrecision,
+        ePrefix)
 
-			return result, resultPrecision,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "result, resultPrecision, err =\n" +
-						"  new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(\n" +
-						"  base, basePrecision, exponent, exponentPrecision,\n" +
-						"  maxPrecision, ePrefix)",
-					ErrContext: fmt.Sprintf("base= '%v'\n"+
-						"basePrecision= '%v'\n"+
-						"exponent= '%v'\n"+
-						"exponentPrecision= '%v'\n"+
-						"maxPrecision= '%v'",
-						base.Text(10),
-						basePrecision.Text(10),
-						exponent.Text(10),
-						exponentPrecision.Text(10),
-						maxPrecision.Text(10)),
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+    if err != nil {
 
-	return result, resultPrecision, nil
+      return result, resultPrecision,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "result, resultPrecision, err =\n" +
+            "  new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(\n" +
+            "  base, basePrecision, exponent, exponentPrecision,\n" +
+            "  maxPrecision, ePrefix)",
+          ErrContext: fmt.Sprintf("base= '%v'\n"+
+            "basePrecision= '%v'\n"+
+            "exponent= '%v'\n"+
+            "exponentPrecision= '%v'\n"+
+            "maxPrecision= '%v'",
+            base.Text(10),
+            basePrecision.Text(10),
+            exponent.Text(10),
+            exponentPrecision.Text(10),
+            maxPrecision.Text(10)),
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  return result, resultPrecision, nil
 }

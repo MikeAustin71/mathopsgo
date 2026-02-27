@@ -44,6 +44,7 @@ func (bIPwr *BigIntMathPower) BigIntPwr(
 
 	return new(bigIntMathPowerMechanics).bigIntPwr(
 		base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
+
 }
 
 // BigIntToNegativeFractionalPower
