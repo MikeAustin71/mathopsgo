@@ -1,29 +1,29 @@
 package mathops
 
 type BigIntMathPowerProfile struct {
-  ExpoCalcTypeCode ExponentCalcTypeCode
+	ExpoCalcTypeCode ExponentCalcTypeCode
 
-  BaseIsZero bool
+	BaseIsZero bool
 
-  BaseIsPlusOne bool
+	BaseIsPlusOne bool
 
-  BaseIsMinusOne bool
+	BaseIsMinusOne bool
 
-  BaseIsAbsOne bool // True if Base is +/- 1
+	BaseIsAbsOne bool // True if Base is +/- 1
 
-  BaseIsInteger bool
+	BaseIsInteger bool
 
-  BaseIsNegative bool
+	BaseIsNegative bool
 
-  ExponentIsZero bool
+	ExponentIsZero bool
 
-  ExponentIsPlusOne bool
+	ExponentIsPlusOne bool
 
-  ExponentIsMinusOne bool
+	ExponentIsMinusOne bool
 
-  ExponentIsAbsOne bool // True if Exponent is +/- 1
+	ExponentIsAbsOne bool // True if Exponent is +/- 1
 
-  ExponentIsInteger bool
+	ExponentIsInteger bool
 
-  ExponentIsNegative bool
+	ExponentIsNegative bool
 }

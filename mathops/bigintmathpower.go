@@ -872,6 +872,44 @@ func (bIPwr *BigIntMathPower) BigIntNumPwr(
 		&base, true, &exponent, true, maxPrecision, ePrefix)
 }
 
+// BigIntNumExponentiation
+//
+//	Raises the base BigIntNum to the power of the exponent BigIntNum
+//	with a precision limit.
+func (bIPwr *BigIntMathPower) BigIntNumExponentiation(
+	base BigIntNum, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntNumExponentiation",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	expoCalcProfile, err := new(bigIntMathPowerDiagnostics).
+		profilePowerCalc(&base, &exponent, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "expoCalcProfile, err := new(bigIntMathPowerDiagnostics).\n" +
+					"  profilePowerCalc(&base, &exponent, ePrefix)",
+				ErrContext: "Input Parameter 'exponent' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return BigIntNum{}, nil
+}
+
 // computeInternalPrecision - Returns computed internal precision for variables used
 // in intermediate calculations. Returned 'internalPrecision' is based on requested
 // maximum precision for a specific BigIntMathPower calculation.
