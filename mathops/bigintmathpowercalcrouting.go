@@ -1,85 +1,89 @@
 package mathops
 
 import (
-  "sync"
+	"fmt"
+	"sync"
 
-  ePref "github.com/MikeAustin71/errpref"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type bigIntMathPowerCalcRouting struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 func (bigIntPwrCalcRouting *bigIntMathPowerCalcRouting) routeExecutePowerCalc(
-  base *BigIntNum,
-  exponent *BigIntNum,
-  calcProfile *BigIntMathPowerProfile,
-  maxPrecision uint,
-  errPrefDto *ePref.ErrPrefixDto) (result *BigIntNum, err error) {
+	base *BigIntNum,
+	exponent *BigIntNum,
+	calcProfile *BigIntMathPowerProfile,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) (result BigIntNum, err error) {
 
-  if bigIntPwrCalcRouting.lock == nil {
-    bigIntPwrCalcRouting.lock = new(sync.Mutex)
-  }
+	if bigIntPwrCalcRouting.lock == nil {
+		bigIntPwrCalcRouting.lock = new(sync.Mutex)
+	}
 
-  bigIntPwrCalcRouting.lock.Lock()
+	bigIntPwrCalcRouting.lock.Lock()
 
-  defer bigIntPwrCalcRouting.lock.Unlock()
+	defer bigIntPwrCalcRouting.lock.Unlock()
 
-  result = new(BigIntNum)
+	var ePrefix *ePref.ErrPrefixDto
 
-  var ePrefix *ePref.ErrPrefixDto
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerCalcRouting.routeExecutePowerCalc",
+		"")
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerCalcRouting.routeExecutePowerCalc",
-    "")
+	if err != nil {
+		return result, err
+	}
 
-  if err != nil {
-    return result, err
-  }
+	if base == nil {
 
-  if base == nil {
+		return result,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-    return result,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+	if exponent == nil {
 
-  if exponent == nil {
+		return result,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-    return result,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+	if calcProfile == nil {
 
-  if calcProfile == nil {
+		return result,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'calcProfile'",
+			}
+	}
 
-    return result,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'calcProfile'",
-      }
-  }
+	switch calcProfile.ExpoCalcTypeCode {
 
-  if int(calcProfile.ExpoCalcTypeCode) < 1 ||
-    int(calcProfile.ExpoCalcTypeCode) > len(ExponentCalcTypeCodeLabels) {
+	case ExpoCalcBasePlusIntExpoMinusInt:
 
-    return result,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "calcProfile.ExpoCalcTypeCode is Invalid!",
-        ErrMessage: "Input parameter 'calcProfile.ExpoCalcTypeCode' is out of range",
-      }
-  }
+	default:
 
-  return result, nil
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Input parameter 'calcProfile.ExpoCalcTypeCode' is invalid!",
+				ErrMessage: fmt.Sprintf("'calcProfile.ExpoCalcTypeCode'\n"+
+					"  contains an invalid value: %v", calcProfile.ExpoCalcTypeCode),
+			}
+
+	}
+
+	return result, nil
 }
