@@ -1,12 +1,12 @@
 package mathops
 
 import (
-  "math"
-  "sync"
+	"math"
+	"sync"
 )
 
 type bigFloatHelperMechanics struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // computeBigFloatPrecisionBits
@@ -41,27 +41,27 @@ type bigFloatHelperMechanics struct {
 //		the exponent operation, X^n, 'n' is the exponent or the number of times
 //		the base number multiplies itself.
 func (bigFloatHelpMech *bigFloatHelperMechanics) computeBigFloatPrecisionBits(
-  resultDecDigits uint, multiplyCount uint) uint {
+	resultDecDigits uint, multiplyCount uint) uint {
 
-  if bigFloatHelpMech.lock == nil {
-    bigFloatHelpMech.lock = new(sync.Mutex)
-  }
+	if bigFloatHelpMech.lock == nil {
+		bigFloatHelpMech.lock = new(sync.Mutex)
+	}
 
-  bigFloatHelpMech.lock.Lock()
+	bigFloatHelpMech.lock.Lock()
 
-  defer bigFloatHelpMech.lock.Unlock()
+	defer bigFloatHelpMech.lock.Unlock()
 
-  // Convert decimal digits → bits
-  // baseBits := float64(decDigits) * math.Log2(10)
-  //
-  // math.Log2(10) =
-  //  3.321 928 094 887 362 347 870 319 429 489 390 175 864 831 393 024 6
-  // float64 max 15-digits of precision
-  baseBits := float64(resultDecDigits) * 3.321928094887362
+	// Convert decimal digits → bits
+	// baseBits := float64(decDigits) * math.Log2(10)
+	//
+	// math.Log2(10) =
+	//  3.321 928 094 887 362 347 870 319 429 489 390 175 864 831 393 024 6
+	// float64 max 15-digits of precision
+	baseBits := float64(resultDecDigits) * 3.321928094887362
 
-  // Add safety margin for exponentiation
-  safety := 64.0 + (float64(multiplyCount) * 4.0)
+	// Add safety margin for exponentiation
+	safety := 64.0 + (float64(multiplyCount) * 4.0)
 
-  // Round up to nearest whole bit
-  return uint(math.Ceil(baseBits + safety))
+	// Round up to nearest whole bit
+	return uint(math.Ceil(baseBits + safety))
 }
