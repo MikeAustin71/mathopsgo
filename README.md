@@ -1,11 +1,9 @@
 # mathopsgo
 ![TheOriginalAmarilloMike](assets/sittingduck003.png)
 
-A Math Operations (MathOps) Library written in the
-Go Programming Language.
+A Math Operations (MathOps) Library written in the Go Programming Language.
 
-The source code repository of the 'mathops' Library 
-is located here:
+The source code repository of the 'mathops' Library is located here:
 
     https://github.com/MikeAustin71/mathopsgo.git
 
@@ -16,7 +14,7 @@ Use this command to download and install the 'mathops' library
 locally. 
 
     go get github.com/MikeAustin71/mathopsgo/mathops
-    
+
 After installation, you may import and reference the library
 as follows:
 
@@ -25,8 +23,7 @@ as follows:
         )    
 
 ### Updating the 'mathops' Local Library Installation
-To update the library run:
-    
+To update the library run:    
     go get -u github.com/MikeAustin71/mathopsgo/mathops
 
 
@@ -48,7 +45,7 @@ syntax. Example:
 1. Make 'MikeAustin71/mathopsgo/mathops/' the current directory.
 
 2. Execute the following command:
-    
+   
     go test -v > ../apptest/tests.txt
 
 3. This will send test results output to a text file in the
